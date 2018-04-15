@@ -1,0 +1,27 @@
+{
+    "name": "artincms/laravel_file_manager",
+    "description": "Official ArtinCMS.com Laravel File Manager Package",
+    "keywords": ["laravel", "ArtinCMS", "مدیریت فایل", "مدیا منیجر", "media manager", "storage", "artincms.com","آرتین سی ام اس"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adel.Raheli",
+            "email": "adel.raheli@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ArtinCMS\\LFM\\": "src"
+        }
+    },
+    "require": {
+        "intervention/image": "^2.4"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ArtinCMS\\LFM\\LFMServiceProvider"
+            ]
+        }
+    }
+}
