@@ -91,9 +91,11 @@ class ManagerController extends Controller
     public function StoreUploads(Request $request) {
         if ($request->file)
         {
+            $CategoryID = $request->category_id ;
             foreach ($request->file as $file)
             {
-                dd($file) ;
+                $result = Media::upload($file, false, 1, $CategoryID);
+                dd($result) ;
             }
 
         }

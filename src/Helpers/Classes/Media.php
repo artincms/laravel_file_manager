@@ -7,13 +7,14 @@
  */
 namespace ArtinCMS\LFM\Helpers\Classes;
 
+use ArtinCMS\LFM\Models\Category;
 use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\FileMimeType;
 use Intervention\Image\Facades\Image;
 
 class Media
 {
-    public static function upload($file, $CustomPath = false, $CustomUID = False, $quality = 90, $crop_type = false, $height = False, $width = false)
+    public static function upload($file, $CustomPath = false, $CustomUID = False,$CategoryID, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         if (!$CustomUID)
         {
@@ -26,12 +27,19 @@ class Media
                 $CustomUID = 0;
             }
         }
-
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $mimeType = $file->getMimeType();
         $size = $file->getSize();
-        $Path = '/uploads/';
+        if ($CategoryID == 0)
+        {
+            $Path = '' ;
+        }
+        else
+        {
+            $Path = Category::select('title_disc')->find($CategoryID) ;
+        }
+
         if ($CustomPath)
         {
             $Path = '/uploads/' . $CustomPath . '/';
@@ -71,7 +79,7 @@ class Media
         else
         {
             $file_content = \File::get($file);
-            \Storage::disk('FileManager')->put($Path . $filename, $file_content);
+            \Storage::disk('file_manager')->put($Path->title_disc . '/' . $filename, $file_content);
         }
 
         //$file->move($Path, $filename);
@@ -79,6 +87,8 @@ class Media
         $FileSave = new File;
         $FileSave->originalName = $OriginalFileName;
         $FileSave->extension = $extension;
+        $FileSave->user_d = $CustomUID;
+        $FileSave->category_id = $CategoryID;
         $FileSave->mimeType = $mimeType;
         $FileSave->filename = $filename;
         $FileSave->size = $size;
