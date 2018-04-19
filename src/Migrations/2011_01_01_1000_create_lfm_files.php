@@ -15,15 +15,25 @@ class CreateLFMFiles extends Migration
     {
         Schema::create('lfm_files', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('category_id')->unsigned();
+            $table->integer('file_mime_type_id')->unsigned();
             $table->string('originalName', 255)->nullable()->default(null);
             $table->string('extension', 255)->nullable()->default(null);
             $table->string('mimeType', 255)->nullable()->default(null);
             $table->double('size')->nullable()->default(null);
             $table->string('path', 255)->nullable()->default(null);
             $table->string('filename', 255)->nullable()->default(null);
+            $table->string('file_md5' ,255)->nullable()->default(null);
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
+        });
+        Schema::table('lfm_files', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('lfm_files', function (Blueprint $table) {
+            $table->foreign('file_mime_type_id')->references('id')->on('lfm_file_mime_types')->onDelete('cascade');
         });
     }
 
