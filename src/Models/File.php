@@ -11,6 +11,19 @@ use Illuminate\Database\Eloquent\Model;
  */
 class File extends Model
 {
-	protected $table = 'fm_files';
+	protected $table = 'lfm_files';
+
+    public function category()
+    {
+        return $this->belongsTo('ArtinCMS\LFM\Models\Category');
+    }
+
+    /**
+     * @param array $withCount
+     */
+    public static function get_uncategory_files()
+    {
+       return  self::where('category_id' , '=' , '0')->get() ;
+    }
 
 }

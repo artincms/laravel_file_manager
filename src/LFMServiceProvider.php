@@ -2,6 +2,7 @@
 
 namespace ArtinCMS\LFM;
 
+use ArtinCMS\LFM\Helpers\Classes\Media;
 use Illuminate\Support\ServiceProvider;
 
 class LFMServiceProvider extends ServiceProvider
@@ -57,5 +58,8 @@ class LFMServiceProvider extends ServiceProvider
 	    $this->app->bind('LFMC', function () {
 		    return new LFMC;
 	    });
+        $this->app->bind('Media', function () {
+            return new Media;
+        });
     }
 }
