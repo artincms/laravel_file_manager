@@ -26,4 +26,5 @@ return [
 	'title' => 'مدیریت پیامک ها',
 	// How many log you want to show in sms-admin panel ?
 	'in-page' => '15'
+
 ];

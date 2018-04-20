@@ -49,9 +49,9 @@ class ManagerController extends Controller
 
                 //make directory
                 $subcats =['orginal','large','medium' ,'small'] ;
-                Storage::disk('file_manager')->makeDirectory($cat->title_disc) ;
+                Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($cat->title_disc) ;
                 foreach ($subcats as $subcat) {
-                    Storage::disk('file_manager')->makeDirectory($cat->title_disc. '/' .$subcat) ;
+                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($cat->title_disc. '/' .$subcat) ;
                 }
             });
             return response()->json(['success' => true]);
@@ -94,9 +94,11 @@ class ManagerController extends Controller
             $CategoryID = $request->category_id ;
             foreach ($request->file as $file)
             {
-                $result = Media::upload($file, false, 1, $CategoryID);
-                dd($result) ;
+                $res = Media::upload($file, false, 1, $CategoryID);
+
             }
+
+
 
         }
 

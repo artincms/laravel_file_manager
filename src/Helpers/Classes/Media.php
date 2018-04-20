@@ -79,7 +79,7 @@ class Media
         else
         {
             $file_content = \File::get($file);
-            \Storage::disk('file_manager')->put($Path->title_disc . '/' . $filename, $file_content);
+            \Storage::disk(config('laravel_file_manager.driver_disk'))->put($Path->title_disc . '/' . $filename, $file_content);
         }
 
         //$file->move($Path, $filename);
@@ -87,7 +87,7 @@ class Media
         $FileSave = new File;
         $FileSave->originalName = $OriginalFileName;
         $FileSave->extension = $extension;
-        $FileSave->user_d = $CustomUID;
+        $FileSave->user_id = $CustomUID;
         $FileSave->category_id = $CategoryID;
         $FileSave->mimeType = $mimeType;
         $FileSave->filename = $filename;
