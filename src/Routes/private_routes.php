@@ -9,12 +9,27 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //new routes by sadeghi
     Route::get('ShowCategories', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
-    Route::get('ShowCategories/create', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
+    Route::get('ShowCategories/create/{category_id}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@StoreCategory']);
     Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@ShowCategory']);
+    Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@Trash']);
+    Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@BulkDelete']);
     //file uploades
-    Route::get('FileUpload', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
+    Route::get('FileUpload/{category_id}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'ManagerController@StoreUploads']);
+
+    //edti photot
+    Route::get('EditPicture/{file_id}', ['as' => 'LFM.EditPicture', 'uses' => 'ManagerController@EditPicture']);
+    Route::post('StoreCropedImage', ['as' => 'LFM.StoreCropedImage', 'uses' => 'ManagerController@StoreCropedImage']);
+    //refresh content page
+    Route::post('RefreshPage', ['as' => 'LFM.RefreshPage', 'uses' => 'ManagerController@RefreshPage']);
+    //search media
+    Route::post('SearchMedia', ['as' => 'LFM.SearchMedia', 'uses' => 'ManagerController@SearchMedia']);
+
+    //Display Route
+    Route::post('ShowList', ['as' => 'LFM.ShowList', 'uses' => 'ManagerController@ShowList']);
+
+
 
 });
 
