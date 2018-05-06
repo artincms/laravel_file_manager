@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
 
-	protected $table = 'lfm_categories';
-    use SoftDeletes ;
+    protected $table = 'lfm_categories';
+    use SoftDeletes;
     protected $dates = ['deleted_at'];
 
     /**
@@ -25,12 +25,13 @@ class Category extends Model
         return $this->hasMany('ArtinCMS\LFM\Models\File');
     }
 
-    public function users()
+    public function user()
     {
-        return $this->belongsTo('App\User') ;
+        return $this->belongsTo(config('laravel_file_manager.user_model'), 'user_id');
     }
 
-	public static function get_root_categories($search = false) {
+    public static function get_root_categories($search = false)
+    {
         if (auth()->check())
         {
             $user_id = auth()->id();
@@ -39,32 +40,35 @@ class Category extends Model
         {
             $user_id = 0;
         }
-            $cat = Category::with(['child_categories' , 'parent_category'])->where([
-                ['parent_category_id' , '=' , '0' ],
-                ['user_id','=' , $user_id]
-                ])->get();
+        $cat = Category::with(['child_categories', 'parent_category'])->select('id', 'title as name', 'user_id','parent_category_id','description','created_at','updated_at')->where([
+            ['parent_category_id', '=', '0'],
+            ['user_id', '=', $user_id]
+        ])->get();
 
-	    return $cat ;
-    }
-    public function child_categories() {
-        return $this->hasMany('ArtinCMS\LFM\Models\Category' , 'parent_category_id' , 'id') ;
+        return $cat;
     }
 
+    public function child_categories()
+    {
+        return $this->hasMany('ArtinCMS\LFM\Models\Category', 'parent_category_id', 'id');
+    }
 
-    public function parent_category() {
-        return $this->belongsTo('ArtinCMS\LFM\Models\Category' , 'parent_category_id' , 'id') ;
+
+    public function parent_category()
+    {
+        return $this->belongsTo('ArtinCMS\LFM\Models\Category', 'parent_category_id', 'id');
     }
 
     public static function all_parents($id)
     {
-        $result = [] ;
+        $result = [];
         while ($id != 0)
         {
             $cat = Category::with('parent_category')->find($id);
-            $result[] =$cat;
-            $id  = $cat->parent_category_id ;
+            $result[] = $cat;
+            $id = $cat->parent_category_id;
         }
-         return array_reverse($result) ;
+        return array_reverse($result);
     }
 
     /**
@@ -72,15 +76,15 @@ class Category extends Model
      */
     public function getUserParentCategoryAttribute()
     {
-        return $this->parent_category()->where('user_id','=',$this->user_id)->get();
+        return $this->parent_category()->where('user_id', '=', $this->user_id)->get();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getUserChildCategoriesAttribute()
+    public function getUserChildCategoriesAttribute($value=false)
     {
-        return $this->child_categories()->where('user_id','=',$this->user_id)->get();
+        return $this->child_categories()->with('user')->select('id', 'title as name', 'user_id','parent_category_id','description','created_at','updated_at')->where('user_id', '=', $this->user_id)->get();
     }
 
     /**
@@ -89,7 +93,8 @@ class Category extends Model
     public function getUserFilesAttribute()
     {
 
-        return $this->files()->where('user_id','=',$this->user_id)->get();
+        return $this->files()->with('FileMimeType','user')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at')
+            ->where('user_id', '=', $this->user_id)->get();
     }
 
 
@@ -106,7 +111,7 @@ class Category extends Model
         {
             $user_id = 0;
         }
-        return $user_id ;
+        return $user_id;
     }
 
 

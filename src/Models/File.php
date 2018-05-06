@@ -21,7 +21,7 @@ class File extends Model
         return $this->belongsTo('ArtinCMS\LFM\Models\Category');
     }
 
-    public function filemimetype()
+    public function FileMimeType()
     {
         return $this->belongsTo('ArtinCMS\LFM\Models\FileMimeType', 'file_mime_type_id');
     }
@@ -39,7 +39,8 @@ class File extends Model
         {
             $user_id = 0;
         }
-        return self::where([
+        return self::select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at')
+            ->where([
             ['category_id', '=', '0'],
             ['user_id', '=',$user_id]
         ])->get();

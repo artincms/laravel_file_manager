@@ -8,14 +8,16 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('GridMyFiles', ['as' => 'LFM.GridMyFiles', 'uses' => 'LFMController@GridMyFiles']);
 
     //new routes by sadeghi
-    Route::get('ShowCategories', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
-    Route::get('ShowCategories/create/{category_id}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
+    Route::get('ShowCategories/{insert?}', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
+    Route::get('ShowCategories/create/{category_id}/{callback?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
+    Route::get('ShowCategories/Edit/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@EditCategory']);
+
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@StoreCategory']);
     Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@ShowCategory']);
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@Trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@BulkDelete']);
     //file uploades
-    Route::get('FileUpload/{category_id}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
+    Route::get('FileUpload/{category_id}/{callback?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'ManagerController@StoreUploads']);
 
     //edti photot
@@ -23,11 +25,22 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('StoreCropedImage', ['as' => 'LFM.StoreCropedImage', 'uses' => 'ManagerController@StoreCropedImage']);
     //refresh content page
     Route::post('RefreshPage', ['as' => 'LFM.RefreshPage', 'uses' => 'ManagerController@RefreshPage']);
+
     //search media
     Route::post('SearchMedia', ['as' => 'LFM.SearchMedia', 'uses' => 'ManagerController@SearchMedia']);
 
     //Display Route
-    Route::post('ShowList', ['as' => 'LFM.ShowList', 'uses' => 'ManagerController@ShowList']);
+    Route::get('ShowList', ['as' => 'LFM.ShowList', 'uses' => 'ManagerController@ShowList']);
+    Route::post('ShowListCategory', ['as' => 'LFM.ShowListCategory', 'uses' => 'ManagerController@ShowListCategory']);
+
+    //get bredcrumbs
+    Route::post('Breadcrumbs/{id}', ['as' => 'LFM.Breadcrumbs', 'uses' => 'ManagerController@get_breadcrumbs']);
+
+    //create insert data
+    Route::post('CreateInsertData', ['as' => 'LFM.CreateInsertData', 'uses' => 'ManagerController@CreateInsertData']);
+
+
+
 
 
 

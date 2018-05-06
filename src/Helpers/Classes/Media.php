@@ -101,7 +101,7 @@ class Media
         return $result;
     }
 
-    public static function resize_image_upload($file, $FileSave,$FullPath,$orginal_name)
+    public static function resize_image_upload($file, $FileSave,$FullPath,$orginal_name,$quality=90)
     {
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
         $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('') ;
@@ -114,7 +114,7 @@ class Media
 
                 $OptionIMG = config('laravel_file_manager.size_' . $crop_type);
                 $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($file) . "_" . time() . '_' . $FileSave->extension;
-                $crop = config('laravel_file_manager.crop');
+                $crop = config('laravel_file_manager.crop_chose');
                 //create directory if not exist
                 if (!is_dir($tmp_path))
                 {
@@ -124,7 +124,8 @@ class Media
                 switch ($crop)
                 {
                     case "smart":
-
+                        $file_cropped = HFM_SmartCropIMG($file, $OptionIMG);
+                        HFM_Save_Compress_IMG(false, $file_cropped->oImg, $tmp_path . '/' . $filename , $FileSave->extension, $quality);
                         break;
                     case "fit":
                         $res = Image::make($file)->fit($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);
@@ -274,26 +275,28 @@ class Media
         switch ($crop_type)
         {
             case "orginal":
+
                 $FileSave->version++;
-                $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5($FileSave->originalName) . "_" . $time . '_' . $FileSave->extension;
+                $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/orginal/' . $filename, base64_decode($data));
                 $FileSave->filename = $filename;
+                $FileSave->file_md5 = md5(base64_decode($data)) ;
                 break;
             case "large":
                 $FileSave->large_version++;
-                $large_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->large_version . '_uid_' . $FileSave->user_id . '_large_' . md5($FileSave->originalName) . "_" . $time . '_' . $FileSave->extension;
+                $large_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->large_version . '_uid_' . $FileSave->user_id . '_large_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/large/' . $large_filename, base64_decode($data));
                 $FileSave->large_filename = $large_filename;
                 break;
             case "medium":
                 $FileSave->medium_version++;
-                $medium_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->medium_version . '_uid_' . $FileSave->user_id . '_medium_' . md5($FileSave->originalName) . "_" . $time . '_' . $FileSave->extension;
+                $medium_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->medium_version . '_uid_' . $FileSave->user_id . '_medium_' .md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/medium/' . $medium_filename, base64_decode($data));
                 $FileSave->medium_filename = $medium_filename;
                 break;
             case "small" :
                 $FileSave->small_version++;
-                $small_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->small_version . '_uid_' . $FileSave->user_id . '_small_' . md5($FileSave->originalName) . "_" . $time . '_' . $FileSave->extension;
+                $small_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->small_version . '_uid_' . $FileSave->user_id . '_small_' .md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/small/' . $small_filename, base64_decode($data));
                 $FileSave->small_filename = $small_filename;
                 break;
