@@ -620,3 +620,19 @@ if (!function_exists('HFM_download_from_public_storage'))
         }
     }
 }
+
+
+function SetSessionOption($name,$option)
+{
+    $LFM = session()->put('LFM',$name) ;
+    $mime=[] ;
+    foreach ($option['true_file_extension'] as $ext)
+    {
+        $MimeType = FileMimeType::where('ext','=',$ext)->first();
+        $mime[]=$MimeType->mimeType ;
+    }
+    $option['true_mime_type']=$mime;
+    $LFM[$name]['options']=$option;
+    session()->put('LFM',$LFM);
+    return  $LFM ;
+}
