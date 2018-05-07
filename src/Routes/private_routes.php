@@ -17,7 +17,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@Trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@BulkDelete']);
     //file uploades
-    Route::get('FileUpload/{category_id}/{callback?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
+    Route::get('FileUpload/{category_id}/{section?}/{callback?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'ManagerController@StoreUploads']);
 
     //edti photot
@@ -39,7 +39,9 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //create insert data
     Route::post('CreateInsertData', ['as' => 'LFM.CreateInsertData', 'uses' => 'ManagerController@CreateInsertData']);
 
-
+    //Session
+    Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'ManagerController@GetSession']);
+    Route::get('DeleteSessionInsertItem/{name}/{id}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'ManagerController@DeleteSessionInsertItem']);
 
 
 

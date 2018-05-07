@@ -90,11 +90,17 @@ class Category extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getUserFilesAttribute()
+    public function UserFiles($trueMimeType)
     {
+        $res = $this->files()->with('FileMimeType','user')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at')
+            ->where('user_id', '=', $this->user_id) ;
+        if($trueMimeType)
+        {
+            $res = $res->whereIn('mimeType',$trueMimeType);
+        }
 
-        return $this->files()->with('FileMimeType','user')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at')
-            ->where('user_id', '=', $this->user_id)->get();
+        return $res->get() ;
+
     }
 
 

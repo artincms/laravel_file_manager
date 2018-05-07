@@ -20,8 +20,18 @@ class ManagerController extends Controller
 {
     public function ShowCategories($insert = false, $section = false)
     {
-        $session_option = SetSessionOption($section ,['size_file'=>100,'max_file_number' => 5 , 'true_file_extension' =>['png','jpeg']]);
-        $files = File::get_uncategory_files();
+        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 3, 'true_file_extension' => ['png', 'jpeg']]);
+        if ($section)
+        {
+            $LFM = session()->get('LFM');
+            $trueMimeType = $LFM[$section]['options']['true_mime_type'] ;
+        }
+        else
+        {
+            $trueMimeType = false ;
+        }
+
+        $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
@@ -99,7 +109,7 @@ class ManagerController extends Controller
 
     public function ShowCategory(Request $request)
     {
-        $result = $this->show($request->category_id,$request->insert,$request->section);
+        $result = $this->show($request->category_id, $request->insert, $request->section);
         return response()->json($result);
 
     }
@@ -116,7 +126,7 @@ class ManagerController extends Controller
             $this->delete($request->id);
         }
 
-        $result = $this->show($request->parent_id,$request->insert,$request->section);
+        $result = $this->show($request->parent_id, $request->insert, $request->section);
         return response()->json($result);
 
     }
@@ -160,7 +170,7 @@ class ManagerController extends Controller
                 $this->delete($item['id']);
             }
         }
-        $result = $this->show($item['parent_id'],$request->insert,$request->section);
+        $result = $this->show($item['parent_id'], $request->insert, $request->section);
         return response()->json($result);
     }
 
@@ -168,9 +178,18 @@ class ManagerController extends Controller
      * id is category id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function FileUpload($id, $callback = false)
+    public function FileUpload($id, $section=false , $callback = false )
     {
-        return view('laravel_file_manager::upload', compact('id', 'callback'));
+        if($section)
+        {
+            $options = $this->get_section_options($section);
+            $options=$options['options'] ;
+        }
+        else
+        {
+            $options = false ;
+        }
+        return view('laravel_file_manager::upload', compact('id', 'callback','options'));
     }
 
     /**
@@ -403,15 +422,25 @@ class ManagerController extends Controller
      * @param $id
      * @return mixed
      */
-    private function show($id, $insert = false , $section= false)
+    private function show($id, $insert = false, $section = false)
     {
         $breadcrumbs = $this->get_breadcrumbs($id);
+        if ($section)
+        {
+            $LFM = session()->get('LFM');
+            $trueMimeType = $LFM[$section]['options']['true_mime_type'] ;
+        }
+        else
+        {
+            $trueMimeType = false ;
+        }
+
         if ($id == 0)
         {
-            $files = File::get_uncategory_files();
+            $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
             $category = false;
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert','section'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
@@ -421,11 +450,11 @@ class ManagerController extends Controller
         }
         else
         {
-            $category = Category::with('files', 'child_categories', 'parent_category')->find($id);
+            $category = Category::with('parent_category')->find($id);
             $breadcrumbs[] = ['id' => $category->id, 'title' => $category->title, 'type' => 'DisableLink'];
             $categories = $category->user_child_categories;
-            $files = $category->user_files;
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert','section'))->render();
+            $files = $category->UserFiles($trueMimeType);
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = $category->title;
@@ -439,45 +468,99 @@ class ManagerController extends Controller
 
     public function CreateInsertData(Request $request)
     {
-        $options = $this->get_session_options($request,$request->section);
-        if ($options)
+        $options = $this->get_section_options($request->section);
+        if ($options['success'])
         {
-            $datas = $this->create_all_insert_data($request) ;
-            $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
-            $datas['success'] = true;
+            $check_options = $this->check_section_options($request->section, $options['options'], $request->items);
+            if ($check_options['success'])
+            {
+                $datas = $this->create_all_insert_data($request);
+                $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
+                $datas['session'] = session()->get('LFM');
+            }
+            else
+            {
+                $datas['success'] = false;
+                $datas['error'] = $check_options['error'];
+            }
         }
         else
         {
             $datas['success'] = false;
+            $datas['error'] = $options['error'];
         }
         return response()->json($datas);
 
 
     }
 
-    private function get_session_options($request,$section)
+    private function get_section_options($section)
     {
-        if ($request->has('section'))
-        {
+
             if (session()->has('LFM'))
             {
                 $LFM = session()->get('LFM');
-                if (in_array($request->$section, $LFM))
+                if ($LFM[$section])
                 {
                     //check options
                     if ($LFM[$section]['options'])
                     {
-                        //check options
-                        dd(in_array($request->$section, $LFM)) ;
+                        $result['options'] = $LFM[$section]['options'];
+                        $result['success'] = true;
+                        return $result;
+                    }
+                    else
+                    {
+                        $result['success'] = false;
+                        return $result;
                     }
                 }
             }
             else
             {
-                return false;
+                $result['success'] = false;
+                $result['error'] = '';
+                return $result;
             }
 
+
+    }
+
+    private function check_section_options($name, $options, $items)
+    {
+        $selected_items = $this->get_selected_section_items($name);
+        if ($selected_items)
+        {
+            $totall = count($items) + count($selected_items);
         }
+        else
+        {
+            $totall = count($items);
+
+        }
+        if ($totall > $options['max_file_number'])
+        {
+            $result['success'] = false;
+            $result['error'] = 'your cant insert more than' . $options['max_file_number'];
+            return $result;
+        }
+        else
+        {
+            $mimetype = CheckMimeType($options['true_mime_type'], $items);
+            if (!$mimetype['success'])
+            {
+                $result['success'] = false;
+                $result['error'] = $mimetype['error'];
+                return $result;
+            }
+            else
+            {
+                $result['success'] = true;
+
+            }
+        }
+
+        return $result;
     }
 
     private function create_all_insert_data($request)
@@ -531,9 +614,119 @@ class ManagerController extends Controller
             ];
 
             $datas[] = $data;
+            $result_session = $this->set_selected_file_to_session($request, $request->section, $data);
 
         }
-        return $datas ;
+        return $datas;
+    }
+
+    private function set_selected_file_to_session($request, $section, $data)
+    {
+        if ($request->has('section'))
+        {
+            if (session()->has('LFM'))
+            {
+                $LFM = session()->get('LFM');
+                if ($LFM[$request->$section])
+                {
+                    //check options
+                    if ($LFM[$section]['selected'])
+                    {
+                        //if id not repeated add to selected item
+                        $result = $this->merge_to_selected($LFM[$section]['selected'], $data);
+                        if (isset($result['data']))
+                        {
+                            $data = $result['data'];
+                            $result['success'] = true;
+                            $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
+
+                        }
+                        else
+                        {
+                            $result['success'] = false;
+                        }
+
+
+                    }
+                    else
+                    {
+                        $result['success'] = true;
+                        $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
+                    }
+
+                    session()->put('LFM', $LFM);
+                    return $result;
+                }
+                else
+                {
+                    $result['success'] = false;
+                }
+            }
+            else
+            {
+                $result['success'] = false;
+            }
+
+        }
+        return $result ;
+    }
+
+    private function merge_to_selected($selected, $data)
+    {
+        $status = FindSessionSelectedId($selected, $data['file']['id']);
+        if ($status == false)
+        {
+            $result ['data'] = $data;
+
+        }
+        else
+        {
+            $result['error'] = 'The File ID ' . $data['file']['id'] . ' is repeated';
+        }
+
+
+
+        return $result;
+
+    }
+
+    public function GetSession($name)
+    {
+        $LFM = session()->get('LFM');
+        if ($LFM[$name])
+        {
+            return $LFM[$name];
+        }
+        else
+            return false ;
+
+    }
+
+    public function DeleteSessionInsertItem($name, $id)
+    {
+        $LFM = session()->get('LFM');
+        if ($LFM[$name])
+        {
+            $selected = $LFM[$name]['selected'];
+            foreach ($selected as $key=>$value)
+            {
+                if ($id == $value['file']['id'] )
+                {
+                    unset($selected[$key]) ;
+                }
+            }
+            $LFM[$name]['selected'] =$selected ;
+            session()->put('LFM',$LFM);
+            return $LFM ;
+
+        }
+        else
+        {
+            return false ;
+        }
+
+
+
     }
 
     public function get_user_id()
@@ -550,27 +743,18 @@ class ManagerController extends Controller
 
     }
 
-    private function set_selected_file_to_session($request, $section, $data)
+    private function get_selected_section_items($name)
     {
-        if ($request->has('section'))
+        $LFM = session('LFM');
+        if ($LFM[$name])
         {
-            if (session()->has('LFM'))
+            if ($LFM[$name]['selected'])
             {
-                $LFM = session()->get('LFM');
-                if (in_array($request->$section, $LFM))
-                {
-                    //check options
-                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
-                    session()->put('LFM', $LFM);
-                    return $LFM[$section]['selected'] ;
-                }
+                return $LFM[$name]['selected'];
             }
-            else
-            {
-                return false;
-            }
-
         }
+
+        return false;
     }
 
 

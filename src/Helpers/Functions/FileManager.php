@@ -624,15 +624,58 @@ if (!function_exists('HFM_download_from_public_storage'))
 
 function SetSessionOption($name,$option)
 {
-    $LFM = session()->put('LFM',$name) ;
     $mime=[] ;
     foreach ($option['true_file_extension'] as $ext)
     {
+        $mime = [];
         $MimeType = FileMimeType::where('ext','=',$ext)->first();
-        $mime[]=$MimeType->mimeType ;
+        if ($MimeType)
+        {
+            $mime[]=$MimeType->mimeType ;
+        }
     }
     $option['true_mime_type']=$mime;
     $LFM[$name]['options']=$option;
+    $LFM[$name]['selected']=[];
     session()->put('LFM',$LFM);
     return  $LFM ;
+}
+
+function CheckMimeType($mimetype , $items)
+{
+    foreach ($items as $item)
+    {
+        $file = \ArtinCMS\LFM\Models\File::find($item['id']) ;
+        if (!in_array($file->mimeType,$mimetype))
+        {
+            $result['success'] = false ;
+            $result['error'] = 'File '.$file->originalName . ' Not true mime type' ;
+            $result['item_error'] = $item ;
+            return $result ;
+        }
+        else
+        {
+            $result['success'] = true ;
+        }
+
+    }
+    return  $result ;
+}
+
+function FindSessionSelectedId($selected,$id)
+{
+
+    foreach ($selected as $select)
+    {
+        if($select['file']['id'] == $id)
+        {
+            return true ;
+
+        }
+        else
+        {
+            return false ;
+        }
+    }
+
 }
