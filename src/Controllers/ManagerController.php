@@ -647,7 +647,7 @@ class ManagerController extends Controller
         return $datas;
     }
 
-    private function set_selected_file_to_session($request, $section, $data)
+    private function set_selected_file_to_session($request, $section, $datas)
     {
         if ($request->has('section'))
         {
@@ -660,7 +660,7 @@ class ManagerController extends Controller
                     if ($LFM[$section]['selected'])
                     {
                         //if id not repeated add to selected item
-                        $result = $this->merge_to_selected($LFM[$section]['selected'], $data);
+                        $result = $this->merge_to_selected($LFM[$section]['selected'], $datas);
                         if (isset($result['data']))
                         {
                             $data = $result['data'];
@@ -678,7 +678,7 @@ class ManagerController extends Controller
                     else
                     {
                         $result['success'] = true;
-                        $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
+                        $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $datas);
                     }
 
                     session()->put('LFM', $LFM);
@@ -697,6 +697,27 @@ class ManagerController extends Controller
         }
         return $result ;
     }
+
+    private function create_small_inserted_view()
+    {
+        //return small inserted view
+    }
+
+    public function create_thumb_inserted_view()
+    {
+        //return thumb inserted view
+    }
+
+    public function create_large_inserted_view()
+    {
+        //return large inserted view
+    }
+
+    public function create_grid_inserted_view()
+    {
+        //return grid inserted view
+    }
+
 
     private function merge_to_selected($selected, $data)
     {
@@ -719,13 +740,16 @@ class ManagerController extends Controller
 
     public function GetSession($name)
     {
-        $LFM = session()->get('LFM');
-        if ($LFM[$name])
+        $LFM = session()->get('LFM');dd($LFM) ;
+        if (isset($LFM[$name]))
         {
             return $LFM[$name];
         }
         else
+        {
             return false ;
+
+        }
 
     }
 

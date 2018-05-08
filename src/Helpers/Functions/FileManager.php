@@ -692,3 +692,23 @@ function toString($input,$replace_input=false)
     }
 
 }
+
+function createModalFileManager($section , $options=false , $insert = false , $modal_id = 'FileManager' ,$header = 'File manager', $callback=false , $button_id= 'show_modal' ,$button_content = 'insert')
+{
+    //set session
+    $session_option = SetSessionOption($section,$options) ;
+
+    //create html content and button
+    $src = route('LFM.ShowCategories',['section' =>$section , 'insert' =>$insert]) ;
+    $result['content'] = view("laravel_file_manager::file_manager", compact("src","modal_id",'header','button_content'))->render();
+    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#'.$modal_id.'" id="'.$button_id.'">Manager</button>' ;
+    return $result;
+
+
+
+}
+
+function createModalContent($section,$modal_id,$insert)
+{
+
+}
