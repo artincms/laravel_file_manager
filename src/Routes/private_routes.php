@@ -10,7 +10,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //new routes by sadeghi
     Route::get('ShowCategories/{insert?}/{Section?}', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
     Route::get('ShowCategories/create/{category_id}/{callback?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
-    Route::get('ShowCategories/Edit/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@EditCategory']);
+    Route::get('EditCategory/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@EditCategory']);
 
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@StoreCategory']);
     Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@ShowCategory']);
