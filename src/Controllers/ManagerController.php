@@ -20,7 +20,7 @@ class ManagerController extends Controller
 {
     public function ShowCategories($insert = false, $section = false)
     {
-        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 3, 'true_file_extension' => ['zip','jpg']]);
+        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['png','jpeg']]);
         if ($section)
         {
             $LFM = session()->get('LFM');
@@ -491,13 +491,11 @@ class ManagerController extends Controller
     {
         $options = $this->get_section_options($request->section);
         if ($options['success'])
-        {
-            $check_options = $this->check_section_options($request->section, $options['options'], $request->items);
+        {$check_options = $this->check_section_options($request->section, $options['options'], $request->items);
             if ($check_options['success'])
             {
                 $datas = $this->create_all_insert_data($request);
                 $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
-                $datas['session'] = session()->get('LFM');
             }
             else
             {
@@ -593,57 +591,65 @@ class ManagerController extends Controller
     private function create_all_insert_data($request)
     {
         $datas = [];
-
-        foreach ($request->items as $item)
+        $section= $this->GetSession($request->section) ;
+        if (isset($section['selected']))
         {
-            $id = $item['id'];
-            $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $request->type, 'default_img' => '404.png'
-                , 'quality' => $request->quality, 'width' => $request->width, 'height' => $request->height
-            ]);
-            $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
-            $url = str_replace($protocol, '', $full_url);
-            $url = str_replace('://', '', $url);
-            $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
-            $file = File::find($id);
-            switch ($request->type)
+            foreach ($request->items as $item)
             {
-                case "orginal":
-                    $file_title_disc = $file->filename;
-                    $version = $file->versioin;
-                    break;
-                case "large":
-                    $file_title_disc = $file->large_filename;
-                    $version = $file->large_version;
-                    break;
-                case "medium":
-                    $file_title_disc = $file->medium_filename;
-                    $version = $file->medium_version;
-                    break;
-                case "small":
-                    $file_title_disc = $file->small_filename;
-                    $version = $file->small_version;
-                    break;
-                default:
-                    $file_title_disc = $file->filename;
-                    $version = $file->versioin;
-                    break;
+                $id = $item['id'];
+                $status = FindSessionSelectedId($section['selected'],$id);
+                if (!$status)
+                {
+                    $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $item['type'], 'default_img' => '404.png'
+                        , 'quality' => $item['quality'], 'width' => $item['width'], 'height' =>$item['height']
+                    ]);
+                    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
+                    $url = str_replace($protocol, '', $full_url);
+                    $url = str_replace('://', '', $url);
+                    $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
+                    $file = File::find($id);
+                    switch ($request->type)
+                    {
+                        case "orginal":
+                            $file_title_disc = $file->filename;
+                            $version = $file->versioin;
+                            break;
+                        case "large":
+                            $file_title_disc = $file->large_filename;
+                            $version = $file->large_version;
+                            break;
+                        case "medium":
+                            $file_title_disc = $file->medium_filename;
+                            $version = $file->medium_version;
+                            break;
+                        case "small":
+                            $file_title_disc = $file->small_filename;
+                            $version = $file->small_version;
+                            break;
+                        default:
+                            $file_title_disc = $file->filename;
+                            $version = $file->versioin;
+                            break;
+                    }
+                    $data['full_url'] = $full_url;
+                    $data['url'] = $url;
+                    $data['file'] = [
+                        'id' => $file->id,
+                        'type' => $item['type'],
+                        'width' => $item['width'],
+                        'height' => $item['height'],
+                        'quality' => $item['quality'],
+                        'title_file_disc' => $file_title_disc,
+                        'version' => $version
+                    ];
+                    $data['success'] = true ;
+                    $data['message'] = "File with ID :".$id.' Inserted' ;
+                    $datas[] = $data;
+                }
+
             }
-            $data['full_url'] = $full_url;
-            $data['url'] = $url;
-            $data['file'] = [
-                'id' => $file->id,
-                'type' => $request->type,
-                'width' => $request->width,
-                'height' => $request->height,
-                'quality' => $request->quality,
-                'title_file_disc' => $file_title_disc,
-                'version' => $version
-            ];
-
-            $datas[] = $data;
-            $result_session = $this->set_selected_file_to_session($request, $request->section, $data);
-
         }
+
         return $datas;
     }
 
@@ -657,30 +663,8 @@ class ManagerController extends Controller
                 if ($LFM[$request->$section])
                 {
                     //check options
-                    if ($LFM[$section]['selected'])
-                    {
-                        //if id not repeated add to selected item
-                        $result = $this->merge_to_selected($LFM[$section]['selected'], $datas);
-                        if (isset($result['data']))
-                        {
-                            $data = $result['data'];
-                            $result['success'] = true;
-                            $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
-
-                        }
-                        else
-                        {
-                            $result['success'] = false;
-                        }
-
-
-                    }
-                    else
-                    {
-                        $result['success'] = true;
-                        $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $datas);
-                    }
-
+                    $result['success'] = true;
+                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $datas);
                     session()->put('LFM', $LFM);
                     return $result;
                 }
@@ -740,7 +724,7 @@ class ManagerController extends Controller
 
     public function GetSession($name)
     {
-        $LFM = session()->get('LFM');dd($LFM) ;
+        $LFM = session()->get('LFM');
         if (isset($LFM[$name]))
         {
             return $LFM[$name];
