@@ -679,3 +679,16 @@ function FindSessionSelectedId($selected,$id)
     }
 
 }
+
+function toString($input,$replace_input=false)
+{
+    if ($replace_input)
+    {
+        return ".$replace_input." ;
+    }
+    else
+    {
+        return ".$input." ;
+    }
+
+}

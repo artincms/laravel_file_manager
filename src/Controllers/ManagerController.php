@@ -20,7 +20,7 @@ class ManagerController extends Controller
 {
     public function ShowCategories($insert = false, $section = false)
     {
-        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 3, 'true_file_extension' => ['png', 'jpeg']]);
+        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 3, 'true_file_extension' => ['zip','jpg']]);
         if ($section)
         {
             $LFM = session()->get('LFM');
@@ -180,7 +180,7 @@ class ManagerController extends Controller
      */
     public function FileUpload($id, $section=false , $callback = false )
     {
-        if($section)
+        if($section and $section != 'false')
         {
             $options = $this->get_section_options($section);
             $options=$options['options'] ;
@@ -189,7 +189,7 @@ class ManagerController extends Controller
         {
             $options = false ;
         }
-        return view('laravel_file_manager::upload', compact('id', 'callback','options'));
+        return view('laravel_file_manager::upload', compact('id', 'callback','options','section'));
     }
 
     /**
@@ -346,6 +346,15 @@ class ManagerController extends Controller
 
     public function ShowListCategory(Request $request)
     {
+        if ($request->section !=null or $request->section != false)
+        {
+            $LFM = session()->get('LFM');
+            $trueMimeType = $LFM[$request->section]['options']['true_mime_type'] ;
+        }
+        else
+        {
+            $trueMimeType = false ;
+        }
         $file = [];
         $cat = [];
         if ($request->id == 0)
@@ -355,18 +364,28 @@ class ManagerController extends Controller
                 ['user_id', '=', $this->get_user_id()]
             ])->get()->toArray();
 
+            if ($trueMimeType)
+            {
+                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
+                    ['category_id', '=', '0'],
+                    ['user_id', '=', $this->get_user_id()]
+                ])->whereIn('mimeType',$trueMimeType)->get()->toArray();
+            }
+            else
+            {
+                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at','size')->where([
+                    ['category_id', '=', '0'],
+                    ['user_id', '=', $this->get_user_id()]
+                ])->get()->toArray();
+            }
 
-            $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
-                ['category_id', '=', '0'],
-                ['user_id', '=', $this->get_user_id()]
-            ])->get()->toArray();
 
         }
         else
         {
             $category = Category::with('files', 'child_categories', 'parent_category')->find($request->id);
             $categories = $category->user_child_categories->toArray();
-            $files = $category->user_files->toArray();
+            $files = $category->UserFiles($trueMimeType)->toArray();
         }
         foreach ($categories as $category)
         {
@@ -429,10 +448,14 @@ class ManagerController extends Controller
         {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'] ;
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' =>$section]);
+
         }
         else
         {
             $trueMimeType = false ;
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' =>'false']);
+
         }
 
         if ($id == 0)
@@ -444,7 +467,6 @@ class ManagerController extends Controller
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh']);
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => 'refresh']);
             $result['success'] = true;
         }
@@ -458,7 +480,6 @@ class ManagerController extends Controller
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = $category->title;
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh']);
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => 'refresh']);
             $result['success'] = true;
         }
@@ -500,7 +521,7 @@ class ManagerController extends Controller
             if (session()->has('LFM'))
             {
                 $LFM = session()->get('LFM');
-                if ($LFM[$section])
+                if (isset($LFM[$section]))
                 {
                     //check options
                     if ($LFM[$section]['options'])
@@ -514,6 +535,12 @@ class ManagerController extends Controller
                         $result['success'] = false;
                         return $result;
                     }
+                }
+                else
+                {
+                    $result['success'] = false;
+                    $result['error'] = '';
+                    return $result;
                 }
             }
             else
