@@ -42,9 +42,12 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //Session
     Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'ManagerController@GetSession']);
     Route::get('DeleteSessionInsertItem/{name}/{id}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'ManagerController@DeleteSessionInsertItem']);
+    Route::post('DeleteSelectedPostId', ['as' => 'LFM.DeleteSelectedPostId', 'uses' => 'ManagerController@DeleteSelectedPostId']);
 
     //test view
     Route::get('SmallInsertedView', ['as' => 'LFM.SmallInsertedView', 'uses' => 'ManagerController@SmallInsertedView']);
+    Route::get('ThumbInsertedView', ['as' => 'LFM.ThumbInsertedView', 'uses' => 'ManagerController@ThumbInsertedView']);
+    Route::get('LargeInsertedView', ['as' => 'LFM.LargeInsertedView', 'uses' => 'ManagerController@LargeInsertedView']);
 
 
 

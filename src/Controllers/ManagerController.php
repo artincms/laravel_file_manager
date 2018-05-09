@@ -20,7 +20,7 @@ class ManagerController extends Controller
 {
     public function ShowCategories($insert = false,$callback =false, $section = false)
     {
-        $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['png','jpeg']]);
+        //$session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['png','jpeg']]);
         if ($section)
         {
             $LFM = session()->get('LFM');
@@ -495,7 +495,11 @@ class ManagerController extends Controller
             if ($check_options['success'])
             {
                 $datas = $this->create_all_insert_data($request);
-                $view['small'] = $this->SmallInsertedView($datas);
+                $view['grid'] = $this->GridInsertedView($datas,$request->section);
+                $view['small'] = $this->SmallInsertedView($datas,$request->section);
+                $view['thumb'] = $this->MediumInsertedView($datas,$request->section);
+                $view['large'] = $this->LargeInsertedView($datas,$request->section);
+                $view['list'] = $this->ListInsertedView($datas,$request->section);
                 $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
                 $result['view'] = $view ;
             }
@@ -612,6 +616,20 @@ class ManagerController extends Controller
                     $url = str_replace('://', '', $url);
                     $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
                     $file = File::find($id);
+                    $image_type = config('laravel_file_manager.allowed_pic');
+                    if (in_array($file->mimeType,$image_type)){
+                        $icon='image' ;
+                    }
+                    else
+                    {
+                        $icon = $file->FileMimeType->icon_class ;
+                    }
+
+                    if (!$file->user)
+                        $user= 'public' ;
+                    else
+                        $user = $file->user->name ;
+
                     switch ($request->type)
                     {
                         case "orginal":
@@ -645,6 +663,11 @@ class ManagerController extends Controller
                         'height' => $item['height'],
                         'quality' => $item['quality'],
                         'title_file_disc' => $file_title_disc,
+                        'created' => $file->created_at,
+                        'updated' => $file->updated_at,
+                        'user' => $user,
+                        'icon' =>$icon ,
+                        'size' =>$file->size ,
                         'version' => $version
                     ];
                     $data['success'] = true ;
@@ -687,26 +710,37 @@ class ManagerController extends Controller
         return $result ;
     }
 
-    public function SmallInsertedView($datas)
+    public function GridInsertedView($datas,$section=false)
     {
-        //return small inserted view
-        $view = view('laravel_file_manager::small_inserted_view', compact('datas'))->render();
+        //return grid inserted view
+        $view = view('laravel_file_manager::grid_inserted_view', compact('datas','section'))->render();
         return $view ;
     }
 
-    public function create_thumb_inserted_view()
-    {
-        //return thumb inserted view
-    }
-
-    public function create_large_inserted_view()
-    {
-        //return large inserted view
-    }
-
-    public function create_grid_inserted_view()
+    public function SmallInsertedView($datas,$section=false)
     {
         //return grid inserted view
+        $view = view('laravel_file_manager::small_inserted_view', compact('datas','section'))->render();
+        return $view ;
+    }
+
+    public function MediumInsertedView($datas , $section=false)
+    {
+        $view = view('laravel_file_manager::medium_inserted_view', compact('datas','section'))->render();
+        return $view ;
+    }
+
+    public function LargeInsertedView($datas , $section=false)
+    {
+        $view =  view('laravel_file_manager::large_inserted_view', compact('datas','section'))->render();
+        return $view ;
+    }
+
+
+    public function ListInsertedView($datas , $section=false)
+    {
+        $view = view('laravel_file_manager::list_inserted_view', compact('datas','section'))->render();
+        return $view ;
     }
 
 
@@ -729,18 +763,9 @@ class ManagerController extends Controller
 
     }
 
-    public function GetSession($name)
+    public function GetSession($section)
     {
-        $LFM = session()->get('LFM');
-        if (isset($LFM[$name]))
-        {
-            return $LFM[$name];
-        }
-        else
-        {
-            return false ;
-
-        }
+       return getSection($section) ;
 
     }
 
@@ -769,6 +794,11 @@ class ManagerController extends Controller
 
 
 
+    }
+
+    public function DeleteSelectedPostId(Request $request)
+    {
+        dd($request->all()) ;
     }
 
     public function get_user_id()

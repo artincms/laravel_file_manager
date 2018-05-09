@@ -1,7 +1,7 @@
 <?php
 /* Hamahang File Manager :: HFM*/
 
-use ArtinCMS\LFM\Models\FileMimeType ;
+use ArtinCMS\LFM\Models\FileMimeType;
 
 if (!function_exists('HFM_SmartCropIMG'))
 {
@@ -27,7 +27,7 @@ if (!function_exists('HFM_save_compress_img'))
             {
                 case "png":
                     $src = imagecreatefrompng($file);
-                    $res = imagepng($src, $destination, $quality/100);
+                    $res = imagepng($src, $destination, $quality / 100);
                     break;
                 case "jpeg":
                 case "jpg":
@@ -622,92 +622,113 @@ if (!function_exists('HFM_download_from_public_storage'))
 }
 
 
-function SetSessionOption($name,$option)
+function SetSessionOption($name, $option)
 {
-    $mime=[] ;
+    $mime = [];
     foreach ($option['true_file_extension'] as $ext)
     {
-        $mime = [];
-        $MimeType = FileMimeType::where('ext','=',$ext)->first();
+        $MimeType = FileMimeType::where('ext', '=', $ext)->first();
         if ($MimeType)
         {
-            $mime[]=$MimeType->mimeType ;
+            $mime[] = $MimeType->mimeType;
         }
     }
-    $option['true_mime_type']=$mime;
-    $LFM[$name]['options']=$option;
-    $LFM[$name]['selected']=[];
-    session()->put('LFM',$LFM);
-    return  $LFM ;
+    $option['true_mime_type'] = $mime;
+    $LFM[$name]['options'] = $option;
+    $LFM[$name]['selected'] = [];
+    session()->put('LFM', $LFM);
+    return $LFM;
 }
 
-function CheckMimeType($mimetype , $items)
+function CheckMimeType($mimetype, $items)
 {
     foreach ($items as $item)
     {
-        $file = \ArtinCMS\LFM\Models\File::find($item['id']) ;
-        if (!in_array($file->mimeType,$mimetype))
+        $file = \ArtinCMS\LFM\Models\File::find($item['id']);
+        if (!in_array($file->mimeType, $mimetype))
         {
-            $result['success'] = false ;
-            $result['error'] = 'File '.$file->originalName . ' Not true mime type' ;
-            $result['item_error'] = $item ;
-            return $result ;
+            $result['success'] = false;
+            $result['error'] = 'File ' . $file->originalName . ' Not true mime type';
+            $result['item_error'] = $item;
+            return $result;
         }
         else
         {
-            $result['success'] = true ;
+            $result['success'] = true;
         }
 
     }
-    return  $result ;
+    return $result;
 }
 
-function FindSessionSelectedId($selected,$id)
+function FindSessionSelectedId($selected, $id)
 {
 
     foreach ($selected as $select)
     {
-        if($select['file']['id'] == $id)
+        if ($select['file']['id'] == $id)
         {
-            return true ;
+            return true;
 
         }
 
     }
-    return false ;
+    return false;
 
 
 }
 
-function CheckFalseString($input,$replace_input="false")
+function CheckFalseString($input, $replace_input = "false")
 {
     if ($input)
     {
-        return $input ;
+        return $input;
     }
     else
     {
-        return $replace_input ;
+        return $replace_input;
     }
 
 }
 
-function createModalFileManager($section , $options=false , $insert = false ,  $callback=false ,$modal_id = 'FileManager' ,$header = 'File manager', $button_id= 'show_modal' ,$button_content = 'insert')
+function createModalFileManager($section, $options = false, $insert = false, $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
 {
     //set session
-    $session_option = SetSessionOption($section,$options) ;
+    $session_option = SetSessionOption($section, $options);
 
     //create html content and button
-    $src = route('LFM.ShowCategories',['section' =>$section , 'insert' =>$insert,'callback' =>$callback]) ;
-    $result['content'] = view("laravel_file_manager::file_manager", compact("src","modal_id",'header','button_content'))->render();
-    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#'.$modal_id.'" id="'.$button_id.'">Manager</button>' ;
+    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => $callback]);
+    $result['content'] = view("laravel_file_manager::file_manager", compact("src", "modal_id", 'header', 'button_content', 'section'))->render();
+    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#' . $modal_id . '" id="' . $button_id . '">'.$button_content.'</button>';
     return $result;
-
 
 
 }
 
-function createModalContent($section,$modal_id,$insert)
+function getSection($section)
 {
+    $LFM = session()->get('LFM');
+    if (isset($LFM[$section]))
+    {
+        return $LFM[$section];
+    }
+    else
+    {
+        return false;
+    }
+}
 
+function getSectionFile($section)
+{
+   $sec = getSection($section) ;
+   if ($sec && isset($sec['selected']) && count($sec['selected']) >=1)
+   {
+       return $sec['selected'] ;
+   }
+}
+
+function saveSingleFile($model, $column_name, $section)
+{
+    $files = getSectionFile($section) ;
+    /*$model->$column_name =*/
 }
