@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
-    public function ShowCategories($insert = false, $section = false)
+    public function ShowCategories($insert = false,$callback =false, $section = false)
     {
         $session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['png','jpeg']]);
         if ($section)
@@ -36,7 +36,7 @@ class ManagerController extends Controller
         $category = false;
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $result['parent_category_name'] = 'media';
-        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'));
+        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','callback'));
     }
 
     public function CreateCategory($id, $callback = false)
@@ -441,7 +441,7 @@ class ManagerController extends Controller
      * @param $id
      * @return mixed
      */
-    private function show($id, $insert = false, $section = false)
+    private function show($id, $insert = false,$callback =false, $section = false)
     {
         $breadcrumbs = $this->get_breadcrumbs($id);
         if ($section)
@@ -495,7 +495,9 @@ class ManagerController extends Controller
             if ($check_options['success'])
             {
                 $datas = $this->create_all_insert_data($request);
+                $view['small'] = $this->SmallInsertedView($datas);
                 $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
+                $result['view'] = $view ;
             }
             else
             {
@@ -508,7 +510,9 @@ class ManagerController extends Controller
             $datas['success'] = false;
             $datas['error'] = $options['error'];
         }
-        return response()->json($datas);
+        $result['data'] = $datas ;
+
+        return response()->json($result);
 
 
     }
@@ -635,6 +639,7 @@ class ManagerController extends Controller
                     $data['url'] = $url;
                     $data['file'] = [
                         'id' => $file->id,
+                        'name' => $file->originalName,
                         'type' => $item['type'],
                         'width' => $item['width'],
                         'height' => $item['height'],
@@ -660,7 +665,7 @@ class ManagerController extends Controller
             if (session()->has('LFM'))
             {
                 $LFM = session()->get('LFM');
-                if ($LFM[$request->$section])
+                if (isset($LFM[$request->$section]))
                 {
                     //check options
                     $result['success'] = true;
@@ -682,9 +687,11 @@ class ManagerController extends Controller
         return $result ;
     }
 
-    private function create_small_inserted_view()
+    public function SmallInsertedView($datas)
     {
         //return small inserted view
+        $view = view('laravel_file_manager::small_inserted_view', compact('datas'))->render();
+        return $view ;
     }
 
     public function create_thumb_inserted_view()

@@ -8,7 +8,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('GridMyFiles', ['as' => 'LFM.GridMyFiles', 'uses' => 'LFMController@GridMyFiles']);
 
     //new routes by sadeghi
-    Route::get('ShowCategories/{insert?}/{Section?}', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
+    Route::get('ShowCategories/{insert?}/{callback?}/{section?}', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
     Route::get('ShowCategories/create/{category_id}/{callback?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
     Route::get('EditCategory/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@EditCategory']);
 
@@ -43,6 +43,8 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'ManagerController@GetSession']);
     Route::get('DeleteSessionInsertItem/{name}/{id}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'ManagerController@DeleteSessionInsertItem']);
 
+    //test view
+    Route::get('SmallInsertedView', ['as' => 'LFM.SmallInsertedView', 'uses' => 'ManagerController@SmallInsertedView']);
 
 
 
