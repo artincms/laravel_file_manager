@@ -18,10 +18,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
-    public function ShowCategories($insert = false,$callback =false, $section = false)
+    public function showCategories($insert = false,$callback =false, $section = false)
     {
-
-        //$session_option = SetSessionOption($section, ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['png','jpeg']]);
         if ($section)
         {
             $LFM = session()->get('LFM');
@@ -31,7 +29,6 @@ class ManagerController extends Controller
         {
             $trueMimeType = false ;
         }
-
         $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
@@ -40,7 +37,7 @@ class ManagerController extends Controller
         return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','callback'));
     }
 
-    public function CreateCategory($id, $callback = false , $section =false)
+    public function createCategory($id, $callback = false , $section =false)
     {
         $messages = [];
         $category_id = $id;
@@ -48,7 +45,7 @@ class ManagerController extends Controller
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback','section'));
     }
 
-    public function EditCategory($id)
+    public function editCategory($id)
     {
         $messages = [];
         $category = Category::find($id);
@@ -57,7 +54,7 @@ class ManagerController extends Controller
         return view('laravel_file_manager::edit_category', compact('categories', 'category', 'category_id', 'messages'));
     }
 
-    public function StoreCategory(Request $request)
+    public function storeCategory(Request $request)
     {
         if ($request->ajax())
         {
@@ -70,7 +67,7 @@ class ManagerController extends Controller
             {
                 $user_id = 0;
             }
-            DB::transaction(function () use ($request, $date, $user_id) {
+            $result = DB::transaction(function () use ($request, $date, $user_id) {
                 $cat = new Category;
                 $cat->title = $request->title;
                 $cat->user_id = $user_id;
@@ -81,7 +78,6 @@ class ManagerController extends Controller
                 //update title disc
                 $cat->title_disc = 'cid_' . $cat->id . '_uid_' . $user_id . '_' . md5($cat->name) . '_' . time();
                 $cat->save();
-
                 //make directory
                 $subcats = config('laravel_file_manager.crop_type');
                 $path = 'uploads/';
@@ -97,18 +93,18 @@ class ManagerController extends Controller
                 {
                     Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($path . '/files/' . $subcat);
                 }
+                $category_id = $request->parent_category_id;
+                $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
+                $result['success'] = true;
+                $messages[] = "Your Category is created";
+                return $result ;
 
             });
-            $category_id = $request->parent_category_id;
-            $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
-            $result['success'] = true;
-            $messages[] = "Your Category is created";
             return response()->json($result);
-
         }
     }
 
-    public function ShowCategory(Request $request)
+    public function showCategory(Request $request)
     {
         $result = $this->show($request->category_id, $request->insert, $request->section);
         return response()->json($result);
@@ -465,10 +461,10 @@ class ManagerController extends Controller
             $category = false;
             $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
             $result['message'] = '';
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' => CheckFalseString($section) , 'callback' => CheckFalseString($callback)]);
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' => LFM_CheckFalseString($section) , 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
-            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id,  'callback' => CheckFalseString($callback) ,  'section' => CheckFalseString($section)]);
+            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id,  'callback' => LFM_CheckFalseString($callback) ,  'section' => LFM_CheckFalseString($section)]);
             $result['success'] = true;
         }
         else
@@ -580,7 +576,7 @@ class ManagerController extends Controller
         }
         else
         {
-            $mimetype = CheckMimeType($options['true_mime_type'], $items);
+            $mimetype = LFM_CheckMimeType($options['true_mime_type'], $items);
             if (!$mimetype['success'])
             {
                 $result['success'] = false;
@@ -606,7 +602,7 @@ class ManagerController extends Controller
             foreach ($request->items as $item)
             {
                 $id = $item['id'];
-                $status = FindSessionSelectedId($section['selected'],$id);
+                $status = LFM_FindSessionSelectedId($section['selected'],$id);
                 if (!$status)
                 {
                     $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $item['type'], 'default_img' => '404.png'
@@ -689,7 +685,7 @@ class ManagerController extends Controller
             if (session()->has('LFM'))
             {
                 $LFM = session()->get('LFM');
-                if (isset($LFM[$request->section]))
+                if (isset($LFM[$request->$section]))
                 {
                     //check options
                     $result['success'] = true;
@@ -747,7 +743,7 @@ class ManagerController extends Controller
 
     private function merge_to_selected($selected, $data)
     {
-        $status = FindSessionSelectedId($selected, $data['file']['id']);
+        $status = LFM_FindSessionSelectedId($selected, $data['file']['id']);
         if ($status == false)
         {
             $result ['data'] = $data;
@@ -766,7 +762,7 @@ class ManagerController extends Controller
 
     public function GetSession($section)
     {
-       return getSection($section) ;
+       return LFM_GetSection($section) ;
 
     }
 

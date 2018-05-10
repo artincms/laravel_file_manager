@@ -1,10 +1,10 @@
 <?php
-/* Hamahang File Manager :: HFM*/
+/* Hamahang File Manager :: LFM*/
 
 use ArtinCMS\LFM\Models\FileMimeType;
 use ArtinCMS\LFM\Traits\lfmFillable ;
 use ArtinCMS\LFM\Models\File;
-function SetSessionOption($name, $option)
+function LFM_SetSessionOption($name, $option)
 {
     $mime = [];
     foreach ($option['true_file_extension'] as $ext)
@@ -22,7 +22,7 @@ function SetSessionOption($name, $option)
     return $LFM;
 }
 
-function CheckMimeType($mimetype, $items)
+function LFM_CheckMimeType($mimetype, $items)
 {
     foreach ($items as $item)
     {
@@ -43,24 +43,19 @@ function CheckMimeType($mimetype, $items)
     return $result;
 }
 
-function FindSessionSelectedId($selected, $id)
+function LFM_FindSessionSelectedId($selected, $id)
 {
-
     foreach ($selected as $select)
     {
         if ($select['file']['id'] == $id)
         {
             return true;
-
         }
-
     }
     return false;
-
-
 }
 
-function CheckFalseString($input, $replace_input = "false")
+function LFM_CheckFalseString($input, $replace_input = "false")
 {
     if ($input)
     {
@@ -70,12 +65,11 @@ function CheckFalseString($input, $replace_input = "false")
     {
         return $replace_input;
     }
-
 }
 
-function createModalFileManager($section, $options = false, $insert = false, $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
+function LFM_CreateModalFileManager($section, $options = false, $insert = false, $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
 {
-    $session_option = SetSessionOption($section, $options);
+    $session_option = LFM_SetSessionOption($section, $options);
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => $callback]);
     $result['content'] = view("laravel_file_manager::file_manager", compact("src", "modal_id", 'header', 'button_content', 'section','callback'))->render();
@@ -83,7 +77,7 @@ function createModalFileManager($section, $options = false, $insert = false, $ca
     return $result;
 }
 
-function getSection($section)
+function LFM_GetSection($section)
 {
     $LFM = session()->get('LFM');
     if (isset($LFM[$section]))
@@ -96,9 +90,9 @@ function getSection($section)
     }
 }
 
-function getSectionFile($section)
+function LFM_GetSectionFile($section)
 {
-    $sec = getSection($section);
+    $sec = LFM_GetSection($section);
     if ($sec && isset($sec['selected']) && count($sec['selected']) >= 1)
     {
         return $sec['selected'];
@@ -109,9 +103,9 @@ function getSectionFile($section)
     }
 }
 
-function saveSingleFile($obj_model, $column_name, $section)
+function LFM_SaveSingleFile($obj_model, $column_name, $section)
 {
-    $files = getSectionFile($section);
+    $files = LFM_GetSectionFile($section);
     if ($files)
     {
         if (isset($files[0]) && isset($files[0]['id']))
@@ -130,13 +124,13 @@ function saveSingleFile($obj_model, $column_name, $section)
     }
 }
 
-function saveMultiFile($obj_model, $section, $type =null, $relation_name = 'files', $attach_type = 'attach')
+function LFM_SaveMultiFile($obj_model, $section, $type =null, $relation_name = 'files', $attach_type = 'attach')
 {
     if ($attach_type != 'attach')
     {
         $attach_type = 'sync' ;
     }
-    $files = getSectionFile($section);
+    $files = LFM_GetSectionFile($section);
     if ($files)
     {
         $arr_ids = [];
@@ -148,7 +142,7 @@ function saveMultiFile($obj_model, $section, $type =null, $relation_name = 'file
             }
         }
         $res = $obj_model->$relation_name()->$attach_type($arr_ids) ;
-        destroySection($section) ;
+        LFM_DestroySection($section) ;
         return $res ;
     }
     else
@@ -157,7 +151,7 @@ function saveMultiFile($obj_model, $section, $type =null, $relation_name = 'file
     }
 }
 
-function destroySection($section)
+function LFM_DestroySection($section)
 {
     if (session()->has('LFM'))
     {
