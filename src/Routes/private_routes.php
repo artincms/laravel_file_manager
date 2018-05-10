@@ -9,7 +9,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //new routes by sadeghi
     Route::get('ShowCategories/{insert?}/{callback?}/{section?}', ['as' => 'LFM.ShowCategories', 'uses' => 'ManagerController@ShowCategories']);
-    Route::get('ShowCategories/create/{category_id}/{callback?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
+    Route::get('ShowCategories/create/{category_id}/{callback?}/{section?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@CreateCategory']);
     Route::get('EditCategory/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@EditCategory']);
 
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@StoreCategory']);
@@ -17,7 +17,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@Trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@BulkDelete']);
     //file uploades
-    Route::get('FileUpload/{category_id}/{section?}/{callback?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
+    Route::get('FileUpload/{category_id}/{callback?}/{section?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@FileUpload']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'ManagerController@StoreUploads']);
 
     //edti photot
