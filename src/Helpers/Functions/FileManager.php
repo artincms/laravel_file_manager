@@ -1,15 +1,12 @@
 <?php
 /* Hamahang File Manager :: LFM*/
 
-use ArtinCMS\LFM\Models\FileMimeType;
-use ArtinCMS\LFM\Traits\lfmFillable ;
-use ArtinCMS\LFM\Models\File;
 function LFM_SetSessionOption($name, $option)
 {
     $mime = [];
     foreach ($option['true_file_extension'] as $ext)
     {
-        $MimeType = FileMimeType::where('ext', '=', $ext)->first();
+        $MimeType = ArtinCMS\LFM\Models\FileMimeType::where('ext', '=', $ext)->first();
         if ($MimeType)
         {
             $mime[] = $MimeType->mimeType;
@@ -22,6 +19,14 @@ function LFM_SetSessionOption($name, $option)
     return $LFM;
 }
 
+function LFM_Sanitize($string, $force_lowercase = true, $anal = false)
+{
+    $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;", "â€”", "â€“", ",", "<", ".", ">", "/", "?");
+    $clean = trim(str_replace($strip, "", strip_tags($string)));
+    $clean = preg_replace('/\s+/', "-", $clean);
+    $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean;
+    return ($force_lowercase) ? (function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean) : $clean;
+}
 function LFM_CheckMimeType($mimetype, $items)
 {
     foreach ($items as $item)

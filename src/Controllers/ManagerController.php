@@ -108,10 +108,9 @@ class ManagerController extends Controller
     {
         $result = $this->show($request->category_id, $request->insert, $request->section);
         return response()->json($result);
-
     }
 
-    public function Trash(Request $request)
+    public function trash(Request $request)
     {
         if ($request->type == "file")
         {
@@ -122,7 +121,6 @@ class ManagerController extends Controller
         {
             $this->delete($request->id);
         }
-
         $result = $this->show($request->parent_id, $request->insert, $request->section);
         return response()->json($result);
 
@@ -138,7 +136,6 @@ class ManagerController extends Controller
             {
                 $file->delete();
             }
-
         }
         if ($category->child_categories != null)
         {
@@ -152,9 +149,8 @@ class ManagerController extends Controller
 
     }
 
-    public function BulkDelete(Request $request)
+    public function bulkDelete(Request $request)
     {
-
         foreach ($request["items"] as $item)
         {
             if ($item['type'] == "file")
@@ -175,7 +171,7 @@ class ManagerController extends Controller
      * id is category id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function FileUpload($id , $callback = false , $section=false )
+    public function fileUpload($id , $callback = false , $section=false )
     {
         if($section and $section != 'false')
         {
@@ -189,14 +185,14 @@ class ManagerController extends Controller
         return view('laravel_file_manager::upload', compact('id', 'callback','options','section'));
     }
 
+
     /**
      * should send category_id and token
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function StoreUploads(Request $request)
+    public function storeUploads(Request $request)
     {
-
         if ($request->file)
         {
             $CategoryID = $request->category_id;
@@ -209,13 +205,12 @@ class ManagerController extends Controller
                 $size = $file->getSize();
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
-                    /*DB::transaction(function () use($file,$CategoryID,$FileMimeType,$originalName,$size){*/
-                    $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
-                    $message['success'] = true;
-                    $message['result'] = $res;
-                    /*});*/
-                    $message['success'] = true;
-
+                    $message = DB::transaction(function () use($file,$CategoryID,$FileMimeType,$originalName,$size){
+                        $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
+                        $message['success'] = true;
+                        $message['result'] = $res;
+                        return $message ;
+                    });
                 }
                 else
                 {
@@ -227,7 +222,7 @@ class ManagerController extends Controller
 
     }
 
-    public function StoreCropedImage(Request $request)
+    public function storeCropedImage(Request $request)
     {
 
         $data = str_replace('data:image/png;base64,', '', $request->crope_image);
@@ -246,38 +241,35 @@ class ManagerController extends Controller
         return response()->json($message);
     }
 
-    public function EditPicture($file_id)
+    public function editPicture($file_id)
     {
         $file = File::find($file_id);
         return view('laravel_file_manager::edit_picture', compact('file'));
     }
 
-    public function Download($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
+    public function download($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
     {
         if ($id == -1)
         {
-            return Media::download_by_id(-1, 'orginal', $default_img);//"Not Valid Request";
+            return Media::downloadById(-1, 'orginal', $default_img);//"Not Valid Request";
         }
-
-//        $id = deCode($id);
         switch ($type)
         {
             case "ID":
-                return Media::download_by_id($id, $size_type, $default_img, false, $quality, $width, $height);
+                return Media::downloadById($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "Name":
                 return Media::download_by_name($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "flag":
-                return Media::download_from_public_storage($id, 'flags');
+                return Media::downloadFromPublicStorage($id, 'flags');
                 break;
             default:
-                return Media::download_by_id(-1, $default_img);//"Not Valid Request";
+                return Media::downloadById(-1, $default_img);
         }
-
     }
 
-    public function SearchMedia(Request $request)
+    public function searchMedia(Request $request)
     {
         $file = [];
         $cat = [];
@@ -330,7 +322,7 @@ class ManagerController extends Controller
     /**
      * @return string
      */
-    public function get_current_date()
+    public function getCurrentData()
     {
         $mytime = Carbon::now();
         return $mytime->toDateString();
@@ -341,7 +333,7 @@ class ManagerController extends Controller
         return view('laravel_file_manager::content_list');
     }
 
-    public function ShowListCategory(Request $request)
+    public function showListCategory(Request $request)
     {
         if ($request->section !=null && $request->section != false && $request->section != 'false')
         {
@@ -403,10 +395,7 @@ class ManagerController extends Controller
             $f['type'] = 'file';
             $file[] = $f;
         }
-
-        //dd(array_merge($file, $cat);
         return datatables()->of(array_merge($cat, $file))->toJson();
-
     }
 
     /**

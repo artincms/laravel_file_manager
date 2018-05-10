@@ -52,8 +52,8 @@ class Media
             $Path .= $parent->title_disc;
         }
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
-        $OriginalFileName = HFM_Sanitize($originalNameWithoutExt);
-        $extension = HFM_Sanitize($extension);
+        $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
+        $extension = LFM_Sanitize($extension);
 
         //save data to database
         $FileSave = new File;
@@ -79,7 +79,7 @@ class Media
         //check file is picture
         if (in_array($mimeType, config('laravel_file_manager.allowed_pic')))
         {
-            $crop_database_name = self::resize_image_upload($file, $FileSave,$FullPath ,$filename);
+            $crop_database_name = self::resizeImageUpload($file, $FileSave,$FullPath ,$filename);
             $is_picture = true;
             $FileSave->file_md5 = $crop_database_name['md5'];
             $FileSave->filename = $crop_database_name['orginal'];
@@ -101,7 +101,7 @@ class Media
         return $result;
     }
 
-    public static function resize_image_upload($file, $FileSave,$FullPath,$orginal_name,$quality=90)
+    public static function resizeImageUpload($file, $FileSave,$FullPath,$orginal_name,$quality=90)
     {
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
         $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('') ;
@@ -168,7 +168,7 @@ class Media
 
     }
 
-    public static function download_by_id($file_id,  $size_type = 'orginal',$not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+    public static function downloadById($file_id,  $size_type = 'orginal',$not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $file = File::find($file_id);
         $not_found_img_path = storage_path() . '/app/System/' . $not_found_img;
@@ -246,11 +246,11 @@ class Media
         {
             $id = -1;
         }
-        $download = self::download_by_id($id, $not_found_img, $size_type, $inline_content, $quality, $width, $height);
+        $download = self::downloadById($id, $not_found_img, $size_type, $inline_content, $quality, $width, $height);
         return $download;
     }
 
-    public static function download_from_public_storage($file_name, $path = "", $file_EXT = 'png', $headers = ["Content-Type: image/png"])
+    public static function downloadFromPublicStorage($file_name, $path = "", $file_EXT = 'png', $headers = ["Content-Type: image/png"])
     {
         if (\Storage::disk('public')->has($path . '/' . $file_name . '.' . $file_EXT))
         {

@@ -130,7 +130,7 @@ class LFMC
         return $result;
     }
 
-    public static function download_by_id($file_id, $not_found_img = '404.png', $inline_content = false, $quality = 10, $width = false, $height = False)
+    public static function downloadById($file_id, $not_found_img = '404.png', $inline_content = false, $quality = 10, $width = false, $height = False)
     {
         $file = File::find($file_id);
         $not_found_img_path = storage_path() . '/app/FileManager/System/' . $not_found_img;
