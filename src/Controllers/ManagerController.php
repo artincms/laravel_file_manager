@@ -18,31 +18,31 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
-    public function showCategories($insert = false,$callback =false, $section = false)
+    public function showCategories($insert = false, $callback = false, $section = false)
     {
         if ($section)
         {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$section]['options']['true_mime_type'] ;
+            $trueMimeType = $LFM[$section]['options']['true_mime_type'];
         }
         else
         {
-            $trueMimeType = false ;
+            $trueMimeType = false;
         }
         $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $result['parent_category_name'] = 'media';
-        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','callback'));
+        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback'));
     }
 
-    public function createCategory($id, $callback = false , $section =false)
+    public function createCategory($id, $callback = false, $section = false)
     {
         $messages = [];
         $category_id = $id;
         $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
-        return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback','section'));
+        return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
     public function editCategory($id)
@@ -97,7 +97,7 @@ class ManagerController extends Controller
                 $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
                 $result['success'] = true;
                 $messages[] = "Your Category is created";
-                return $result ;
+                return $result;
 
             });
             return response()->json($result);
@@ -171,18 +171,18 @@ class ManagerController extends Controller
      * id is category id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function fileUpload($id , $callback = false , $section=false )
+    public function fileUpload($category_id = 0, $callback = false, $section = false)
     {
-        if($section and $section != 'false')
+        if ($section and $section != 'false')
         {
             $options = $this->get_section_options($section);
-            $options=$options['options'] ;
+            $options = $options['options'];
         }
         else
         {
-            $options = false ;
+            $options = false;
         }
-        return view('laravel_file_manager::upload', compact('id', 'callback','options','section'));
+        return view('laravel_file_manager::upload', compact('category_id', 'callback', 'options', 'section'));
     }
 
 
@@ -205,11 +205,11 @@ class ManagerController extends Controller
                 $size = $file->getSize();
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
-                    $message = DB::transaction(function () use($file,$CategoryID,$FileMimeType,$originalName,$size){
+                    $message = DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
                         $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
                         $message['success'] = true;
                         $message['result'] = $res;
-                        return $message ;
+                        return $message;
                     });
                 }
                 else
@@ -335,14 +335,14 @@ class ManagerController extends Controller
 
     public function showListCategory(Request $request)
     {
-        if ($request->section !=null && $request->section != false && $request->section != 'false')
+        if ($request->section != null && $request->section != false && $request->section != 'false')
         {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$request->section]['options']['true_mime_type'] ;
+            $trueMimeType = $LFM[$request->section]['options']['true_mime_type'];
         }
         else
         {
-            $trueMimeType = false ;
+            $trueMimeType = false;
         }
         $file = [];
         $cat = [];
@@ -358,11 +358,11 @@ class ManagerController extends Controller
                 $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->get_user_id()]
-                ])->whereIn('mimeType',$trueMimeType)->get()->toArray();
+                ])->whereIn('mimeType', $trueMimeType)->get()->toArray();
             }
             else
             {
-                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at','size')->where([
+                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at', 'size')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->get_user_id()]
                 ])->get()->toArray();
@@ -427,19 +427,19 @@ class ManagerController extends Controller
      * @param $id
      * @return mixed
      */
-    private function show($id, $insert = false,$callback =false, $section = false)
+    private function show($id, $insert = false, $callback = false, $section = false)
     {
         $breadcrumbs = $this->get_breadcrumbs($id);
         if ($section)
         {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$section]['options']['true_mime_type'] ;
+            $trueMimeType = $LFM[$section]['options']['true_mime_type'];
 
         }
         else
         {
-            $trueMimeType = false ;
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' =>'false']);
+            $trueMimeType = false;
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
 
         }
 
@@ -450,10 +450,10 @@ class ManagerController extends Controller
             $category = false;
             $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
             $result['message'] = '';
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh' , 'section' => LFM_CheckFalseString($section) , 'callback' => LFM_CheckFalseString($callback)]);
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
-            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id,  'callback' => LFM_CheckFalseString($callback) ,  'section' => LFM_CheckFalseString($section)]);
+            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
             $result['success'] = true;
         }
         else
@@ -477,17 +477,18 @@ class ManagerController extends Controller
     {
         $options = $this->get_section_options($request->section);
         if ($options['success'])
-        {$check_options = $this->check_section_options($request->section, $options['options'], $request->items);
+        {
+            $check_options = $this->check_section_options($request->section, $options['options'], $request->items);
             if ($check_options['success'])
             {
                 $datas = $this->create_all_insert_data($request);
-                $view['grid'] = $this->GridInsertedView($datas,$request->section);
-                $view['small'] = $this->SmallInsertedView($datas,$request->section);
-                $view['thumb'] = $this->MediumInsertedView($datas,$request->section);
-                $view['large'] = $this->LargeInsertedView($datas,$request->section);
-                $view['list'] = $this->ListInsertedView($datas,$request->section);
+                $view['grid'] = $this->GridInsertedView($datas, $request->section);
+                $view['small'] = $this->SmallInsertedView($datas, $request->section);
+                $view['thumb'] = $this->MediumInsertedView($datas, $request->section);
+                $view['large'] = $this->LargeInsertedView($datas, $request->section);
+                $view['list'] = $this->ListInsertedView($datas, $request->section);
                 $result_session = $this->set_selected_file_to_session($request, $request->section, $datas);
-                $result['view'] = $view ;
+                $result['view'] = $view;
             }
             else
             {
@@ -500,7 +501,7 @@ class ManagerController extends Controller
             $datas['success'] = false;
             $datas['error'] = $options['error'];
         }
-        $result['data'] = $datas ;
+        $result['data'] = $datas;
 
         return response()->json($result);
 
@@ -510,28 +511,21 @@ class ManagerController extends Controller
     private function get_section_options($section)
     {
 
-            if (session()->has('LFM'))
+        if (session()->has('LFM'))
+        {
+            $LFM = session()->get('LFM');
+            if (isset($LFM[$section]))
             {
-                $LFM = session()->get('LFM');
-                if (isset($LFM[$section]))
+                //check options
+                if ($LFM[$section]['options'])
                 {
-                    //check options
-                    if ($LFM[$section]['options'])
-                    {
-                        $result['options'] = $LFM[$section]['options'];
-                        $result['success'] = true;
-                        return $result;
-                    }
-                    else
-                    {
-                        $result['success'] = false;
-                        return $result;
-                    }
+                    $result['options'] = $LFM[$section]['options'];
+                    $result['success'] = true;
+                    return $result;
                 }
                 else
                 {
                     $result['success'] = false;
-                    $result['error'] = '';
                     return $result;
                 }
             }
@@ -541,6 +535,13 @@ class ManagerController extends Controller
                 $result['error'] = '';
                 return $result;
             }
+        }
+        else
+        {
+            $result['success'] = false;
+            $result['error'] = '';
+            return $result;
+        }
 
 
     }
@@ -585,17 +586,17 @@ class ManagerController extends Controller
     private function create_all_insert_data($request)
     {
         $datas = [];
-        $section= $this->GetSession($request->section) ;
+        $section = $this->GetSession($request->section);
         if (isset($section['selected']))
         {
             foreach ($request->items as $item)
             {
                 $id = $item['id'];
-                $status = LFM_FindSessionSelectedId($section['selected'],$id);
+                $status = LFM_FindSessionSelectedId($section['selected'], $id);
                 if (!$status)
                 {
                     $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $item['type'], 'default_img' => '404.png'
-                        , 'quality' => $item['quality'], 'width' => $item['width'], 'height' =>$item['height']
+                        , 'quality' => $item['quality'], 'width' => $item['width'], 'height' => $item['height']
                     ]);
                     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
                     $url = str_replace($protocol, '', $full_url);
@@ -603,18 +604,23 @@ class ManagerController extends Controller
                     $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
                     $file = File::find($id);
                     $image_type = config('laravel_file_manager.allowed_pic');
-                    if (in_array($file->mimeType,$image_type)){
-                        $icon='image' ;
+                    if (in_array($file->mimeType, $image_type))
+                    {
+                        $icon = 'image';
                     }
                     else
                     {
-                        $icon = $file->FileMimeType->icon_class ;
+                        $icon = $file->FileMimeType->icon_class;
                     }
 
                     if (!$file->user)
-                        $user= 'public' ;
+                    {
+                        $user = 'public';
+                    }
                     else
-                        $user = $file->user->name ;
+                    {
+                        $user = $file->user->name;
+                    }
 
                     switch ($request->type)
                     {
@@ -652,12 +658,12 @@ class ManagerController extends Controller
                         'created' => $file->created_at,
                         'updated' => $file->updated_at,
                         'user' => $user,
-                        'icon' =>$icon ,
-                        'size' =>$file->size ,
+                        'icon' => $icon,
+                        'size' => $file->size,
                         'version' => $version
                     ];
-                    $data['success'] = true ;
-                    $data['message'] = "File with ID :".$id.' Inserted' ;
+                    $data['success'] = true;
+                    $data['message'] = "File with ID :" . $id . ' Inserted';
                     $datas[] = $data;
                 }
 
@@ -693,40 +699,40 @@ class ManagerController extends Controller
             }
 
         }
-        return $result ;
+        return $result;
     }
 
-    public function GridInsertedView($datas,$section=false)
+    public function GridInsertedView($datas, $section = false)
     {
         //return grid inserted view
-        $view = view('laravel_file_manager::grid_inserted_view', compact('datas','section'))->render();
-        return $view ;
+        $view = view('laravel_file_manager::grid_inserted_view', compact('datas', 'section'))->render();
+        return $view;
     }
 
-    public function SmallInsertedView($datas,$section=false)
+    public function SmallInsertedView($datas, $section = false)
     {
         //return grid inserted view
-        $view = view('laravel_file_manager::small_inserted_view', compact('datas','section'))->render();
-        return $view ;
+        $view = view('laravel_file_manager::small_inserted_view', compact('datas', 'section'))->render();
+        return $view;
     }
 
-    public function MediumInsertedView($datas , $section=false)
+    public function MediumInsertedView($datas, $section = false)
     {
-        $view = view('laravel_file_manager::medium_inserted_view', compact('datas','section'))->render();
-        return $view ;
+        $view = view('laravel_file_manager::medium_inserted_view', compact('datas', 'section'))->render();
+        return $view;
     }
 
-    public function LargeInsertedView($datas , $section=false)
+    public function LargeInsertedView($datas, $section = false)
     {
-        $view =  view('laravel_file_manager::large_inserted_view', compact('datas','section'))->render();
-        return $view ;
+        $view = view('laravel_file_manager::large_inserted_view', compact('datas', 'section'))->render();
+        return $view;
     }
 
 
-    public function ListInsertedView($datas , $section=false)
+    public function ListInsertedView($datas, $section = false)
     {
-        $view = view('laravel_file_manager::list_inserted_view', compact('datas','section'))->render();
-        return $view ;
+        $view = view('laravel_file_manager::list_inserted_view', compact('datas', 'section'))->render();
+        return $view;
     }
 
 
@@ -744,14 +750,13 @@ class ManagerController extends Controller
         }
 
 
-
         return $result;
 
     }
 
     public function GetSession($section)
     {
-       return LFM_GetSection($section) ;
+        return LFM_GetSection($section);
 
     }
 
@@ -761,30 +766,29 @@ class ManagerController extends Controller
         if ($LFM[$name])
         {
             $selected = $LFM[$name]['selected'];
-            foreach ($selected as $key=>$value)
+            foreach ($selected as $key => $value)
             {
-                if ($id == $value['file']['id'] )
+                if ($id == $value['file']['id'])
                 {
-                    unset($selected[$key]) ;
+                    unset($selected[$key]);
                 }
             }
-            $LFM[$name]['selected'] =$selected ;
-            session()->put('LFM',$LFM);
-            return $LFM ;
+            $LFM[$name]['selected'] = $selected;
+            session()->put('LFM', $LFM);
+            return $LFM;
 
         }
         else
         {
-            return false ;
+            return false;
         }
-
 
 
     }
 
     public function DeleteSelectedPostId(Request $request)
     {
-        dd($request->all()) ;
+        dd($request->all());
     }
 
     public function get_user_id()

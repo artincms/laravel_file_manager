@@ -10,7 +10,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@bulkDelete']);
     //file uploades
-    Route::get('FileUpload/{category_id}/{callback?}/{section?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@fileUpload']);
+    Route::get('FileUpload/{category_id?}/{callback?}/{section?}', ['as' => 'LFM.FileUpload', 'uses' => 'ManagerController@fileUpload']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'ManagerController@storeUploads']);
 
     //edti photot

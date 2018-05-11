@@ -30,15 +30,11 @@
         uploadUrl: "{{route('LFM.StoreUploads')}}",
         uploadAsync: false,
         uploadExtraData: {
-            category_id:1 ,
+            category_id:'{{$category_id}}' ,
             user_id : 1,
             _token: $('#token').val()
         } ,
         maxFileCount: 5
-    }).on('filebatchpreupload', function(event, data) {
-
-    });
-
-
+    }).on('filebatchpreupload', function(event, data) {});
 </script>
 </html>
