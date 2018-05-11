@@ -26,9 +26,9 @@
                         <input type="checkbox" class="grid-row-checkbox" data-id=""/>
                     </a>
                     <div class="clearfix center" data-object="">
-                        <a title="{{$category['title']}}" href="" data-id="{{$category['id']}}" class="link_to_category"
-                           data-description="{{$category['description']}}"
-                        ><i class="fa fa-folder img img-category-thumbnail"></i></a>
+                        <a title="{{$category['title']}}" href="" data-id="{{$category['id']}}" class="link_to_category" data-description="{{$category['description']}}">
+                            <i class="fa fa-folder img img-category-thumbnail"></i>
+                        </a>
                     </div>
                     <div class="text-center">
                         <a class="meida-name" href="" title="">{{$category['title']}}</a>
@@ -56,8 +56,7 @@
         @endforeach
     </ul>
 </div>
-<div class="panel_info">
-</div>
+<div class="panel_info"></div>
 
 <script type="text/javascript">
     $(document).off("click", '.link_to_category');
