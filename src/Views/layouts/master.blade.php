@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <title>@yield('page_title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">

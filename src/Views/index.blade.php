@@ -28,18 +28,12 @@
                         <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
                     </a>
                 </div>
-
                 <a class="btn btn-sm btn-success" title="create new category" href="{{route('LFM.ShowCategories.Create',['category_id'=>0])}}">
                     <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
                 </a>
-
-
                 <a class="btn btn-sm btn-primary grid-trash-o"><i class="fa fa-trash-o"></i></a>
                 <a class="btn btn-sm btn-primary grid-refresh"><i class="fa fa-refresh"></i></a>
-
-
             </div>
-
         </div>
         <div class="panel-body">
             @include('laravel_file_manager::content')
