@@ -49,12 +49,8 @@
                         $('#message').html('<div class="alert alert-success"><strong>Success!</strong>Your Category Add Successfully</div>') ;
                     }
                 },
-                error: function (e) {
-
-                }
+                error: function (e) {}
             });
         }
-
     </script>
-
 @endsection
