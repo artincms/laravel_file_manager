@@ -37,19 +37,17 @@ class ManagerController extends Controller
         return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback'));
     }
 
-    public function createCategory($id, $callback = false, $section = false)
+    public function createCategory($category_id = 0, $callback = false, $section = false)
     {
         $messages = [];
-        $category_id = $id;
         $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
-    public function editCategory($id)
+    public function editCategory($category_id)
     {
         $messages = [];
-        $category = Category::find($id);
-        $category_id = $id;
+        $category = Category::find($category_id);
         $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
         return view('laravel_file_manager::edit_category', compact('categories', 'category', 'category_id', 'messages'));
     }
