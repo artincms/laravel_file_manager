@@ -29,7 +29,7 @@
                     </a>
                 </div>
 
-                <a class="btn btn-sm btn-success" title="create new category" href="{{route('LFM.ShowCategories.Create')}}">
+                <a class="btn btn-sm btn-success" title="create new category" href="{{route('LFM.ShowCategories.Create',['category_id'=>0])}}">
                     <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
                 </a>
 
