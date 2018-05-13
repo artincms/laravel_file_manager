@@ -13,10 +13,8 @@ use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\FileMimeType;
 use Intervention\Image\Facades\Image;
 
-
 class Media
 {
-
     public static function upload($file, $CustomPath = false, $CustomUID = False, $CategoryID, $FileMimeType, $originalName = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         $time = time();
@@ -31,11 +29,8 @@ class Media
                 $CustomUID = 0;
             }
         }
-
-
         $extension = $FileMimeType->ext;
         $mimeType = $FileMimeType->mimeType;
-
         $Path = 'uploads/';
         $parents = Category::all_parents($CategoryID);
         $is_picture = false;
@@ -54,7 +49,6 @@ class Media
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
         $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
         $extension = LFM_Sanitize($extension);
-
         //save data to database
         $FileSave = new File;
         $FileSave->originalName = $OriginalFileName;
@@ -71,15 +65,13 @@ class Media
         $FileSave->save();
         $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $CustomUID . '_' . md5_file($file) . "_" . $time . '_' . $extension;
         $FullPath = $Path . '/files/orginal/' . $filename;
-
         //upload every files in orginal folder
         $file_content = \File::get($file);
         \Storage::disk(config('laravel_file_manager.driver_disk'))->put($FullPath, $file_content);
-
         //check file is picture
         if (in_array($mimeType, config('laravel_file_manager.allowed_pic')))
         {
-            $crop_database_name = self::resizeImageUpload($file, $FileSave,$FullPath ,$filename);
+            $crop_database_name = self::resizeImageUpload($file, $FileSave, $FullPath, $filename);
             $is_picture = true;
             $FileSave->file_md5 = $crop_database_name['md5'];
             $FileSave->filename = $crop_database_name['orginal'];
@@ -96,22 +88,20 @@ class Media
         {
             $is_picture = false;
         }
-
         $result = array('ID' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename, 'OrginalFileName' => $OriginalFileName, 'is_picture' => $is_picture);
         return $result;
     }
 
-    public static function resizeImageUpload($file, $FileSave,$FullPath,$orginal_name,$quality=90)
+    public static function resizeImageUpload($file, $FileSave, $FullPath, $orginal_name, $quality = 90)
     {
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
-        $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('') ;
+        $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $tmp_path = $upload_path . 'tmp/';
         foreach (config('laravel_file_manager.crop_type') as $crop_type)
         {
             $target_path = $FileSave->path . '/files/' . $crop_type;
             if ($crop_type != 'orginal')
             {
-
                 $OptionIMG = config('laravel_file_manager.size_' . $crop_type);
                 $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($file) . "_" . time() . '_' . $FileSave->extension;
                 $crop = config('laravel_file_manager.crop_chose');
@@ -125,7 +115,7 @@ class Media
                 {
                     case "smart":
                         $file_cropped = HFM_SmartCropIMG($file, $OptionIMG);
-                        HFM_Save_Compress_IMG(false, $file_cropped->oImg, $tmp_path . '/' . $filename , $FileSave->extension, $quality);
+                        HFM_Save_Compress_IMG(false, $file_cropped->oImg, $tmp_path . '/' . $filename, $FileSave->extension, $quality);
                         break;
                     case "fit":
                         $res = Image::make($file)->fit($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);
@@ -149,30 +139,26 @@ class Media
             else
             {
                 /*  $optimizerChain->optimize($FullImagePath);*/
-                $name['md5']=md5_file($orginal_file.$FullPath) ;
-                $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id  . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
+                $name['md5'] = md5_file($orginal_file . $FullPath);
+                $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
                 if ($name['md5'] != $FileSave->file_md5)
                 {
-                    $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath,$FileSave->path . '/files/' . $crop_type . '/' . $name['orginal'] );
+                    $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['orginal']);
 
                 }
                 else
                 {
-                    $name['orginal'] = $orginal_name ;
+                    $name['orginal'] = $orginal_name;
                 }
             }
         }
-
         return $name;
-
-
     }
 
-    public static function downloadById($file_id,  $size_type = 'orginal',$not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+    public static function downloadById($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $file = File::find($file_id);
         $not_found_img_path = storage_path() . '/app/System/' . $not_found_img;
-
         //check database for check file exist
         if ($file)
         {
@@ -263,15 +249,9 @@ class Media
         }
     }
 
-    /**
-     * @param $data is base64image
-     * @param $file is orginal file
-     * @return array
-     */
     public static function save_croped_image_base64($data, $FileSave, $crop_type)
     {
         $time = time();
-
         switch ($crop_type)
         {
             case "orginal":
@@ -280,7 +260,7 @@ class Media
                 $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/orginal/' . $filename, base64_decode($data));
                 $FileSave->filename = $filename;
-                $FileSave->file_md5 = md5(base64_decode($data)) ;
+                $FileSave->file_md5 = md5(base64_decode($data));
                 break;
             case "large":
                 $FileSave->large_version++;
@@ -290,18 +270,17 @@ class Media
                 break;
             case "medium":
                 $FileSave->medium_version++;
-                $medium_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->medium_version . '_uid_' . $FileSave->user_id . '_medium_' .md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
+                $medium_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->medium_version . '_uid_' . $FileSave->user_id . '_medium_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/medium/' . $medium_filename, base64_decode($data));
                 $FileSave->medium_filename = $medium_filename;
                 break;
             case "small" :
                 $FileSave->small_version++;
-                $small_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->small_version . '_uid_' . $FileSave->user_id . '_small_' .md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
+                $small_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->small_version . '_uid_' . $FileSave->user_id . '_small_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
                 \File::put(storage_path() . '/app/' . $FileSave->path . '/files/small/' . $small_filename, base64_decode($data));
                 $FileSave->small_filename = $small_filename;
                 break;
         }
-
         $FileSave->save();
         $result = array('ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'OrginalFileName' => $FileSave->OriginalFileName);
         return $result;

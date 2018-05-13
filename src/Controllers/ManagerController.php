@@ -6,7 +6,6 @@ use ArtinCMS\LFM\Helpers\Classes\Media;
 use ArtinCMS\LFM\Models\Category;
 use Carbon\Carbon;
 use Validator;
-use ArtinCMS\LFM\LFMC;
 use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\FileMimeType;
 use App\Http\Controllers\Controller;
@@ -18,6 +17,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
+<<<<<<< HEAD
+    //categories
+=======
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function showCategories($insert = false, $callback = false, $section = false)
     {
         if ($section)
@@ -44,6 +47,53 @@ class ManagerController extends Controller
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
+<<<<<<< HEAD
+    public function searchMedia(Request $request)
+    {
+        $file = [];
+        $cat = [];
+        $categories = Category::with('user')->select('id', 'title as name', 'user_id', 'parent_category_id', 'description', 'created_at', 'updated_at')
+            ->where([
+                ['user_id', '=', $this->getUserId()],
+                ['title', 'like', '%' . $request->search . '%']
+            ])->get()->toArray();
+        $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id', 'category_id', 'extension', 'mimeType', 'path', 'created_at', 'updated_at')
+            ->where([
+                ['user_id', '=', $this->getUserId()],
+                ['originalName', 'like', '%' . $request->search . '%']
+            ])->get()->toArray();
+
+        foreach ($files as $f)
+        {
+            if ($f['file_mime_type']['icon_class'])
+            {
+                $f['icon'] = $f['file_mime_type']['icon_class'];
+            }
+            else
+            {
+                $f['icon'] = 'fa-file-o';
+            }
+            $f['type'] = 'file';
+            $f['Path'] = $this->getBreadcrumbs($f['category_id']);
+            if ($f['category_id'] != 0)
+            {
+                $file_cat = Category::find($f['category_id']);
+                $f['Path'][] = ['id' => $file_cat->id, 'title' => $file_cat->title, 'type' => 'Enable'];
+            }
+            $file[] = $f;
+        }
+        foreach ($categories as $category)
+        {
+            $category['type'] = 'category';
+            $category['icon'] = 'fa-folder';
+            $category['Path'] = $this->getBreadcrumbs($category['id']);
+            $cat[] = $category;
+        }
+        return datatables()->of(array_merge($cat, $file))->toJson();
+    }
+
+=======
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function editCategory($category_id)
     {
         $messages = [];
@@ -56,7 +106,7 @@ class ManagerController extends Controller
     {
         if ($request->ajax())
         {
-            $date = $this->get_current_date();
+            $date = $this->getCurrentData();
             if (auth()->check())
             {
                 $user_id = auth()->id();
@@ -96,7 +146,10 @@ class ManagerController extends Controller
                 $result['success'] = true;
                 $messages[] = "Your Category is created";
                 return $result;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
             });
             return response()->json($result);
         }
@@ -108,6 +161,8 @@ class ManagerController extends Controller
         return response()->json($result);
     }
 
+<<<<<<< HEAD
+=======
     public function trash(Request $request)
     {
         if ($request->type == "file")
@@ -326,6 +381,7 @@ class ManagerController extends Controller
         return $mytime->toDateString();
     }
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function ShowList(Request $request)
     {
         return view('laravel_file_manager::content_list');
@@ -348,25 +404,27 @@ class ManagerController extends Controller
         {
             $categories = Category::with(['child_categories', 'parent_category', 'user'])->select('id', 'title as name', 'user_id')->where([
                 ['parent_category_id', '=', '0'],
-                ['user_id', '=', $this->get_user_id()]
+                ['user_id', '=', $this->getUserId()]
             ])->get()->toArray();
 
             if ($trueMimeType)
             {
                 $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
                     ['category_id', '=', '0'],
+<<<<<<< HEAD
+                    ['user_id', '=', $this->getUserId()]
+=======
                     ['user_id', '=', $this->get_user_id()]
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
                 ])->whereIn('mimeType', $trueMimeType)->get()->toArray();
             }
             else
             {
                 $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at', 'size')->where([
                     ['category_id', '=', '0'],
-                    ['user_id', '=', $this->get_user_id()]
+                    ['user_id', '=', $this->getUserId()]
                 ])->get()->toArray();
             }
-
-
         }
         else
         {
@@ -396,11 +454,7 @@ class ManagerController extends Controller
         return datatables()->of(array_merge($cat, $file))->toJson();
     }
 
-    /**
-     * @param $id
-     * @return array
-     */
-    public function get_breadcrumbs($id)
+    public function getBreadcrumbs($id)
     {
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $parents = Category::all_parents($id);
@@ -412,35 +466,39 @@ class ManagerController extends Controller
                 {
                     $breadcrumbs[] = ['id' => $parent->parent_category->id, 'title' => $parent->parent_category->title, 'type' => 'Enable'];
                 }
-
             }
-
         }
-
         return $breadcrumbs;
-
     }
 
+<<<<<<< HEAD
+=======
     /**
      * @param $id
      * @return mixed
      */
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     private function show($id, $insert = false, $callback = false, $section = false)
     {
-        $breadcrumbs = $this->get_breadcrumbs($id);
+        $breadcrumbs = $this->getBreadcrumbs($id);
         if ($section)
         {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+<<<<<<< HEAD
+=======
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         else
         {
             $trueMimeType = false;
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
+<<<<<<< HEAD
+=======
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
-
         if ($id == 0)
         {
             $files = File::get_uncategory_files($trueMimeType);
@@ -468,11 +526,16 @@ class ManagerController extends Controller
             $result['success'] = true;
         }
         return $result;
-
     }
 
-    public function CreateInsertData(Request $request)
+    public function trash(Request $request)
     {
+<<<<<<< HEAD
+        if ($request->type == "file")
+        {
+            $file = File::find($request->id);
+            $file->delete();
+=======
         $options = $this->get_section_options($request->section);
         if ($options['success'])
         {
@@ -493,21 +556,32 @@ class ManagerController extends Controller
                 $datas['success'] = false;
                 $datas['error'] = $check_options['error'];
             }
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         else
         {
-            $datas['success'] = false;
-            $datas['error'] = $options['error'];
+            $this->delete($request->id);
         }
+<<<<<<< HEAD
+        $result = $this->show($request->parent_id, $request->insert, $request->section);
+=======
         $result['data'] = $datas;
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         return response()->json($result);
-
-
     }
 
-    private function get_section_options($section)
+    private function delete($id)
     {
+<<<<<<< HEAD
+        $category = Category::with('files', 'child_categories', 'parent_category')->find($id);
+        $category->delete();
+        if ($category->files)
+        {
+            foreach ($category->files as $file)
+            {
+                $file->delete();
+=======
 
         if (session()->has('LFM'))
         {
@@ -526,14 +600,19 @@ class ManagerController extends Controller
                     $result['success'] = false;
                     return $result;
                 }
-            }
-            else
-            {
-                $result['success'] = false;
-                $result['error'] = '';
-                return $result;
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
             }
         }
+        if ($category->child_categories != null)
+        {
+            foreach ($category->child_categories as $child)
+            {
+                $id = $child->id;
+                $this->delete($id);
+            }
+        }
+<<<<<<< HEAD
+=======
         else
         {
             $result['success'] = false;
@@ -542,47 +621,42 @@ class ManagerController extends Controller
         }
 
 
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     }
 
-    private function check_section_options($name, $options, $items)
+    public function bulkDelete(Request $request)
     {
-        $selected_items = $this->get_selected_section_items($name);
-        if ($selected_items)
+        foreach ($request["items"] as $item)
         {
-            $totall = count($items) + count($selected_items);
-        }
-        else
-        {
-            $totall = count($items);
-
-        }
-        if ($totall > $options['max_file_number'])
-        {
-            $result['success'] = false;
-            $result['error'] = 'your cant insert more than' . $options['max_file_number'];
-            return $result;
-        }
-        else
-        {
-            $mimetype = LFM_CheckMimeType($options['true_mime_type'], $items);
-            if (!$mimetype['success'])
+            if ($item['type'] == "file")
             {
-                $result['success'] = false;
-                $result['error'] = $mimetype['error'];
-                return $result;
+                $file = File::find($item['id']);
+                $file->delete();
             }
             else
             {
-                $result['success'] = true;
-
+                $this->delete($item['id']);
             }
         }
-
-        return $result;
+        $result = $this->show($item['parent_id'], $request->insert, $request->section);
+        return response()->json($result);
     }
 
-    private function create_all_insert_data($request)
+    public function storeCropedImage(Request $request)
     {
+<<<<<<< HEAD
+        $data = str_replace('data:image/png;base64,', '', $request->crope_image);
+        $data = str_replace(' ', '+', $data);
+        $file = File::find($request->file_id);
+        $res = Media::save_croped_image_base64($data, $file, $request->crop_type);
+        if ($res)
+        {
+            $message['success'] = true;
+        }
+        else
+        {
+            $message['success'] = false;
+=======
         $datas = [];
         $section = $this->GetSession($request->section);
         if (isset($section['selected']))
@@ -666,35 +740,52 @@ class ManagerController extends Controller
                 }
 
             }
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
-
-        return $datas;
+        $message['result'] = $res;
+        return response()->json($message);
     }
 
-    private function set_selected_file_to_session($request, $section, $datas)
+    public function editPicture($file_id)
     {
-        if ($request->has('section'))
+        $file = File::find($file_id);
+        return view('laravel_file_manager::edit_picture', compact('file'));
+    }
+
+    public function getSectionOptions($section)
+    {
+        if (session()->has('LFM'))
         {
-            if (session()->has('LFM'))
+            $LFM = session()->get('LFM');
+            if (isset($LFM[$section]))
             {
-                $LFM = session()->get('LFM');
-                if (isset($LFM[$request->$section]))
+                if ($LFM[$section]['options'])
                 {
-                    //check options
+                    $result['options'] = $LFM[$section]['options'];
                     $result['success'] = true;
-                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $datas);
-                    session()->put('LFM', $LFM);
                     return $result;
                 }
                 else
                 {
                     $result['success'] = false;
+                    return $result;
                 }
             }
             else
             {
                 $result['success'] = false;
+                $result['error'] = '';
+                return $result;
             }
+<<<<<<< HEAD
+        }
+        else
+        {
+            $result['success'] = false;
+            $result['error'] = '';
+            return $result;
+        }
+=======
 
         }
         return $result;
@@ -787,9 +878,10 @@ class ManagerController extends Controller
     public function DeleteSelectedPostId(Request $request)
     {
         dd($request->all());
+>>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     }
 
-    public function get_user_id()
+    public function getUserId()
     {
         if (auth()->check())
         {
@@ -800,22 +892,11 @@ class ManagerController extends Controller
             $user_id = 0;
         }
         return $user_id;
-
     }
 
-    private function get_selected_section_items($name)
+    public function getCurrentData()
     {
-        $LFM = session('LFM');
-        if ($LFM[$name])
-        {
-            if ($LFM[$name]['selected'])
-            {
-                return $LFM[$name]['selected'];
-            }
-        }
-
-        return false;
+        $mytime = Carbon::now();
+        return $mytime->toDateString();
     }
-
-
 }

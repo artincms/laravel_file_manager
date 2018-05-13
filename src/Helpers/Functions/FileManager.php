@@ -27,24 +27,32 @@ function LFM_Sanitize($string, $force_lowercase = true, $anal = false)
     $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean;
     return ($force_lowercase) ? (function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean) : $clean;
 }
+
 function LFM_CheckMimeType($mimetype, $items)
 {
-    foreach ($items as $item)
+    if ($items)
     {
-        $file = \ArtinCMS\LFM\Models\File::find($item['id']);
-        if (!in_array($file->mimeType, $mimetype))
+        foreach ($items as $item)
         {
-            $result['success'] = false;
-            $result['error'] = 'File ' . $file->originalName . ' Not true mime type';
-            $result['item_error'] = $item;
-            return $result;
+            $file = \ArtinCMS\LFM\Models\File::find($item['id']);
+            if (!in_array($file->mimeType, $mimetype))
+            {
+                $result['success'] = false;
+                $result['error'] = 'File ' . $file->originalName . ' Not true mime type';
+                $result['item_error'] = $item;
+                return $result;
+            }
+            else
+            {
+                $result['success'] = true;
+            }
         }
-        else
-        {
-            $result['success'] = true;
-        }
-
     }
+    else
+    {
+        $result['success'] = false;
+    }
+
     return $result;
 }
 
@@ -77,8 +85,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = false,
     $session_option = LFM_SetSessionOption($section, $options);
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => $callback]);
-    $result['content'] = view("laravel_file_manager::file_manager", compact("src", "modal_id", 'header', 'button_content', 'section','callback'))->render();
-    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#' . $modal_id . '" id="' . $button_id . '">' . $button_content . '</button>';
+    $result['content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback'))->render();
+    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#create_' . $modal_id . '" id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
 
@@ -129,11 +137,11 @@ function LFM_SaveSingleFile($obj_model, $column_name, $section)
     }
 }
 
-function LFM_SaveMultiFile($obj_model, $section, $type =null, $relation_name = 'files', $attach_type = 'attach')
+function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 'files', $attach_type = 'attach')
 {
     if ($attach_type != 'attach')
     {
-        $attach_type = 'sync' ;
+        $attach_type = 'sync';
     }
     $files = LFM_GetSectionFile($section);
     if ($files)
@@ -143,12 +151,12 @@ function LFM_SaveMultiFile($obj_model, $section, $type =null, $relation_name = '
         {
             if (isset($file['file']['id']))
             {
-                $arr_ids[$file['file']['id']] = ['type' =>$type];
+                $arr_ids[$file['file']['id']] = ['type' => $type];
             }
         }
-        $res = $obj_model->$relation_name()->$attach_type($arr_ids) ;
-        LFM_DestroySection($section) ;
-        return $res ;
+        $res = $obj_model->$relation_name()->$attach_type($arr_ids);
+        LFM_DestroySection($section);
+        return $res;
     }
     else
     {
@@ -160,21 +168,21 @@ function LFM_DestroySection($section)
 {
     if (session()->has('LFM'))
     {
-        $LFM = session()->get('LFM') ;
+        $LFM = session()->get('LFM');
         if (isset($LFM[$section]))
         {
-            unset($LFM[$section]) ;
-            session()->put('LFM' , $LFM) ;
-            return true ;
+            unset($LFM[$section]);
+            session()->put('LFM', $LFM);
+            return true;
         }
         else
         {
-            return false ;
+            return false;
         }
     }
     else
     {
-        return false ;
+        return false;
     }
 }
 
