@@ -64,7 +64,6 @@
                 {
                     parent.{{$callback}}();
 
-<<<<<<< HEAD
                 }
             }
             @endif
@@ -78,27 +77,3 @@
 
 
 
-=======
-</head>
-<body>
-<div class="container kv-main">
-    <div class="file-loading">
-        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-        <input id="input-708" name="file[]" type="file" multiple>
-    </div>
-</div>
-</body>
-<script>
-    $("#input-708").fileinput({
-        uploadUrl: "{{route('LFM.StoreUploads')}}",
-        uploadAsync: false,
-        uploadExtraData: {
-            category_id:'{{$category_id}}' ,
-            user_id : 1,
-            _token: $('#token').val()
-        } ,
-        maxFileCount: 5
-    }).on('filebatchpreupload', function(event, data) {});
-</script>
-</html>
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191

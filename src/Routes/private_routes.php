@@ -26,7 +26,6 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('SearchMedia', ['as' => 'LFM.SearchMedia', 'uses' => 'ManagerController@searchMedia']);
 
     //display route
-    Route::get('ShowList', ['as' => 'LFM.ShowList', 'uses' => 'ManagerController@ShowList']);
     Route::post('ShowListCategory', ['as' => 'LFM.ShowListCategory', 'uses' => 'ManagerController@showListCategory']);
 
     //get breadcrumbs
@@ -37,8 +36,8 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //session
     Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
-    Route::get('DeleteSessionInsertItem/{name}/{id}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
-    Route::post('DeleteSelectedPostId', ['as' => 'LFM.DeleteSelectedPostId', 'uses' => 'SessionController@deleteSelectedPostId']);
+    Route::get('DeleteSessionInsertItem/{section?}/{file_id?}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
+    Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
     Route::post('Breadcrumbs/{id}', ['as' => 'LFM.Breadcrumbs', 'uses' => 'ManagerController@get_breadcrumbs']);
 });
 

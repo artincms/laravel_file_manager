@@ -29,8 +29,34 @@
 
     $(document).off("click", '#trash_insert');
     $(document).on('click', '#trash_insert', function (e) {
-        var file_id = $().attr() ;
+        var file_id = $(this).attr('data-id') ;
+        var res = trash_selected_file(file_id);
+        if (res.success ==true)
+        {
+            $(this).parent('div').addClass('hidden');
+        }
     });
+
+    function trash_selected_file(file_id) {
+        var res ='';
+        $.ajax({
+            type: "POST",
+            url: "{{route('LFM.DeleteSessionInsertItem')}}",
+            dataType: "json",
+            async: false,
+            data :{
+                file_id:file_id,
+                section : '{{$section}}'
+            },
+            success: function (result) {
+                res = result ;
+            },
+            error: function (e) {
+                res =  false ;
+            }
+        });
+        return res ;
+    }
     function hidemodal() {
         $('#close_button_{{LFM_CheckFalseString($modal_id)}}').click();
         $('.modal-backdrop').removeClass();

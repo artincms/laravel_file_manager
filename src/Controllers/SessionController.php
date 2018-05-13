@@ -244,27 +244,33 @@ class SessionController extends ManagerController
         return LFM_GetSection($section);
     }
 
-    public function deleteSessionInsertItem($name, $id)
+    public function deleteSessionInsertItem(Request $request ,$section=false, $file_id=false)
     {
-        $LFM = session()->get('LFM');
-        if ($LFM[$name])
+        if ($request->ajax())
         {
-            $selected = $LFM[$name]['selected'];
+            $section = $request ->section ;
+            $file_id = $request->file_id ;
+        }
+        $LFM = session()->get('LFM');
+        if ($LFM[$section])
+        {
+            $selected = $LFM[$section]['selected'];
             foreach ($selected as $key => $value)
             {
-                if ($id == $value['file']['id'])
+                if ($file_id == $value['file']['id'])
                 {
                     unset($selected[$key]);
                 }
             }
-            $LFM[$name]['selected'] = $selected;
+            $LFM[$section]['selected'] = $selected;
             session()->put('LFM', $LFM);
-            return $LFM;
+            $result['success'] = true ;
         }
         else
         {
-            return false;
+           $result['success'] = false ;
         }
+        return response()->json($result);
     }
 
     public function deleteSelectedPostId(Request $request)

@@ -36,35 +36,5 @@
         </form>
 @endsection
 @section('javascript')
-<<<<<<< HEAD
     @include('laravel_file_manager::helpers.category.category_inline_js')
-=======
-    <script type="text/javascript">
-        $(document).off("click", '#btn_submit_create_category');
-        $(document).on('click', '#btn_submit_create_category', function (e) {
-            e.preventDefault() ;
-            var formElement = document.querySelector('#create_category_form');
-            var formData = new FormData(formElement);
-            $('#create_category_form .error_msg').html('');
-            $("#create_category_form .input_with_validation_error").removeClass("input_with_validation_error");
-            category_save(formData);
-        });
-        function category_save(FormData) {
-            $.ajax({
-                type: "POST",
-                url: "{{route('LFM.StoreCategory')}}",
-                data: FormData,
-                dataType: "json",
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                    if (result.success == true) {
-                        $('#message').html('<div class="alert alert-success"><strong>Success!</strong>Your Category Add Successfully</div>') ;
-                    }
-                },
-                error: function (e) {}
-            });
-        }
-    </script>
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
 @endsection

@@ -1,9 +1,5 @@
 <!doctype html>
-<<<<<<< HEAD
 <html>
-=======
-<html lang="en" dir="ltr">
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
 <head>
     <title>@yield('page_title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">

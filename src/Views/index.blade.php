@@ -29,7 +29,6 @@
                         <i class="fa fa-list"></i>
                     </label>
                 </div>
-<<<<<<< HEAD
                 <a href="{{route('LFM.FileUpload' , ['category_id' =>0 , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile" data-toggle="modal"
                    data-target="#create_modal">
                     <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
@@ -62,13 +61,6 @@
                         </span>
                     </div>
                 </form>
-=======
-                <a class="btn btn-sm btn-success" title="create new category" href="{{route('LFM.ShowCategories.Create',['category_id'=>0])}}">
-                    <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
-                </a>
-                <a class="btn btn-sm btn-primary grid-trash-o"><i class="fa fa-trash-o"></i></a>
-                <a class="btn btn-sm btn-primary grid-refresh"><i class="fa fa-refresh"></i></a>
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
             </div>
         </div>
         <div class="panel-body">
