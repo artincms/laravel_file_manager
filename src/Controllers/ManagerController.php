@@ -17,10 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
-<<<<<<< HEAD
     //categories
-=======
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function showCategories($insert = false, $callback = false, $section = false)
     {
         if ($section)
@@ -47,7 +44,6 @@ class ManagerController extends Controller
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
-<<<<<<< HEAD
     public function searchMedia(Request $request)
     {
         $file = [];
@@ -92,8 +88,6 @@ class ManagerController extends Controller
         return datatables()->of(array_merge($cat, $file))->toJson();
     }
 
-=======
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function editCategory($category_id)
     {
         $messages = [];
@@ -146,10 +140,7 @@ class ManagerController extends Controller
                 $result['success'] = true;
                 $messages[] = "Your Category is created";
                 return $result;
-<<<<<<< HEAD
-=======
 
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
             });
             return response()->json($result);
         }
@@ -161,8 +152,6 @@ class ManagerController extends Controller
         return response()->json($result);
     }
 
-<<<<<<< HEAD
-=======
     public function trash(Request $request)
     {
         if ($request->type == "file")
@@ -220,61 +209,6 @@ class ManagerController extends Controller
         return response()->json($result);
     }
 
-    /**
-     * id is category id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function fileUpload($category_id = 0, $callback = false, $section = false)
-    {
-        if ($section and $section != 'false')
-        {
-            $options = $this->get_section_options($section);
-            $options = $options['options'];
-        }
-        else
-        {
-            $options = false;
-        }
-        return view('laravel_file_manager::upload', compact('category_id', 'callback', 'options', 'section'));
-    }
-
-
-    /**
-     * should send category_id and token
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function storeUploads(Request $request)
-    {
-        if ($request->file)
-        {
-            $CategoryID = $request->category_id;
-            $res = [];
-            foreach ($request->file as $file)
-            {
-                $mimeType = $file->getMimeType();
-                $FileMimeType = FileMimeType::where('mimeType', '=', $mimeType)->first();
-                $originalName = $file->getClientOriginalName();
-                $size = $file->getSize();
-                if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
-                {
-                    $message = DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
-                        $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
-                        $message['success'] = true;
-                        $message['result'] = $res;
-                        return $message;
-                    });
-                }
-                else
-                {
-                    $message['success'] = false;
-                }
-            }
-            return response()->json($message);
-        }
-
-    }
-
     public function storeCropedImage(Request $request)
     {
 
@@ -298,28 +232,6 @@ class ManagerController extends Controller
     {
         $file = File::find($file_id);
         return view('laravel_file_manager::edit_picture', compact('file'));
-    }
-
-    public function download($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
-    {
-        if ($id == -1)
-        {
-            return Media::downloadById(-1, 'orginal', $default_img);//"Not Valid Request";
-        }
-        switch ($type)
-        {
-            case "ID":
-                return Media::downloadById($id, $size_type, $default_img, false, $quality, $width, $height);
-                break;
-            case "Name":
-                return Media::download_by_name($id, $size_type, $default_img, false, $quality, $width, $height);
-                break;
-            case "flag":
-                return Media::downloadFromPublicStorage($id, 'flags');
-                break;
-            default:
-                return Media::downloadById(-1, $default_img);
-        }
     }
 
     public function searchMedia(Request $request)
@@ -368,8 +280,6 @@ class ManagerController extends Controller
         }
 
         return datatables()->of(array_merge($cat, $file))->toJson();
-
-
     }
 
     /**
@@ -381,7 +291,6 @@ class ManagerController extends Controller
         return $mytime->toDateString();
     }
 
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     public function ShowList(Request $request)
     {
         return view('laravel_file_manager::content_list');
@@ -411,11 +320,7 @@ class ManagerController extends Controller
             {
                 $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
                     ['category_id', '=', '0'],
-<<<<<<< HEAD
                     ['user_id', '=', $this->getUserId()]
-=======
-                    ['user_id', '=', $this->get_user_id()]
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
                 ])->whereIn('mimeType', $trueMimeType)->get()->toArray();
             }
             else
@@ -471,13 +376,10 @@ class ManagerController extends Controller
         return $breadcrumbs;
     }
 
-<<<<<<< HEAD
-=======
     /**
      * @param $id
      * @return mixed
      */
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     private function show($id, $insert = false, $callback = false, $section = false)
     {
         $breadcrumbs = $this->getBreadcrumbs($id);
@@ -485,19 +387,12 @@ class ManagerController extends Controller
         {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'];
-<<<<<<< HEAD
-=======
 
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         else
         {
             $trueMimeType = false;
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
-<<<<<<< HEAD
-=======
-
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         if ($id == 0)
         {
@@ -530,12 +425,10 @@ class ManagerController extends Controller
 
     public function trash(Request $request)
     {
-<<<<<<< HEAD
         if ($request->type == "file")
         {
             $file = File::find($request->id);
             $file->delete();
-=======
         $options = $this->get_section_options($request->section);
         if ($options['success'])
         {
@@ -556,24 +449,18 @@ class ManagerController extends Controller
                 $datas['success'] = false;
                 $datas['error'] = $check_options['error'];
             }
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         else
         {
             $this->delete($request->id);
         }
-<<<<<<< HEAD
         $result = $this->show($request->parent_id, $request->insert, $request->section);
-=======
         $result['data'] = $datas;
-
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         return response()->json($result);
     }
 
     private function delete($id)
     {
-<<<<<<< HEAD
         $category = Category::with('files', 'child_categories', 'parent_category')->find($id);
         $category->delete();
         if ($category->files)
@@ -581,7 +468,6 @@ class ManagerController extends Controller
             foreach ($category->files as $file)
             {
                 $file->delete();
-=======
 
         if (session()->has('LFM'))
         {
@@ -600,7 +486,6 @@ class ManagerController extends Controller
                     $result['success'] = false;
                     return $result;
                 }
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
             }
         }
         if ($category->child_categories != null)
@@ -611,8 +496,6 @@ class ManagerController extends Controller
                 $this->delete($id);
             }
         }
-<<<<<<< HEAD
-=======
         else
         {
             $result['success'] = false;
@@ -621,7 +504,6 @@ class ManagerController extends Controller
         }
 
 
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     }
 
     public function bulkDelete(Request $request)
@@ -644,7 +526,6 @@ class ManagerController extends Controller
 
     public function storeCropedImage(Request $request)
     {
-<<<<<<< HEAD
         $data = str_replace('data:image/png;base64,', '', $request->crope_image);
         $data = str_replace(' ', '+', $data);
         $file = File::find($request->file_id);
@@ -656,7 +537,6 @@ class ManagerController extends Controller
         else
         {
             $message['success'] = false;
-=======
         $datas = [];
         $section = $this->GetSession($request->section);
         if (isset($section['selected']))
@@ -740,7 +620,6 @@ class ManagerController extends Controller
                 }
 
             }
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
         }
         $message['result'] = $res;
         return response()->json($message);
@@ -777,7 +656,6 @@ class ManagerController extends Controller
                 $result['error'] = '';
                 return $result;
             }
-<<<<<<< HEAD
         }
         else
         {
@@ -785,7 +663,6 @@ class ManagerController extends Controller
             $result['error'] = '';
             return $result;
         }
-=======
 
         }
         return $result;
@@ -878,7 +755,6 @@ class ManagerController extends Controller
     public function DeleteSelectedPostId(Request $request)
     {
         dd($request->all());
->>>>>>> 326cec0fce3ada34dd8a74889ece2029cc6fe191
     }
 
     public function getUserId()
