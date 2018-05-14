@@ -5,7 +5,7 @@ laravel file manager is a package for
 <li>generate download link </li>
 <li>store file in Sotrage folder</li>
 <li>optimize image</li>
-<li>crop image</li>
+<li>crop image when file upload , edit file or  generate link with three kind of crop .</li>
 </ul> 
 
 # Requiments 
@@ -97,7 +97,9 @@ Register provider and facade on your config/app.php file.
  <div class="highlight highlight-text-html-php"><pre>
     LFM_CreateModalFileManager($section, $options , $insert , $callback , $modal_id , $header , $button_id, $button_content)
   </pre> </div>
-  that $section is Require and other input is optional .
+  
+  that $section is Require and other input is optional .for use output of filemanager 
+  you should install jquery 3 and bootstrap 4 ;
   <ul>
   <li>
   $section = section name for example 'FileManager';
@@ -171,6 +173,7 @@ function callback(result)
    $button_content : this option use to assign name of button create modal and default is 'input file' .
    </li>
   </ul>
+  <p>  you can access to file manager with :http://www.yourdomain.com/LFM/ShowCategories</p>
  <h4> Generate Download Link </h4>
   whit this below helper function you can generate download link in anywhere of your project .
   <div class="highlight highlight-text-html-php"><pre>
@@ -203,6 +206,7 @@ function callback(result)
  <li>with 'crop_chose' you can choose wich crop type use when upload file (when create large ,medium and small size of picture). you can set it
    one of : fit,resize and smart that 'fit' is default crop and resize resize image  with due attention to config size you set and smart type is smart crop but it was slowler than other crop type .</li>
  </ul>
+ 
  #example
  if you want assign file to articles you can use this filemanager . in your conttroller 
 
