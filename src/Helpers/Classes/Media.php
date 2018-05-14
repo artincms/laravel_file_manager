@@ -97,6 +97,11 @@ class Media
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
         $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $tmp_path = $upload_path . 'tmp/';
+        if (config('laravel_file_manager.crop_type') == true)
+        {
+            $optimizerChain = OptimizerChainFactory::create();
+            $optimizerChain->optimize($FullPath);
+        }
         foreach (config('laravel_file_manager.crop_type') as $crop_type)
         {
             $target_path = $FileSave->path . '/files/' . $crop_type;
@@ -110,7 +115,6 @@ class Media
                 {
                     \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory('uploads/tmp');
                 }
-                //$optimizerChain = OptimizerChainFactory::create();
                 switch ($crop)
                 {
                     case "smart":
@@ -124,7 +128,10 @@ class Media
                         $res = Image::make($file)->resize($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);
                         break;
                 }
-                /*  $optimizerChain->optimize($FullImagePath);*/
+                if (config('laravel_file_manager.crop_type') == true)
+                {
+                    $optimizerChain->optimize($tmp_path . '/' . $filename);
+                }
                 $opt_name = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($tmp_path . '/' . $filename) . "_" . time() . '_' . $FileSave->extension;
                 $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('uploads/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
@@ -138,7 +145,6 @@ class Media
             }
             else
             {
-                /*  $optimizerChain->optimize($FullImagePath);*/
                 $name['md5'] = md5_file($orginal_file . $FullPath);
                 $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
                 if ($name['md5'] != $FileSave->file_md5)
@@ -193,7 +199,6 @@ class Media
                     }
                     else
                     {
-                        //dd($file_EXT,$width,$height,$file_EXT,$quality);
                         if ($quality < 100)
                         {
                             $res = Image::make($file_path)->response('jpg', (int)$quality);
