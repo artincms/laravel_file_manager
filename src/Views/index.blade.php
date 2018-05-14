@@ -92,5 +92,5 @@
 
 @endsection
 @section('javascript')
-    @include('laravel_file_manager::helpers.Index.index_inline_js')
+    @include('laravel_file_manager::helpers.index.Index_inline_js')
 @endsection
