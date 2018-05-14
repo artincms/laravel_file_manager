@@ -98,7 +98,7 @@ class Media
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
         $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $tmp_path = $upload_path . 'tmp/';
-        if (config('laravel_file_manager.crop_type') == true)
+        if (config('laravel_file_manager.Optimise_image'))
         {
             $optimizerChain = OptimizerChainFactory::create();
             $optimizerChain->optimize($FullPath);
@@ -129,7 +129,7 @@ class Media
                         $res = Image::make($file)->resize($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);
                         break;
                 }
-                if (config('laravel_file_manager.crop_type') == true)
+                if (config('laravel_file_manager.Optimise_image'))
                 {
                     $optimizerChain->optimize($tmp_path . '/' . $filename);
                 }
