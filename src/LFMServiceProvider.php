@@ -58,7 +58,7 @@ class LFMServiceProvider extends ServiceProvider
 	    $this->app->bind('LFMC', function () {
 		    return new LFMC;
 	    });
-        $this->app->bind('Media', function () {
+        $this->app->bind('FileManager', function () {
             return new Media;
         });
     }
