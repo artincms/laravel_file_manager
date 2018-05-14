@@ -12,6 +12,7 @@ use ArtinCMS\LFM\Models\Category;
 use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\FileMimeType;
 use Intervention\Image\Facades\Image;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class Media
 {
