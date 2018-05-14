@@ -29,7 +29,7 @@ Laravel 5.5|5.6
 
 # Installation
 <h3>Quick installation</h3> 
-<div class="highlight highlight-source-shell"><pre>composer update "artincms/laravel_file_manager"</pre></div>
+<div class="highlight highlight-source-shell"><pre>composer require "artincms/laravel_file_manager"</pre></div>
 <h5>for laravel less than 5.5</h5>
 Register provider and facade on your config/app.php file.
 <div class="highlight highlight-text-html-php"><pre>
