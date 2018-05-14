@@ -28,8 +28,12 @@ class LFMServiceProvider extends ServiceProvider
 	    ]);
 
 	    $this->publishes([
-		    __DIR__ . '/Migrations/' => database_path('migrations')
+		    __DIR__ . '/Database/Migrations/' => database_path('migrations')
 	    ], 'migrations');
+
+        $this->publishes([
+            __DIR__ . '/Database/Seeds/' => database_path('seeds')
+        ], 'seeds');
 
 	    // for publish the assets files into main app
 	    $this->publishes([
