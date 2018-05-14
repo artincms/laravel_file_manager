@@ -1,5 +1,12 @@
 # laravel_file_manager
-laravel file manager is a package for manage file uploaded by users with check ACL and store in Sotrage folder and generate download link 
+laravel file manager is a package for 
+<ul>
+<li>manage file uploaded by users with check ACL. you can upload file with custom size </li>
+<li>generate download link </li>
+<li>store file in Sotrage folder</li>
+<li>optimize image</li>
+<li>crop image</li>
+</ul> 
 
 # Requiments 
 <ul>
@@ -107,7 +114,42 @@ Register provider and facade on your config/app.php file.
   $callback : this options provide  javascript callback function name .
   for example you can get selected file and show it 
   <div class="highlight highlight-text-html-php"><pre>
-function show(res)
+  //the inserted file result is 
+  [
+    data 
+    [{
+        0
+        {
+            file 
+            {
+                height : "0"
+                icon : "image"
+                id : 115
+                name : "photo2017-04-1512-45-2"
+                quality : "100"
+                size : 60187
+                title_file_disc : "fid_115_v0__uid_21_73cbaf0bc61f0ca763208c33312ed928_1526201846_jpeg"
+                type : "orginal"
+                user : "faramarz"
+                version : null
+                width:  "0"
+            }
+            full_url: "http://127.0.0.1:8000/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
+            message: "File with ID :115 Inserted"
+            success:true
+            url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
+        }
+    }],
+    view
+    {
+       'grid' : 'html grid view code' ,
+       'small' :'html small view code' ,
+       'thumb' : 'html thumb view code' ,
+       'large' : 'html large view code' 
+    }
+  ]  
+//to show above data to small view you can use this function  
+function callback(result)
 {
    $('#show_area_small').append(res.view.small) ;
 }
@@ -129,7 +171,38 @@ function show(res)
    $button_content : this option use to assign name of button create modal and default is 'input file' .
    </li>
   </ul>
+ <h4> Generate Download Link </h4>
+  whit this below helper function you can generate download link in anywhere of your project .
+  <div class="highlight highlight-text-html-php"><pre>
+ LFM_GenerateDownloadLink($type, $id , $size_type, $default_img, $quality , $width, $height)
+   </pre> </div>
+<ul>
+<li>if you want generate file link with ID the $type = 'ID' and if you want generate by name you can use $type = 'Name'
+</li>
+<li>$id : if you want generate link with id you should fill this item with file id and default is -1 that reffer no file id selected .</li>
+<li>$size_type can pick one on of : orginal , large , medium , small that reffer which size you want to download</li>
+<li>if image not found with $default_img you can choose image you want to show , default is '404.png'</li>
+<li>$quality is quality of image , it is between 0 and 100 . </li>
+<li>$width is width of result image</li>
+<li>$height is height of result image</li>
+</ul>  
  
+ <h3>custom config</h3>
+ if you want to have custom config you can chage config/laravel_file_manager.php file as you want .
+ <ul>
+ <li>'private_middlewares' and 'public_middlewares' describe what middelware should assign to private and public route ,you can add auth and other middelware you want .</li>
+ <li>with 'private_route_prefix' and 'public_route_prefix' you can change prefix of private and public route .</li>
+ <li>'allowed' reffer wich mime type files can upload</li>
+ <li>'allowed_pic' is reffer wich mime type is recognize as picture</li>
+ <li>with 'size_large' ,'size_large' , 'size_large' and 'size_large' when upload file you can
+ define size of upload deppend of type .
+  </li>
+  <li>'driver_disk' is deriver you use in your project </li>
+<li>'user_model' is path of your user model .</li>
+<li>'Optimise_image' if is true and do serve config as tell in installation section . all picture optimize before save in your storage .</li>
+ <li>with 'crop_chose' you can choose wich crop type use when upload file (when create large ,medium and small size of picture). you can set it
+   one of : fit,resize and smart that 'fit' is default crop and resize resize image  with due attention to config size you set and smart type is smart crop but it was slowler than other crop type .</li>
+ </ul>
  #example
  if you want assign file to articles you can use this filemanager . in your conttroller 
 
@@ -143,7 +216,7 @@ return view('article',compact('result'));
 <div class="highlight highlight-text-html-php-blade"><pre>
 {!! $result['button'] !!}
 and 
-{!! $result['content'] !!}
+{!! $result['modal_content'] !!}
 </pre> </div>
 
 for save inserted files you can add this code in your controller :

@@ -88,7 +88,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = false,
     }
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => $callback]);
-    $result['content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback'))->render();
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback'))->render();
     $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#create_' . $modal_id . '" id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
@@ -187,6 +187,11 @@ function LFM_DestroySection($section)
     {
         return false;
     }
+}
+
+function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
+{
+    return route('LFM.DownloadFile',['type' =>'ID' , 'id'=>$id,'size_type' => $size_type , 'default_img' =>  $default_img , 'quality' => $quality , 'width' =>$width , 'height' => $height]);
 }
 
 
