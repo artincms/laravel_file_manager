@@ -31,5 +31,5 @@ return [
     // How many log you want to show in sms-admin panel ?
     'in-page' => '15' ,
     //optomise Image
-    'Optimise_image' => true
+    'Optimise_image' => false
 ];
