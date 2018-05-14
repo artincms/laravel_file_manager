@@ -55,8 +55,13 @@ Register provider and facade on your config/app.php file.
   $ php artisan migrate
   </pre> </div>
 <h6>seed data to lfm_file_mime_type table</h6>
+for windows
  <div class="highlight highlight-text-html-php"><pre>
   php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\LfmFileMimeTypesTableSeeder
+  </pre> </div>
+  for linux
+  <div class="highlight highlight-text-html-php"><pre>
+ php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\LfmFileMimeTypesTableSeeder
   </pre> </div>
   <h4>more installation details</h4>
   <p>The package will use these optimizers if they are present on your system:</p>
