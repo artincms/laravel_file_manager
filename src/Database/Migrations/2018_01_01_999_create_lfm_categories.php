@@ -22,6 +22,7 @@ class CreateLfmCategories extends Migration
             $table->integer('parent_category_id');
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::table('lfm_categories', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
