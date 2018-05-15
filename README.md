@@ -50,6 +50,10 @@ Register provider and facade on your config/app.php file.
  <div class="highlight highlight-text-html-php"><pre>
  $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider
 </pre> </div>
+if update package for publish vendor you can run : 
+ <div class="highlight highlight-text-html-php"><pre>
+ $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider --force
+</pre> </div>
  <h6>migrate tabales</h6>
   <div class="highlight highlight-text-html-php"><pre>
   $ php artisan migrate
