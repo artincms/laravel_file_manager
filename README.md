@@ -91,9 +91,8 @@ for windows
   <div><p>for enable optimizer in package you shoul go config/laravel_file_manager.php
    and set 'Optimise_image'= true</p></div>
   <p>for more information you can visit <a href="https://github.com/spatie/image-optimizer">image-optimizer</a>  
- 
- #usage
- 
+
+ <h1>usage</h1> 
  for use this package you should use bellow helper function anywhere in your project such as in your controller . this helper function
  <ul>
  <li>create html modal for show manager</li>
