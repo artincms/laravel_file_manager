@@ -120,7 +120,7 @@ class Media
                 {
                     case "smart":
                         $file_cropped = HFM_SmartCropIMG($file, $OptionIMG);
-                        HFM_Save_Compress_IMG(false, $file_cropped->oImg, $tmp_path . '/' . $filename, $FileSave->extension, $quality);
+                        LFM_SaveCompressImage(false, $file, $tmp_path . '/' . $filename, $FileSave->extension, $quality);
                         break;
                     case "fit":
                         $res = Image::make($file)->fit($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);

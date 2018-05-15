@@ -28,6 +28,53 @@ function LFM_Sanitize($string, $force_lowercase = true, $anal = false)
     return ($force_lowercase) ? (function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean) : $clean;
 }
 
+function LFM_SmartCropIMG($file, $options = [])
+{
+    $smartcrop = \ArtinCMS\LFM\Helpers\Classes\SmartCropClass($file, $options);
+    //Analyse the image and get the optimal crop scheme
+    $res = $smartcrop->analyse();
+    //Generate a crop based on optimal crop scheme
+    return $smartcrop->crop($res['topCrop']['x'], $res['topCrop']['y'], $res['topCrop']['width'], $res['topCrop']['height']);
+}
+
+function LFM_SaveCompressImage($prepare_src = false, $file, $destination, $extension = 'jpg', $quality = 90)
+{
+    $res = false;
+    if ($prepare_src)
+    {
+        switch ($extension)
+        {
+            case "png":
+                $src = imagecreatefrompng($file);
+                $res = imagepng($src, $destination, $quality);
+                break;
+            case "jpeg":
+            case "jpg":
+                $src = imagecreatefromjpeg($file);
+                $res = imagejpeg($src, $destination, $quality);
+                break;
+        }
+    }
+    else
+    {
+        switch ($extension)
+        {
+            case "png":
+                //$src = imagecreatefrompng($file);
+                $res = imagepng($file, $destination, $quality);
+                break;
+            case "jpeg":
+            case "jpg":
+                //$src = imagecreatefromjpeg($file);
+                $res = imagejpeg($file, $destination, $quality);
+                break;
+        }
+    }
+
+    return $res;
+}
+
+
 function LFM_CheckMimeType($mimetype, $items)
 {
     if ($items)
