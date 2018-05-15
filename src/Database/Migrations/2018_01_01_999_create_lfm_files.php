@@ -28,10 +28,10 @@ class CreateLFMFiles extends Migration
             $table->string('large_filename' ,255)->nullable()->default(null);
             $table->string('medium_filename' ,255)->nullable()->default(null);
             $table->string('small_filename' ,255)->nullable()->default(null);
-            $table->integer('version')->unsigned();
-            $table->integer('large_version')->unsigned();
-            $table->integer('medium_version')->unsigned();
-            $table->integer('small_version')->unsigned();
+            $table->integer('version')->unsigned()->default(0);
+            $table->integer('large_version')->unsigned()->default(0);;
+            $table->integer('medium_version')->unsigned()->default(0);;
+            $table->integer('small_version')->unsigned()->default(0);;
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
