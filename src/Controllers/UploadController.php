@@ -16,7 +16,14 @@ class UploadController extends ManagerController
         if ($section and $section != 'false')
         {
             $options = $this->getSectionOptions($section);
-            $options = $options['options'];
+            if ($options['success'])
+            {
+                $options = $options['options'];
+            }
+            else
+            {
+                $options = false ;
+            }
         }
         else
         {

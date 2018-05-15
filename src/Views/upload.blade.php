@@ -13,7 +13,7 @@
     <div class="container kv-main">
         <div class="file-loading">
             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-            @if($section != 'false')
+            @if($section != 'false' && $options !=false)
                 @php($true_ext = sprintf("'%s'",implode("','",$options['true_file_extension'])))
                 @php($accept_ext = '.'.implode(",.",$options['true_file_extension']))
                 <input id="input-708" name="file[]" type="file" multiple accept="{!! $accept_ext !!}">
@@ -35,7 +35,7 @@
                 _token: $('#token').val()
             },
             uploadAsync: true,
-            @if($section && $section !='false')
+            @if($section && $section !='false' && $options !=false)
             maxFileCount: '{{$options['max_file_number']}}',
             allowedFileExtensions: [{!! $true_ext !!}],
             @endif
@@ -59,7 +59,7 @@
                 $(".file-footer-buttons").append(btns);
             }
 
-            @if ($callback) {
+                @if ($callback) {
                 if(parent.{{$callback}})
                 {
                     parent.{{$callback}}();
