@@ -29,10 +29,10 @@
                         <i class="fa fa-list"></i>
                     </label>
                 </div>
-                <a href="{{route('LFM.FileUpload' , ['category_id' =>0 , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile" data-toggle="modal"
+                <label href="{{route('LFM.FileUpload' , ['category_id' =>0 , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile" data-toggle="modal"
                    data-target="#create_modal">
                     <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
-                </a>
+                </label>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-sm btn-success create_category" title="create new category"
                            href="{{route('LFM.ShowCategories.Create',['category_id' => 0, 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal" data-target="#create_modal">

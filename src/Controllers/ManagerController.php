@@ -180,7 +180,7 @@ class ManagerController extends Controller
         $data = str_replace('data:image/png;base64,', '', $request->crope_image);
         $data = str_replace(' ', '+', $data);
         $file = File::find($request->file_id);
-        $res = Media::save_croped_image_base64($data, $file, $request->crop_type);
+        $res = Media::saveCropedImageBase64($data, $file, $request->crop_type);
         if ($res) {
             $message['success'] = true;
         } else {

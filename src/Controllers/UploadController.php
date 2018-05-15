@@ -74,7 +74,7 @@ class UploadController extends ManagerController
                 return Media::downloadById($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "Name":
-                return Media::download_by_name($id, $size_type, $default_img, false, $quality, $width, $height);
+                return Media::downloadByName($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "flag":
                 return Media::downloadFromPublicStorage($id, 'flags');

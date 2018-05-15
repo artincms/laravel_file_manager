@@ -74,7 +74,6 @@ function LFM_SaveCompressImage($prepare_src = false, $file, $destination, $exten
     return $res;
 }
 
-
 function LFM_CheckMimeType($mimetype, $items)
 {
     if ($items)
@@ -238,8 +237,13 @@ function LFM_DestroySection($section)
 
 function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
 {
-    return route('LFM.DownloadFile',['type' =>'ID' , 'id'=>$id,'size_type' => $size_type , 'default_img' =>  $default_img , 'quality' => $quality , 'width' =>$width , 'height' => $height]);
+    return route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
 
+function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+{
+    $res =\ArtinCMS\LFM\Helpers\Classes\Media::downloadById($file_id, $size_type, $not_found_img, true, $quality, $width, $height);
+    return $res ;
+}
 
 
