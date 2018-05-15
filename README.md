@@ -125,7 +125,7 @@ for windows
   //the inserted file result is 
   [
     data 
-    [{
+    [
         0
         {
             file 
@@ -147,7 +147,7 @@ for windows
             success:true
             url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
         }
-    }],
+    ],
     view
     {
        'grid' : 'html grid view code' ,
