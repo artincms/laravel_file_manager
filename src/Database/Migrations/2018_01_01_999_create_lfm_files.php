@@ -36,12 +36,7 @@ class CreateLFMFiles extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        Schema::table('lfm_files', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
-        Schema::table('lfm_files', function (Blueprint $table) {
-            $table->foreign('file_mime_type_id')->references('id')->on('lfm_file_mime_types')->onDelete('cascade');
-        });
+
     }
 
     /**
