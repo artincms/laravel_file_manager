@@ -124,11 +124,11 @@ for windows
   <div class="highlight highlight-text-html-php"><pre>
   //the inserted file result is 
   [
-    data 
-    [
-        0
+    data :
+    [{
+        0 :
         {
-            file 
+            file :
             {
                 height : "0"
                 icon : "image"
@@ -147,8 +147,8 @@ for windows
             success:true
             url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
         }
-    ],
-    view
+    }],
+    view :
     {
        'grid' : 'html grid view code' ,
        'small' :'html small view code' ,
