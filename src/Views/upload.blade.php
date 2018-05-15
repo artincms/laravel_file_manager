@@ -58,15 +58,10 @@
                     '</a>';
                 $(".file-footer-buttons").append(btns);
             }
-
-                @if ($callback) {
-                if(parent.{{$callback}})
-                {
-                    parent.{{$callback}}();
-
-                }
+            if(typeof parent.refresh !== 'undefined')
+            {
+                parent.refresh() ;
             }
-            @endif
         });
         $('#cancel_btn').off('click');
         $('#cancel_btn').on('click', function () {

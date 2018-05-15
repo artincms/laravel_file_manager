@@ -13,6 +13,10 @@
         @else
         category_save(formData, '{{$callback}}');
         @endif
+        if(typeof parent.refresh !== 'undefined')
+        {
+            parent.refresh() ;
+        }
 
     });
 
