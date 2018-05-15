@@ -93,6 +93,7 @@ for windows
   <p>for more information you can visit <a href="https://github.com/spatie/image-optimizer">image-optimizer</a>  
  
  #usage
+ 
  for use this package you should use bellow helper function anywhere in your project such as in your controller . this helper function
  <ul>
  <li>create html modal for show manager</li>
