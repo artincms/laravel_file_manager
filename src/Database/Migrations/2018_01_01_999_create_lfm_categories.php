@@ -16,9 +16,9 @@ class CreateLfmCategories extends Migration
         Schema::create('lfm_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('title');
+            $table->string('title')->nullable()->default(null);;
             $table->string('title_disc')->nullable()->default(null);
-            $table->text('description');
+            $table->text('description')->nullable()->default(null);
             $table->integer('parent_category_id');
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
