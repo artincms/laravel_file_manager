@@ -32,8 +32,6 @@ class CreateLFMFiles extends Migration
             $table->integer('large_version')->unsigned();
             $table->integer('medium_version')->unsigned();
             $table->integer('small_version')->unsigned();
-            $table->integer('category_id')->unsigned();
-
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
