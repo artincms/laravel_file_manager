@@ -64,6 +64,9 @@ a.btn.btn-sm.btn-primary.grid-trash-o {
     background-color: red;
     border-color: red;
 }
+.cursor_wait{
+    cursor: wait !important;
+}
 .panel-nav {
     height: 4%;
     display: list-item;

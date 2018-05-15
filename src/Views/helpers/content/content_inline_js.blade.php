@@ -96,19 +96,31 @@
             });
 
         }
-        var elements = document.querySelectorAll( '.demo-image' );
-        Intense( elements );
+
+
+
     });
 
+    function init_fullscreen()
+    {
+
+        $('.demo-image').addClass('cursor_wait');
+        setTimeout( function () {
+            $('.demo-image').removeClass('cursor_wait');
+            var elements = document.querySelectorAll( '.demo-image' );
+            Intense( elements );
+        },1000 ) ;
+
+    }
+
     function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small) {
-        console.log(user_name);
         var html =
             '' +
             '<div class="row">' +
             '<div class="demos col-md-6 sweet_icon">';
         if (type == "Image") {
             html += '<div data-title="' + title + '" data-caption="create at :' + created_date + ' by ' + user_name + '" class="demo-image first my_crop_image" data-image="' + src_orginal + '" >' +
-                '<img data-id="'+id+'" src="' + src_medium + '"  class="my_crop_image" >' +
+                '<img data-id="'+id+'" src="' + src_medium + '"  class="my_crop_image" onload="init_fullscreen()" >' +
                 '</div>';
         }
         else if (type == "FileIcon") {
@@ -174,7 +186,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio" name="selectimage" value="orginal">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
                     '</div>' +
                     '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
                     '   <div class="input-group-append"> ' +
@@ -188,7 +200,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="large">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" href="'+src_large+'">large</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" target="_blank" href="'+src_large+'">large</a></span>' +
                     '</div>' +
                     '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                     '<div class="input-group-append"> ' +
@@ -202,7 +214,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="medium">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'">Medium</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'" target="_blank">Medium</a></span>' +
                     '</div>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                     '<div class="input-group-append"> ' +
@@ -216,7 +228,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="small">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="small_link" class="color_white" href="'+src_small+'">Small</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="small_link" class="color_white" href="'+src_small+'" target="_blank">Small</a></span>' +
                     '</div>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
                     '<div class="input-group-append"> ' +

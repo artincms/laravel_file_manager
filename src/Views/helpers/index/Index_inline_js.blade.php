@@ -10,21 +10,6 @@
         iframe.attr("src",src);
 
     });
-    //---------------------------------------------------------------------------------------------------------------------//
-    $(document).off("click", '.create_category');
-    $(document).on('click', '.create_category', function (e) {
-        var src = $(this).attr('href') ;
-        var iframe = $('iframe.modal_iframe');
-        iframe.attr("src",src);
-        iframe.on("load", function() {
-            $('.modal-footer').removeClass('hidden') ;
-            //$(this).contents().find("#btn_submit_create_category").addClass('hidden');
-            $('#create_modal_button').off('click');
-            $('#create_modal_button').on('click', function (e) {
-                iframe.contents().find("#btn_submit_create_category").click();
-            });
-        });
-    });
 
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#EditFile');
@@ -35,6 +20,21 @@
         $('.modal-footer').addClass('hidden') ;
 
     });
+    //---------------------------------------------------------------------------------------------------------------------//
+    $(document).off("click", '.create_category');
+    $(document).on('click', '.create_category', function (e) {
+        var src = $(this).attr('href') ;
+        var iframe = $('iframe.modal_iframe');
+        iframe.attr("src",src);
+        iframe.on("load", function() {
+            //$(this).contents().find("#btn_submit_create_category").addClass('hidden');
+            $('#create_modal_button').off('click');
+            $('#create_modal_button').on('click', function (e) {
+                iframe.contents().find("#btn_submit_create_category").click();
+            });
+        });
+    });
+
 
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '.uploadfile');
@@ -42,7 +42,6 @@
         e.preventDefault() ;
         var src = $(this).attr('href') ;
         $('iframe.modal_iframe').attr("src",src);
-        $('.modal-footer').addClass('hidden') ;
     });
 
     //---------------------------------------------------------------------------------------------------------------------//

@@ -24,6 +24,7 @@
     $(document).off("click", '#'+insert_button_id);
     $(document).on('click', '#'+insert_button_id, function (e) {
         var iframe = $('iframe.modal_iframe');
+        iframe.reload(true);
         iframe.contents().find("#insert_file").click();
     });
 

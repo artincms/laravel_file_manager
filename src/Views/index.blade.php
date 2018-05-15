@@ -30,7 +30,7 @@
                     </label>
                 </div>
                 <label href="{{route('LFM.FileUpload' , ['category_id' =>0 , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile" data-toggle="modal"
-                   data-target="#create_modal">
+                   data-target="#create_upload_modal">
                     <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
                 </label>
                 <div class="btn-group" data-toggle="buttons">
@@ -67,7 +67,7 @@
             @include('laravel_file_manager::content')
         </div>
     </div>
-    {{--add modal Create category section--}}
+    {{--add modal Create  section--}}
     <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -88,7 +88,26 @@
             </div>
         </div>
     </div>
-    {{--END Create Category Modal--}}
+    {{--END Create  Modal--}}
+
+    {{--add modal Create Upload section--}}
+    <div class="modal fade" id="create_upload_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="modal_iframe"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--END Create Upload Modal--}}
 
 @endsection
 @section('javascript')
