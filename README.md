@@ -180,6 +180,7 @@ function callback(result)
    </li>
   </ul>
   <p>  you can access to file manager with :http://www.yourdomain.com/LFM/ShowCategories</p>
+ <h3>Generate Link</h3>
  <h4> Generate Download Link </h4>
   whit this below helper function you can generate download link in anywhere of your project .
   <div class="highlight highlight-text-html-php"><pre>
@@ -195,8 +196,12 @@ function callback(result)
 <li>$width is width of result image</li>
 <li>$height is height of result image</li>
 </ul>  
- 
- <h3>custom config</h3>
+ <h4>Generate Base64 Image</h4>
+  whit this below helper function you can create Base64 Image .
+   <div class="highlight highlight-text-html-php"><pre>
+ LFM_GetBase64Image($file_id, $size_type, $not_found_img , $inline_content , $quality , $width , $height )    </pre> </div>
+ this helpers config as above with different $inline_content that if it was true you can create base 64 Image .
+ <h3>Custom config</h3>
  if you want to have custom config you can chage config/laravel_file_manager.php file as you want .
  <ul>
  <li>'private_middlewares' and 'public_middlewares' describe what middelware should assign to private and public route ,you can add auth and other middelware you want .</li>
