@@ -81,4 +81,10 @@ class File extends Model
         }
         return $user_id ;
     }
+
+    public function getHummanSizeAttribute()
+    {
+        return LFM_FileSizeConvert($this->size) ;
+    }
+
 }
