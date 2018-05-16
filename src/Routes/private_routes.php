@@ -8,6 +8,9 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@showCategory']);
 
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@storeCategory']);
+    Route::post('UpdateCategory', ['as' => 'LFM.UpdateCategory', 'uses' => 'ManagerController@updateCategory']);
+    Route::post('EditFileName', ['as' => 'LFM.EditFileName', 'uses' => 'ManagerController@editFileName']);
+    Route::get('EditFile/{file_id}', ['as' => 'LFM.EditFile', 'uses' => 'ManagerController@editFile']);
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@bulkDelete']);
 

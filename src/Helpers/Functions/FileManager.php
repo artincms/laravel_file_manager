@@ -134,8 +134,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback'))->render();
-    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#create_' . $modal_id . '" id="' . $button_id . '">' . $button_content . '</button>';
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback','button_id'))->render();
+    $result['button'] = '<button class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
 

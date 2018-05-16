@@ -30,6 +30,7 @@
     $(document).off("click", '#sweet_image');
     $(document).on('click', '#sweet_image', function (e) {
         e.preventDefault() ;
+        console.log();
         var id = $(this).attr('data-id');
         var title = $(this).attr('title');
         var user_name = $(this).attr('data-user-name');
@@ -41,6 +42,7 @@
         var src_large = download_url(id,'large');
         var src_medium = download_url(id,'medium');
         var src_small = download_url(id,'small');
+        var src_img = download_url(id,'small','404.png',100,250,200);
         var insert = '{{$insert}}'  ;
         var footer = '' +
             '<div class="swal2-actions" style="display: flex;">' +
@@ -66,7 +68,7 @@
             '   <button type="button" class="swal2-cancel swal2-styled font-size-14" aria-label="" style="display: inline-block;" id="cancel_footer_btn">Cancel</button>' ;
         footer += ''+
             '</div>';
-        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small) ;
+        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img) ;
         if (insert == 'insert' && type == 'Image' )
         {
             swal({
@@ -113,14 +115,14 @@
 
     }
 
-    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small) {
+    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img) {
         var html =
             '' +
             '<div class="row">' +
             '<div class="demos col-md-6 sweet_icon">';
         if (type == "Image") {
             html += '<div data-title="' + title + '" data-caption="create at :' + created_date + ' by ' + user_name + '" class="demo-image first my_crop_image" data-image="' + src_orginal + '" >' +
-                '<img data-id="'+id+'" src="' + src_medium + '"  class="my_crop_image" onload="init_fullscreen()" >' +
+                '<img data-id="'+id+'" src="' + src_img + '"  class="my_crop_image" onload="init_fullscreen()" >' +
                 '</div>';
         }
         else if (type == "FileIcon") {
@@ -169,9 +171,9 @@
                 html +=
                     '<div class="detail_image clearfix">' +
                     '<div class="user_detail row">' +
-                    '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                    '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                    '<i class="fa fa-user col-md-6 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
+                    '<i class="fa fa-calendar-plus-o col-md-6 col-sm-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                    '<i class="fa fa-calendar-o col-md-6 col-md-6 col-sm-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                    '<i class="fa fa-user col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
 
                     '</div> ' +
                     '</div>' +
@@ -242,9 +244,9 @@
 
                     '<div class="detail_image clearfix">' +
                     '<div class="user_detail row">' +
-                    '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                    '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                    '<i class="fa fa-user col-md-12 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>';
+                    '<i class="fa fa-calendar-plus-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                    '<i class="fa fa-calendar-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                    '<i class="fa fa-user col-md-12 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>';
                 html +=
 
                     '</div>'+
@@ -270,9 +272,9 @@
             html +=
                 '<div class="detail_image clearfix">' +
                 '<div class="user_detail row">' +
-                '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                '<i class="fa fa-user col-md-6 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
+                '<i class="fa fa-calendar-plus-o col-md-6 6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                '<i class="fa fa-calendar-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                '<i class="fa fa-user col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
                 '</div> ' +
                 '</div>' +
                 '</div>'+
@@ -371,14 +373,15 @@
             i = i+1 ;
             $('#insert_file').attr('data-value',i) ;
             $(this).attr("checked", "checked");
-            $('#show_selected_item').html('<span class="fa-stack fa-1x btn btn-default btn-sm selected_insert"><i class="fa fa-circle-o fa-stack-2x insert_icon"></i><strong class="fa-stack-1x insert_text">'+i+'</strong></span>');
+            $('#show_selected_item').addClass('border-doted-left-1') ;
+            $('#show_selected_item').html('<span class="class="btn btn-default btn-sm">'+i+'</span>');
         }
         else if($(this).hasClass('selected') == false && $(this).attr('data-type') == 'file')
         {
             var i = parseInt($('#insert_file').attr('data-value'));
             i = i-1 ;
             $('#insert_file').attr('data-value',i) ;
-            $('#show_selected_item').html('<span class="fa-stack fa-1x btn btn-default btn-sm selected_insert"><i class="fa fa-circle-o fa-stack-2x"></i><strong class="fa-stack-1x">'+i+'</strong></span>');
+            $('#show_selected_item').html('<span class="class="btn btn-default btn-sm">'+i+'</span>');
 
         }
     });

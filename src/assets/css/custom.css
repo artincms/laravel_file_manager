@@ -34,7 +34,7 @@ body {
     border-color: #367fa9;
 }
 .media-manager {
-    margin-top: 2%;
+    margin-top: 1%;
 }
 .list-unstyled, .chart-legend, .contacts-list, .users-list, .media-content {
     list-style: none;
@@ -140,6 +140,7 @@ div.user_detail {
 }
 .my_crop_image {
     width: 100%;
+    line-height: 0;
 }
 .myicon {
     margin-right: 3%;
@@ -151,9 +152,6 @@ div.user_detail {
 }
 span.list_name_icon {
     margin-left: 10%;
-}
-img.my_crop_image {
-    margin-top: -25%;
 }
 a.btn.btn-sm.btn-success.uploadfile {
     margin-bottom:0.9%;
@@ -184,9 +182,18 @@ button.font-size-14 {
     width: 30%;
 }
 span#basic-insert {
-    width: 70%;
+    width: 100%;
     font-size: 15px;
     padding-top: 7%;
+}
+.border-doted-left-1{
+    border-left: 1px dotted !important;
+    padding: 4%;
+    min-width: 23px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    padding: 5px;
 }
 .selected_insert {
     padding-bottom: 100%;

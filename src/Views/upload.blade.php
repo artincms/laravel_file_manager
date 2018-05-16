@@ -26,6 +26,7 @@
     </div>
     <script type="text/javascript">
         //-----------------------------------------------------------------------------------------------------//
+        var route =[] ;
         $("#input-708").fileinput({
             theme: "fa",
             uploadUrl: "{{route('LFM.StoreUploads')}}",
@@ -35,12 +36,12 @@
                 _token: $('#token').val()
             },
             uploadAsync: true,
+            delete:false,
             @if($section && $section !='false' && $options !=false)
             maxFileCount: '{{$options['max_file_number']}}',
             allowedFileExtensions: [{!! $true_ext !!}],
             @endif
             elErrorContainer: "#errorBlock",
-            previewFileType: "image",
             browseClass: "btn btn-success",
             removeClass: "btn btn-danger",
             removeLabel: "Clear",
@@ -49,15 +50,9 @@
             uploadLabel: "Upload",
             uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
 
-        }).on('fileuploaded', function (event, data, id, index) {
-            if (data.response.result.is_picture == true && data.response.success == true) {
-                var id = data.response.result.ID;
-                var btn_route = '/LFM/EditPicture/' + id;
-                var btns = '<a href=' + btn_route + ' class="kv-cust-btn btn btn-kv btn-secondary" title="Edit"{dataKey}>' +
-                    '<i class="glyphicon glyphicon-edit"></i>' +
-                    '</a>';
-                $(".file-footer-buttons").append(btns);
-            }
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            var id = data.response.result.ID;
+            $('.kv-file-remove').remove();
             if(typeof parent.refresh !== 'undefined')
             {
                 parent.refresh() ;

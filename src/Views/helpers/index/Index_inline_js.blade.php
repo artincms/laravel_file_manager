@@ -21,6 +21,16 @@
 
     });
     //---------------------------------------------------------------------------------------------------------------------//
+    $(document).off("click", '#EditFileName');
+    $(document).on('click', '#EditFileName', function (e) {
+        e.preventDefault() ;
+        var src = $(this).attr('href') ;
+        $('iframe.modal_iframe').attr("src",src);
+        $('.modal-footer').addClass('hidden') ;
+
+    });
+
+    //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '.create_category');
     $(document).on('click', '.create_category', function (e) {
         var src = $(this).attr('href') ;
@@ -119,6 +129,7 @@
             $(this).prop("checked",false);
             $('#insert_file').attr('data-value' ,0);
             $('#show_selected_item').empty();
+            $('#show_selected_item').removeClass('border-doted-left-1');
             $('.total_loader').remove() ;
 
         });
@@ -200,5 +211,7 @@
         var url = '/LFM/DownloadFile/ID/'+id+'/'+typ_file+'/'+default_img+'/'+quality_file+'/'+width_file+'/'+height_file ;
         return url ;
     }
+    //-------------------------------------------------------------------------------------------------------------------------//
+    var panel_height = $('.panel-body').height();
 
 </script>

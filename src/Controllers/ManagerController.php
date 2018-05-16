@@ -18,6 +18,10 @@ class ManagerController extends Controller
     //categories
     public function showCategories($insert = false, $callback = false, $section = false)
     {
+        if ($insert && !$callback )
+        {
+            abort(404) ;
+        }
         if ($section) {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'];
@@ -124,6 +128,32 @@ class ManagerController extends Controller
             });
             return response()->json($result);
         }
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $cat  =Category::find($request->id);
+        $cat->title = $request->title;
+        $cat->description = $request->description;
+        $cat->save();
+        $result['success'] = true;
+        $messages[] = "Your Category is created";
+        return response()->json($result);
+    }
+
+    public function editFile($file_id)
+    {
+        $file = File::find($file_id);
+        return view('laravel_file_manager::edit_file_name', compact('file'));
+    }
+    public function editFileName(Request $request)
+    {
+        $file  =File::find($request->id);
+        $file->originalName = $request->name;
+        $file->save();
+        $result['success'] = true;
+        $messages[] = "Your Category is created";
+        return response()->json($result);
     }
 
     public function showCategory(Request $request)
