@@ -74,16 +74,16 @@
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                             <a>
                                 <img id="sweet_image" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type'=>'orginal','default_img'=>'404.png','quality'=>100,'width'=>190,'height'=>127])}}"
-                                     class="img-category-thumbnail" title="{{$file['name']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
-                                     data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"/>
+                                     class="img-category-thumbnail" title="{{$file['name']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                                     data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}"/>
                             </a>
                         @elseif($file->filemimetype->icon_class)
-                            <a title="{{$file['name']}}" href="" id="sweet_image" title="{{$file['name']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}}@else public @endif"
+                            <a title="{{$file['name']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['name']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                data-size="{{$file->size}}">
                                 <i class="fa {{$file->filemimetype->icon_class}} img-file-thumbnail"></i></a>
                         @else
-                            <a title="{{$file['name']}}" href="" id="sweet_image" title="{{$file['name']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
+                            <a title="{{$file['name']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['name']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
                                data-user-name="@if ($file->user) {{$file->user->name}}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File">
                                 <i class="fa fa-file img-file-thumbnail"></i></a>
