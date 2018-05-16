@@ -30,7 +30,7 @@ function LFM_Sanitize($string, $force_lowercase = true, $anal = false)
 
 function LFM_SmartCropIMG($file, $options = [])
 {
-    $smartcrop = \ArtinCMS\LFM\Helpers\Classes\SmartCropClass($file, $options);
+    $smartcrop = new \ArtinCMS\LFM\Helpers\Classes\SmartCropClass($file, $options);
     //Analyse the image and get the optimal crop scheme
     $res = $smartcrop->analyse();
     //Generate a crop based on optimal crop scheme
