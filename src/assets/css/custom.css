@@ -107,6 +107,9 @@ label#label_modal_sweet {
     font-size: 13px;
     margin-top: 2%;
 }
+img#sweet_image {
+    cursor: pointer;
+}
 .detail_image {
     font-size: 18px;
 }
@@ -243,6 +246,7 @@ li.inserted_tumb {
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 /*____________________________________ADD tooltip csss_______________________________________________*/
 .tooltip_copy {
     position: relative;
@@ -390,10 +394,6 @@ li.inserted_tumb {
 
 /*____________________________________End Full Screem View css_______________________________________________*/
 
-@media (min-width: 1024px)
-{
-    .modal-dialog {
-        max-width: 818px;
-        margin: 1.75rem auto;
-    }
-}
+
+
+

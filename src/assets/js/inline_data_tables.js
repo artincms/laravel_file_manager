@@ -153,8 +153,8 @@ function get_columns() {
         },
         {
             title: "Action",
-            data: 'action',
-            name: 'action',
+            searchable: false,
+            orderable: false,
             mRender: function (data, type, row) {
                 var html = '';
                 if (row.parent_category == null) {
