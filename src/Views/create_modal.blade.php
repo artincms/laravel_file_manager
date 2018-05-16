@@ -7,8 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 130px) ;">
-                    <iframe class="modal_iframe" src="{{$src}}" style="width: 100%;max-height:  calc(100vh - 177px) ;border: none"></iframe>
+            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 130px) ;height:  calc(100vh - 130px) ;">
+                    <iframe class="modal_iframe" src="{{$src}}" style="width: 100%;max-height:  calc(100vh - 177px) ;border: none;height:  calc(100vh - 177px) ;"></iframe>
 
             </div>
             <div class="modal-footer">
