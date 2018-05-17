@@ -1,10 +1,8 @@
-$(document).off("click", '#show_list');
+<script type="text/javascript">
+
+
+//----------------------------------------------------------------------------------//
 $(document).off("click", '#category_list');
-$(document).on('click', '#show_list', function (e) {
-    var category_id = $('#refresh_page').attr('data-id');
-    var category_name = $('#refresh_page').attr('data-category-name');
-    datatable(category_id,category_name);
-});
 $(document).on('click', '#category_list', function (e) {
     e.preventDefault() ;
     var category_id = $(this).attr('data-id');
@@ -41,10 +39,7 @@ function breadcrumbs(id, cat_name) {
 
 function datatable(id, cat_name) {
     var cat_name = cat_name || false;
-    var th=['','Row','ID','name','user','action'] ;
     var section = $('#refresh_page').attr('data-section');
-    set_page_html(th);
-    breadcrumbs(id, cat_name);
     var ajax_url = '/LFM/ShowListCategory';
     var more_data = {
         id: id,
@@ -67,9 +62,6 @@ function datatable(id, cat_name) {
 function datatable_search(id, search ,cat_name) {
     var cat_name = cat_name || false;
     var search = search || false ;
-    var th=['','Row','ID','name','user','Path','action']
-    set_page_html(th);
-    breadcrumbs(id, cat_name);
     var ajax_url = '/LFM/SearchMedia';
     var more_data = {
         id: id,
@@ -77,7 +69,8 @@ function datatable_search(id, search ,cat_name) {
     };
     var columns = get_columns() ;
     columns.push(add_path_column());
-    $('#grid_media_manager').dataTable({
+    console.log(columns);
+    $('#search_media_datatable').dataTable({
         searching: false,
         serverSide: false,
         ajax: {
@@ -138,8 +131,6 @@ function get_columns() {
                     return '<a id="sweet_image" data-id="' + row.id + '" id="file_list" data-type="File" title="' + row.name + '" data-user-name ="' + row.user.name + '" data-created-date="' + row.created_at + '" data-updated-date="' + row.updated_at + '"><i class="fa ' + row.icon + '"><span class="list_name_icon">' + row.name + '</span></a>';
 
                 }
-
-
             }
         },
         {
@@ -208,8 +199,8 @@ function get_columns() {
 function add_path_column() {
     var column = {
             title: "Path",
-            data: "id",
-            name: "id",
+            data: "path",
+            name: "path",
             mRender: function (data, type, row) {
                 var path = '/' ;
                     $.each(row.Path,function (key,value) {
@@ -243,7 +234,8 @@ function set_attribute(id,cat_name) {
     var callback = $('#refresh_page').attr('data-callback');
     $(".uploadfile").attr('href', base_url+'/LFM/FileUpload/' + id+'/'+callback+'/'+section);
     $("#refresh_page").attr('data-id', id);
-    $("#refresh_page").attr('data-type', 'list');
+    //$("#refresh_page").attr('data-type', 'list');
     $(".create_category").attr('href',base_url + '/LFM/ShowCategories/create/' + id+'/'+callback+'/'+section);
     $( "#refresh_page" ).attr('data-category-name' , cat_name);
 }
+</script>

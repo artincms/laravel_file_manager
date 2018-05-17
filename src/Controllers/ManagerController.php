@@ -45,40 +45,20 @@ class ManagerController extends Controller
 
     public function searchMedia(Request $request)
     {
-        $file = [];
-        $cat = [];
         $categories = Category::with('user')->select('id', 'title as name', 'user_id', 'parent_category_id', 'description', 'created_at', 'updated_at')
             ->where([
                 ['user_id', '=', $this->getUserId()],
                 ['title', 'like', '%' . $request->search . '%']
-            ])->get()->toArray();
+            ])->get();
         $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id', 'category_id', 'extension', 'mimeType', 'path', 'created_at', 'updated_at')
             ->where([
                 ['user_id', '=', $this->getUserId()],
                 ['originalName', 'like', '%' . $request->search . '%']
-            ])->get()->toArray();
-
-        foreach ($files as $f) {
-            if ($f['file_mime_type']['icon_class']) {
-                $f['icon'] = $f['file_mime_type']['icon_class'];
-            } else {
-                $f['icon'] = 'fa-file-o';
-            }
-            $f['type'] = 'file';
-            $f['Path'] = $this->getBreadcrumbs($f['category_id']);
-            if ($f['category_id'] != 0) {
-                $file_cat = Category::find($f['category_id']);
-                $f['Path'][] = ['id' => $file_cat->id, 'title' => $file_cat->title, 'type' => 'Enable'];
-            }
-            $file[] = $f;
-        }
-        foreach ($categories as $category) {
-            $category['type'] = 'category';
-            $category['icon'] = 'fa-folder';
-            $category['Path'] = $this->getBreadcrumbs($category['id']);
-            $cat[] = $category;
-        }
-        return datatables()->of(array_merge($cat, $file))->toJson();
+            ])->get();
+        $breadcrumbs = [['id'=>0,'title'=>'media','type'=>'Enable'],['id'=>0,'title'=>'search__'.$request->search,'type'=>'DisableLink']];
+        $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
+        $result['success'] = true;
+        return response()->json($result);
     }
 
     public function editCategory($category_id)

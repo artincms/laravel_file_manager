@@ -1,4 +1,8 @@
-
+@extends('laravel_file_manager::layouts.master')
+@section('add_js')
+    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>
+@endsection
+@section('content')
     <div class="container-fluid">
         @php( $i =0)
         @foreach($datas as $data)
@@ -11,4 +15,4 @@
             </div>
         @endforeach
     </div>
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>
+@endsection

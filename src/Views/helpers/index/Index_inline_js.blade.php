@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     //---------------------------------------------------------------------------------------------------------------------''
     $(document).off("click", '#EditCategory');
     $(document).on('click', '#EditCategory', function (e) {
@@ -65,19 +64,8 @@
     });
 
     function refresh() {
-        var refresh = $('#refresh_page');
-        var id = refresh.attr('data-id');
-        var type = refresh.attr('data-type');
-        console.log(id , type) ;
-        if(type == 'grid')
-        {
-            show_category(id);
-        }
-        else
-        {
-            datatable(id) ;
-        }
-
+        var id = $('#refresh_page').attr('data-id');
+        show_category(id);
     }
 
     //---------------------------------------------------------------------------------------------------------------------//
@@ -86,7 +74,8 @@
     $(document).on('click', '#show_grid', function (e) {
         id =$('#refresh_page').attr('data-id') ;
         $('#refresh_page').attr('data-type','grid') ;
-        show_category(id);
+        $('#show_grid_tab').tab('show') ;
+        //show_category(id);
     });
 
     //---------------------------------------------------------------------------------------------------------------------//
@@ -99,9 +88,34 @@
         var id = 0;
         if(value !='')
         {
-            datatable_search(id,value,'search') ;
+            search(id,value) ;
         }
     });
+
+    function search(id,search)
+    {
+        $.ajax({
+            type: "POST",
+            url: "{{route('LFM.SearchMedia')}}",
+            dataType: "json",
+            data :{
+                section:'{{LFM_CheckFalseString($section)}}',
+                insert: '{{LFM_CheckFalseString($insert)}}',
+                id:id,
+                search:search
+            },
+            success: function (result) {
+                if (result.success == true)
+                {
+                    $( "#show_search_result" ).html(result.html);
+                    $('#show_search_tab').tab('show') ;
+                }
+            },
+            error: function (e) {
+            }
+        })
+    }
+
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#insert_file');
     $(document).on('click', '#insert_file', function (e) {

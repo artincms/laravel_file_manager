@@ -26,8 +26,6 @@
     $(document).on('click', '#'+button_modal_id, function (e) {
         $(FrameID).modal();
         $( '.modal_iframe' ).attr( 'src', function ( i, val ) { return val; });
-
-
     });
     //------------------------------------------------------------------------------------//
 

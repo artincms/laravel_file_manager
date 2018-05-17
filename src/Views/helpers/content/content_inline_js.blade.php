@@ -1,4 +1,10 @@
 <script type="text/javascript">
+    //------------------------------------------------------------------------------------------------------------------------//
+    $(document).off("click", '#show_list');
+    $(document).on('click', '#show_list', function (e) {
+        $('#show_list_tab').tab('show') ;
+        $('#refresh_page').attr('data-type','list') ;
+    });
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '.link_to_category');
     $(document).on('click', '.link_to_category', function (e) {
@@ -140,27 +146,29 @@
             if (insert != 'insert') {
                 html +=
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Orginal</span>' +
-                    '<input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
+                    '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
                     '<div input-group-append">' +
-                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></button>' +
+                    '   <span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Large</span>' +
-                    '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_large+'">Large</a></span>' +
+                    '   <input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                     '<div input-group-append">' +
-                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="large" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="large" ><i class="fa fa-copy"></i></button>' +
+                    '   <span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Medium</span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_medium+'">Medium</a></span>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                     '<div input-group-append">' +
                     '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
@@ -170,7 +178,7 @@
                     '</div>' +
                     '</div>' +
                     '<div class="input-group clearfix margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Small</span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_small+'">Small</a></span>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
                     '<div input-group-append">' +
                     '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
@@ -362,12 +370,20 @@
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
 
-                if (result.success == true && display == 'grid') {
+                if (result.success == true) {
                     $( ".panel-body" ).empty();
                     $( ".panel-body" ).html(result.html);
-                }else if(display == 'list')
-                {
-                    datatable(info['parent_id']) ;
+                    var type = $('#refresh_page').attr('data-type');
+                    if(type == 'grid')
+                    {
+                        $('#show_grid_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','grid') ;
+                    }
+                    else
+                    {
+                        $('#show_list_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','list') ;
+                    }
                 }
             },
             error: function (e) {
@@ -493,13 +509,22 @@
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
                 var id = $( "#refresh_page" ).attr('data-id');
-                if (result.success == true && display == 'grid') {
+                var type = $('#refresh_page').attr('data-type');
+                if (result.success == true) {
                     $( ".panel-body" ).empty();
                     $( ".panel-body" ).html(result.html);
-                }
-                else if(display == 'list')
-                {
-                    datatable(id) ;
+
+
+                    if(type == 'grid')
+                    {
+                        $('#show_grid_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','grid') ;
+                    }
+                    else
+                    {
+                        $('#show_list_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','list') ;
+                    }
                 }
             },
             error: function (e) {
@@ -551,14 +576,25 @@
             },
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (result) {
-                if (result.success == true) {
+                var type = $('#refresh_page').attr('data-type');
+                if (result.success == true)
+                {
                     $( ".panel-body" ).empty();
                     $( ".uploadfile" ).attr('href' , result.button_upload_link);
                     $( ".create_category" ).attr('href' , result.button_category_create_link);
                     $( "#refresh_page" ).attr('data-id' , result.parent_category_id);
                     $( "#refresh_page" ).attr('data-category-name' , result.parent_category_name);
                     $( ".panel-body" ).html(result.html);
-
+                    if(type == 'grid')
+                    {
+                        $('#show_grid_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','grid') ;
+                    }
+                    else
+                    {
+                        $('#show_list_tab').tab('show') ;
+                        $('#refresh_page').attr('data-type','list') ;
+                    }
                 }
             },
             error: function (e) {

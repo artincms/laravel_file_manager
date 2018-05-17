@@ -1,4 +1,8 @@
-
+@extends('laravel_file_manager::layouts.master')
+@section('add_js')
+    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>
+@endsection
+@section('content')
     <div class="container-fluid">
         <ul class="media-content clearfix col-md-12 insert_thumb">
             @foreach($datas as $data)
@@ -24,5 +28,4 @@
             @endforeach
         </ul>
     </div>
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>
-
+@endsection

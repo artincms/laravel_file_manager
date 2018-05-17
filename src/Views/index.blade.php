@@ -5,7 +5,6 @@
 @endsection
 @section('add_js')
     <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/FullScreenView.js')}}"></script>
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/inline_data_tables.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/packages/datatabels/datatables.min.js')}}"></script>
 
 @endsection

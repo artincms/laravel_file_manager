@@ -56,6 +56,9 @@ body {
     border-color: #3c8dbc;
     color: #ffffff;
 }
+.margin-right-1{
+    margin-right: 1%;
+}
 .panel.panel-headline button#search-btn {
     background: #3c8dbc;
     color: #ffff;
@@ -208,6 +211,9 @@ strong.fa-stack-1x.insert_text {
     left: -1px;
     font-size: 14px;
     bottom: 1px;
+}
+.blue {
+    color: #007bff!important ;
 }
 i#cancel_btn {
     font-size: 20px;
