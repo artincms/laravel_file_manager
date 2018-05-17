@@ -21,7 +21,6 @@ class CreateLFMFiles extends Migration
             $table->string('originalName', 255)->nullable()->default(null);
             $table->string('extension', 255)->nullable()->default(null);
             $table->string('mimeType', 255)->nullable()->default(null);
-            $table->double('size')->nullable()->default(null);
             $table->string('path', 255)->nullable()->default(null);
             $table->string('filename', 255)->nullable()->default(null);
             $table->string('file_md5' ,255)->nullable()->default(null);
@@ -29,9 +28,13 @@ class CreateLFMFiles extends Migration
             $table->string('medium_filename' ,255)->nullable()->default(null);
             $table->string('small_filename' ,255)->nullable()->default(null);
             $table->integer('version')->unsigned()->default(0);
-            $table->integer('large_version')->unsigned()->default(0);;
-            $table->integer('medium_version')->unsigned()->default(0);;
-            $table->integer('small_version')->unsigned()->default(0);;
+            $table->integer('large_version')->unsigned()->default(0);
+            $table->integer('medium_version')->unsigned()->default(0);
+            $table->integer('small_version')->unsigned()->default(0);
+            $table->double('size')->nullable()->default(null);
+            $table->integer('large_size')->unsigned()->default(0);
+            $table->integer('medium_size')->unsigned()->default(0);
+            $table->integer('small_size')->unsigned()->default(0);
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
