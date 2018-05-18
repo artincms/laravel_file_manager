@@ -1,4 +1,10 @@
 <script type="text/javascript">
+    //------------------------------------------------------------------------------------------------------------------------//
+    $(document).off("click", '#show_list');
+    $(document).on('click', '#show_list', function (e) {
+        $('#show_list_tab').tab('show') ;
+        $('#refresh_page').attr('data-type','list') ;
+    });
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '.link_to_category');
     $(document).on('click', '.link_to_category', function (e) {
@@ -11,20 +17,24 @@
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#select_all');
     $(document).on('click', '#select_all', function (e) {
-        $('.check').each(function () {
-            $(this).addClass('selected');
-            $(this).attr("checked", "checked");
-        }) ;
+        set_selected_all();
+        var i = 0 ;
+        var type = $('refresh_page').attr('data-type');
+        items = get_selected(['file'],type) ;
         $('.toggle_select').attr("id", "select_none");
+        set_inserted_to_button(items.length);
     });
+
+
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#select_none');
     $(document).on('click', '#select_none', function (e) {
         $('.check').each(function () {
             $(this).removeClass('selected');
-            $(this).removeAttr("checked");
+            $(this).prop('checked', false);
         });
-        $('.toggle_select').attr("id","select_all")
+        $('.toggle_select').attr("id","select_all");
+        set_inserted_to_button(0);
     });
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#sweet_image');
@@ -41,7 +51,12 @@
         var src_large = download_url(id,'large');
         var src_medium = download_url(id,'medium');
         var src_small = download_url(id,'small');
+        var src_img = download_url(id,'small','404.png',100,250,200);
         var insert = '{{$insert}}'  ;
+        var humman_size = $(this).attr('data-humman_size');
+        var humman_size_large = $(this).attr('data-humman_size_large');
+        var humman_size_medium = $(this).attr('data_humman_size_medium');
+        var humman_size_small = $(this).attr('data-humman_size_small');
         var footer = '' +
             '<div class="swal2-actions" style="display: flex;">' +
             '<div class="input-group dimension margin-top-1">' +
@@ -66,7 +81,7 @@
             '   <button type="button" class="swal2-cancel swal2-styled font-size-14" aria-label="" style="display: inline-block;" id="cancel_footer_btn">Cancel</button>' ;
         footer += ''+
             '</div>';
-        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small) ;
+        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small) ;
         if (insert == 'insert' && type == 'Image' )
         {
             swal({
@@ -96,19 +111,31 @@
             });
 
         }
-        var elements = document.querySelectorAll( '.demo-image' );
-        Intense( elements );
+
+
+
     });
 
-    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small) {
-        console.log(user_name);
+    function init_fullscreen()
+    {
+
+        $('.demo-image').addClass('cursor_wait');
+        setTimeout( function () {
+            $('.demo-image').removeClass('cursor_wait');
+            var elements = document.querySelectorAll( '.demo-image' );
+            Intense( elements );
+        },1000 ) ;
+
+    }
+
+    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small) {
         var html =
             '' +
             '<div class="row">' +
             '<div class="demos col-md-6 sweet_icon">';
         if (type == "Image") {
             html += '<div data-title="' + title + '" data-caption="create at :' + created_date + ' by ' + user_name + '" class="demo-image first my_crop_image" data-image="' + src_orginal + '" >' +
-                '<img data-id="'+id+'" src="' + src_medium + '"  class="my_crop_image" >' +
+                '<img data-id="'+id+'" src="' + src_img + '"  class="my_crop_image" onload="init_fullscreen()" >' +
                 '</div>';
         }
         else if (type == "FileIcon") {
@@ -126,40 +153,54 @@
             if (insert != 'insert') {
                 html +=
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Orginal</span>' +
-                    '<input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
+                    '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" >copy</button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></button>' +
+                    '   <span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Large</span>' +
-                    '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_large+'">Large</a></span>' +
+                    '   <input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_large+'</span>'+
+                    '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="large" >copy</button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="large" ><i class="fa fa-copy"></i></button>' +
+                    '   <span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Medium</span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_medium+'">Medium</a></span>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_medium+'</span>'+
+                    '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="medium" >copy</button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="medium" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '<div class="input-group clearfix margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Small</span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_small+'">Small</a></span>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_small+'</span>'+
+                    '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="small" >copy</button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<button id="copy_path" class="btn btn-default" data-clipboard-target="small" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' ;
 
                 html +=
                     '<div class="detail_image clearfix">' +
                     '<div class="user_detail row">' +
-                    '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                    '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                    '<i class="fa fa-user col-md-6 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
+                    '<i class="fa fa-calendar-plus-o col-md-6 col-sm-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                    '<i class="fa fa-calendar-o col-md-6 col-md-6 col-sm-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                    '<i class="fa fa-user col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
 
                     '</div> ' +
                     '</div>' +
@@ -174,12 +215,12 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio" name="selectimage" value="orginal">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
                     '</div>' +
                     '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
-                    '   <div class="input-group-append"> ' +
+                    '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="orginal" >copy</span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -188,12 +229,12 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="large">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" href="'+src_large+'">large</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" target="_blank" href="'+src_large+'">large</a></span>' +
                     '</div>' +
                     '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="large" >copy</span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="large" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -202,12 +243,12 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="medium">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'">Medium</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'" target="_blank">Medium</a></span>' +
                     '</div>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="medium" >copy</span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="medium" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -216,12 +257,12 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="small">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="small_link" class="color_white" href="'+src_small+'">Small</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="small_link" class="color_white" href="'+src_small+'" target="_blank">Small</a></span>' +
                     '</div>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="small" >copy</span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="small" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>'
@@ -230,9 +271,9 @@
 
                     '<div class="detail_image clearfix">' +
                     '<div class="user_detail row">' +
-                    '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                    '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                    '<i class="fa fa-user col-md-12 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>';
+                    '<i class="fa fa-calendar-plus-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                    '<i class="fa fa-calendar-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                    '<i class="fa fa-user col-md-12 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>';
                 html +=
 
                     '</div>'+
@@ -258,9 +299,9 @@
             html +=
                 '<div class="detail_image clearfix">' +
                 '<div class="user_detail row">' +
-                '<i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
-                '<i class="fa fa-calendar-o col-md-6" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
-                '<i class="fa fa-user col-md-6 margin-top-4" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
+                '<i class="fa fa-calendar-plus-o col-md-6 6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                '<i class="fa fa-calendar-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
+                '<i class="fa fa-user col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
                 '</div> ' +
                 '</div>' +
                 '</div>'+
@@ -336,17 +377,32 @@
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
 
-                if (result.success == true && display == 'grid') {
+                if (result.success == true) {
                     $( ".panel-body" ).empty();
                     $( ".panel-body" ).html(result.html);
-                }else if(display == 'list')
-                {
-                    datatable(info['parent_id']) ;
+                    var type = $('#refresh_page').attr('data-type');
+                    set_tab_show(type);
+                    set_inserted_to_button(0);
+
                 }
             },
             error: function (e) {
             }
         });
+    }
+
+    function set_tab_show(type)
+    {
+        if(type == 'grid')
+        {
+            $('#show_grid_tab').tab('show') ;
+            $('#refresh_page').attr('data-type','grid') ;
+        }
+        else
+        {
+            $('#show_list_tab').tab('show') ;
+            $('#refresh_page').attr('data-type','list') ;
+        }
     }
     //-----------------------------------------------------------------------------------------------------------------------//
 
@@ -357,19 +413,33 @@
         {
             var i = parseInt($('#insert_file').attr('data-value'));
             i = i+1 ;
-            $('#insert_file').attr('data-value',i) ;
             $(this).attr("checked", "checked");
-            $('#show_selected_item').html('<span class="fa-stack fa-1x btn btn-default btn-sm selected_insert"><i class="fa fa-circle-o fa-stack-2x insert_icon"></i><strong class="fa-stack-1x insert_text">'+i+'</strong></span>');
+            set_inserted_to_button(i);
         }
         else if($(this).hasClass('selected') == false && $(this).attr('data-type') == 'file')
         {
             var i = parseInt($('#insert_file').attr('data-value'));
             i = i-1 ;
-            $('#insert_file').attr('data-value',i) ;
-            $('#show_selected_item').html('<span class="fa-stack fa-1x btn btn-default btn-sm selected_insert"><i class="fa fa-circle-o fa-stack-2x"></i><strong class="fa-stack-1x">'+i+'</strong></span>');
-
+            $(this).removeAttr('checked') ;
+            set_inserted_to_button(i);
         }
     });
+    function set_inserted_to_button(inserted_number)
+    {
+        if(inserted_number ==0)
+        {
+            $('#show_selected_item').empty() ;
+            $('#show_selected_item').removeClass('border-doted-left-1') ;
+        }
+        else
+        {
+            $('#show_selected_item').addClass('border-doted-left-1') ;
+            $('#show_selected_item').html('<span class="class="btn btn-default btn-sm">'+inserted_number+'</span>');
+        }
+        $('#insert_file').attr('data-value',inserted_number) ;
+
+
+    }
     //-----------------------------------------------------------------------------------------------------------------------//
 
     $(document).off("click", '#bulk_delete');
@@ -390,7 +460,8 @@
             reverseButtons: true
         }).then((result) => {
             if (result.value) {
-                items = get_selected() ;
+                var type = $('refresh_page').attr('data-type');
+                items = get_selected(['file','category'],type) ;console.log(items);
                 bulk_delete(items) ;
                 swal(
                     'Deleted!',
@@ -410,49 +481,7 @@
     });
     //------------------------------------------------------------------------------------------------------------------------------------------//
 
-    function get_selected(data_type,width,height,type,quality)
-    {
-        var width = width || 0 ;
-        var height = height || 0 ;
-        var type = type || 'orginal' ;
-        var quality = quality || 100 ;
-        data_type = data_type || false ;
-        var items = [];
-        $('.selected').each(function(k , v) {
-            if(data_type !=false)
-            {
-                var data_t = $(this).attr('data-type')
-                if(data_t == data_type)
-                {
-                    var $this = $(this);
-                    item = {
-                        'id' : $this.data('id') ,
-                        'type' : $this.data('type') ,
-                        'parent_id' : $this.data('parent-id') ,
-                        'name' :  $this.data('name'),
-                        'width' : width,
-                        'height' : height,
-                        'type' : type,
-                        'quality':quality
 
-                    }
-                    items.push(item) ;
-                }
-            }
-            else
-            {
-                var $this = $(this);
-                item = {
-                    'id' : $this.data('id') ,
-                    'type' : $this.data('type') ,
-                    'parent_id' : $this.data('parent-id') ,
-
-                }
-                items.push(item) ;
-            }
-        });
-        return items
-    }
     function bulk_delete(items) {
         $.ajax({
             type: "POST",
@@ -466,13 +495,12 @@
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
                 var id = $( "#refresh_page" ).attr('data-id');
-                if (result.success == true && display == 'grid') {
+                var type = $('#refresh_page').attr('data-type');
+                if (result.success == true) {
                     $( ".panel-body" ).empty();
                     $( ".panel-body" ).html(result.html);
-                }
-                else if(display == 'list')
-                {
-                    datatable(id) ;
+                    set_tab_show(type);
+                    set_inserted_to_button(0);
                 }
             },
             error: function (e) {
@@ -524,14 +552,17 @@
             },
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (result) {
-                if (result.success == true) {
+                var type = $('#refresh_page').attr('data-type');
+                if (result.success == true)
+                {
                     $( ".panel-body" ).empty();
                     $( ".uploadfile" ).attr('href' , result.button_upload_link);
                     $( ".create_category" ).attr('href' , result.button_category_create_link);
                     $( "#refresh_page" ).attr('data-id' , result.parent_category_id);
                     $( "#refresh_page" ).attr('data-category-name' , result.parent_category_name);
                     $( ".panel-body" ).html(result.html);
-
+                    set_tab_show(type);
+                    set_inserted_to_button(0);//set no inserted
                 }
             },
             error: function (e) {
@@ -545,6 +576,66 @@
             attrs[attribute.name] = attribute.value;
         });
         return attrs;
+    }
+
+    function get_selected(data_type,data_view,insert)
+    {
+        data_type = data_type || false ;
+        data_view = data_view || 'grid' ;
+        insert = insert || false ;
+        var items = [];
+        $('.selected').each(function(k , v) {
+            if(data_type && data_view)
+            {
+                var data_t = $(this).attr('data-type');
+                var data_v = $(this).attr('data-view');
+                if($.inArray(data_t,data_type) !=-1 && data_v==data_view)
+                {
+                    var $this = $(this);
+                    if (!insert)
+                    {
+                        item = {
+                            'id' :$this.data('id') ,
+                            'type' : data_t,
+                            'parent_id' : $this.data('parent-id') ,
+                        }
+                    }
+                    else
+                    {
+                        item = {
+                            'id' : $this.data('id') ,
+                            'type' : 'orginal' ,
+                            'parent_id' : $this.data('parent-id') ,
+                            'name' :  $this.data('name'),
+                            'width' : 0,
+                            'height' : 0,
+                            'quality':100,
+                        }
+                    }
+                    items.push(item) ;
+                }
+            }
+            else
+            {
+                var $this = $(this);
+                item = {
+                    'id' : $this.data('id') ,
+                    'type' : $this.data('type') ,
+                    'parent_id' : $this.data('parent-id') ,
+
+                }
+                items.push(item) ;
+            }
+        });
+        return items
+    }
+
+    function set_selected_all()
+    {
+        $('.check').each(function () {
+            $(this).addClass('selected');
+            $(this).prop('checked', true);
+        }) ;
     }
 
 </script>

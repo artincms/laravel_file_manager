@@ -28,7 +28,7 @@ class LFMServiceProvider extends ServiceProvider
 	    ]);
 
 	    $this->publishes([
-		    __DIR__ . '/Migrations/' => database_path('migrations')
+		    __DIR__ . '/Database/Migrations/' => database_path('migrations')
 	    ], 'migrations');
 
 	    // for publish the assets files into main app

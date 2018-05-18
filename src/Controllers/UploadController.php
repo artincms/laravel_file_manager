@@ -16,7 +16,14 @@ class UploadController extends ManagerController
         if ($section and $section != 'false')
         {
             $options = $this->getSectionOptions($section);
-            $options = $options['options'];
+            if ($options['success'])
+            {
+                $options = $options['options'];
+            }
+            else
+            {
+                $options = false ;
+            }
         }
         else
         {
@@ -67,7 +74,7 @@ class UploadController extends ManagerController
                 return Media::downloadById($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "Name":
-                return Media::download_by_name($id, $size_type, $default_img, false, $quality, $width, $height);
+                return Media::downloadByName($id, $size_type, $default_img, false, $quality, $width, $height);
                 break;
             case "flag":
                 return Media::downloadFromPublicStorage($id, 'flags');

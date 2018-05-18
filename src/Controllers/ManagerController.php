@@ -18,6 +18,10 @@ class ManagerController extends Controller
     //categories
     public function showCategories($insert = false, $callback = false, $section = false)
     {
+        if ($insert && !$callback )
+        {
+            abort(404) ;
+        }
         if ($section) {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'];
@@ -41,40 +45,18 @@ class ManagerController extends Controller
 
     public function searchMedia(Request $request)
     {
-        $file = [];
-        $cat = [];
-        $categories = Category::with('user')->select('id', 'title as name', 'user_id', 'parent_category_id', 'description', 'created_at', 'updated_at')
-            ->where([
+        $categories = Category::with('user')->where([
                 ['user_id', '=', $this->getUserId()],
                 ['title', 'like', '%' . $request->search . '%']
-            ])->get()->toArray();
-        $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id', 'category_id', 'extension', 'mimeType', 'path', 'created_at', 'updated_at')
-            ->where([
+            ])->get();
+        $files = File::with('user', 'FileMimeType')->where([
                 ['user_id', '=', $this->getUserId()],
                 ['originalName', 'like', '%' . $request->search . '%']
-            ])->get()->toArray();
-
-        foreach ($files as $f) {
-            if ($f['file_mime_type']['icon_class']) {
-                $f['icon'] = $f['file_mime_type']['icon_class'];
-            } else {
-                $f['icon'] = 'fa-file-o';
-            }
-            $f['type'] = 'file';
-            $f['Path'] = $this->getBreadcrumbs($f['category_id']);
-            if ($f['category_id'] != 0) {
-                $file_cat = Category::find($f['category_id']);
-                $f['Path'][] = ['id' => $file_cat->id, 'title' => $file_cat->title, 'type' => 'Enable'];
-            }
-            $file[] = $f;
-        }
-        foreach ($categories as $category) {
-            $category['type'] = 'category';
-            $category['icon'] = 'fa-folder';
-            $category['Path'] = $this->getBreadcrumbs($category['id']);
-            $cat[] = $category;
-        }
-        return datatables()->of(array_merge($cat, $file))->toJson();
+            ])->get();
+        $breadcrumbs = [['id'=>0,'title'=>'media','type'=>'Enable'],['id'=>0,'title'=>'search - '.$request->search,'type'=>'DisableLink']];
+        $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
+        $result['success'] = true;
+        return response()->json($result);
     }
 
     public function editCategory($category_id)
@@ -87,6 +69,7 @@ class ManagerController extends Controller
 
     public function storeCategory(Request $request)
     {
+        dd($request->all());
         if ($request->ajax()) {
             if (auth()->check()) {
                 $user_id = auth()->id();
@@ -124,6 +107,32 @@ class ManagerController extends Controller
             });
             return response()->json($result);
         }
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $cat  =Category::find($request->id);
+        $cat->title = $request->title;
+        $cat->description = $request->description;
+        $cat->save();
+        $result['success'] = true;
+        $messages[] = "Your Category is created";
+        return response()->json($result);
+    }
+
+    public function editFile($file_id)
+    {
+        $file = File::find($file_id);
+        return view('laravel_file_manager::edit_file_name', compact('file'));
+    }
+    public function editFileName(Request $request)
+    {
+        $file  =File::find($request->id);
+        $file->originalName = $request->name;
+        $file->save();
+        $result['success'] = true;
+        $messages[] = "Your Category is created";
+        return response()->json($result);
     }
 
     public function showCategory(Request $request)
@@ -180,7 +189,7 @@ class ManagerController extends Controller
         $data = str_replace('data:image/png;base64,', '', $request->crope_image);
         $data = str_replace(' ', '+', $data);
         $file = File::find($request->file_id);
-        $res = Media::save_croped_image_base64($data, $file, $request->crop_type);
+        $res = Media::saveCropedImageBase64($data, $file, $request->crop_type);
         if ($res) {
             $message['success'] = true;
         } else {
@@ -207,18 +216,18 @@ class ManagerController extends Controller
         $file = [];
         $cat = [];
         if ($request->id == 0) {
-            $categories = Category::with(['child_categories', 'parent_category', 'user'])->select('id', 'title as name', 'user_id')->where([
+            $categories = Category::with(['child_categories', 'parent_category', 'user'])->where([
                 ['parent_category_id', '=', '0'],
                 ['user_id', '=', $this->getUserId()]
             ])->get()->toArray();
 
             if ($trueMimeType) {
-                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
+                $files = File::with('user', 'FileMimeType')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->getUserId()]
                 ])->whereIn('mimeType', $trueMimeType)->get()->toArray();
             } else {
-                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at', 'size')->where([
+                $files = File::with('user', 'FileMimeType')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->getUserId()]
                 ])->get()->toArray();

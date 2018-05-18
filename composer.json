@@ -19,7 +19,8 @@
 
     },
     "require": {
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "extra": {
         "laravel": {

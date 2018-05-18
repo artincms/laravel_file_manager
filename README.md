@@ -29,7 +29,7 @@ Laravel 5.5|5.6
 
 # Installation
 <h3>Quick installation</h3> 
-<div class="highlight highlight-source-shell"><pre>composer update "artincms/laravel_file_manager"</pre></div>
+<div class="highlight highlight-source-shell"><pre>composer require "artincms/laravel_file_manager"</pre></div>
 <h5>for laravel less than 5.5</h5>
 Register provider and facade on your config/app.php file.
 <div class="highlight highlight-text-html-php"><pre>
@@ -50,12 +50,22 @@ Register provider and facade on your config/app.php file.
  <div class="highlight highlight-text-html-php"><pre>
  $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider
 </pre> </div>
+if update package for publish vendor you can run : 
+ <div class="highlight highlight-text-html-php"><pre>
+ $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider --force
+</pre> </div>
  <h6>migrate tabales</h6>
   <div class="highlight highlight-text-html-php"><pre>
   $ php artisan migrate
   </pre> </div>
-<h6>seed data to tabales</h6>
+<h6>seed data to lfm_file_mime_type table</h6>
+for windows
  <div class="highlight highlight-text-html-php"><pre>
+  php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\LfmFileMimeTypesTableSeeder
+  </pre> </div>
+  for linux
+  <div class="highlight highlight-text-html-php"><pre>
+ php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\LfmFileMimeTypesTableSeeder
   </pre> </div>
   <h4>more installation details</h4>
   <p>The package will use these optimizers if they are present on your system:</p>
@@ -85,8 +95,8 @@ Register provider and facade on your config/app.php file.
   <div><p>for enable optimizer in package you shoul go config/laravel_file_manager.php
    and set 'Optimise_image'= true</p></div>
   <p>for more information you can visit <a href="https://github.com/spatie/image-optimizer">image-optimizer</a>  
- 
- #usage
+
+ <h1>usage</h1> 
  for use this package you should use bellow helper function anywhere in your project such as in your controller . this helper function
  <ul>
  <li>create html modal for show manager</li>
@@ -118,11 +128,11 @@ Register provider and facade on your config/app.php file.
   <div class="highlight highlight-text-html-php"><pre>
   //the inserted file result is 
   [
-    data 
+    data :
     [{
-        0
+        0 :
         {
-            file 
+            file :
             {
                 height : "0"
                 icon : "image"
@@ -142,7 +152,7 @@ Register provider and facade on your config/app.php file.
             url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
         }
     }],
-    view
+    view :
     {
        'grid' : 'html grid view code' ,
        'small' :'html small view code' ,
@@ -174,6 +184,7 @@ function callback(result)
    </li>
   </ul>
   <p>  you can access to file manager with :http://www.yourdomain.com/LFM/ShowCategories</p>
+ <h3>Generate Link</h3>
  <h4> Generate Download Link </h4>
   whit this below helper function you can generate download link in anywhere of your project .
   <div class="highlight highlight-text-html-php"><pre>
@@ -189,8 +200,12 @@ function callback(result)
 <li>$width is width of result image</li>
 <li>$height is height of result image</li>
 </ul>  
- 
- <h3>custom config</h3>
+ <h4>Generate Base64 Image</h4>
+  whit this below helper function you can create Base64 Image .
+   <div class="highlight highlight-text-html-php"><pre>
+ LFM_GetBase64Image($file_id, $size_type, $not_found_img , $inline_content , $quality , $width , $height )    </pre> </div>
+ this helpers config as above with different $inline_content that if it was true you can create base 64 Image .
+ <h3>Custom config</h3>
  if you want to have custom config you can chage config/laravel_file_manager.php file as you want .
  <ul>
  <li>'private_middlewares' and 'public_middlewares' describe what middelware should assign to private and public route ,you can add auth and other middelware you want .</li>

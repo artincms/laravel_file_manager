@@ -11,6 +11,8 @@ namespace ArtinCMS\LFM\Helpers\Classes;
 use ArtinCMS\LFM\Models\Category;
 use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\FileMimeType;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
@@ -83,6 +85,10 @@ class Media
             $FileSave->small_version = 0;
             $FileSave->medium_filename = $crop_database_name['medium'];
             $FileSave->medium_version = 0;
+            $FileSave->size = $crop_database_name['size_orginal'];
+            $FileSave->large_size = $crop_database_name['size_large'];
+            $FileSave->medium_size = $crop_database_name['size_medium'];
+            $FileSave->small_size = $crop_database_name['size_small'];
             $FileSave->save();
         }
         else
@@ -119,8 +125,8 @@ class Media
                 switch ($crop)
                 {
                     case "smart":
-                        $file_cropped = HFM_SmartCropIMG($file, $OptionIMG);
-                        HFM_Save_Compress_IMG(false, $file_cropped->oImg, $tmp_path . '/' . $filename, $FileSave->extension, $quality);
+                        $file_cropped = LFM_SmartCropIMG($file, $OptionIMG);
+                        LFM_SaveCompressImage(false, $file_cropped->oImg, $tmp_path . '/' . $filename, $FileSave->extension, $quality);
                         break;
                     case "fit":
                         $res = Image::make($file)->fit($OptionIMG['height'], $OptionIMG['width'])->save($tmp_path . '/' . $filename);
@@ -134,9 +140,11 @@ class Media
                     $optimizerChain->optimize($tmp_path . '/' . $filename);
                 }
                 $opt_name = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($tmp_path . '/' . $filename) . "_" . time() . '_' . $FileSave->extension;
+                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size('uploads/tmp/' . $filename);
                 $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('uploads/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
                 {
+                    $name['size_'.$crop_type] = $opt_size ;
                     $name[$crop_type] = $opt_name;
                 }
                 else
@@ -150,12 +158,14 @@ class Media
                 $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
                 if ($name['md5'] != $FileSave->file_md5)
                 {
+                    $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size($FullPath);
                     $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['orginal']);
-
+                    $name['size_orginal'] = $opt_size ;
                 }
                 else
                 {
                     $name['orginal'] = $orginal_name;
+                    $name['size_orginal'] = $FileSave->size;
                 }
             }
         }
@@ -169,65 +179,103 @@ class Media
         //check database for check file exist
         if ($file)
         {
+            $hash = $file_id .'_'.$size_type.'_'.$not_found_img.'_'.$inline_content.'_'.$quality.'_'.$width.'_'.$height;
+            $file_name_hash = 'tmp_fid_'.$file->id.'_'.md5($hash) ;
+            $tmp_path = storage_path() . '/app/uploads/tmp/'.$file_name_hash;
             $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
-            $headers = array("Content-Type:{$file->mimeType}");
-
-            //check local storage for check file exist
-            if ($size_type == 'orginal')
+            if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($tmp_path))
             {
-                $filename = $file->filename;
+                $res = Image::make($tmp_path)->response($file_EXT, (int)$quality);
             }
             else
             {
-                $filename = $file[$size_type . '_filename'];
-            }
-            if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file->path . '/files/' . $size_type . '/' . $filename))
-            {
-                $file_path = storage_path() . '/app/' . $file->path . '/files/' . $size_type . '/' . $filename;
-                if ($inline_content)
+                $headers = array("Content-Type:{$file->mimeType}");
+
+                //check local storage for check file exist
+                if ($size_type == 'orginal')
                 {
-                    $file_EXT_without_dot = str_replace('.', '', $file_EXT);
-                    $data = file_get_contents($file_path);
-                    $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
-                    return $base64;
-                }
-                if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
-                {
-                    if ($width && $height)
-                    {
-                        $res = Image::make($file_path)->fit((int)$width, (int)$height)->response($file_EXT, (int)$quality);
-                        return $res;
-                    }
-                    else
-                    {
-                        if ($quality < 100)
-                        {
-                            $res = Image::make($file_path)->response('jpg', (int)$quality);
-                        }
-                        else
-                        {
-                            $res = Image::make($file_path)->response($file_EXT, (int)$quality);
-                        }
-                        return $res;
-                    }
+                    $filename = $file->filename;
                 }
                 else
                 {
-                    return response()->download($file_path, $file->originalName . '.' . $file_EXT, $headers);
+                    $filename = $file[$size_type . '_filename'];
                 }
-            }
-            else
-            {
-                return Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file->path . '/files/' . $size_type . '/' . $filename))
+                {
+
+
+
+                    $file_path = storage_path() . '/app/' . $file->path . '/files/' . $size_type . '/' . $filename;
+
+                    if ($inline_content)
+                    {
+                        $file_EXT_without_dot = str_replace('.', '', $file_EXT);
+                        $data = file_get_contents($file_path);
+                        $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
+                        file_put_contents($tmp_path,$base64);
+                        $res =  $base64;
+                    }
+                    else
+                    {
+                        if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
+                        {
+                            if ($width && $height)
+                            {
+                                $res = Image::make($file_path)->fit((int)$width, (int)$height);
+                                $res->save($tmp_path) ;
+                                $res = $res->response($file_EXT, (int)$quality) ;
+                            }
+                            else
+                            {
+                                if ($quality < 100)
+                                {
+                                    $res = Image::make($file_path) ;
+                                    $res->save($tmp_path);
+                                    $res = $res->response('jpg', (int)$quality);
+                                }
+                                else
+                                {
+                                    $res = Image::make($file_path) ;
+                                    $res->save($tmp_path);
+                                    $res = $res->response($file_EXT, (int)$quality);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            $res = response()->download($file_path, $file->originalName . '.' . $file_EXT, $headers);
+                        }
+                    }
+
+                }
+                else
+                {
+                    if ($width or $height)
+                    {
+                        $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                    }
+                    else
+                    {
+                        $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                    }
+                }
             }
         }
         else
         {
-            return Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+            if ($width or $height)
+            {
+                $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+            }
+            else
+            {
+                $res = Image::make($not_found_img_path)->response('jpg', $quality);
+            }
         }
+        return $res ;
     }
 
-    public static function download_by_name($FileName, $not_found_img = '404.png', $size_type = 'orginal', $inline_content = false, $quality = 90, $width = false, $height = False)
+    public static function downloadByName($FileName, $not_found_img = '404.png', $size_type = 'orginal', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $file = File::where('filename', '=', $FileName)->first();
         if ($file)
@@ -255,7 +303,7 @@ class Media
         }
     }
 
-    public static function save_croped_image_base64($data, $FileSave, $crop_type)
+    public static function saveCropedImageBase64($data, $FileSave, $crop_type)
     {
         $time = time();
         switch ($crop_type)

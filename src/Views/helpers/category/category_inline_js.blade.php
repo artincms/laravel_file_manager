@@ -13,11 +13,14 @@
         @else
         category_save(formData, '{{$callback}}');
         @endif
+        if(typeof parent.refresh !== 'undefined')
+        {
+            parent.refresh() ;
+        }
 
     });
 
     function category_save(FormData,callback) {
-        console.log(FormData);
         callback = callback || false ;
         console.log(callback)  ;
         $.ajax({

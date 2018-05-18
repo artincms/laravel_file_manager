@@ -28,6 +28,52 @@ function LFM_Sanitize($string, $force_lowercase = true, $anal = false)
     return ($force_lowercase) ? (function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean) : $clean;
 }
 
+function LFM_SmartCropIMG($file, $options = [])
+{
+    $smartcrop = new \ArtinCMS\LFM\Helpers\Classes\SmartCropClass($file, $options);
+    //Analyse the image and get the optimal crop scheme
+    $res = $smartcrop->analyse();
+    //Generate a crop based on optimal crop scheme
+    return $smartcrop->crop($res['topCrop']['x'], $res['topCrop']['y'], $res['topCrop']['width'], $res['topCrop']['height']);
+}
+
+function LFM_SaveCompressImage($prepare_src = false, $file, $destination, $extension = 'jpg', $quality = 90)
+{
+    $res = false;
+    if ($prepare_src)
+    {
+        switch ($extension)
+        {
+            case "png":
+                $src = imagecreatefrompng($file);
+                $res = imagepng($src, $destination, $quality);
+                break;
+            case "jpeg":
+            case "jpg":
+                $src = imagecreatefromjpeg($file);
+                $res = imagejpeg($src, $destination, $quality);
+                break;
+        }
+    }
+    else
+    {
+        switch ($extension)
+        {
+            case "png":
+                //$src = imagecreatefrompng($file);
+                $res = imagepng($file, $destination, $quality);
+                break;
+            case "jpeg":
+            case "jpg":
+                //$src = imagecreatefromjpeg($file);
+                $res = imagejpeg($file, $destination, $quality);
+                break;
+        }
+    }
+
+    return $res;
+}
+
 function LFM_CheckMimeType($mimetype, $items)
 {
     if ($items)
@@ -80,16 +126,16 @@ function LFM_CheckFalseString($input, $replace_input = "false")
     }
 }
 
-function LFM_CreateModalFileManager($section, $options = false, $insert = false, $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
+function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
 {
     if ($options)
     {
         $session_option = LFM_SetSessionOption($section, $options);
     }
     //create html content and button
-    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => $callback]);
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback'))->render();
-    $result['button'] = '<button class="btn btn-default" href="" data-toggle="modal" data-target="#create_' . $modal_id . '" id="' . $button_id . '">' . $button_content . '</button>';
+    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback','button_id'))->render();
+    $result['button'] = '<button class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
 
@@ -191,8 +237,36 @@ function LFM_DestroySection($section)
 
 function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
 {
-    return route('LFM.DownloadFile',['type' =>'ID' , 'id'=>$id,'size_type' => $size_type , 'default_img' =>  $default_img , 'quality' => $quality , 'width' =>$width , 'height' => $height]);
+    return route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
 
+function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+{
+    $res =\ArtinCMS\LFM\Helpers\Classes\Media::downloadById($file_id, $size_type, $not_found_img, true, $quality, $width, $height);
+    return $res ;
+}
 
+function LFM_FileSizeConvert($bytes)
+{
+    $result = "";
+    $bytes = floatval($bytes);
+    $arBytes =
+        [
+            0 => ["UNIT" => "TB", "VALUE" => pow(1024, 4)],
+            1 => ["UNIT" => "GB", "VALUE" => pow(1024, 3)],
+            2 => ["UNIT" => "MB", "VALUE" => pow(1024, 2)],
+            3 => ["UNIT" => "KB", "VALUE" => 1024],
+            4 => ["UNIT" => "B", "VALUE" => 1]
+        ];
 
+    foreach ($arBytes as $arItem)
+    {
+        if ($bytes >= $arItem["VALUE"])
+        {
+            $result = $bytes / $arItem["VALUE"];
+            $result = str_replace(".", ",", strval(round($result, 1))) . " " . $arItem["UNIT"];
+            break;
+        }
+    }
+    return $result;
+}

@@ -25,14 +25,13 @@
             </div>
             <div class="form-group">
                 <label data-error="wrong" data-success="right" for="orangeForm-name">Select parrent of Categorie</label>
-                <select class="form-control select_category" id="sel1" name="parent_category_id">
+                <select class="form-control select_category" id="parent_category_id" name="parent_category_id">
                     <option value="0">none</option>
                     @foreach($categories as $category)
                         <option value="{{$category->id}}" @if($category_id == $category->id) selected @endif>{{$category->title}}</option>
                     @endforeach
                 </select>
             </div>
-            <button class="btn btn-primary hidden" id="btn_submit_create_category">Submit</button>
         </form>
 @endsection
 @section('javascript')

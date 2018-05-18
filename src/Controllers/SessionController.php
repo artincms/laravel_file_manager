@@ -34,8 +34,7 @@ class SessionController extends ManagerController
         }
         else
         {
-            $datas['success'] = false;
-            $datas['error'] = $options['error'];
+            $datas = $this->createAllInsertData($request);
         }
         $result['data'] = $datas;
         return response()->json($result);
@@ -89,83 +88,94 @@ class SessionController extends ManagerController
         {
             foreach ($request->items as $item)
             {
-                $id = $item['id'];
-                $status = LFM_FindSessionSelectedId($section['selected'], $id);
+                $status = LFM_FindSessionSelectedId($section['selected'], $item['id']);
                 if (!$status)
                 {
-                    $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $item['type'], 'default_img' => '404.png'
-                        , 'quality' => $item['quality'], 'width' => $item['width'], 'height' => $item['height']
-                    ]);
-                    $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
-                    $url = str_replace($protocol, '', $full_url);
-                    $url = str_replace('://', '', $url);
-                    $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
-                    $file = File::find($id);
-                    $image_type = config('laravel_file_manager.allowed_pic');
-                    if (in_array($file->mimeType, $image_type))
-                    {
-                        $icon = 'image';
-                    }
-                    else
-                    {
-                        $icon = $file->FileMimeType->icon_class;
-                    }
-
-                    if (!$file->user)
-                    {
-                        $user = 'public';
-                    }
-                    else
-                    {
-                        $user = $file->user->name;
-                    }
-                    switch ($request->type)
-                    {
-                        case "orginal":
-                            $file_title_disc = $file->filename;
-                            $version = $file->versioin;
-                            break;
-                        case "large":
-                            $file_title_disc = $file->large_filename;
-                            $version = $file->large_version;
-                            break;
-                        case "medium":
-                            $file_title_disc = $file->medium_filename;
-                            $version = $file->medium_version;
-                            break;
-                        case "small":
-                            $file_title_disc = $file->small_filename;
-                            $version = $file->small_version;
-                            break;
-                        default:
-                            $file_title_disc = $file->filename;
-                            $version = $file->versioin;
-                            break;
-                    }
-                    $data['full_url'] = $full_url;
-                    $data['url'] = $url;
-                    $data['file'] = [
-                        'id' => $file->id,
-                        'name' => $file->originalName,
-                        'type' => $item['type'],
-                        'width' => $item['width'],
-                        'height' => $item['height'],
-                        'quality' => $item['quality'],
-                        'title_file_disc' => $file_title_disc,
-                        'created' => $file->created_at,
-                        'updated' => $file->updated_at,
-                        'user' => $user,
-                        'icon' => $icon,
-                        'size' => $file->size,
-                        'version' => $version
-                    ];
-                    $data['success'] = true;
-                    $data['message'] = "File with ID :" . $id . ' Inserted';
-                    $datas[] = $data;
+                    $datas[] = $this->createData($request, $item);
                 }
             }
         }
+        else
+        {
+            foreach ($request->items as $item)
+            {
+                $datas[] = $this->createData($request, $item);
+            }
+        }
         return $datas;
+    }
+
+    private function createData($request, $item)
+    {
+        $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $item['id'], 'size_type' => $item['type'], 'default_img' => '404.png'
+            , 'quality' => $item['quality'], 'width' => $item['width'], 'height' => $item['height']
+        ]);
+        $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
+        $url = str_replace($protocol, '', $full_url);
+        $url = str_replace('://', '', $url);
+        $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
+        $file = File::find($item['id']);
+        $image_type = config('laravel_file_manager.allowed_pic');
+        if (in_array($file->mimeType, $image_type))
+        {
+            $icon = 'image';
+        }
+        else
+        {
+            $icon = $file->FileMimeType->icon_class;
+        }
+
+        if (!$file->user)
+        {
+            $user = 'public';
+        }
+        else
+        {
+            $user = $file->user->name;
+        }
+        switch ($request->type)
+        {
+            case "orginal":
+                $file_title_disc = $file->filename;
+                $version = $file->versioin;
+                break;
+            case "large":
+                $file_title_disc = $file->large_filename;
+                $version = $file->large_version;
+                break;
+            case "medium":
+                $file_title_disc = $file->medium_filename;
+                $version = $file->medium_version;
+                break;
+            case "small":
+                $file_title_disc = $file->small_filename;
+                $version = $file->small_version;
+                break;
+            default:
+                $file_title_disc = $file->filename;
+                $version = $file->versioin;
+                break;
+        }
+        $data['full_url'] = $full_url;
+        $data['url'] = $url;
+        $data['file'] = [
+            'id' => $file->id,
+            'name' => $file->originalName,
+            'type' => $item['type'],
+            'width' => $item['width'],
+            'height' => $item['height'],
+            'quality' => $item['quality'],
+            'title_file_disc' => $file_title_disc,
+            'created' => $file->created_at,
+            'updated' => $file->updated_at,
+            'user' => $user,
+            'icon' => $icon,
+            'size' => $file->size,
+            'version' => $version
+        ];
+        $data['success'] = true;
+        $data['message'] = "File with ID :" . $item['id'] . ' Inserted';
+        return $data;
     }
 
     private function setSelectedFileToSession($request, $section, $datas)
@@ -191,6 +201,10 @@ class SessionController extends ManagerController
             {
                 $result['success'] = false;
             }
+        }
+        else
+        {
+            $result['success'] = false;
         }
         return $result;
     }
@@ -244,12 +258,12 @@ class SessionController extends ManagerController
         return LFM_GetSection($section);
     }
 
-    public function deleteSessionInsertItem(Request $request ,$section=false, $file_id=false)
+    public function deleteSessionInsertItem(Request $request, $section = false, $file_id = false)
     {
         if ($request->ajax())
         {
-            $section = $request ->section ;
-            $file_id = $request->file_id ;
+            $section = $request->section;
+            $file_id = $request->file_id;
         }
         $LFM = session()->get('LFM');
         if ($LFM[$section])
@@ -264,11 +278,11 @@ class SessionController extends ManagerController
             }
             $LFM[$section]['selected'] = $selected;
             session()->put('LFM', $LFM);
-            $result['success'] = true ;
+            $result['success'] = true;
         }
         else
         {
-           $result['success'] = false ;
+            $result['success'] = false;
         }
         return response()->json($result);
     }
