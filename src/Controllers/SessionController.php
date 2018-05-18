@@ -7,16 +7,16 @@ use ArtinCMS\LFM\Models\File;
 
 class SessionController extends ManagerController
 {
-    private function checkSectionOptions($name, $options, $items)
+    private function checkSectionOptions($section, $options, $items)
     {
-        $selected_items = $this->getSelectedSectionItems($name);
+        $selected_items = $this->getSelectedSectionItems($section);
         if ($selected_items)
         {
-            $totall = count($items) + count($selected_items);
+            $total = count($items) + count($selected_items);
         }
         elseif ($items)
         {
-            $totall = count($items);
+            $total = count($items);
         }
         else
         {
@@ -24,7 +24,7 @@ class SessionController extends ManagerController
             $result['error'] = 'Dont select items';
             return $result;
         }
-        if ($totall > $options['max_file_number'])
+        if ($total > $options['max_file_number'])
         {
             $result['success'] = false;
             $result['error'] = 'your cant insert more than' . $options['max_file_number'];
@@ -32,11 +32,11 @@ class SessionController extends ManagerController
         }
         else
         {
-            $mimetype = LFM_CheckMimeType($options['true_mime_type'], $items);
-            if (!$mimetype['success'])
+            $mimeType = LFM_CheckMimeType($options['true_mime_type'], $items);
+            if (!$mimeType['success'])
             {
                 $result['success'] = false;
-                $result['error'] = $mimetype['error'];
+                $result['error'] = $mimeType['error'];
                 return $result;
             }
             else
@@ -145,7 +145,7 @@ class SessionController extends ManagerController
         return $data;
     }
 
-    private function setSelectedFileToSession($request, $section, $datas)
+    private function setSelectedFileToSession($request, $section, $data)
     {
         if ($request->has('section'))
         {
@@ -155,7 +155,7 @@ class SessionController extends ManagerController
                 if (isset($LFM[$request->section]))
                 {
                     $result['success'] = true;
-                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $datas);
+                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
                     session()->put('LFM', $LFM);
                     return $result;
                 }
@@ -176,7 +176,7 @@ class SessionController extends ManagerController
         return $result;
     }
 
-    private function mergeToSelected($selected, $data)
+    /*private function mergeToSelected($selected, $data)
     {
         $status = LFM_FindSessionSelectedId($selected, $data['file']['id']);
         if ($status == false)
@@ -188,19 +188,54 @@ class SessionController extends ManagerController
             $result['error'] = 'The File ID ' . $data['file']['id'] . ' is repeated';
         }
         return $result;
-    }
+    }*/
 
-    private function getSelectedSectionItems($name)
+    private function getSelectedSectionItems($section)
     {
         $LFM = session('LFM');
-        if ($LFM[$name])
+        if ($LFM[$section])
         {
-            if ($LFM[$name]['selected'])
+            if ($LFM[$section]['selected'])
             {
-                return $LFM[$name]['selected'];
+                return $LFM[$section]['selected'];
             }
         }
         return false;
+    }
+
+    private function listInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section'))->render();
+    }
+
+    private function gridInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section'))->render();
+    }
+
+    private function smallInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section'))->render();
+    }
+
+    private function mediumInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section'))->render();
+    }
+
+    private function largeInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section'))->render();
+    }
+
+    private function inlineJSInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
+    }
+
+    private function inlineStyleInsertedView($data, $section = false)
+    {
+        return view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
     }
 
     public function createInsertData(Request $request)
@@ -211,13 +246,16 @@ class SessionController extends ManagerController
             $check_options = $this->checkSectionOptions($request->section, $options['options'], $request->items);
             if ($check_options['success'])
             {
-                $datas = $this->createAllInsertData($request);
-                $view['grid'] = $this->gridInsertedView($datas, $request->section);
-                $view['small'] = $this->smallInsertedView($datas, $request->section);
-                $view['thumb'] = $this->mediumInsertedView($datas, $request->section);
-                $view['large'] = $this->largeInsertedView($datas, $request->section);
-                $view['list'] = $this->listInsertedView($datas, $request->section);
-                $result_session = $this->setSelectedFileToSession($request, $request->section, $datas);
+                $data = $this->createAllInsertData($request);
+                $section = $request->section;
+                $view['list'] = $this->listInsertedView($data, $section);
+                $view['grid'] = $this->gridInsertedView($data, $section);
+                $view['small'] = $this->smallInsertedView($data, $section);
+                $view['medium'] = $this->mediumInsertedView($data, $section);
+                $view['large'] = $this->largeInsertedView($data, $section);
+                $view['inline_js'] = $this->inlineJSInsertedView($data, $section);
+                $view['inline_style'] = $this->inlineStyleInsertedView($data, $section);
+                $result_session = $this->setSelectedFileToSession($request, $section, $data);
                 $result['view'] = $view;
             }
             else
@@ -232,46 +270,6 @@ class SessionController extends ManagerController
         }
         $result['data'] = $datas;
         return response()->json($result);
-    }
-
-    public function gridInsertedView($data, $section = false)
-    {
-        $view['inline_style'] = view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-        $view['inline_js'] = view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-        $view['content'] = view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section'))->render();
-        return $view;
-    }
-
-    public function smallInsertedView($data, $section = false)
-    {
-        $view['inline_style'] = view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-        $view['inline_js'] = view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-        $view['content'] = view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section'))->render();
-        return $view;
-    }
-
-    public function mediumInsertedView($data, $section = false)
-    {
-        $view['inline_style'] = view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-        $view['inline_js'] = view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-        $view['content'] = view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section'))->render();
-        return $view;
-    }
-
-    public function largeInsertedView($data, $section = false)
-    {
-        $view['inline_style'] = view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-        $view['inline_js'] = view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-        $view['content'] = view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section'))->render();
-        return $view;
-    }
-
-    public function listInsertedView($data, $section = false)
-    {
-        $view['inline_style'] = view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-        $view['inline_js'] = view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-        $view['content'] = view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section'))->render();
-        return $view;
     }
 
     public function getSession($section)

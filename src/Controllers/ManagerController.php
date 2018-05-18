@@ -2,15 +2,12 @@
 
 namespace ArtinCMS\LFM\Controllers;
 
-use ArtinCMS\LFM\Helpers\Classes\Media;
-use ArtinCMS\LFM\Models\Category;
-use Validator;
-use ArtinCMS\LFM\Models\File;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use DB;
+use ArtinCMS\LFM\Models\File;
+use ArtinCMS\LFM\Models\Category;
+use ArtinCMS\LFM\Helpers\Classes\Media;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 
 class ManagerController extends Controller
@@ -76,7 +73,7 @@ class ManagerController extends Controller
             } else {
                 $user_id = 0;
             }
-            $result = DB::transaction(function () use ($request, $user_id) {
+            $result = \DB::transaction(function () use ($request, $user_id) {
                 $cat = new Category;
                 $cat->title = $request->title;
                 $cat->user_id = $user_id;

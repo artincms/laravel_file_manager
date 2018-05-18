@@ -2,12 +2,9 @@
 
 namespace ArtinCMS\LFM\Controllers;
 
-use ArtinCMS\LFM\Helpers\Classes\Media;
-use ArtinCMS\LFM\Models\FileMimeType;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use DB;
+use ArtinCMS\LFM\Models\FileMimeType;
+use ArtinCMS\LFM\Helpers\Classes\Media;
 
 class UploadController extends ManagerController
 {
@@ -46,7 +43,7 @@ class UploadController extends ManagerController
                 $size = $file->getSize();
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
-                    $message = DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
+                    $message = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
                         $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
                         $message['success'] = true;
                         $message['result'] = $res;
