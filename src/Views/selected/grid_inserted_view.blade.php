@@ -10,13 +10,13 @@
         </thead>
         <tbody>
         @php( $i =0)
-        @foreach($datas as $data)
-            <tr>
+        @foreach($data as $file_item)
+            <tr id="{{$section}}_{{$file_item['file']['id']}}_trash_insert">
                 <td>{{$i}}</td>
-                <td>{{$data['file']['id']}}</td>
-                <td><a href="{{$data['full_url']}}">{{$data['file']['name']}}</a></td>
+                <td>{{$file_item['file']['id']}}</td>
+                <td><a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a></td>
                 <td>
-                    <a href="" class="grid-row-delete pull-right myicon" id="trash_insert" data-type="file" data-section="{{$section}}" data-id="{{$data['file']['id']}}">
+                    <a class="grid-row-delete pull-right myicon {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                         <i class="fa fa-trash"></i>
                     </a>
                 </td>
@@ -25,4 +25,3 @@
         </tbody>
     </table>
 </div>
-<script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>

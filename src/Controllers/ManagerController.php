@@ -125,6 +125,7 @@ class ManagerController extends Controller
         $file = File::find($file_id);
         return view('laravel_file_manager::edit_file_name', compact('file'));
     }
+
     public function editFileName(Request $request)
     {
         $file  =File::find($request->id);
@@ -313,6 +314,7 @@ class ManagerController extends Controller
         }
         return $user_id;
     }
+
     public function getSectionOptions($section)
     {
         if (session()->has('LFM'))

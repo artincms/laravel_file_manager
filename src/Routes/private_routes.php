@@ -5,12 +5,12 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::get('ShowCategories/create/{category_id?}/{callback?}/{section?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@createCategory']);
     Route::get('ShowCategories/Create/{category_id?}/{callback?}/{section?}', ['as' => 'LFM.ShowCategories.Create', 'uses' => 'ManagerController@createCategory']);
     Route::get('EditCategory/{category_id}', ['as' => 'LFM.ShowCategories.Edit', 'uses' => 'ManagerController@editCategory']);
-    Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@showCategory']);
+    Route::get('EditFile/{file_id}', ['as' => 'LFM.EditFile', 'uses' => 'ManagerController@editFile']);
 
+    Route::post('ShowCategory', ['as' => 'LFM.ShowCategory', 'uses' => 'ManagerController@showCategory']);
     Route::post('StoreCategory', ['as' => 'LFM.StoreCategory', 'uses' => 'ManagerController@storeCategory']);
     Route::post('UpdateCategory', ['as' => 'LFM.UpdateCategory', 'uses' => 'ManagerController@updateCategory']);
     Route::post('EditFileName', ['as' => 'LFM.EditFileName', 'uses' => 'ManagerController@editFileName']);
-    Route::get('EditFile/{file_id}', ['as' => 'LFM.EditFile', 'uses' => 'ManagerController@editFile']);
     Route::post('Trash', ['as' => 'LFM.Trash', 'uses' => 'ManagerController@trash']);
     Route::post('BulkDelete', ['as' => 'LFM.BulkDelete', 'uses' => 'ManagerController@bulkDelete']);
 
@@ -39,7 +39,6 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //session
     Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
-    Route::get('DeleteSessionInsertItem/{section?}/{file_id?}', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
     Route::post('Breadcrumbs/{id}', ['as' => 'LFM.Breadcrumbs', 'uses' => 'ManagerController@get_breadcrumbs']);
 });

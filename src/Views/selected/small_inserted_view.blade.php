@@ -1,13 +1,14 @@
 <div class="container-fluid">
     @php( $i =0)
-    @foreach($datas as $data)
-        <div class="btn-group small_inserted_view col-md-6 pull-left margin-top-1">
-            <a href="" class="grid-row-delete pull-left myicon col-md-1" id="trash_insert" data-type="file" data-section="{{$section}}" data-id="{{$data['file']['id']}}">
+    @foreach($data as $file_item)
+        <div class="btn-group small_inserted_view col-md-6 pull-left margin-top-1" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert">
+            <a href="" class="grid-row-delete pull-left myicon col-md-1 {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                 <i class="fa fa-trash"></i>
             </a>
-            <div type="text" class="col-md-8" placeholder=""><a href="{{$data['full_url']}}">{{$data['file']['name']}}</a></div>
-            <div class="col-md-2 pull-right">{{$data['file']['size']}}</div>
+            <div type="text" class="col-md-8">
+                <a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a>
+            </div>
+            <div class="col-md-2 pull-right">{{$file_item['file']['size']}}</div>
         </div>
     @endforeach
 </div>
-<script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/view_insert.js')}}"></script>
