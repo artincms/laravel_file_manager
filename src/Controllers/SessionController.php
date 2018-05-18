@@ -260,15 +260,15 @@ class SessionController extends ManagerController
             }
             else
             {
-                $datas['success'] = false;
-                $datas['error'] = $check_options['error'];
+                $data['success'] = false;
+                $data['error'] = $check_options['error'];
             }
         }
         else
         {
-            $datas = $this->createAllInsertData($request);
+            $data = $this->createAllInsertData($request);
         }
-        $result['data'] = $datas;
+        $result['data'] = $data;
         return response()->json($result);
     }
 
