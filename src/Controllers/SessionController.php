@@ -7,6 +7,7 @@ use ArtinCMS\LFM\Models\File;
 
 class SessionController extends ManagerController
 {
+
     private function checkSectionOptions($section, $options, $items)
     {
         $selected_items = $this->getSelectedSectionItems($section);
@@ -50,7 +51,7 @@ class SessionController extends ManagerController
     private function createAllInsertData($request)
     {
         $data = [];
-        $section = $this->getSession($request->section);
+        $section = LFM_GetSection($request->section);
         if (isset($section['selected']))
         {
             foreach ($request->items as $item)
@@ -228,16 +229,6 @@ class SessionController extends ManagerController
         return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section'))->render();
     }
 
-    private function inlineJSInsertedView($data, $section = false)
-    {
-        return view('laravel_file_manager::selected.helpers.inline_js', compact('data', 'section'))->render();
-    }
-
-    private function inlineStyleInsertedView($data, $section = false)
-    {
-        return view('laravel_file_manager::selected.helpers.inline_style', compact('data', 'section'))->render();
-    }
-
     public function createInsertData(Request $request)
     {
         $options = $this->getSectionOptions($request->section);
@@ -253,8 +244,6 @@ class SessionController extends ManagerController
                 $view['small'] = $this->smallInsertedView($data, $section);
                 $view['medium'] = $this->mediumInsertedView($data, $section);
                 $view['large'] = $this->largeInsertedView($data, $section);
-                $view['inline_js'] = $this->inlineJSInsertedView($data, $section);
-                $view['inline_style'] = $this->inlineStyleInsertedView($data, $section);
                 $result_session = $this->setSelectedFileToSession($request, $section, $data);
                 $result['view'] = $view;
             }
@@ -272,9 +261,9 @@ class SessionController extends ManagerController
         return response()->json($result);
     }
 
-    public function getSession($section)
+    public function getSessionInsertedItems(Request $request)
     {
-        return LFM_GetSection($section);
+        return LFM_GetSection($request->section);
     }
 
     public function deleteSessionInsertItem(Request $request)
@@ -297,6 +286,7 @@ class SessionController extends ManagerController
             }
             $LFM[$section]['selected'] = $selected;
             session()->put('LFM', $LFM);
+            $result['data'] = $LFM[$section]['selected'];
             $result['success'] = true;
         }
         else

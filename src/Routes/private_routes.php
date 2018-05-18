@@ -37,9 +37,9 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //create insert data
     Route::post('CreateInsertData', ['as' => 'LFM.CreateInsertData', 'uses' => 'SessionController@createInsertData']);
 
+
     //session
-    Route::get('GetSession/{name}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
+    Route::post('GetSessionInsertedItems}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSessionInsertedItems']);
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
-    Route::post('Breadcrumbs/{id}', ['as' => 'LFM.Breadcrumbs', 'uses' => 'ManagerController@get_breadcrumbs']);
 });
 
