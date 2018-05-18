@@ -39,8 +39,7 @@ class File extends Model
         {
             $user_id = 0;
         }
-         $res = self::select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at','size')
-            ->where([
+         $res = self::where([
             ['category_id', '=', '0'],
             ['user_id', '=',$user_id]
         ]);
@@ -87,4 +86,18 @@ class File extends Model
         return LFM_FileSizeConvert($this->size) ;
     }
 
+    public function getHummanSizeLargeAttribute()
+    {
+        return LFM_FileSizeConvert($this->large_size) ;
+    }
+
+    public function getHummanSizeMediumAttribute()
+    {
+        return LFM_FileSizeConvert($this->medium_size) ;
+    }
+
+    public function getHummanSizeSmallAttribute()
+    {
+        return LFM_FileSizeConvert($this->small_size) ;
+    }
 }

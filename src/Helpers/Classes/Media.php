@@ -85,6 +85,10 @@ class Media
             $FileSave->small_version = 0;
             $FileSave->medium_filename = $crop_database_name['medium'];
             $FileSave->medium_version = 0;
+            $FileSave->size = $crop_database_name['size_orginal'];
+            $FileSave->large_size = $crop_database_name['size_large'];
+            $FileSave->medium_size = $crop_database_name['size_medium'];
+            $FileSave->small_size = $crop_database_name['size_small'];
             $FileSave->save();
         }
         else
@@ -136,9 +140,11 @@ class Media
                     $optimizerChain->optimize($tmp_path . '/' . $filename);
                 }
                 $opt_name = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($tmp_path . '/' . $filename) . "_" . time() . '_' . $FileSave->extension;
+                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size('uploads/tmp/' . $filename);
                 $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('uploads/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
                 {
+                    $name['size_'.$crop_type] = $opt_size ;
                     $name[$crop_type] = $opt_name;
                 }
                 else
@@ -152,12 +158,14 @@ class Media
                 $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
                 if ($name['md5'] != $FileSave->file_md5)
                 {
+                    $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size($FullPath);
                     $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['orginal']);
-
+                    $name['size_orginal'] = $opt_size ;
                 }
                 else
                 {
                     $name['orginal'] = $orginal_name;
+                    $name['size_orginal'] = $FileSave->size;
                 }
             }
         }

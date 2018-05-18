@@ -36,10 +36,11 @@
         var iframe = $('iframe.modal_iframe');
         iframe.attr("src",src);
         iframe.on("load", function() {
-            //$(this).contents().find("#btn_submit_create_category").addClass('hidden');
-            $('#create_modal_button').off('click');
-            $('#create_modal_button').on('click', function (e) {
-                iframe.contents().find("#btn_submit_create_category").click();
+            $(document).off('click','#create_category_modal_button');
+            $(document).on('click','#create_category_modal_button', function (e) {
+                var selector = iframe.contents().find("#btn_submit_category");
+                $(document).off('click',selector);
+                selector.click();
             });
         });
     });
@@ -119,7 +120,8 @@
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#insert_file');
     $(document).on('click', '#insert_file', function (e) {
-        var items = get_selected('file');
+        var type = $('refresh_page').attr('data-type');
+        var items = get_selected(['file'],type,true);
         var datas=[];
         datas = create_insert_data(items) ;
         @if($callback)

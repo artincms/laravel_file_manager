@@ -35,7 +35,7 @@
                     </label>
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-sm btn-success create_category" title="create new category"
-                               href="{{route('LFM.ShowCategories.Create',['category_id' => 0, 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal" data-target="#create_modal">
+                               href="{{route('LFM.ShowCategories.Create',['category_id' => 0, 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal" data-target="#create_category_modal">
                             <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
                         </label>
                     </div>
@@ -110,6 +110,29 @@
         </div>
     </div>
     {{--END Create Upload Modal--}}
+
+    {{--add modal Create  category--}}
+    <div class="modal fade" id="create_category_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="modal_iframe"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="create_category_modal_button">Submit Form</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--END Create  Modal--}}
 
 @endsection
 @section('javascript')

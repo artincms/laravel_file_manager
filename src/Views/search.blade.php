@@ -80,12 +80,12 @@
                 </a>
                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                     <a href="{{route('LFM.EditPicture',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFile" data-type="file" data-id="{{$file['id']}}"
-                       data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_modal">
+                        data-toggle="modal" data-target="#create_modal">
                         <i class="fa fa-edit"></i>
                     </a>
                 @else
                     <a href="{{route('LFM.EditFile',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{$file['id']}}"
-                       data-parent-id="@if($category) {{$category['parent_category_id']}} @else 0 @endif" data-toggle="modal" data-target="#create_modal">
+                        data-toggle="modal" data-target="#create_modal">
                         <i class="fa fa-edit"></i>
                     </a>
                 @endif

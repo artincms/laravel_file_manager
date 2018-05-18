@@ -45,17 +45,15 @@ class ManagerController extends Controller
 
     public function searchMedia(Request $request)
     {
-        $categories = Category::with('user')->select('id', 'title as name', 'user_id', 'parent_category_id', 'description', 'created_at', 'updated_at')
-            ->where([
+        $categories = Category::with('user')->where([
                 ['user_id', '=', $this->getUserId()],
                 ['title', 'like', '%' . $request->search . '%']
             ])->get();
-        $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id', 'category_id', 'extension', 'mimeType', 'path', 'created_at', 'updated_at')
-            ->where([
+        $files = File::with('user', 'FileMimeType')->where([
                 ['user_id', '=', $this->getUserId()],
                 ['originalName', 'like', '%' . $request->search . '%']
             ])->get();
-        $breadcrumbs = [['id'=>0,'title'=>'media','type'=>'Enable'],['id'=>0,'title'=>'search__'.$request->search,'type'=>'DisableLink']];
+        $breadcrumbs = [['id'=>0,'title'=>'media','type'=>'Enable'],['id'=>0,'title'=>'search - '.$request->search,'type'=>'DisableLink']];
         $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
         $result['success'] = true;
         return response()->json($result);
@@ -71,6 +69,7 @@ class ManagerController extends Controller
 
     public function storeCategory(Request $request)
     {
+        dd($request->all());
         if ($request->ajax()) {
             if (auth()->check()) {
                 $user_id = auth()->id();
@@ -217,18 +216,18 @@ class ManagerController extends Controller
         $file = [];
         $cat = [];
         if ($request->id == 0) {
-            $categories = Category::with(['child_categories', 'parent_category', 'user'])->select('id', 'title as name', 'user_id')->where([
+            $categories = Category::with(['child_categories', 'parent_category', 'user'])->where([
                 ['parent_category_id', '=', '0'],
                 ['user_id', '=', $this->getUserId()]
             ])->get()->toArray();
 
             if ($trueMimeType) {
-                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at')->where([
+                $files = File::with('user', 'FileMimeType')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->getUserId()]
                 ])->whereIn('mimeType', $trueMimeType)->get()->toArray();
             } else {
-                $files = File::with('user', 'FileMimeType')->select('id', 'originalName as name', 'user_id', 'mimeType', 'category_id', 'file_mime_type_id', 'created_at', 'updated_at', 'size')->where([
+                $files = File::with('user', 'FileMimeType')->where([
                     ['category_id', '=', '0'],
                     ['user_id', '=', $this->getUserId()]
                 ])->get()->toArray();

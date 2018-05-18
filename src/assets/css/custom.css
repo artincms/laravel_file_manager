@@ -259,6 +259,9 @@ li.inserted_tumb {
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.width_22 {
+    width: 22%;
+}
 
 /*____________________________________ADD tooltip csss_______________________________________________*/
 .tooltip_copy {

@@ -40,7 +40,7 @@ class Category extends Model
         {
             $user_id = 0;
         }
-        $cat = Category::with(['child_categories', 'parent_category'])->select('id', 'title as name', 'user_id','parent_category_id','description','created_at','updated_at')->where([
+        $cat = Category::with(['child_categories', 'parent_category'])->where([
             ['parent_category_id', '=', '0'],
             ['user_id', '=', $user_id]
         ])->get();
@@ -84,7 +84,7 @@ class Category extends Model
      */
     public function getUserChildCategoriesAttribute($value=false)
     {
-        return $this->child_categories()->with('user')->select('id', 'title as name', 'user_id','parent_category_id','description','created_at','updated_at')->where('user_id', '=', $this->user_id)->get();
+        return $this->child_categories()->with('user')->where('user_id', '=', $this->user_id)->get();
     }
 
     /**
@@ -92,8 +92,7 @@ class Category extends Model
      */
     public function UserFiles($trueMimeType)
     {
-        $res = $this->files()->with('FileMimeType','user')->select('id', 'originalName as name', 'user_id', 'file_mime_type_id','category_id','extension','mimeType','path','created_at','updated_at','size')
-            ->where('user_id', '=', $this->user_id) ;
+        $res = $this->files()->with('FileMimeType','user')->where('user_id', '=', $this->user_id) ;
         if($trueMimeType)
         {
             $res = $res->whereIn('mimeType',$trueMimeType);
