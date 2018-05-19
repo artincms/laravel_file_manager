@@ -1,34 +1,37 @@
 <div class="container-fluid">
-    <ul class="media-content clearfix col-md-12 insert_thumb">
+    <ul class="media-content clearfix col-md-12">
         @foreach($data as $file_item)
-            <li class="list_style_none inserted_large" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert">
-                <div class="media-attachment-info">
+            <li class="pull-left" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert" style="list-style: none;width: 25%;padding: 1%;text-align: center">
+                <div class="pull-left" style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;">
                     <div class="insert_thumb_action">
-                        <a href="" class="grid-row-delete pull-right myicon {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
-                            <i class="fa fa-trash"></i>
+                        <a href="" class="pull-left {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                            <i class="fa fa-trash" style="color: red;"></i>
                         </a>
                     </div>
-                    <div class="show_image text-center">
+                    <div class="text-center" style="margin-bottom: 3%;">
                         @if($file_item['file']['icon'] == 'image')
                             <a href="{{$file_item['full_url']}}">
-                                <img id="insetred_large_img" src="{{$file_item['full_url']}}">
+                                <img  src="{{$file_item['full_url_large']}}" style=" width:300px;height:180px;">
                             </a>
                         @else
                             <a href="{{$file_item['full_url']}}">
-                                <i class="icon_large fa {{$file_item['file']['icon']}} img-file-thumbnail"></i>
+                                <i class="icon_large fa {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 148px;margin-top: 17%;margin-bottom: 3%;"></i>
                             </a>
                         @endif
                     </div>
                     <div class="insert_thumb_info center">
                         <div class="user_detail row">
+                            <div class="col-md-12">
+                                <h4>{{$file_item['file']['name']}}</h4>
+                            </div>
                             <i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true">
                                 <span class="icon_info_image">{{$file_item['file']['created']}}</span>
                             </i>
-                            <i class="fa fa-calendar-o col-md-6" aria-hidden="true">
-                                <span class="icon_info_image">{{$file_item['file']['updated']}}</span>
-                            </i>
-                            <i class="fa fa-user col-md-6 margin-top-4" aria-hidden="true">
+                            <i aria-hidden="true" class="fa fa-user col-md-6">
                                 <span class="icon_info_image">{{$file_item['file']['user']}} </span>
+                            </i>
+                            <i  class="fa fa-calendar-o col-md-6"  aria-hidden="true" style="margin-top: 3%;">
+                                <span class="icon_info_image">{{$file_item['file']['updated']}}</span>
                             </i>
                         </div>
                     </div>

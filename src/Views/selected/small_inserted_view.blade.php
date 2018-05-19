@@ -1,14 +1,14 @@
 <div class="container-fluid">
     @php( $i =0)
     @foreach($data as $file_item)
-        <div class="btn-group small_inserted_view col-md-6 pull-left margin-top-1" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert">
-            <a href="" class="grid-row-delete pull-left myicon col-md-1 {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
-                <i class="fa fa-trash"></i>
+        <div class="btn-group pull-left " id="{{$section}}_{{$file_item['file']['id']}}_trash_insert" style="background-color: white; padding: 0.5%;box-shadow: 1px 1px #cccccc;margin-top: 1%;    min-width: 45%;    margin: 1%;">
+            <a href="" class="pull-left col-md-1 {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                <i class="fa fa-trash" style="    color: red;"></i>
             </a>
             <div type="text" class="col-md-8">
                 <a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a>
             </div>
-            <div class="col-md-2 pull-right">{{$file_item['file']['size']}}</div>
+            <span class="pull-right">{{$file_item['file']['size']}}</span>
         </div>
     @endforeach
 </div>
