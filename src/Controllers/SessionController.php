@@ -52,11 +52,11 @@ class SessionController extends ManagerController
     {
         $data = [];
         $section = LFM_GetSection($request->section);
-        if (isset($section['selected']))
+        if (isset($section['selected']['data']))
         {
             foreach ($request->items as $item)
             {
-                $status = LFM_FindSessionSelectedId($section['selected'], $item['id']);
+                $status = LFM_FindSessionSelectedId($section['selected']['data'], $item['id']);
                 if (!$status)
                 {
                     $data[] = $this->createData($request, $item);
@@ -75,9 +75,44 @@ class SessionController extends ManagerController
 
     private function createData($request, $item)
     {
-        $full_url = route('LFM.DownloadFile', ['type' => 'ID', 'id' => $item['id'], 'size_type' => $item['type'], 'default_img' => '404.png'
-            , 'quality' => $item['quality'], 'width' => $item['width'], 'height' => $item['height']
-        ]);
+        $full_url = route(
+            'LFM.DownloadFile',
+            [
+                'type' => 'ID',
+                'id' => $item['id'],
+                'size_type' => $item['type'],
+                'default_img' => '404.png',
+                'quality' => $item['quality'],
+                'width' => $item['width'],
+                'height' => $item['height']
+            ]
+        );
+
+        $full_url_large = route(
+            'LFM.DownloadFile',
+            [
+                'type' => 'ID',
+                'id' => $item['id'],
+                'size_type' => 'small',
+                'default_img' => '404.png',
+                'quality' => $item['quality'],
+                'width' => 300,
+                'height' => 180
+            ]
+        );
+
+        $full_url_medium = route(
+            'LFM.DownloadFile',
+            [
+                'type' => 'ID',
+                'id' =>  $item['id'],
+                'size_type' =>'small',
+                'default_img' => '404.png',
+                'quality' => $item['quality'],
+                'width' =>175,
+                'height' => 125
+            ]
+        );
         $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
         $url = str_replace($protocol, '', $full_url);
         $url = str_replace('://', '', $url);
@@ -125,6 +160,8 @@ class SessionController extends ManagerController
                 break;
         }
         $data['full_url'] = $full_url;
+        $data['full_url_medium'] = $full_url_medium;
+        $data['full_url_large'] = $full_url_large;
         $data['url'] = $url;
         $data['file'] = [
             'id' => $file->id,
@@ -156,7 +193,8 @@ class SessionController extends ManagerController
                 if (isset($LFM[$request->section]))
                 {
                     $result['success'] = true;
-                    $LFM[$section]['selected'] = array_merge($LFM[$section]['selected'], $data);
+                    $LFM[$section]['selected']['data'] = array_merge($LFM[$section]['selected']['data'], $data);
+                    $LFM[$section]['selected']['view'] = $this->setInsertedView($request->section, $LFM[$section]['selected']['data']);
                     session()->put('LFM', $LFM);
                     return $result;
                 }
@@ -177,19 +215,15 @@ class SessionController extends ManagerController
         return $result;
     }
 
-    /*private function mergeToSelected($selected, $data)
+    private function setInsertedView($section, $data)
     {
-        $status = LFM_FindSessionSelectedId($selected, $data['file']['id']);
-        if ($status == false)
-        {
-            $result ['data'] = $data;
-        }
-        else
-        {
-            $result['error'] = 'The File ID ' . $data['file']['id'] . ' is repeated';
-        }
-        return $result;
-    }*/
+        $view['list'] = $this->listInsertedView($data, $section);
+        $view['grid'] = $this->gridInsertedView($data, $section);
+        $view['small'] = $this->smallInsertedView($data, $section);
+        $view['medium'] = $this->mediumInsertedView($data, $section);
+        $view['large'] = $this->largeInsertedView($data, $section);
+        return $view;
+    }
 
     private function getSelectedSectionItems($section)
     {
@@ -238,26 +272,31 @@ class SessionController extends ManagerController
             if ($check_options['success'])
             {
                 $data = $this->createAllInsertData($request);
-                $section = $request->section;
-                $view['list'] = $this->listInsertedView($data, $section);
-                $view['grid'] = $this->gridInsertedView($data, $section);
-                $view['small'] = $this->smallInsertedView($data, $section);
-                $view['medium'] = $this->mediumInsertedView($data, $section);
-                $view['large'] = $this->largeInsertedView($data, $section);
-                $result_session = $this->setSelectedFileToSession($request, $section, $data);
-                $result['view'] = $view;
             }
             else
             {
                 $data['success'] = false;
                 $data['error'] = $check_options['error'];
+                $result['success'] = false;
             }
         }
         else
         {
             $data = $this->createAllInsertData($request);
         }
-        $result['data'] = $data;
+        $result_session = $this->setSelectedFileToSession($request, $request->section, $data);
+        if ($result_session['success'])
+        {
+            $session = LFM_GetSection($request->section);
+            $result['section'] = $session;
+            $result['new_inserted_data'] = $data;
+            $result['success'] = true;
+        }
+        else
+        {
+            $result['success'] = false;
+        }
+
         return response()->json($result);
     }
 
@@ -268,15 +307,12 @@ class SessionController extends ManagerController
 
     public function deleteSessionInsertItem(Request $request)
     {
-        if ($request->ajax())
-        {
-            $section = $request->section;
-            $file_id = $request->file_id;
-        }
+        $section = $request->section;
+        $file_id = $request->file_id;
         $LFM = session()->get('LFM');
         if ($LFM[$section])
         {
-            $selected = $LFM[$section]['selected'];
+            $selected = $LFM[$section]['selected']['data'];
             foreach ($selected as $key => $value)
             {
                 if ($file_id == $value['file']['id'])
@@ -284,9 +320,9 @@ class SessionController extends ManagerController
                     unset($selected[$key]);
                 }
             }
-            $LFM[$section]['selected'] = $selected;
+            $LFM[$section]['selected']['data'] = $selected;
             session()->put('LFM', $LFM);
-            $result['data'] = $LFM[$section]['selected'];
+            $result['section'] = $LFM[$section];
             $result['success'] = true;
         }
         else

@@ -33,16 +33,13 @@
     $(document).on('click', '#'+insert_button_id, function (e) {
         var iframe = $('iframe.modal_iframe');
         iframe.contents().find("#insert_file").click();
+        $('#create_{{$modal_id}}').modal('hide');
     });
   //------------------------------------------------------------------------------------//
-    $(document).off("click", '#trash_insert');
-    $(document).on('click', '#trash_insert', function (e) {
-        var file_id = $(this).attr('data-id') ;
-        var res = trash_selected_file(file_id);
-        if (res.success ==true)
-        {
-            $(this).parent('div').addClass('hidden');
-        }
+    $(document).off("click", '.{{$section}}_trash_insert');
+    $(document).on('click', '.{{$section}}_trash_insert', function (e) {
+        var file_id = $(this).attr('data-file_id') ;
+
     });
 
     function trash_selected_file(file_id) {
@@ -51,19 +48,24 @@
             type: "POST",
             url: "{{route('LFM.DeleteSessionInsertItem')}}",
             dataType: "json",
-            async: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             data :{
                 file_id:file_id,
                 section : '{{$section}}'
             },
-            success: function (result) {
-                res = result ;
+            success: function (res) {
+                if (res.success)
+                {
+                    parent.{{$callback}}(res);
+                }
+
             },
             error: function (e) {
                 res =  false ;
             }
         });
-        return res ;
     }
     function hidemodal() {
         $('#close_button_{{LFM_CheckFalseString($modal_id)}}').click();

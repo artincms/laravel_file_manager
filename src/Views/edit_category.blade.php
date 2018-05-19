@@ -6,7 +6,11 @@
     <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/packages/select2/js/select2.js')}}"></script>
 @endsection
 @section('content')
+        <div class="alert alert-danger hidden" id="show_error">
+           <ul id="show_edit_category_error">
 
+           </ul>
+        </div>
     @if($messages)
         @foreach($messages as $message)
             <div class="alert alert-success">
@@ -58,6 +62,10 @@
                     }
                 },
                 error: function (e) {
+                    $('#show_error').removeClass('hidden');
+                    $.each(e.responseJSON.errors,function (index,value) {
+                        $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
+                    });
                 }
             });
         }

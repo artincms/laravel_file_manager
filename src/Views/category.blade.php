@@ -6,13 +6,11 @@
     <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/packages/select2/js/select2.js')}}"></script>
 @endsection
 @section('content')
-        @if($messages)
-            @foreach($messages as $message)
-                <div class="alert alert-success">
-                    <strong>Success!</strong> {{$message}}.
-                </div>
-            @endforeach
-        @endif
+        <div class="alert alert-danger hidden" id="show_error">
+            <ul id="show_edit_category_error">
+
+            </ul>
+        </div>
         <form id="create_category_form" class="search-form">
             {!! csrf_field() !!}
             <div class="form-group">
@@ -32,6 +30,7 @@
                     @endforeach
                 </select>
             </div>
+            <button class="btn btn-primary hidden" id="btn_submit_category">Submit</button>
         </form>
 @endsection
 @section('javascript')

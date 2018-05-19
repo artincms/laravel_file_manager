@@ -94,6 +94,9 @@ class Media
         else
         {
             $is_picture = false;
+            $FileSave->filename = $filename;
+            $FileSave->save();
+
         }
         $result = array('ID' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename, 'OrginalFileName' => $OriginalFileName, 'is_picture' => $is_picture);
         return $result;
@@ -144,7 +147,7 @@ class Media
                 $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('uploads/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
                 {
-                    $name['size_'.$crop_type] = $opt_size ;
+                    $name['size_' . $crop_type] = $opt_size;
                     $name[$crop_type] = $opt_name;
                 }
                 else
@@ -160,7 +163,7 @@ class Media
                 {
                     $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size($FullPath);
                     $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['orginal']);
-                    $name['size_orginal'] = $opt_size ;
+                    $name['size_orginal'] = $opt_size;
                 }
                 else
                 {
@@ -179,9 +182,9 @@ class Media
         //check database for check file exist
         if ($file)
         {
-            $hash = $file_id .'_'.$size_type.'_'.$not_found_img.'_'.$inline_content.'_'.$quality.'_'.$width.'_'.$height;
-            $file_name_hash = 'tmp_fid_'.$file->id.'_'.md5($hash) ;
-            $tmp_path = storage_path() . '/app/uploads/tmp/'.$file_name_hash;
+            $hash = $file_id . '_' . $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height;
+            $file_name_hash = 'tmp_fid_' . $file->id . '_' . md5($hash);
+            $tmp_path = storage_path() . '/app/uploads/tmp/' . $file_name_hash;
             $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($tmp_path))
             {
@@ -202,18 +205,14 @@ class Media
                 }
                 if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file->path . '/files/' . $size_type . '/' . $filename))
                 {
-
-
-
-                    $file_path = storage_path() . '/app/' . $file->path . '/files/' . $size_type . '/' . $filename;
-
+                    $file_path = storage_path() . '/app/' . $file->path . 'files/' . $size_type . '/' . $filename;
                     if ($inline_content)
                     {
                         $file_EXT_without_dot = str_replace('.', '', $file_EXT);
                         $data = file_get_contents($file_path);
                         $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
-                        file_put_contents($tmp_path,$base64);
-                        $res =  $base64;
+                        file_put_contents($tmp_path, $base64);
+                        $res = $base64;
                     }
                     else
                     {
@@ -222,20 +221,20 @@ class Media
                             if ($width && $height)
                             {
                                 $res = Image::make($file_path)->fit((int)$width, (int)$height);
-                                $res->save($tmp_path) ;
-                                $res = $res->response($file_EXT, (int)$quality) ;
+                                $res->save($tmp_path);
+                                $res = $res->response($file_EXT, (int)$quality);
                             }
                             else
                             {
                                 if ($quality < 100)
                                 {
-                                    $res = Image::make($file_path) ;
+                                    $res = Image::make($file_path);
                                     $res->save($tmp_path);
                                     $res = $res->response('jpg', (int)$quality);
                                 }
                                 else
                                 {
-                                    $res = Image::make($file_path) ;
+                                    $res = Image::make($file_path);
                                     $res->save($tmp_path);
                                     $res = $res->response($file_EXT, (int)$quality);
                                 }
@@ -243,10 +242,9 @@ class Media
                         }
                         else
                         {
-                            $res = response()->download($file_path, $file->originalName . '.' . $file_EXT, $headers);
+                            $res = response()->download($file_path, $file->filename . '.' . $file_EXT, $headers);
                         }
                     }
-
                 }
                 else
                 {
@@ -272,7 +270,7 @@ class Media
                 $res = Image::make($not_found_img_path)->response('jpg', $quality);
             }
         }
-        return $res ;
+        return $res;
     }
 
     public static function downloadByName($FileName, $not_found_img = '404.png', $size_type = 'orginal', $inline_content = false, $quality = 90, $width = false, $height = False)

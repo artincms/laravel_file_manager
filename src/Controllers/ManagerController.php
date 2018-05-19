@@ -103,54 +103,68 @@ class ManagerController extends Controller
 
     public function storeCategory(Request $request)
     {
-        dd($request->all());
-        if ($request->ajax()) {
+        if ($request->ajax())
+        {
             if (auth()->check()) {
                 $user_id = auth()->id();
             } else {
                 $user_id = 0;
             }
-            $result = \DB::transaction(function () use ($request, $user_id) {
-                $cat = new Category;
-                $cat->title = $request->title;
-                $cat->user_id = $user_id;
-                $cat->description = $request->description;
-                $cat->parent_category_id = $request->parent_category_id;
-                $cat->created_by = $user_id;
-                $cat->save();
-                //update title disc
-                $cat->title_disc = 'cid_' . $cat->id . '_uid_' . $user_id . '_' . md5($cat->name) . '_' . time();
-                $cat->save();
-                //make directory
-                $subcats = config('laravel_file_manager.crop_type');
-                $path = 'uploads/';
-                foreach (Category::all_parents($cat->id) as $parent) {
-                    if ($parent->parent_category) {
-                        $path .= $parent->parent_category->title_disc . '/';
+            $validatedData = $request->validate([
+                'title' => 'required|unique:lfm_categories|max:255',
+                'description' => 'required',
+            ]);
+            if($validatedData->fails()) {
+                $result['success'] = false;
+                $result['validate'] = $validatedData ;
+            }
+            else
+            {
+                $result = \DB::transaction(function () use ($request, $user_id) {
+                    $cat = new Category;
+                    $cat->title = $request->title;
+                    $cat->user_id = $user_id;
+                    $cat->description = $request->description;
+                    $cat->parent_category_id = $request->parent_category_id;
+                    $cat->created_by = $user_id;
+                    $cat->save();
+                    //update title disc
+                    $cat->title_disc = 'cid_' . $cat->id . '_uid_' . $user_id . '_' . md5($cat->name) . '_' . time();
+                    $cat->save();
+                    //make directory
+                    $subcats = config('laravel_file_manager.crop_type');
+                    $path = 'uploads/';
+                    foreach (Category::all_parents($cat->id) as $parent) {
+                        if ($parent->parent_category) {
+                            $path .= $parent->parent_category->title_disc . '/';
+                        }
                     }
-                }
-                $path .= $cat->title_disc;
-                foreach ($subcats as $subcat) {
-                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($path . '/files/' . $subcat);
-                }
-                $category_id = $request->parent_category_id;
-                $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
-                $result['success'] = true;
-                $messages[] = "Your Category is created";
-                return $result;
-            });
+                    $path .= $cat->title_disc;
+                    foreach ($subcats as $subcat) {
+                        Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($path . '/files/' . $subcat);
+                    }
+                    $category_id = $request->parent_category_id;
+                    $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
+                    $result['success'] = true;
+                    return $result;
+                });
+
+            }
             return response()->json($result);
         }
     }
 
     public function updateCategory(Request $request)
     {
+        $validatedData = $this->validate($request,[
+            'title'=>'required|max:255',
+            'description'=>'required'
+        ]);
         $cat  =Category::find($request->id);
         $cat->title = $request->title;
         $cat->description = $request->description;
         $cat->save();
         $result['success'] = true;
-        $messages[] = "Your Category is created";
         return response()->json($result);
     }
 

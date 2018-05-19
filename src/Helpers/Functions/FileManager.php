@@ -14,7 +14,7 @@ function LFM_SetSessionOption($name, $option)
     }
     $option['true_mime_type'] = $mime;
     $LFM[$name]['options'] = $option;
-    $LFM[$name]['selected'] = [];
+    $LFM[$name]['selected'] = ['data'=> [] , 'view' => []];
     session()->put('LFM', $LFM);
     return $LFM;
 }
@@ -155,9 +155,9 @@ function LFM_GetSection($section)
 function LFM_GetSectionFile($section)
 {
     $sec = LFM_GetSection($section);
-    if ($sec && isset($sec['selected']) && count($sec['selected']) >= 1)
+    if ($sec && isset($sec['selected']['data']) && count($sec['selected']) >= 1)
     {
-        return $sec['selected'];
+        return $sec['selected']['data'];
     }
     else
     {

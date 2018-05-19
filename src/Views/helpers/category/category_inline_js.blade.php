@@ -1,13 +1,12 @@
 <script type="text/javascript">
 
     //---------------------------------------------------------------------------------------------------------//
-    $(document).off("click", '#btn_submit_create_category');
-    $(document).on('click', '#btn_submit_create_category', function (e) {
+    $(document).off("click", '#btn_submit_category');
+    $(document).on('click', '#btn_submit_category', function (e) {
         e.preventDefault() ;
         var formElement = document.querySelector('#create_category_form');
         var formData = new FormData(formElement);
         $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
-
         @if (!$callback)
         category_save(formData);
         @else
@@ -22,7 +21,6 @@
 
     function category_save(FormData,callback) {
         callback = callback || false ;
-        console.log(callback)  ;
         $.ajax({
             type: "POST",
             url: "{{route('LFM.StoreCategory')}}",
@@ -41,6 +39,14 @@
 
                    @endif
                     document.location.reload();
+                }
+                else
+                {
+                    $('.total_loader').remove();
+                    $('#show_error').removeClass('hidden');
+                    $.each(e.responseJSON.errors,function (index,value) {
+                        $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
+                    });
                 }
             },
             error: function (e) {

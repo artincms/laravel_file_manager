@@ -82,7 +82,7 @@ class Category extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getUserChildCategoriesAttribute($value=false)
+    public function getUserChildCategoriesAttribute($value = false)
     {
         return $this->child_categories()->with('user')->where('user_id', '=', $this->user_id)->get();
     }
@@ -92,13 +92,13 @@ class Category extends Model
      */
     public function UserFiles($trueMimeType)
     {
-        $res = $this->files()->with('FileMimeType','user')->where('user_id', '=', $this->user_id) ;
-        if($trueMimeType)
+        $res = $this->files()->with('FileMimeType', 'user')->where('user_id', '=', $this->user_id);
+        if ($trueMimeType)
         {
-            $res = $res->whereIn('mimeType',$trueMimeType);
+            $res = $res->whereIn('mimeType', $trueMimeType);
         }
 
-        return $res->get() ;
+        return $res->get();
 
     }
 
