@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
     //---------------------------------------------------------------------------------------------------------------------''
     $(document).off("click", '#EditCategory');
     $(document).on('click', '#EditCategory', function (e) {
@@ -39,8 +40,8 @@
             $(document).off('click','#create_category_modal_button');
             $(document).on('click','#create_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_category");
-                $(document).off('click',selector);
-                selector.click();
+                    selector.off();
+                    selector.click();
             });
         });
     });
@@ -155,14 +156,14 @@
     $(document).off("click", '#insert_btn');
     $(document).on('click', '#insert_btn', function (e){
         var data = {} ;
-        id = $(this).attr('data-id');
-        width = $('#change_width').val() || 0;
-        height  = $('#change_height').val() || 0 ;
-        quality = $('#change_quality').val() || 100;
-        type  = $('input[name=selectimage]:checked').val() || 'orginal' ;
-
-        datas = [{id:id , width : width , height:height , quality : quality , type : type}]
+        var id = $(this).attr('data-id');
+        var width = $('#change_width').val() || 0;
+        var height  = $('#change_height').val() || 0 ;
+        var quality = $('#change_quality').val() || 100;
+        var type  = $('input[name=selectimage]:checked').val() || 'orginal' ;
+        var datas = [{id:id , width : width , height:height , quality : quality , type : type}] ;
         var result = create_insert_data(datas) ;
+        $('#cancel_footer_btn').click();
         @if ($callback)
         {
             parent.{{LFM_CheckFalseString($callback)}}(result) ;
@@ -170,8 +171,8 @@
         @endif
 
     });
-    function create_insert_data(value) {
-
+    function create_insert_data(value)
+    {
         var res ='';
         console.log(value);
 
@@ -182,9 +183,7 @@
             async: false,
             data :{
                 items:value,
-                @if($section)
-                section:'{{$section}}',
-                @endif
+                section : '{{LFM_CheckFalseString($section)}}'
 
             },
             success: function (result) {

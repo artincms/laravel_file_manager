@@ -23,15 +23,15 @@
     @foreach($categories as $category)
         <tr>
             <td>  <a href="#" class="media-attachment-chexbox">
-                    <input type="checkbox" class="grid-row-checkbox check" data-type="file" data-id="{{$category['id']}}" data-parent-id="{{$category['category_id']}}" data-name="{{$category['name']}}"/>
+                    <input type="checkbox" class="grid-row-checkbox check" data-type="file" data-id="{{$category['id']}}" data-parent-id="{{$category['category_id']}}" data-name="{{$category['title']}}"/>
                 </a>
             </td>
             </td>
             <td>{{$category->id}}</td>
             <td>
 
-                <a title="{{$category['name']}}" href="" data-id="{{$category['id']}}" class="link_to_category" data-description="{{$category['description']}}"
-                ><i class="fa fa-folder margin-right-1"></i>{{$category->name}}</a>
+                <a title="{{$category['title']}}" href="" data-id="{{$category['id']}}" class="link_to_category" data-description="{{$category['description']}}"
+                ><i class="fa fa-folder margin-right-1"></i>{{$category['title']}}</a>
 
             </td>
             <td>@if ($category->user) {{$category->user->name}}@else public @endif</td>
@@ -55,22 +55,28 @@
             <td>{{$file['id']}}</td>
             <td>
                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                    <a id="sweet_image" class="blue" title="{{$file['name']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
-                       data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}">
-                        <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['name']}}</a>
+                    <a id="sweet_image" class="blue" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                       data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}"
+                       data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
+                    >
+                        <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                     </a>
 
                 @elseif($file->filemimetype->icon_class)
-                    <a title="{{$file['name']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['name']}}" data-id="{{$file->id}}"
+                    <a title="{{$file['originalName']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['originalName']}}" data-id="{{$file->id}}"
                        data-user-name="@if ($file->user) {{$file->user->name}}}@else public @endif"
                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
-                       data-size="{{$file->size}}">
-                        <i class="fa {{$file->filemimetype->icon_class}} icon_file_list margin-right-1"></i>{{$file['name']}}</a>
+                       data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
+
+                    >
+                        <i class="fa {{$file->filemimetype->icon_class}} icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                 @else
-                    <a title="{{$file['name']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['name']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
+                    <a title="{{$file['originalName']}}" href="" id="sweet_image" data-humman_size="{{$file->humman_size}}" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
                        data-user-name="@if ($file->user) {{$file->user->name}}}@else public @endif"
-                       data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File">
-                        <i class="fa fa-file icon_file_list margin-right-1"></i>{{$file['name']}}</a>
+                       data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
+                       data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
+                    >
+                        <i class="fa fa-file icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                 @endif
             </td>
             <td>@if ($file->user) {{$file->user->name}}@else public @endif</td>

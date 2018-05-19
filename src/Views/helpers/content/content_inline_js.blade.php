@@ -218,6 +218,9 @@
                     '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">Orginal</a></span>' +
                     '</div>' +
                     '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
                     '<span id="copy_path" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
@@ -232,6 +235,9 @@
                     '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" target="_blank" href="'+src_large+'">large</a></span>' +
                     '</div>' +
                     '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_large+'</span>'+
+                    '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
                     '<span id="copy_path" data-clipboard-target="large" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
@@ -246,6 +252,9 @@
                     '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'" target="_blank">Medium</a></span>' +
                     '</div>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_medium+'</span>'+
+                    '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
                     '<span id="copy_path" data-clipboard-target="medium" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
@@ -260,6 +269,9 @@
                     '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="small_link" class="color_white" href="'+src_small+'" target="_blank">Small</a></span>' +
                     '</div>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
+                    '<div class="input-group-append width_22">' +
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_small+'</span>'+
+                    '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
                     '<span id="copy_path" data-clipboard-target="small" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
@@ -290,8 +302,11 @@
         {
             html +=
                 '<div class="input-group margin-top-1">' +
-                '<span class="input-group-addon btn-primary color_white" id="basic-addon1">Orginal</span>' +
+                '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="small_link" class="color_white" href="'+src_orginal+'" target="_blank">Orginal</a></span>' +
                 '<input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
+                '<div class="input-group-append width_22">' +
+                '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                '</div>' +
                 '<div class="tooltip_copy input-group-append">' +
                 '<button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" >copy</button><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                 '</div>' +
