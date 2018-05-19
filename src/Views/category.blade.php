@@ -8,7 +8,6 @@
 @section('content')
         <div class="alert alert-danger hidden" id="show_error">
             <ul id="show_edit_category_error">
-
             </ul>
         </div>
         <form id="create_category_form" class="search-form">

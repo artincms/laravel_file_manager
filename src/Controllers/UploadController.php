@@ -34,7 +34,7 @@ class UploadController extends ManagerController
         if ($request->file)
         {
             $CategoryID = $request->category_id;
-            $res = [];
+            $result = [];
             foreach ($request->file as $file)
             {
                 $mimeType = $file->getMimeType();
@@ -43,19 +43,19 @@ class UploadController extends ManagerController
                 $size = $file->getSize();
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
-                    $message = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
+                    $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
                         $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
-                        $message['success'] = true;
-                        $message['result'] = $res;
-                        return $message;
+                        $result['success'] = true;
+                        $result['result'] = $res;
+                        return $result;
                     });
                 }
                 else
                 {
-                    $message['success'] = false;
+                    $result[]= ['successs'=>false , 'OrginalFileName' =>$originalName];
                 }
             }
-            return response()->json($message);
+            return response()->json($result);
         }
     }
 

@@ -21,12 +21,11 @@
                 <input id="input-708" name="file[]" type="file" multiple>
             @endif
         </div>
-        <div id="kv-error-2" style="margin-top:10px;display:none"></div>
+        <div id="kv-error-2"  class="alert alert-danger" style="margin-top:10px;display:none"></div>
         <div id="kv-success-2" class="alert alert-success" style="margin-top:10px;display:none"></div>
     </div>
     <script type="text/javascript">
         //-----------------------------------------------------------------------------------------------------//
-        var route =[] ;
         $("#input-708").fileinput({
             theme: "fa",
             uploadUrl: "{{route('LFM.StoreUploads')}}",
@@ -35,7 +34,6 @@
                 category_id: {{$category_id}} ,
                 _token: $('#token').val()
             },
-            uploadAsync: true,
             delete:false,
             @if($section && $section !='false' && $options !=false)
             maxFileCount: '{{$options['max_file_number']}}',
@@ -49,15 +47,38 @@
             uploadClass: "btn btn-info",
             uploadLabel: "Upload",
             uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
+        }).on('filebatchpreupload', function(event, data, id, index) {
+            $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
+            $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
+        }).on('filebatchuploadsuccess', function(event, data) {
+            $.each(data.response, function(index, value) {
+                console.log(value);
+                var out = '';
+                if(value.success)
+                {
+                    var fname = value.result.OrginalFileName;
+                    out = out + '<li>' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</li>';
+                    $('#kv-success-2 ul').append(out);
+                    $('#kv-success-2').fadeIn('slow');
+                }
+                else
+                {
+                    var fname = value.OrginalFileName;
+                    out = out + '<li>' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</li>';
+                    $('#kv-error-2 ul').append(out);
+                    $('#kv-error-2').fadeIn('slow');
+                    console.log(out);
+                }
+                if(typeof parent.refresh !== 'undefined')
+                {
+                    parent.refresh() ;
+                }
 
-        }).on('fileuploaded', function (event, data, previewId, index) {
-            var id = data.response.result.ID;
-            $('.kv-file-remove').remove();
-            if(typeof parent.refresh !== 'undefined')
-            {
-                parent.refresh() ;
-            }
+            });
+
         });
+
+        //-----------------------------------------------------------------------------------------------------------//
         $('#cancel_btn').off('click');
         $('#cancel_btn').on('click', function () {
             parent.$('.modal').modal('hide');
