@@ -110,7 +110,7 @@ class Media
         if (config('laravel_file_manager.Optimise_image'))
         {
             $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->optimize($FullPath);
+            $optimizerChain->optimize(storage_path() . '/app/'.$FullPath);
         }
         foreach (config('laravel_file_manager.crop_type') as $crop_type)
         {

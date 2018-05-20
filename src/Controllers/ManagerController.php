@@ -74,8 +74,16 @@ class ManagerController extends Controller
         }
         if ($section) {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$section]['options']['true_mime_type'];
-        } else {
+            if($LFM[$section]['options']['true_mime_type'])
+            {
+                $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+            }
+            else
+            {
+                $trueMimeType = false;
+            }
+        }
+        else {
             $trueMimeType = false;
         }
         $files = File::get_uncategory_files($trueMimeType);
