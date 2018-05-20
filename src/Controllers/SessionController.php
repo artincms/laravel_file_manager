@@ -313,17 +313,24 @@ class SessionController extends ManagerController
         if ($LFM[$section])
         {
             $selected = $LFM[$section]['selected']['data'];
-            foreach ($selected as $key => $value)
+            if ($selected)
             {
-                if ($file_id == $value['file']['id'])
+                foreach ($selected as $key => $value)
                 {
-                    unset($selected[$key]);
+                    if ($file_id == $value['file']['id'])
+                    {
+                        unset($selected[$key]);
+                    }
                 }
+                $LFM[$section]['selected']['data'] = $selected;
+                session()->put('LFM', $LFM);
+                $result['section'] = $LFM[$section];
+                $result['success'] = true;
             }
-            $LFM[$section]['selected']['data'] = $selected;
-            session()->put('LFM', $LFM);
-            $result['section'] = $LFM[$section];
-            $result['success'] = true;
+            else
+            {
+                $result['success'] = false;
+            }
         }
         else
         {

@@ -205,7 +205,7 @@ class Media
                 }
                 if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file->path . '/files/' . $size_type . '/' . $filename))
                 {
-                    $file_path = storage_path() . '/app/' . $file->path . 'files/' . $size_type . '/' . $filename;
+                    $file_path = storage_path() . '/app/' . $file->path . '/files/' . $size_type . '/' . $filename;
                     if ($inline_content)
                     {
                         $file_EXT_without_dot = str_replace('.', '', $file_EXT);

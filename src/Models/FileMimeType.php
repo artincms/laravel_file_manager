@@ -11,4 +11,5 @@ use Illuminate\Database\Eloquent\Model;
 class FileMimeType extends Model
 {
     protected $table = 'lfm_file_mime_types';
+
 }

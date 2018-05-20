@@ -14,7 +14,7 @@ function LFM_SetSessionOption($name, $option)
     }
     $option['true_mime_type'] = $mime;
     $LFM[$name]['options'] = $option;
-    $LFM[$name]['selected'] = ['data'=> [] , 'view' => []];
+    $LFM[$name]['selected'] = ['data' => [], 'view' => []];
     session()->put('LFM', $LFM);
     return $LFM;
 }
@@ -134,7 +134,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback','button_id'))->render();
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
@@ -242,8 +242,8 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal'
 
 function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
 {
-    $res =\ArtinCMS\LFM\Helpers\Classes\Media::downloadById($file_id, $size_type, $not_found_img, true, $quality, $width, $height);
-    return $res ;
+    $res = \ArtinCMS\LFM\Helpers\Classes\Media::downloadById($file_id, $size_type, $not_found_img, true, $quality, $width, $height);
+    return $res;
 }
 
 function LFM_FileSizeConvert($bytes)
@@ -268,5 +268,24 @@ function LFM_FileSizeConvert($bytes)
             break;
         }
     }
+    return $result;
+}
+
+function LFM_ConvertMimeTypeToExt($mimeTypes)
+{
+    $res = '';
+    $text = '' ;
+    foreach ($mimeTypes as $mime)
+    {
+        $extensions = \ArtinCMS\LFM\Models\FileMimeType::select('ext')->where('mimeType', '=', $mime)->get();
+        foreach($extensions as $ex)
+        {
+            $res .= "'$ex->ext',";
+            $text .=".$ex->ext,";
+        }
+
+    }
+    $result['ext'] = rtrim($res,',');
+    $result['accept'] = $text;
     return $result;
 }

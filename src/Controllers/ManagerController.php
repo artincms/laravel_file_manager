@@ -42,7 +42,7 @@ class ManagerController extends Controller
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = $category->title;
-            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => 'refresh']);
+            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
             $result['success'] = true;
         }
         return $result;
@@ -114,13 +114,7 @@ class ManagerController extends Controller
                 'title' => 'required|unique:lfm_categories|max:255',
                 'description' => 'required',
             ]);
-            if($validatedData->fails()) {
-                $result['success'] = false;
-                $result['validate'] = $validatedData ;
-            }
-            else
-            {
-                $result = \DB::transaction(function () use ($request, $user_id) {
+            $result = \DB::transaction(function () use ($request, $user_id) {
                     $cat = new Category;
                     $cat->title = $request->title;
                     $cat->user_id = $user_id;
@@ -148,8 +142,6 @@ class ManagerController extends Controller
                     $result['success'] = true;
                     return $result;
                 });
-
-            }
             return response()->json($result);
         }
     }
@@ -165,6 +157,19 @@ class ManagerController extends Controller
         $cat->description = $request->description;
         $cat->save();
         $result['success'] = true;
+        return response()->json($result);
+    }
+
+    public function editFileName(Request $request)
+    {
+        $validatedData = $this->validate($request,[
+            'name'=>'required|max:255',
+        ]);
+        $file  =File::find($request->id);
+        $file->originalName = $request->name;
+        $file->save();
+        $result['success'] = true;
+        $messages[] = "Your Category is created";
         return response()->json($result);
     }
 
@@ -227,16 +232,6 @@ class ManagerController extends Controller
     {
         $file = File::find($file_id);
         return view('laravel_file_manager::edit_file_name', compact('file'));
-    }
-
-    public function editFileName(Request $request)
-    {
-        $file  =File::find($request->id);
-        $file->originalName = $request->name;
-        $file->save();
-        $result['success'] = true;
-        $messages[] = "Your Category is created";
-        return response()->json($result);
     }
 
     public function trash(Request $request)

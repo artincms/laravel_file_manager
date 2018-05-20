@@ -34,13 +34,12 @@
     $(document).off("click", '.create_category');
     $(document).on('click', '.create_category', function (e) {
         var src = $(this).attr('href') ;
-        var iframe = $('iframe.modal_iframe');
+        var iframe = $('#modal_iframe_category');
         iframe.attr("src",src);
         iframe.on("load", function() {
             $(document).off('click','#create_category_modal_button');
             $(document).on('click','#create_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_category");
-                    selector.off();
                     selector.click();
             });
         });

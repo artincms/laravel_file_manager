@@ -7,9 +7,7 @@
 @endsection
 @section('content')
         <div class="alert alert-danger hidden" id="show_error">
-           <ul id="show_edit_category_error">
-
-           </ul>
+           <ul id="show_edit_category_error"></ul>
         </div>
     @if($messages)
         @foreach($messages as $message)

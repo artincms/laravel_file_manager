@@ -1,10 +1,10 @@
 <div class="container-fluid">
     @php( $i =0)
-    <ul class="">
+    <ul>
         @foreach($data as $file_item)
-            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert">
+            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li">
                 <a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a>
-                <span class="pull-left {{$section}}_trash_insert" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                <span class="pull-left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                     <i class="fa fa-trash" style="color: red"></i>
                 </span>
             </li>

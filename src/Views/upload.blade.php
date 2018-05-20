@@ -18,13 +18,20 @@
                 @php($accept_ext = '.'.implode(",.",$options['true_file_extension']))
                 <input id="input-708" name="file[]" type="file" multiple accept="{!! $accept_ext !!}">
             @else
-                <input id="input-708" name="file[]" type="file" multiple>
+                @php($extensions = LFM_ConvertMimeTypeToExt(config('laravel_file_manager.allowed')))
+                @php($ext = $extensions['ext'])
+                @php($accept_ext =$extensions['accept'] )
+                <input id="input-708" name="file[]" type="file" multiple  accept="{!! $accept_ext !!}">
             @endif
         </div>
         <div id="kv-error-2"  class="alert alert-danger" style="margin-top:10px;display:none"></div>
         <div id="kv-success-2" class="alert alert-success" style="margin-top:10px;display:none"></div>
     </div>
+{{--
+    {{dd(LFM_ConvertMimeTypeToExt(config('laravel_file_manager.allowed')))}}
+--}}
     <script type="text/javascript">
+
         //-----------------------------------------------------------------------------------------------------//
         $("#input-708").fileinput({
             theme: "fa",
@@ -38,6 +45,8 @@
             @if($section && $section !='false' && $options !=false)
             maxFileCount: '{{$options['max_file_number']}}',
             allowedFileExtensions: [{!! $true_ext !!}],
+            @else
+            allowedFileExtensions:[{!!$ext !!}],
             @endif
             elErrorContainer: "#errorBlock",
             browseClass: "btn btn-success",

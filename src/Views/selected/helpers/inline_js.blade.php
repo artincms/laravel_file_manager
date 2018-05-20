@@ -1,6 +1,6 @@
 <script>
-    $(document).off("click", '.{{$section}}_trash_insert');
-    $(document).on('click', '.{{$section}}_trash_insert', function (e) {
+    $(document).off("click", '#{{$section}}_trash_inserted');
+    $(document).on('click', '#{{$section}}_trash_inserted', function (e) {
         e.preventDefault();
         var file_id = $(this).attr('data-file_id');
         var section = $(this).attr('data-section');
@@ -15,10 +15,13 @@
                 section: section,
                 file_id: file_id
             },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function (result) {
                 if (result.success)
                 {
-                    $('#' + section + '_' + file_id + '_trash_insert').remove();
+                    $('#' + section + '_' + file_id + '_trash_insert_li').remove();
                 }
                 else
                 {

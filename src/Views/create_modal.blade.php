@@ -7,8 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 130px) ;height:  calc(100vh - 130px) ;">
-                    <iframe class="modal_iframe" src="{{$src}}" style="width: 100%;max-height:  calc(100vh - 177px) ;border: none;height:  calc(100vh - 177px) ;"></iframe>
+            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
+                    <iframe class="modal_iframe" src="{{$src}}" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
 
             </div>
             <div class="modal-footer">
@@ -36,37 +36,7 @@
         $('#create_{{$modal_id}}').modal('hide');
     });
   //------------------------------------------------------------------------------------//
-    $(document).off("click", '.{{$section}}_trash_insert');
-    $(document).on('click', '.{{$section}}_trash_insert', function (e) {
-        var file_id = $(this).attr('data-file_id') ;
 
-    });
-
-    function trash_selected_file(file_id) {
-        var res ='';
-        $.ajax({
-            type: "POST",
-            url: "{{route('LFM.DeleteSessionInsertItem')}}",
-            dataType: "json",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data :{
-                file_id:file_id,
-                section : '{{$section}}'
-            },
-            success: function (res) {
-                if (res.success)
-                {
-                    parent.{{$callback}}(res);
-                }
-
-            },
-            error: function (e) {
-                res =  false ;
-            }
-        });
-    }
     function hidemodal() {
         $('#close_button_{{LFM_CheckFalseString($modal_id)}}').click();
         $('.modal-backdrop').removeClass();

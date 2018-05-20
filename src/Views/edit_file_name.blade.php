@@ -1,8 +1,9 @@
 @extends('laravel_file_manager::layouts.master')
 
 @section('content')
-
-
+    <div class="alert alert-danger hidden" id="show_error">
+        <ul id="show_edit_category_error"></ul>
+    </div>
     <form id="form_update_file_name" class="search-form">
         {!! csrf_field() !!}
         <input type="hidden" value="{{$file->id}}" name="id">
@@ -42,6 +43,10 @@
                     }
                 },
                 error: function (e) {
+                    $('#show_error').removeClass('hidden');
+                    $.each(e.responseJSON.errors,function (index,value) {
+                        $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
+                    });
                 }
             });
         }

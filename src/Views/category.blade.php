@@ -13,11 +13,11 @@
         <form id="create_category_form" class="search-form">
             {!! csrf_field() !!}
             <div class="form-group">
-                <label for="title" class="control-label">Name</label>
+                <label for="title" class="control-label">Title</label>
                 <input id="title" class="form-control" placeholder="Category Name" type="text" name="title">
             </div>
             <div class="form-group">
-                <label for="description" class="control-label">Name</label>
+                <label for="description" class="control-label">Description</label>
                 <input id="description" class="form-control" placeholder="some description .." type="text" name="description">
             </div>
             <div class="form-group">

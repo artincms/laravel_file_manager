@@ -110,7 +110,7 @@ label#label_modal_sweet {
     font-size: 13px;
     margin-top: 2%;
 }
-img#sweet_image {
+#sweet_image {
     cursor: pointer;
 }
 .detail_image {
@@ -262,7 +262,42 @@ li.inserted_tumb {
 .width_22 {
     width: 22%;
 }
-
+#create_upload_modal_iframe {
+    width: 100%;
+    max-height: calc(100vh - 10px);
+    border: none;
+    height: calc(100vh - 10px);
+}
+#modal_upload_div
+{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+    overflow: auto;
+}
+#modal_dialog_upload {
+    width: 95%!important;
+   max-width: 95%!important;
+}
+.category_upload_body
+{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+    overflow: auto;
+}
+.create_category_modal_iframe {
+    width: 100%;
+    max-height: calc(100vh - 10px);
+    border: none;
+    height: calc(100vh - 10px);
+}
+.modal_dialog_category{
+    width: 95%!important;
+    max-width: 95%!important;
+}
 /*____________________________________ADD tooltip csss_______________________________________________*/
 .tooltip_copy {
     position: relative;

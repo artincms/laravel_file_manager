@@ -30,27 +30,22 @@
             contentType: false,
             success: function (result) {
                 if (result.success == true) {
-                    $('#message').html('<div class="alert alert-success"><strong>Success!</strong>Your Category Add Successfully</div>') ;
                    @if($callback)
-                           if(parent.callback)
-                            {
-                                parent.callback();
-                            }
+                       if(parent.callback)
+                        {
+                            parent.callback();
+                        }
 
                    @endif
-                    document.location.reload();
-                }
-                else
-                {
-                    $('.total_loader').remove();
-                    $('#show_error').removeClass('hidden');
-                    $.each(e.responseJSON.errors,function (index,value) {
-                        $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
-                    });
+                   document.location.reload();
                 }
             },
             error: function (e) {
-
+                    $('.total_loader').remove();
+                    $('#show_error').removeClass('hidden');
+                    $.each(e.responseJSON.errors,function (index,value) {
+                    $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
+                });
             }
         });
     }
