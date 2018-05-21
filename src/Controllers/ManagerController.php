@@ -14,10 +14,9 @@ class ManagerController extends Controller
 {
     private function show($id, $insert = false, $callback = false, $section = false)
     {
+        $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id','=',$this->getUserId())->get(),'parent_category_id',false,$id,0) ;
         $allCategories['share'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-2) ;
         $allCategories['public'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-1) ;
-        $allCategories['root'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,0) ;
-        $allCategories =json_encode($allCategories);
         $breadcrumbs = $this->getBreadcrumbs($id);
         if ($section) {
             $LFM = session()->get('LFM');
@@ -26,6 +25,8 @@ class ManagerController extends Controller
             $trueMimeType = false;
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
         }
+        $result['allCategories'] = $allCategories ;
+        $result['success'] = true;
         if ($id == 0) {
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
@@ -36,7 +37,6 @@ class ManagerController extends Controller
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
-            $result['success'] = true;
         }
         elseif($id == -2)
         {
@@ -50,7 +50,6 @@ class ManagerController extends Controller
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
-            $result['success'] = true;
         }
         else {
             $category = Category::with('parent_category')->find($id);
@@ -62,7 +61,6 @@ class ManagerController extends Controller
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = $category->title;
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
-            $result['success'] = true;
         }
         return $result;
     }
@@ -110,7 +108,7 @@ class ManagerController extends Controller
         $category = false;
         $allCategories['share'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,-2) ;
         $allCategories['public'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,-1) ;
-        $allCategories['root'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,0) ;
+        $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id','=',$this->getUserId())->get(),'parent_category_id',false,false,0) ;
         $allCategories =json_encode($allCategories);
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $result['parent_category_name'] = 'media';

@@ -297,18 +297,13 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = false, $selectedNo
     {
         $sub['text'] = $sub['title'];
         $sub['a_attr']=['class'=> 'link_to_category','data-id'=>$sub['id']];
-        if ($openNodes)
+        if ($sub['id'] == (int)$selectedNode)
         {
-            $sub['state']['opened'] = true;
+            $sub['state'] = ['selected' => true , 'opened' =>true] ;
+
         }
         $grouped[$sub[$pidKey]][] = $sub;
-        if ($selectedNode)
-        {
-            if ($sub['id'] == $selectedNode)
-            {
-                $sub['state'] = ['selected' => true , 'opened' =>true] ;
-            }
-        }
+
     }
     $fnBuilder = function ($siblings) use (&$fnBuilder, $grouped, $idKey, $children_key)
     {

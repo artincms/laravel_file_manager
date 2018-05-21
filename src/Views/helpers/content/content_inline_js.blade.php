@@ -5,7 +5,7 @@
         $('#show_list_tab').tab('show') ;
         $('#refresh_page').attr('data-type','list') ;
     });
-    //-----------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '.link_to_category');
     $(document).on('click', '.link_to_category', function (e) {
         e.preventDefault();
@@ -557,6 +557,7 @@
     //-----------------------------------------------------------------------------------------------------------------------//
 
     function show_category(id) {
+        console.log(id) ;
         $.ajax({
             type: "POST",
             url: "{{route('LFM.ShowCategory')}}",
@@ -578,7 +579,7 @@
                     $( ".panel-body" ).html(result.html);
                     set_tab_show(type);
                     set_inserted_to_button(0);//set no inserted
-                    set_jstree({!! $allCategories !!},id)
+                    set_jstree(result.allCategories)
                 }
             },
             error: function (e) {

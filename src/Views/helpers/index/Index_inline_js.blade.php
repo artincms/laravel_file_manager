@@ -24,11 +24,12 @@
             });
     });
 
-    function set_jstree(jdata,select_id)
+    function set_jstree(jdata)
     {
         $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
         $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
         $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
+        console.log(jdata);
         $('#jstree_category_share').jstree(
             {
                 'core' : {
@@ -48,45 +49,7 @@
                 }
             });
     }
-    /* function create_jtree_data(jdata,select_id)
-     {
-         if (select_id == 0)
-         {
-             var status = {'opened':true,'selected':true} ;
-         }
-         else
-         {
-             var status = {'opened':false,'selected':false} ;
-         }
 
-         var items = [ { "id" : 0, "parent" :  "#", "text" : "Root",'state' :status,'a_attr':{'data-id':0,'class':'link_to_category'}}];
-         $.each(jdata,function (index,value) {
-             if (select_id == value.id)
-             {
-                 var status = {'opened':true,'selected':true} ;
-             }
-             else
-             {
-                 var status = {'opened':false,'selected':false} ;
-             }
-             item={ "id" : value.id, "parent" : value.parent_category_id, "text" :value.title,'state' : status,'a_attr':{'data-id':value.id,'class':'link_to_category'} };
-             items.push(item) ;
-         });
-         return items ;
-     }
-
-     function set_jstree(jdata,select_id)
-     {
-         var select_id = select_id || false ;
-         data=create_jtree_data(jdata,select_id);
-         $('#js_tree_div').html('<div id="jstree_category"></div>');
-         $('#jstree_category').jstree(
-             {
-                 'core' : {
-                     'data' : data
-                 }
-             });
-     }*/
     //---------------------------------------------------------------------------------------------------------------------//
     //show shares folder
     $(document).off("click", '#top_share_folder');
@@ -104,7 +67,6 @@
         iframe.attr("src",src);
 
     });
-
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#EditFile');
     $(document).on('click', '#EditFile', function (e) {
