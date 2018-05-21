@@ -76,7 +76,6 @@
                     out = out + '<li>' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</li>';
                     $('#kv-error-2 ul').append(out);
                     $('#kv-error-2').fadeIn('slow');
-                    console.log(out);
                 }
                 if(typeof parent.refresh !== 'undefined')
                 {

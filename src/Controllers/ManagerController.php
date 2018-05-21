@@ -14,6 +14,10 @@ class ManagerController extends Controller
 {
     private function show($id, $insert = false, $callback = false, $section = false)
     {
+        $allCategories['share'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-2) ;
+        $allCategories['public'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-1) ;
+        $allCategories['root'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,0) ;
+        $allCategories =json_encode($allCategories);
         $breadcrumbs = $this->getBreadcrumbs($id);
         if ($section) {
             $LFM = session()->get('LFM');
@@ -26,19 +30,34 @@ class ManagerController extends Controller
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
             $category = false;
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','allCategories'))->render();
             $result['message'] = '';
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = 'media';
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
             $result['success'] = true;
-        } else {
+        }
+        elseif($id == -2)
+        {
+            $files = File::where('category_id','=',-2)->get();
+            $category = Category::with('parent_category')->find($id);
+            $categories = $category->child_categories;
+            $category = false;
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','allCategories'))->render();
+            $result['message'] = '';
+            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
+            $result['parent_category_id'] = $id;
+            $result['parent_category_name'] = 'media';
+            $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
+            $result['success'] = true;
+        }
+        else {
             $category = Category::with('parent_category')->find($id);
             $breadcrumbs[] = ['id' => $category->id, 'title' => $category->title, 'type' => 'DisableLink'];
             $categories = $category->user_child_categories;
             $files = $category->UserFiles($trueMimeType);
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','allCategories'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['parent_category_name'] = $category->title;
@@ -89,15 +108,27 @@ class ManagerController extends Controller
         $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
+        $allCategories['share'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,-2) ;
+        $allCategories['public'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,-1) ;
+        $allCategories['root'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,false,0) ;
+        $allCategories =json_encode($allCategories);
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $result['parent_category_name'] = 'media';
-        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback'));
+        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback','allCategories'));
     }
 
     public function createCategory($category_id = 0, $callback = false, $section = false)
     {
+        if (in_array(-2,Category::getAllParentId($category_id)))
+        {
+            $categories = Category::all();
+        }
+        else
+        {
+            $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
+
+        }
         $messages = [];
-        $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
@@ -135,7 +166,14 @@ class ManagerController extends Controller
                     $cat->save();
                     //make directory
                     $subcats = config('laravel_file_manager.crop_type');
-                    $path = 'uploads/';
+                    if (in_array(-2,Category::getAllParentId($request->parent_category_id)))
+                    {
+                        $path = 'shares/';
+                    }
+                    else
+                    {
+                        $path = 'uploads/';
+                    }
                     foreach (Category::all_parents($cat->id) as $parent) {
                         if ($parent->parent_category) {
                             $path .= $parent->parent_category->title_disc . '/';

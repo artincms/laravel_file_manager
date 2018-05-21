@@ -64,9 +64,17 @@ class Category extends Model
         $result = [];
         while ($id != 0)
         {
-            $cat = Category::with('parent_category')->find($id);
-            $result[] = $cat;
-            $id = $cat->parent_category_id;
+            if ($id != -100)
+            {
+                $cat = Category::with('parent_category')->find($id);
+                $result[] = $cat;
+                $id = $cat->parent_category_id;
+            }
+            else
+            {
+                $id = 0 ;
+            }
+
         }
         return array_reverse($result);
     }
@@ -86,6 +94,11 @@ class Category extends Model
     {
         return $this->child_categories()->with('user')->where('user_id', '=', $this->user_id)->get();
     }
+    public function getChildCategoriesAttribute($value = false)
+    {
+        return $this->child_categories()->with('user')->get();
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection
@@ -117,6 +130,18 @@ class Category extends Model
             $user_id = 0;
         }
         return $user_id;
+    }
+
+
+
+    public static function getAllParentId($id)
+    {
+        $parrents_id = [] ;
+        $cats = self::all_parents($id) ;
+        foreach($cats as $cat){
+            $parrents_id[]=$cat->id ;
+        }
+        return $parrents_id ;
     }
 
 

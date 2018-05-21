@@ -298,6 +298,17 @@ li.inserted_tumb {
     width: 95%!important;
     max-width: 95%!important;
 }
+.padding_0
+{
+    padding: 0px;
+}
+.top_js_tree_folder {
+    color: #007bff;
+    font-size: 14px;
+}
+.show_top_folder_name{
+    margin-left: 2%;
+}
 /*____________________________________ADD tooltip csss_______________________________________________*/
 .tooltip_copy {
     position: relative;

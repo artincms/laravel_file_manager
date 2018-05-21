@@ -578,6 +578,7 @@
                     $( ".panel-body" ).html(result.html);
                     set_tab_show(type);
                     set_inserted_to_button(0);//set no inserted
+                    set_jstree({!! $allCategories !!},id)
                 }
             },
             error: function (e) {

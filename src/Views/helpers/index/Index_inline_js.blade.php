@@ -1,6 +1,100 @@
 <script type="text/javascript">
 
-    //---------------------------------------------------------------------------------------------------------------------''
+    //---------------------------------------------------------------------------------------------------------------------//
+    //js tree
+    $( document ).ready(function() {
+        var jdata = {!! $allCategories !!};
+        $('#jstree_category_share').jstree(
+            {
+                'core' : {
+                    'data' : jdata.share
+                }
+            });
+        $('#jstree_category_public').jstree(
+            {
+                'core' : {
+                    'data' : jdata.public
+                }
+            });
+        $('#jstree_category_root').jstree(
+            {
+                'core' : {
+                    'data' : jdata.root
+                }
+            });
+    });
+
+    function set_jstree(jdata,select_id)
+    {
+        $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
+        $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
+        $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
+        $('#jstree_category_share').jstree(
+            {
+                'core' : {
+                    'data' : jdata.share
+                }
+            });
+        $('#jstree_category_public').jstree(
+            {
+                'core' : {
+                    'data' : jdata.public
+                }
+            });
+        $('#jstree_category_root').jstree(
+            {
+                'core' : {
+                    'data' : jdata.root
+                }
+            });
+    }
+    /* function create_jtree_data(jdata,select_id)
+     {
+         if (select_id == 0)
+         {
+             var status = {'opened':true,'selected':true} ;
+         }
+         else
+         {
+             var status = {'opened':false,'selected':false} ;
+         }
+
+         var items = [ { "id" : 0, "parent" :  "#", "text" : "Root",'state' :status,'a_attr':{'data-id':0,'class':'link_to_category'}}];
+         $.each(jdata,function (index,value) {
+             if (select_id == value.id)
+             {
+                 var status = {'opened':true,'selected':true} ;
+             }
+             else
+             {
+                 var status = {'opened':false,'selected':false} ;
+             }
+             item={ "id" : value.id, "parent" : value.parent_category_id, "text" :value.title,'state' : status,'a_attr':{'data-id':value.id,'class':'link_to_category'} };
+             items.push(item) ;
+         });
+         return items ;
+     }
+
+     function set_jstree(jdata,select_id)
+     {
+         var select_id = select_id || false ;
+         data=create_jtree_data(jdata,select_id);
+         $('#js_tree_div').html('<div id="jstree_category"></div>');
+         $('#jstree_category').jstree(
+             {
+                 'core' : {
+                     'data' : data
+                 }
+             });
+     }*/
+    //---------------------------------------------------------------------------------------------------------------------//
+    //show shares folder
+    $(document).off("click", '#top_share_folder');
+    $(document).on('click', '#top_share_folder', function (e) {
+        $('#show_share_tab').tab('show') ;
+    });
+
+    //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#EditCategory');
     $(document).on('click', '#EditCategory', function (e) {
         e.preventDefault() ;
@@ -40,7 +134,7 @@
             $(document).off('click','#create_category_modal_button');
             $(document).on('click','#create_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_category");
-                    selector.click();
+                selector.click();
             });
         });
     });
@@ -125,10 +219,10 @@
         var datas=[];
         datas = create_insert_data(items) ;
         @if($callback)
-                if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
-                {
-                    parent.{{LFM_CheckFalseString($callback)}}(datas) ;
-                }
+        if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
+        {
+            parent.{{LFM_CheckFalseString($callback)}}(datas) ;
+        }
         @endif
         clear_page() ;
         if(typeof parent.hidemodal !== 'undefined')
@@ -163,7 +257,7 @@
         var datas = [{id:id , width : width , height:height , quality : quality , type : type}] ;
         var result = create_insert_data(datas) ;
         $('#cancel_footer_btn').click();
-        @if ($callback)
+            @if ($callback)
         {
             parent.{{LFM_CheckFalseString($callback)}}(result) ;
         }

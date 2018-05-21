@@ -34,8 +34,16 @@ class Media
         }
         $extension = $FileMimeType->ext;
         $mimeType = $FileMimeType->mimeType;
-        $Path = 'uploads/';
+        if (in_array(-2, Category::getAllParentId($CategoryID)))
+        {
+            $Path = 'shares/';
+        }
+        else
+        {
+            $Path = 'uploads/';
+        }
         $parents = Category::all_parents($CategoryID);
+
         $is_picture = false;
         if ($parents)
         {
@@ -110,7 +118,7 @@ class Media
         if (config('laravel_file_manager.Optimise_image'))
         {
             $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->optimize(storage_path() . '/app/'.$FullPath);
+            $optimizerChain->optimize(storage_path() . '/app/' . $FullPath);
         }
         foreach (config('laravel_file_manager.crop_type') as $crop_type)
         {

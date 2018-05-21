@@ -91,19 +91,22 @@
                                         <img id="sweet_image" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type'=>'small','default_img'=>'404.png','quality'=>100,'width'=>190,'height'=>127])}}"
                                              class="img-category-thumbnail" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
                                              data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
-                                             data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
+                                             data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
+                                             data-humman_size_small="{{$file->humman_size_small}}"
                                         />
                                     </a>
                                 @elseif($file->filemimetype->icon_class)
                                     <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}"
-                                       data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
+                                       data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
+                                       data-humman_size_small="{{$file->humman_size_small}}"
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                        data-size="{{$file->size}}">
                                         <i class="fa {{$file->filemimetype->icon_class}} img-file-thumbnail"></i></a>
                                 @else
                                     <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}"
-                                       data-size="{{$file->size}}" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman-size_large="{{$file->humman_size_large}}" data-humman-size_medium="{{$file->humman_size_medium}}" data-humman-size_small="{{$file->humman_size_small}}"
+                                       data-size="{{$file->size}}" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman-size_large="{{$file->humman_size_large}}"
+                                       data-humman-size_medium="{{$file->humman_size_medium}}" data-humman-size_small="{{$file->humman_size_small}}"
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File">
                                         <i class="fa fa-file img-file-thumbnail"></i></a>
@@ -118,9 +121,9 @@
             </ul>
         </div>
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#grid_media_manager').DataTable();
-            } );
+            });
         </script>
     </div>
     <div class="tab-pane" id="show_list_content" role="tabpanel">
@@ -148,7 +151,7 @@
             <tbody>
             @foreach($categories as $category)
                 <tr>
-                    <td>  <a href="#" class="media-attachment-chexbox">
+                    <td><a href="#" class="media-attachment-chexbox">
                             <input type="checkbox" class="grid-row-checkbox check" data-view="list" data-type="category" data-id="{{$category['id']}}" data-parent-id="{{$category['category_id']}}" data-name="{{$category['title']}}"/>
                         </a>
                     </td>
@@ -174,7 +177,7 @@
             @endforeach
             @foreach($files as $file)
                 <tr>
-                    <td>  <a href="#" class="media-attachment-chexbox">
+                    <td><a href="#" class="media-attachment-chexbox">
                             <input type="checkbox" class="grid-row-checkbox check" data-view="list" data-type="file" data-id="{{$file['id']}}" data-parent-id="{{$file->category_id}}" data-name="{{$file['originalName']}}"/>
                         </a>
                     </td>
@@ -185,7 +188,7 @@
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                             ">
-                                <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
+                            <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                             </a>
 
                         @elseif($file->filemimetype->icon_class)
@@ -230,7 +233,7 @@
         </table>
     </div>
     <div class="tab-pane" id="show_search_content" role="tabpanel">
-       <div id="show_search_result"></div>
+        <div id="show_search_result"></div>
     </div>
 </div>
 @include('laravel_file_manager::helpers.content.content_inline_js')
