@@ -17,7 +17,6 @@ class ManagerController extends Controller
         $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id','=',$this->getUserId())->get(),'parent_category_id',false,$id,0) ;
         $allCategories['share'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-2) ;
         $allCategories['public'] = LFM_BuildMenuTree(Category::all(),'parent_category_id',false,$id,-1) ;
-        $breadcrumbs = $this->getBreadcrumbs($id);
         if ($section) {
             $LFM = session()->get('LFM');
             $trueMimeType = $LFM[$section]['options']['true_mime_type'];
@@ -28,6 +27,8 @@ class ManagerController extends Controller
         $result['allCategories'] = $allCategories ;
         $result['success'] = true;
         $parent_id = $id ;
+        $category = Category::with('parent_category')->find((int)$id);
+        $breadcrumbs = $this->getBreadcrumbs($id,$category);
         if ($id == 0) {
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
@@ -40,7 +41,6 @@ class ManagerController extends Controller
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
         }
         else {
-            $category = Category::with('parent_category')->find($id);
             if(in_array(-2,Category::getAllParentId($id)))
             {
                 $files = File::where('category_id','=',-2)->get();
@@ -59,7 +59,6 @@ class ManagerController extends Controller
             {
                 $files = $category->UserFiles($trueMimeType);
                 $categories = $category->user_child_categories;
-                $breadcrumbs[] = ['id' => $category->id, 'title' => $category->title, 'type' => 'DisableLink'];
                 $result['parent_category_name'] = $category->title;
             }
             $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section','allCategories','parent_id'))->render();
@@ -339,9 +338,20 @@ class ManagerController extends Controller
         return view('laravel_file_manager::edit_picture', compact('file'));
     }
 
-    public function getBreadcrumbs($id)
+    public function getBreadcrumbs($id,$category)
     {
-        $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
+        if(in_array(-2,Category::getAllParentId($id)))
+        {
+            $breadcrumbs[] = ['id' => -2, 'title' => 'share', 'type' => 'Enable'];
+        }
+        elseif(in_array(-1,Category::getAllParentId($id)))
+        {
+            $breadcrumbs[] = ['id' => -1, 'title' => 'public', 'type' => 'Enable'];
+        }
+        else
+        {
+            $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
+        }
         $parents = Category::all_parents($id);
         if ($parents) {
             foreach ($parents as $parent) {
@@ -350,6 +360,11 @@ class ManagerController extends Controller
                 }
             }
         }
+        if(!in_array($id,[-2,-1,0]))
+        {
+            $breadcrumbs[] = ['id' => $category->id, 'title' => $category->title, 'type' => 'DisableLink'];
+        }
+
         return $breadcrumbs;
     }
 

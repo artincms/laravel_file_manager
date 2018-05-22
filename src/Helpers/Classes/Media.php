@@ -53,13 +53,16 @@ class Media
         {
             foreach ($parents as $parent)
             {
-                if ($parent->parent_category)
+                if ($parent->parent_category && $parent->parent_category->parent_category_id != '#' )
                 {
                     $Path .= $parent->parent_category->title_disc . '/';
                 }
 
             }
-
+            if( $parent->parent_category_id != '#')
+            {
+                $Path .= $parent->title_disc;
+            }
         }
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
         $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
