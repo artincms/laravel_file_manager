@@ -43,14 +43,14 @@ class ManagerController extends Controller
         else {
             if(in_array(-2,Category::getAllParentId($id)))
             {
-                $files = File::where('category_id','=',-2)->get();
+                $files = File::where('category_id','=',$id)->get();
                 $categories = $category->child_categories;
                 $category = false;
                 $result['parent_category_name'] = 'Share';
             }
             elseif(in_array(-1,Category::getAllParentId($id)))
             {
-                $files = File::where('category_id','=',-1)->get();
+                $files = File::where('category_id','=',$id)->get();
                 $categories = $category->child_categories;
                 $category = false;
                 $result['parent_category_name'] = 'Public';
