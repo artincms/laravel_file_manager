@@ -24,12 +24,37 @@
             });
     });
 
-    function set_jstree(jdata)
+    function set_jstree(jdata,parent_category_id)
     {
+        console.log(parent_category_id);
         $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
         $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
         $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
-        console.log(jdata);
+        if(parent_category_id ==-2)
+        {
+            $('#share_category').addClass('jstree-root');
+            $('#public_category').removeClass('jstree-root');
+            $('#media_category').removeClass('jstree-root');
+        }
+        else if(parent_category_id ==-1)
+        {
+            $('#public_category').addClass('jstree-root');
+            $('#share_category').removeClass('jstree-root');
+            $('#media_category').removeClass('jstree-root');
+        }
+        else if(parent_category_id ==0)
+        {
+            $('#media_category').addClass('jstree-root');
+            $('#public_category').removeClass('jstree-root');
+            $('#share_category').removeClass('jstree-root');
+        }
+        else
+        {
+            $('#media_category').removeClass('jstree-root');
+            $('#public_category').removeClass('jstree-root');
+            $('#share_category').removeClass('jstree-root');
+        }
+
         $('#jstree_category_share').jstree(
             {
                 'core' : {
@@ -49,6 +74,15 @@
                 }
             });
     }
+    //---------------------------------------------------------------------------------------------------------------------//
+    $(document).off("click", '#root_category');
+    $(document).on('click', '#root_category', function (e){
+        $('#root_category').each(function () {
+            console.log('d');
+            /*$(this).removeClass('jstree-root');*/
+        });
+        $(this).addClass('jstree-root');
+    });
 
     //---------------------------------------------------------------------------------------------------------------------//
     //show shares folder
@@ -62,7 +96,6 @@
     $(document).on('click', '#EditCategory', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        console.log(src) ;
         var iframe = $('iframe.modal_iframe');
         iframe.attr("src",src);
 
@@ -229,8 +262,6 @@
     function create_insert_data(value)
     {
         var res ='';
-        console.log(value);
-
         $.ajax({
             type: "POST",
             url: "{{route('LFM.CreateInsertData')}}",

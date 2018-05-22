@@ -12,15 +12,15 @@
     <div class="row">
         <div class="col-md-2">
             <div class="show_cat_foolder">
-                <div class="top_js_tree_folder link_to_category" id="top_share_folder" data-id="-2"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
+                <div class="top_js_tree_folder link_to_category"  id="share_category" data-id="-2"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
                 <div id="js_tree_share_div">
                     <div id="jstree_category_share"></div>
                 </div>
-                <div class="top_js_tree_folder link_to_category"  data-id="-1"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
+                <div class="top_js_tree_folder link_to_category"  data-id="-1" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
                 <div id="js_tree_public_div">
                     <div id="jstree_category_public"></div>
                 </div>
-                <div class="top_js_tree_folder link_to_category"  data-id="0"><i class="fa fa-folder"></i><span class="show_top_folder_name">Root Folder</span></div>
+                <div class="top_js_tree_folder link_to_category"  id="media_category"  data-id="0"><i class="fa fa-folder"></i><span class="show_top_folder_name">Root Folder</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>
@@ -63,7 +63,7 @@
                             </div>
                             <label class="btn btn-sm btn-primary grid-trash-o" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
                             <label class="btn btn-sm btn-primary grid-refresh" id="refresh_page" data-id="0" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
-                                   data-callback="{{LFM_CheckFalseString($callback)}}"><i class="fa fa-refresh"></i></label>
+                                   data-callback="{{LFM_CheckFalseString($callback)}}" data-category-type="media"><i class="fa fa-refresh"></i></label>
                             <div class="btn-group" data-toggle="buttons">
                                 @if($insert == 'insert')
                                     <label class="btn btn-default btn-sm display" id="insert_file" data-value=0>

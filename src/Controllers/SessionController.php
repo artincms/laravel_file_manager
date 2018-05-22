@@ -288,9 +288,13 @@ class SessionController extends ManagerController
         if ($result_session['success'])
         {
             $session = LFM_GetSection($request->section);
-            $result['section'] = $session;
-            $result['new_inserted_data'] = $data;
-            $result['success'] = true;
+            if ($session)
+            {
+                $result[$request->section]['new_inserted_data'] = $data;
+                $result[$request->section]['success'] = true;
+                $result[$request->section]['data'] = $session['selected']['data'];
+                $result[$request->section]['view'] = $session['selected']['view'];
+            }
         }
         else
         {
@@ -324,7 +328,7 @@ class SessionController extends ManagerController
                 }
                 $LFM[$section]['selected']['data'] = $selected;
                 session()->put('LFM', $LFM);
-                $result['section'] = $LFM[$section];
+                $result['section'] = $LFM[$section]['selected'];
                 $result['success'] = true;
             }
             else

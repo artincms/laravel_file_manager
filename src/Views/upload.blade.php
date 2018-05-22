@@ -60,22 +60,21 @@
             $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
             $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
+            var out = '';
             $.each(data.response, function(index, value) {
-                console.log(value);
-                var out = '';
                 if(value.success)
                 {
                     var fname = value.result.OrginalFileName;
-                    out = out + '<li>' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</li>';
-                    $('#kv-success-2 ul').append(out);
-                    $('#kv-success-2').fadeIn('slow');
+                    out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</div>';
+                    /*$('#kv-success-2 ul').append(out);
+                    $('#kv-success-2').fadeIn('slow');*/
                 }
                 else
                 {
                     var fname = value.OrginalFileName;
-                    out = out + '<li>' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</li>';
-                    $('#kv-error-2 ul').append(out);
-                    $('#kv-error-2').fadeIn('slow');
+                    out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</div>';
+                  /*  $('#kv-error-2 ul').append(out);
+                    $('#kv-error-2').fadeIn('slow');*/
                 }
                 if(typeof parent.refresh !== 'undefined')
                 {
@@ -83,9 +82,16 @@
                 }
 
             });
-
+            swal({
+                title: '<h4>Upload Status</h4>',
+                html:out,
+                showCloseButton: false,
+                showCancelButton: false,
+                focusConfirm: false,
+                confirmButtonText:
+                    '<i class="fa fa-thumbs-up"></i> OK',
+            })
         });
-
         //-----------------------------------------------------------------------------------------------------------//
         $('#cancel_btn').off('click');
         $('#cancel_btn').on('click', function () {

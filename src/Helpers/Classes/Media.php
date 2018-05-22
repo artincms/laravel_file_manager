@@ -36,11 +36,15 @@ class Media
         $mimeType = $FileMimeType->mimeType;
         if (in_array(-2, Category::getAllParentId($CategoryID)))
         {
-            $Path = 'shares/';
+            $Path = 'share_folder/';
+        }
+        elseif(in_array(-1, Category::getAllParentId($CategoryID)))
+        {
+            $Path = 'public_folder/';
         }
         else
         {
-            $Path = 'uploads/';
+            $Path = 'media_folder/';
         }
         $parents = Category::all_parents($CategoryID);
 
@@ -55,7 +59,7 @@ class Media
                 }
 
             }
-            $Path .= $parent->title_disc;
+
         }
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
         $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
@@ -112,7 +116,7 @@ class Media
 
     public static function resizeImageUpload($file, $FileSave, $FullPath, $orginal_name, $quality = 90)
     {
-        $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('uploads/');
+        $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('media_folder/');
         $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $tmp_path = $upload_path . 'tmp/';
         if (config('laravel_file_manager.Optimise_image'))
@@ -131,7 +135,7 @@ class Media
                 //create directory if not exist
                 if (!is_dir($tmp_path))
                 {
-                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory('uploads/tmp');
+                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory('media_folder/tmp');
                 }
                 switch ($crop)
                 {
@@ -151,8 +155,8 @@ class Media
                     $optimizerChain->optimize($tmp_path . '/' . $filename);
                 }
                 $opt_name = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($tmp_path . '/' . $filename) . "_" . time() . '_' . $FileSave->extension;
-                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size('uploads/tmp/' . $filename);
-                $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('uploads/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
+                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size('media_folder/tmp/' . $filename);
+                $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move('media_folder/tmp/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
                 {
                     $name['size_' . $crop_type] = $opt_size;
@@ -192,7 +196,7 @@ class Media
         {
             $hash = $file_id . '_' . $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height;
             $file_name_hash = 'tmp_fid_' . $file->id . '_' . md5($hash);
-            $tmp_path = storage_path() . '/app/uploads/tmp/' . $file_name_hash;
+            $tmp_path = storage_path() . '/app/media_folder/tmp/' . $file_name_hash;
             $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($tmp_path))
             {

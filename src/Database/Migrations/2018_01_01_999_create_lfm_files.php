@@ -16,7 +16,7 @@ class CreateLFMFiles extends Migration
         Schema::create('lfm_files', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('category_id')->unsigned();
+            $table->integer('category_id');
             $table->integer('file_mime_type_id')->unsigned();
             $table->string('originalName', 255)->nullable()->default(null);
             $table->string('extension', 255)->nullable()->default(null);

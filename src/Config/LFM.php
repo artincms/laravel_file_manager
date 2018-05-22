@@ -23,5 +23,6 @@ return [
     'driver_disk' => 'local' ,
     'user_model' => 'App\User' ,
     //optomise Image
-    'Optimise_image' => false
+    'Optimise_image' => false,
+    'public_folder' => 'public'
 ];

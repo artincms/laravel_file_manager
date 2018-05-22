@@ -290,13 +290,13 @@ function LFM_ConvertMimeTypeToExt($mimeTypes)
     return $result;
 }
 
-function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = false, $selectedNode = false, $parent = 0 , $idKey = 'id', $children_key = 'children')
+function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNode = false, $parent = 0 , $idKey = 'id', $children_key = 'children')
 {
     $grouped = array();
     foreach ($flat_array as $sub)
     {
         $sub['text'] = $sub['title'];
-        $sub['a_attr']=['class'=> 'link_to_category','data-id'=>$sub['id']];
+        $sub['a_attr']=['class'=> 'link_to_category jstree_a_tag','data-id'=>$sub['id']];
         if ($sub['id'] == (int)$selectedNode)
         {
             $sub['state'] = ['selected' => true , 'opened' =>true] ;
@@ -327,6 +327,23 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = false, $selectedNo
         $tree = [];
     }
     return $tree;
+}
+
+function LFM_GeneratePublicDownloadLink($path,$filename)
+{
+    $path = str_replace('public_folder/','',$path);
+    $path = config('laravel_file_manager.symlink_public_folder_name').'/'.$path.'/'.$filename ;
+    return url($path) ;
+}
+
+function LFM_GetAllParentId($id)
+{
+    $parrents_id = [] ;
+    $cats = \ArtinCMS\LFM\Models\Category::all_parents($id) ;
+    foreach($cats as $cat){
+        $parrents_id[]=$cat->id ;
+    }
+    return $parrents_id ;
 }
 
 
