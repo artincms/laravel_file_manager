@@ -57,7 +57,6 @@
                 contentType: false,
                 success: function (result) {
                     if (result.success == true) {
-                        document.location.reload();
                     }
                 },
                 error: function (e) {

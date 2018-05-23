@@ -1,6 +1,11 @@
 <script type="text/javascript">
 
     //---------------------------------------------------------------------------------------------------------------------//
+    //Edit Picture
+
+
+
+    //---------------------------------------------------------------------------------------------------------------------//
     //js tree
     $( document ).ready(function() {
         var jdata = {!! $allCategories !!};
@@ -118,6 +123,7 @@
             $(document).on('click','#create_edit_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_edit_category");
                 selector.click();
+                console.log(selector);
             });
         });
 
@@ -127,7 +133,19 @@
     $(document).on('click', '#EditFile', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        $('iframe.modal_iframe').attr("src",src);
+        var iframe = $('#modal_iframe_edit_picture');
+        iframe.attr("src",src);
+        iframe.on("load", function() {
+            $(document).off('click', '#nva_large');
+            $(document).on('click', '#nva_large', function (e) {
+                var selector = iframe.contents().find("#tab_img_large");
+                selector.tab('show');
+                if (typeof (iframe[0].contentWindow.show_crop_large) == "function")
+                    iframe[0].contentWindow.show_crop_large();
+                else
+                    alert("resultFrame.Reset NOT found");
+            });
+        });
 
     });
     //---------------------------------------------------------------------------------------------------------------------//

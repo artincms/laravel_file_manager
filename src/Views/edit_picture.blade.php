@@ -11,8 +11,8 @@
             <li class="nav-item active" active id="tab_img_orginal">
                 <a class="nav-link" data-toggle="tab" href="#orginal_tab">Orginal Image</a>
             </li>
-            <li class="nav-item" id="tab_img_large">
-                <a class="nav-link" data-toggle="tab" href="#large_tab">Large Image</a>
+            <li class="nav-item">
+                <a class="nav-link" id="tab_img_large" data-toggle="tab" href="#large_tab" role="tab">Large Image</a>
             </li>
             <li class="nav-item" id="tab_img_meidum">
                 <a class="nav-link" data-toggle="tab" href="#medium_tab">Medium Image</a>

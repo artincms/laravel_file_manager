@@ -2,7 +2,14 @@
     //-------------------------------------------------------------------------------------------------------------//
     //show orginal tab
     $(document).ready(function() {
-        $("#img_orginal").on('load',function() {
+        show_crop_orginal();
+    });
+    $(document).off('click','#tab_img_large');
+    $(document).on('click','#tab_img_large',function () {
+        show_crop_orginal();
+    });
+    function show_crop_orginal()
+    {
             var width_orginal = $('#img_orginal').width();
             var height_orginal = $('#img_orginal').height();
             var rate_orginal = width_orginal / height_orginal;
@@ -50,51 +57,49 @@
                 });
 
             });
-        });
 
-
-
-        /*end large script*/
-        //----------------------------------------------------------------------------------------------------------//
-
-    });
+    }
     //--------------------------------------------------------------------------------------------------------------//
     //Large script
     $(document).off('click','#tab_img_large');
     $(document).on('click','#tab_img_large',function () {
         //---------------------------------------------------------------------------------------------------------------------------------//
-        //large script
-            var width_large_config = {{ config('laravel_file_manager.size_large.width')}} ;
-            var height_large_config = {{ config('laravel_file_manager.size_large.height')}} ;
-            var rate_large = width_large_config / height_large_config;
-            width_large_div = $('.crope_large').width();
-            $('#img_large').addClass('hidden') ;
-            if (width_large_config > width_large_div) {
-                var width_large = width_large_div;
-                var height_large = rate_large * width_large_div;
-            } else {
-                var width_large = width_large_config;
-                var height_large = rate_large * width_large_config;
-            }
-            var crop_large = document.getElementById('image_large');
-            var large_croppie = new Croppie(crop_large, {
-                enableExif: true,
-                viewport: {width: width_large * rate_large, height: height_large * rate_large},
-                boundary: {width: width_large, height: height_large},
-                setZoom:'0.1'
-            });
-            large_croppie.bind({
-                url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'large'])}}",
-            });
-            $(".crop_large").append('<button type="button" id="crope_button_large" class="btn btn-primary">Crope</button>');
-            $(document).off("click", '#crope_button_large');
-            $(document).on('click', '#crope_button_large', function () {
-                large_croppie.result('base64').then(function(base64) {
-                    crop_type = 'large' ;
-                    send_croped(base64 , crop_type) ;
-                });
-            });
+        show_crop_large();
     });
+
+    function show_crop_large()
+    {
+        var width_large_config = {{ config('laravel_file_manager.size_large.width')}} ;
+        var height_large_config = {{ config('laravel_file_manager.size_large.height')}} ;
+        var rate_large = width_large_config / height_large_config;
+        width_large_div = $('.crope_large').width();
+        $('#img_large').addClass('hidden') ;
+        if (width_large_config > width_large_div) {
+            var width_large = width_large_div;
+            var height_large = rate_large * width_large_div;
+        } else {
+            var width_large = width_large_config;
+            var height_large = rate_large * width_large_config;
+        }
+        var crop_large = document.getElementById('image_large');
+        var large_croppie = new Croppie(crop_large, {
+            enableExif: true,
+            viewport: {width: width_large * rate_large, height: height_large * rate_large},
+            boundary: {width: width_large, height: height_large},
+            setZoom:'0.1'
+        });
+        large_croppie.bind({
+            url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'large'])}}",
+        });
+        $(".crop_large").append('<button type="button" id="crope_button_large" class="btn btn-primary">Crope</button>');
+        $(document).off("click", '#crope_button_large');
+        $(document).on('click', '#crope_button_large', function () {
+            large_croppie.result('base64').then(function(base64) {
+                crop_type = 'large' ;
+                send_croped(base64 , crop_type) ;
+            });
+        });
+    }
 
     //--------------------------------------------------------------------------------------------------------------//
     //Medium script
