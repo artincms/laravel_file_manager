@@ -20,7 +20,7 @@
                 <div id="js_tree_public_div">
                     <div id="jstree_category_public"></div>
                 </div>
-                <div class="top_js_tree_folder link_to_category"  id="media_category"  data-id="0"><i class="fa fa-folder"></i><span class="show_top_folder_name">Root Folder</span></div>
+                <div class="top_js_tree_folder link_to_category"  id="media_category"  data-id="0"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>
@@ -93,71 +93,7 @@
             </div>
         </div>
     </div>
-    {{--add modal Create  section--}}
-    <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="modal_iframe"></iframe>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="create_modal_button">Submit Form</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--END Create  Modal--}}
-
-    {{--add modal Create Upload section--}}
-    <div class="modal fade" id="create_upload_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" id="modal_dialog_upload" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modal_upload_div">
-                    <div class="embed-responsive embed-responsive-16by9 modal_iframe_parent">
-                        <iframe class="modal_iframe" id="create_upload_modal_iframe"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--END Create Upload Modal--}}
-
-    {{--add modal Create  category--}}
-    <div class="modal fade" id="create_category_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal_dialog_category" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body category_upload_body">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="modal_iframe create_category_modal_iframe" id="modal_iframe_category"></iframe>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="create_category_modal_button">Submit Form</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--END Create  Modal--}}
-
+    @include('laravel_file_manager::helpers.index.Index_modal_creator')
 @endsection
 @section('javascript')
     @include('laravel_file_manager::helpers.index.Index_inline_js')

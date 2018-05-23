@@ -11,7 +11,7 @@
             <label for="title" class="control-label">Name</label>
             <input id="title" class="form-control" placeholder="Category Name" type="text" name="name" value="{{$file->originalName}}">
         </div>
-        <button class="btn btn-primary" id="btn_submit_update_file_name">Submit</button>
+        <button class="btn btn-primary hidden" id="btn_submit_update_file_name">Submit</button>
     </form>
 @endsection
 @section('javascript')

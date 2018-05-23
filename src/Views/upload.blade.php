@@ -84,12 +84,24 @@
             });
             swal({
                 title: '<h4>Upload Status</h4>',
-                html:out,
+                html: out,
                 showCloseButton: false,
-                showCancelButton: false,
                 focusConfirm: false,
                 confirmButtonText:
-                    '<i class="fa fa-thumbs-up"></i> OK',
+                    'More Upload',
+                showCancelButton: true,
+                cancelButtonText: 'Close',
+                cancelButtonClass: 'close_upload',
+                confirmButtonClass: 'clear_upload',
+            }).then(function(result){
+                if(result.dismiss == 'cancel')
+                {
+                    parent.$('.modal').modal('hide');
+                }
+                else
+                {
+                    clearupload();
+                }
             })
         });
         //-----------------------------------------------------------------------------------------------------------//
@@ -97,6 +109,9 @@
         $('#cancel_btn').on('click', function () {
             parent.$('.modal').modal('hide');
         });
+        function clearupload() {
+            $('.fileinput-remove-button').click() ;
+        }
     </script>
 @endsection
 

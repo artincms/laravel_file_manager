@@ -22,6 +22,7 @@
                     'data' : jdata.root
                 }
             });
+        $('#media_category').addClass('jstree-root');
     });
 
     function set_jstree(jdata,parent_category_id)
@@ -35,18 +36,30 @@
             $('#share_category').addClass('jstree-root');
             $('#public_category').removeClass('jstree-root');
             $('#media_category').removeClass('jstree-root');
+            $('#share_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            $('#public_category i').removeClass('fa-folder-open').addClass('fa-folder');
+            $('#media_category i').removeClass('fa-folder-open').addClass('fa-folder');
+
         }
         else if(parent_category_id ==-1)
         {
             $('#public_category').addClass('jstree-root');
             $('#share_category').removeClass('jstree-root');
             $('#media_category').removeClass('jstree-root');
+            $('#public_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            $('#share_category i').removeClass('fa-folder-open').addClass('fa-folder');
+            $('#media_category i').removeClass('fa-folder-open').addClass('fa-folder');
+
         }
         else if(parent_category_id ==0)
         {
             $('#media_category').addClass('jstree-root');
             $('#public_category').removeClass('jstree-root');
             $('#share_category').removeClass('jstree-root');
+            $('#media_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            $('#public_category i').removeClass('fa-folder-open').addClass('fa-folder');
+            $('#share_category i').removeClass('fa-folder-open').addClass('fa-folder');
+
         }
         else
         {
@@ -96,8 +109,17 @@
     $(document).on('click', '#EditCategory', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        var iframe = $('iframe.modal_iframe');
+        var iframe = $('#modal_iframe_edit_category');
+        var title=$(this).attr('data-category-name');
+        $('h5.title_edit_category').html('Edit Category '+title);
         iframe.attr("src",src);
+        iframe.on("load", function() {
+            $(document).off('click','#create_edit_category_modal_button');
+            $(document).on('click','#create_edit_category_modal_button', function (e) {
+                var selector = iframe.contents().find("#btn_submit_edit_category");
+                selector.click();
+            });
+        });
 
     });
     //---------------------------------------------------------------------------------------------------------------------//
@@ -106,7 +128,6 @@
         e.preventDefault() ;
         var src = $(this).attr('href') ;
         $('iframe.modal_iframe').attr("src",src);
-        $('.modal-footer').addClass('hidden') ;
 
     });
     //---------------------------------------------------------------------------------------------------------------------//
@@ -114,9 +135,17 @@
     $(document).on('click', '#EditFileName', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        $('iframe.modal_iframe').attr("src",src);
-        $('.modal-footer').addClass('hidden') ;
-
+        var title =$().attr('data-file-name');
+        var iframe = $('#modal_iframe_edit_file_name');
+        $('.title_edit_file_name').html('Edit file ' +title);
+        iframe.attr("src",src);
+        iframe.on("load", function() {
+            $(document).off('click','#create_edit_file_name_modal_button');
+            $(document).on('click','#create_edit_file_name_modal_button', function (e) {
+                var selector = iframe.contents().find("#btn_submit_update_file_name");
+                selector.click();
+            });
+        });
     });
 
     //---------------------------------------------------------------------------------------------------------------------//
@@ -313,6 +342,8 @@
         return url ;
     }
     //-------------------------------------------------------------------------------------------------------------------------//
-    var panel_height = $('.panel-body').height();
-
+    $('.close_upload').off('click');
+    $('.close_upload').on('click', function () {
+        ('#create_upload_modal').modal('hide');
+    });
 </script>

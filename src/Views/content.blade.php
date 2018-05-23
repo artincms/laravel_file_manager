@@ -24,10 +24,9 @@
         </nav>
         <div class="container-fluid">
             <ul class="media-content clearfix col-md-12">
-
                 @if($category)
                     <li>
-                        <div class="media-attachment-info">
+                        <div class="media-attachment-info back_to_category_size">
                             <div class="clearfix center">
                                 <a href="" data-id="{{$category->parent_category_id}}" class="link_to_category">
                                     <i class="fa fa-level-up img thumbnail-back"></i>
@@ -42,8 +41,8 @@
                             <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>$category['id']])}}" class="grid-row-edit pull-right myicon" data-toggle="modal" data-target="#create_modal" id="EditCategory" data-type="category"
-                               data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}">
+                            <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>$category['id']])}}" class="grid-row-edit pull-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                               data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}" data-category-name="{{$category['title']}}">
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a href="#" class="media-attachment-chexbox">
@@ -70,18 +69,24 @@
                             </a>
                             @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                                 <a href="{{route('LFM.EditPicture',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFile" data-type="file" data-id="{{$file['id']}}"
-                                   data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_modal">
+                                   data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_edit_picture_modal">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             @else
                                 <a href="{{route('LFM.EditFile',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{$file['id']}}"
-                                   data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_modal">
+                                   data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['originalName']}}">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             @endif
+                            @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
+                                <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
+                                    <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
+                                    <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public Path</span>
+                                </div>
+                            @endif
                             <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
                                 <input type="hidden" id="orginal_copy" value="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
-                                <i id="copy_path" class="fa fa-copy button-green" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Click to Copy</span>
+                                <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Copy Path</span>
                             </div>
                             <a href="#" class="media-attachment-chexbox">
                                 <input type="checkbox" class="grid-row-checkbox check" data-view="grid" data-type="file" data-id="{{$file['id']}}" data-parent-id="{{$file->category_id}}" data-name="{{$file['originalName']}}"/>
@@ -132,7 +137,9 @@
         </div>
         <script>
             $(document).ready(function () {
-                $('#grid_media_manager').DataTable();
+                $('#grid_media_manager').DataTable({
+                    "searching": false
+                });
             });
         </script>
     </div>
@@ -178,8 +185,8 @@
                         <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}">
                             <i class="fa fa-trash"></i>
                         </a>
-                        <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>$category['id']])}}" class="grid-row-edit pull-right myicon" data-toggle="modal" data-target="#create_modal" id="EditCategory" data-type="category"
-                           data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}">
+                        <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>$category['id']])}}" class="grid-row-edit pull-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                           data-id="{{$category['id']}}" data-parent-id="{{$category['parent_category_id']}}" data-category-name="{{$category['title']}}">
                             <i class="fa fa-edit"></i>
                         </a>
                     </td>
@@ -236,13 +243,19 @@
                             </a>
                         @else
                             <a href="{{route('LFM.EditFile',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{$file['id']}}"
-                               data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_modal">
+                               data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['originalName']}}">
                                 <i class="fa fa-edit"></i>
                             </a>
                         @endif
+                        @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
+                            <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
+                                <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
+                                <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">Copy Public Path</span>
+                            </div>
+                        @endif
                         <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
                             <input type="hidden" id="orginal_copy" value="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
-                            <i id="copy_path" class="fa fa-copy button-green" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Click to Copy</span>
+                            <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Click to Copy</span>
                         </div>
                     </td>
                 </tr>

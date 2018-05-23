@@ -94,7 +94,7 @@ a.media-attachment-chexbox {
     padding-left: 3%;
 }
 .thumbnail-back {
-    font-size: 183px;
+    font-size: 118px;
 }
 a.selectbox {
     color: #ffffff;
@@ -112,6 +112,9 @@ a.selectbox {
     border-radius: 2px;
     box-shadow: inset 0 0 1px #999;
     display: inline;
+    font-weight: 500;
+    padding-left: 3%;
+    padding-right: 3%;
 }
 label#label_modal_sweet {
     font-size: 13px;
@@ -301,9 +304,9 @@ span#size {
 }
 .create_category_modal_iframe {
     width: 100%;
-    max-height: calc(100vh - 10px);
+    max-height: calc(100vh - 150px);
     border: none;
-    height: calc(100vh - 10px);
+    height: calc(100vh - 150px);
 }
 .modal_dialog_category{
     width: 95%!important;
@@ -335,6 +338,30 @@ span#size {
 i.jstree-icon.jstree-themeicon:before {
     content: "\f07c";
 }
+.link_fontawsome {
+    font-size: 14px;
+    color: #007bff;
+}
+.back_to_category_size{
+    width: 100%;
+    padding-top: 15%;
+    text-align: center;
+    min-height: 183px;
+}
+.modal_body_edit_picture {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(100vh - 130px);
+    max-height: calc(100vh - 130px);
+    overflow: auto;
+}
+.create_edit_picture_modal_iframe {
+    width: 100%;
+    max-height: calc(100vh - 135px);
+    border: none;
+    height: calc(100vh - 135px);
+}
+
 /*____________________________________ADD tooltip csss_______________________________________________*/
 .tooltip_copy {
     position: relative;

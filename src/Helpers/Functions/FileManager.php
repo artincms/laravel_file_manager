@@ -331,8 +331,8 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
 
 function LFM_GeneratePublicDownloadLink($path,$filename)
 {
-    $path = str_replace('public_folder/','',$path);
-    $path = config('laravel_file_manager.symlink_public_folder_name').'/'.$path.'/'.$filename ;
+    $p = str_replace('public_folder/','',$path);
+    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/'.$filename );
     return url($path) ;
 }
 
@@ -346,4 +346,48 @@ function LFM_GetAllParentId($id)
     return $parrents_id ;
 }
 
+function LFM_GetFoolderPath($id,$cat_name='undefined',$file_name=false)
+{
+    $result = [];
+    $path = '' ;
+    while ($id != 0)
+    {
+        $cat = \ArtinCMS\LFM\Models\Category::with('parent_category')->find($id);
+        if ($id == -2 || $id == -1)
+        {
+          $id = 0 ;
+        }
+        else
+        {
+            if(isset($cat->parent_category_id))
+            {
+                $result[] = $cat;
+                $id = $cat->parent_category_id;
+            }
+            else
+            {
+                $id = 0 ;
+            }
+
+        }
+
+    }
+    $parents = array_reverse($result);
+    if ($parents)
+    {
+        foreach ($parents as $parent)
+        {
+            if ($parent->parent_category)
+            {
+                $path .=  $parent->parent_category->title.'/';
+            }
+        }
+    }
+    $path .=$cat_name ;
+    if ($file_name)
+    {
+        $path .=  '/'.$file_name;
+    }
+   return $path ;
+}
 

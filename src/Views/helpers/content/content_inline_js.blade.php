@@ -486,6 +486,7 @@
                     var type = $('#refresh_page').attr('data-type');
                     set_tab_show(type);
                     set_inserted_to_button(0);
+                    set_jstree(result.allCategories,result.parent_category_id);
 
                 }
             },
@@ -604,6 +605,7 @@
                     $( ".panel-body" ).html(result.html);
                     set_tab_show(type);
                     set_inserted_to_button(0);
+                    set_jstree(result.allCategories,result.parent_category_id);
                 }
             },
             error: function (e) {
