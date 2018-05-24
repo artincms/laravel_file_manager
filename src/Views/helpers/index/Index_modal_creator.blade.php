@@ -93,14 +93,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body category_upload_body">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="modal_iframe create_edit_category_modal_iframe" id="modal_iframe_edit_file_name"></iframe>
-                </div>
+            <div class="modal-body modal_body_edit_file_name">
+                    <iframe class="modal_iframe create_edit_file_name_modal_iframe" id="modal_iframe_edit_file_name"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">Submit Form</button>
+                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">Submit</button>
             </div>
         </div>
     </div>
@@ -127,7 +125,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">Submit Form</button>
+                <button type="button" class="btn btn-primary" id="create_edit_picture_modal_button" data-type="orginal">Crop Image</button>
             </div>
         </div>
     </div>

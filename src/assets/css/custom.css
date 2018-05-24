@@ -278,16 +278,16 @@ span#size {
 }
 #create_upload_modal_iframe {
     width: 100%;
-    max-height: calc(100vh - 10px);
+    max-height: calc(100vh - 185px);
     border: none;
-    height: calc(100vh - 10px);
+    height: calc(100vh - 185px);
 }
 #modal_upload_div
 {
     width: 100% !important;
     max-width: 100% !important;
-    height: calc(100vh - 150px);
-    max-height: calc(100vh - 150px);
+    height: ccalc(100vh - 143px);
+    max-height: calc(100vh - 143px) ;
     overflow: auto;
 }
 #modal_dialog_upload {
@@ -355,6 +355,13 @@ i.jstree-icon.jstree-themeicon:before {
     max-height: 90%;
     overflow: auto;
 }
+.modal_body_edit_file_name {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 90%;
+    max-height: 90%;
+    overflow: auto;
+}
 .create_edit_picture_modal_iframe {
      width: 100%;
      max-height: calc(100vh - 135px);
@@ -372,8 +379,14 @@ i.jstree-icon.jstree-themeicon:before {
      height: calc(100vh - 69px);
  }
 .create_modal_content_edit_category {
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - 60px);
     height: calc(100vh - 60px);
+}
+.create_edit_file_name_modal_iframe {
+    width: 100%;
+    max-height: calc(100vh - 290px);
+    height: calc(100vh - 290px);
+    border: none;
 }
 
 /*____________________________________ADD tooltip csss_______________________________________________*/

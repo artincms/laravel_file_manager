@@ -10,10 +10,18 @@
     });
     function show_crop_orginal()
     {
+        $('#show_edit_picture').html('<div class="crop_orginal" id = "image_orginal"><img id="img_orginal" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'orginal'])}}"></div>');
             var width_orginal = $('#img_orginal').width();
             var height_orginal = $('#img_orginal').height();
-            var rate_orginal = width_orginal / height_orginal;
+            if(width_orginal == 0 || height_orginal == 0)
+            {
+                width_orginal = 800 ;
+                height_orginal = 600 ;
+            }
+
             var width_orginal_div = $('#image_orginal').width() ;
+            console.log(width_orginal,height_orginal,width_orginal_div);
+            var rate_orginal = width_orginal / height_orginal;
             if(width_orginal_div < width_orginal)
             {
                 width_orginal = width_orginal_div ;
@@ -34,30 +42,42 @@
                 var width_orginal_viewport = width_orginal*rate_orginal;
                 var height_orginal_viewport = height_orginal*rate_orginal;
             }
-            console.log(height_orginal,height_orginal,width_orginal_viewport,height_orginal_viewport) ;
             $('#img_orginal').addClass('hidden') ;
             var crop_orginal = document.getElementById('image_orginal');
             var orginal_croppie = new Croppie(crop_orginal, {
                 enableExif: true,
                 viewport: {width: width_orginal_viewport, height:  height_orginal_viewport},
                 boundary: {width: width_orginal, height: height_orginal},
-                setZoom:'0.1'
-
             });
             orginal_croppie.bind({
                 url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'orginal'])}}",
 
             });
-            $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary">Crope</button>');
+            $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary hidden">Crope</button>');
             $(document).off("click", '#crope_button_orginal');
             $(document).on('click', '#crope_button_orginal', function () {
-                orginal_croppie.result('base64').then(function(base64) {
+                    orginal_croppie.result('base64').then(function(base64) {
                     crop_type = 'orginal' ;
-                    send_croped(base64 , crop_type) ;
+                    swal({
+                        title: 'Result',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        reverseButtons: true,
+                        imageUrl: base64,
+                        imageWidth:width_orginal_viewport,
+                        imageHeight:height_orginal_viewport,
+                    }).then((result) => {
+                        if (result.value) {
+                        var res = send_croped(base64 , crop_type) ;
+                            if (res)
+                            {
+                                show_crop_orginal() ;
+                            }
+                        }
+                    });
                 });
-
             });
-
     }
     //--------------------------------------------------------------------------------------------------------------//
     //Large script
@@ -69,6 +89,7 @@
 
     function show_crop_large()
     {
+        $('#show_edit_picture').html('<div class="crop_large" id = "image_large"><img id="img_large" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'large'])}}"></div>');
         var width_large_config = {{ config('laravel_file_manager.size_large.width')}} ;
         var height_large_config = {{ config('laravel_file_manager.size_large.height')}} ;
         var rate_large = width_large_config / height_large_config;
@@ -86,17 +107,33 @@
             enableExif: true,
             viewport: {width: width_large * rate_large, height: height_large * rate_large},
             boundary: {width: width_large, height: height_large},
-            setZoom:'0.1'
         });
         large_croppie.bind({
             url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'large'])}}",
         });
-        $(".crop_large").append('<button type="button" id="crope_button_large" class="btn btn-primary">Crope</button>');
+        $(".crop_large").append('<button type="button" id="crope_button_large" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_large');
         $(document).on('click', '#crope_button_large', function () {
             large_croppie.result('base64').then(function(base64) {
                 crop_type = 'large' ;
-                send_croped(base64 , crop_type) ;
+                swal({
+                    title: 'Result',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    reverseButtons: true,
+                    imageUrl: base64,
+                    imageWidth:width_large* rate_large,
+                    imageHeight:height_large * rate_large,
+                }).then((result) => {
+                    if (result.value) {
+                    var res = send_croped(base64 , crop_type) ;
+                        if (res)
+                        {
+                            show_crop_large() ;
+                        }
+                    }
+                });
             });
         });
     }
@@ -105,6 +142,12 @@
     //Medium script
     $(document).off('click','#tab_img_meidum');
     $(document).on('click','#tab_img_meidum',function () {
+        show_crop_medium();
+    });
+
+    function show_crop_medium()
+    {
+        $('#show_edit_picture').html('<div class="crop_medium" id = "image_medium"><img id="img_medium" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'medium'])}}"></div>');
         var width_medium_config = {{ config('laravel_file_manager.size_medium.width')}} ;
         var height_medium_config = {{ config('laravel_file_manager.size_medium.height')}} ;
         var rate_medium = width_medium_config / height_medium_config;
@@ -126,21 +169,42 @@
         medium_croppie.bind({
             url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'medium'])}}",
         });
-        $(".crop_medium").append('<button type="button" id="crope_button_medium" class="btn btn-primary">Crope</button>');
+        $(".crop_medium").append('<button type="button" id="crope_button_medium" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_medium');
         $(document).on('click', '#crope_button_medium', function () {
             medium_croppie.result('base64').then(function(base64) {
                 crop_type = 'medium' ;
-                send_croped(base64 , crop_type) ;
-                $('#img_medium').attr('src' ,base64)
+                swal({
+                    title: 'Result',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    reverseButtons: true,
+                    imageUrl: base64,
+                    imageWidth:width_medium * rate_medium,
+                    imageHeight:height_medium * rate_medium,
+                }).then((result) => {
+                    if (result.value) {
+                        var res = send_croped(base64 , crop_type) ;
+                        if (res)
+                        {
+                            show_crop_medium() ;
+                        }
+                    }
+                });
             });
         });
-    });
-
+    }
     //--------------------------------------------------------------------------------------------------------------//
     //small script
     $(document).off('click','#tab_img_small');
     $(document).on('click','#tab_img_small',function () {
+        show_crop_small() ;
+    });
+
+    function show_crop_small()
+    {
+        $('#show_edit_picture').html('<div class="crop_small" id = "image_small"><img id="img_small" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'small'])}}"></div>');
         var width_small_config = {{ config('laravel_file_manager.size_small.width')}} ;
         var height_small_config = {{ config('laravel_file_manager.size_small.height')}} ;
         var rate_small = width_small_config / height_small_config;
@@ -162,23 +226,42 @@
         small_croppie.bind({
             url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'small'])}}",
         });
-        $(".crop_small").append('<button type="button" id="crope_button_small" class="btn btn-primary">Crope</button>');
+        $(".crop_small").append('<button type="button" id="crope_button_small" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_small');
         $(document).on('click', '#crope_button_small', function () {
             small_croppie.result('base64').then(function(base64) {
                 crop_type = 'small' ;
-                send_croped(base64 , crop_type) ;
+                swal({
+                    title: 'Result',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    reverseButtons: true,
+                    imageUrl: base64,
+                    imageWidth:width_small* rate_small,
+                    imageHeight:height_small * rate_small,
+                }).then((result) => {
+                    if (result.value) {
+                    var res = send_croped(base64 , crop_type) ;
+                    if (res)
+                    {
+                        show_crop_small() ;
+                    }
+                }
+            });
             });
         });
-    });
+    }
     //--------------------------------------------------------------------------------------------------------------//
     //send crop imagte to database
     function send_croped(base64 , crop_type) {
+        var res = false ;
         $.ajax({
             type: "POST",
             url: "{{route('LFM.StoreCropedImage')}}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType: "json",
+            async: false,
             data :{
                 file_id:{{ $file->id }} ,
                 category_id:{{ $file->category_id }} ,
@@ -190,8 +273,7 @@
             success: function (result) {
                 if(result.success)
                 {
-                    $('#tab_img_medium').tab('show') ;
-
+                    res = true ;
                 }
                 console.log(result) ;
             },
@@ -199,6 +281,7 @@
                 console.log(e);
             }
         });
+        return res ;
     }
 
 </script>

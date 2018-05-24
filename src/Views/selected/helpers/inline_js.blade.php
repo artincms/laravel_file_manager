@@ -22,6 +22,7 @@
                 if (result.success)
                 {
                     $('#' + section + '_' + file_id + '_trash_insert_li').remove();
+                    console.log(result);
                 }
                 else
                 {

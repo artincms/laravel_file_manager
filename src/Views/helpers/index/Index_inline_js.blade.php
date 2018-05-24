@@ -32,7 +32,6 @@
 
     function set_jstree(jdata,parent_category_id)
     {
-        console.log(parent_category_id);
         $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
         $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
         $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
@@ -96,7 +95,6 @@
     $(document).off("click", '#root_category');
     $(document).on('click', '#root_category', function (e){
         $('#root_category').each(function () {
-            console.log('d');
             /*$(this).removeClass('jstree-root');*/
         });
         $(this).addClass('jstree-root');
@@ -123,7 +121,6 @@
             $(document).on('click','#create_edit_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_edit_category");
                 selector.click();
-                console.log(selector);
             });
         });
 
@@ -136,14 +133,53 @@
         var iframe = $('#modal_iframe_edit_picture');
         iframe.attr("src",src);
         iframe.on("load", function() {
+            //---------------------------show orginal----------------------------------------------//
+            $(document).off('click', '#nva_orginal');
+            $(document).on('click', '#nva_orginal', function (e) {
+                if (typeof (iframe[0].contentWindow.show_crop_orginal) == "function")
+                    iframe[0].contentWindow.show_crop_orginal();
+                else
+                    alert("resultFrame.show_crop_orginal NOT found");
+                $('#nva_orginal').tab('show');
+            });
+
+            //---------------------------show large crop----------------------------------------------//
             $(document).off('click', '#nva_large');
             $(document).on('click', '#nva_large', function (e) {
-                var selector = iframe.contents().find("#tab_img_large");
-                selector.tab('show');
                 if (typeof (iframe[0].contentWindow.show_crop_large) == "function")
                     iframe[0].contentWindow.show_crop_large();
                 else
-                    alert("resultFrame.Reset NOT found");
+                    alert("resultFrame.show_crop_large NOT found");
+                $('#nva_large').tab('show');
+            });
+
+            //---------------------------show medium crop----------------------------------------------//
+            $(document).off('click', '#nva_medium');
+            $(document).on('click', '#nva_medium', function (e) {
+                if (typeof (iframe[0].contentWindow.show_crop_medium) == "function")
+                    iframe[0].contentWindow.show_crop_medium();
+                else
+                    alert("resultFrame.show_crop_medium NOT found");
+                $('#nva_medium').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','small') ;
+
+            });
+
+            //---------------------------show small crop----------------------------------------------//
+            $(document).off('click', '#nva_small');
+            $(document).on('click', '#nva_small', function (e) {
+                if (typeof (iframe[0].contentWindow.show_crop_small) == "function")
+                    iframe[0].contentWindow.show_crop_small();
+                else
+                    alert("resultFrame.show_crop)small NOT found");
+                $('#nva_small').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','small') ;
+            });
+
+            $(document).off('click', '#create_edit_picture_modal_button');
+            $(document).on('click', '#create_edit_picture_modal_button', function (e) {
+                var selector = iframe.contents().find("#");
+                selector.click();
             });
         });
 
@@ -258,22 +294,21 @@
     $(document).on('click', '#insert_file', function (e) {
         var type = $('refresh_page').attr('data-type');
         var items = get_selected(['file'],type,true);
+        var available = {!! $available !!} ;
         var datas=[];
-        datas = create_insert_data(items) ;
-        @if($callback)
-        if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
+        if ( available !='undefined' && available > 0)
         {
-            parent.{{LFM_CheckFalseString($callback)}}(datas) ;
+            datas = create_insert_data(items) ;
+            if (datas)
+            {
+
+            }
         }
-        @endif
-        clear_page() ;
-        if(typeof parent.hidemodal !== 'undefined')
+        else
         {
-            parent.hidemodal();
+            alert('you cant inseeted !') ;
         }
     });
-
-
 
     function clear_page() {
         $('.selected').each(function () {
@@ -320,7 +355,32 @@
 
             },
             success: function (result) {
-                res = result ;
+                if (result.{{$section}}.success)
+                {
+                    res = result ;
+                    parent.{{$section}}_available = result.{{$section}}.available ;
+                    clear_page() ;
+                    @if($callback)
+                    if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
+                    {
+                        parent.{{LFM_CheckFalseString($callback)}}(result) ;
+                    }
+                    @endif
+                    if(typeof parent.hidemodal !== 'undefined')
+                    {
+                        parent.hidemodal();
+                    }
+
+                }
+                else
+                {
+                    var res = false ;
+                    swal({
+                        type: 'error',
+                        title: res.error,
+                    });
+                }
+
             },
             error: function (e) {
                 res =  false ;

@@ -134,7 +134,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id'))->render();
+    $available = LFM_CheckAllowInsert($section)['available'] ;
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id','available'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
@@ -389,5 +390,30 @@ function LFM_GetFoolderPath($id,$cat_name='undefined',$file_name=false)
         $path .=  '/'.$file_name;
     }
    return $path ;
+}
+
+function LFM_CheckAllowInsert($section_name)
+{
+    $section = LFM_GetSection($section_name) ;
+    if ($section['options']['max_file_number'] !=false)
+    {
+        $available = $section['options']['max_file_number'] - count($section['selected']['data']) ;
+        if ($available == 0)
+        {
+            $result['success'] = false ;
+            $result['available'] = 0;
+        }
+        else
+        {
+            $result['success'] = true ;
+            $result['available'] = $available;
+        }
+    }
+    else
+    {
+        $result['success'] = false ;
+        $result['available'] = 'undefined' ;
+    }
+    return $result;
 }
 

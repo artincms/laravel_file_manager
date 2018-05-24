@@ -105,11 +105,11 @@ class SessionController extends ManagerController
             'LFM.DownloadFile',
             [
                 'type' => 'ID',
-                'id' =>  $item['id'],
-                'size_type' =>'small',
+                'id' => $item['id'],
+                'size_type' => 'small',
                 'default_img' => '404.png',
                 'quality' => $item['quality'],
-                'width' =>175,
+                'width' => 175,
                 'height' => 125
             ]
         );
@@ -232,7 +232,7 @@ class SessionController extends ManagerController
         {
             if ($LFM[$section]['selected'])
             {
-                return $LFM[$section]['selected'];
+                return $LFM[$section]['selected']['data'];
             }
         }
         return false;
@@ -277,7 +277,7 @@ class SessionController extends ManagerController
             {
                 $data['success'] = false;
                 $data['error'] = $check_options['error'];
-                $result['success'] = false;
+                return response()->json($data);
             }
         }
         else
@@ -294,6 +294,7 @@ class SessionController extends ManagerController
                 $result[$request->section]['success'] = true;
                 $result[$request->section]['data'] = $session['selected']['data'];
                 $result[$request->section]['view'] = $session['selected']['view'];
+                $result[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
             }
         }
         else
@@ -341,5 +342,11 @@ class SessionController extends ManagerController
             $result['success'] = false;
         }
         return response()->json($result);
+    }
+
+    public function getSession($section)
+    {
+        $result = LFM_GetSection($section);
+        return json_encode($result['selected']['data']);
     }
 }

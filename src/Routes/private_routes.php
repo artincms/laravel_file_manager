@@ -40,6 +40,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //session
     Route::post('GetSessionInsertedItems}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSessionInsertedItems']);
+    Route::get('GetSession/{section}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
 });
 

@@ -37,6 +37,7 @@ class ManagerController extends Controller
         {
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
+            $available = LFM_CheckAllowInsert($section)['available'];
             $category = false;
             $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id'))->render();
             $result['message'] = '';
@@ -69,6 +70,7 @@ class ManagerController extends Controller
             {
                 $category = false ;
             }
+            $available = LFM_CheckAllowInsert($section)['available'];
             $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
@@ -121,6 +123,7 @@ class ManagerController extends Controller
         {
             $trueMimeType = false;
         }
+        $available = LFM_CheckAllowInsert($section)['available'];
         $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
@@ -131,7 +134,7 @@ class ManagerController extends Controller
         $parent_id = 0;
         $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
         $result['parent_category_name'] = 'media';
-        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id'));
+        return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id','available'));
     }
 
     public function createCategory($category_id = 0, $callback = false, $section = false)
