@@ -3,7 +3,7 @@ namespace ArtinCMS\LFM\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
-class LfmFileMimeTypesTableSeeder extends Seeder
+class FilemanagerTableSeeder extends Seeder
 {
 
     /**
@@ -16,7 +16,8 @@ class LfmFileMimeTypesTableSeeder extends Seeder
         
 
         \DB::table('lfm_file_mime_types')->delete();
-        
+        \DB::table('lfm_categories')->delete();
+
         \DB::table('lfm_file_mime_types')->insert(array (
             0 => 
             array (
@@ -9639,7 +9640,48 @@ class LfmFileMimeTypesTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+        \DB::table('lfm_categories')->insert(array (
+            0 =>
+                array (
+                    'id' => -2,
+                    'user_id' => 0,
+                    'title' => 'share',
+                    'title_disc' => 'share',
+                    'description' => 'shareee',
+                    'parent_category_id' => '#',
+                    'created_by' => 0,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                    'deleted_at' => NULL,
+                ),
+            1 =>
+                array (
+                    'id' => -1,
+                    'user_id' => 0,
+                    'title' => 'public',
+                    'title_disc' => 'public',
+                    'description' => 'share',
+                    'parent_category_id' => '#',
+                    'created_by' => 0,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                    'deleted_at' => NULL,
+                ),
+            2 =>
+                array (
+                    'id' => 0,
+                    'user_id' => 0,
+                    'title' => 'root',
+                    'title_disc' => 'root',
+                    'description' => 'root',
+                    'parent_category_id' => '#',
+                    'created_by' => 0,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                    'deleted_at' => NULL,
+                ),
+        ));
+            
+
     }
 }

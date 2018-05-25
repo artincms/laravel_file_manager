@@ -61,7 +61,7 @@ if update package for publish vendor you can run :
 <h6>seed data to lfm_file_mime_type table</h6>
 for windows
  <div class="highlight highlight-text-html-php"><pre>
-  php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\LfmFileMimeTypesTableSeeder
+  php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder
   </pre> </div>
   for linux
   <div class="highlight highlight-text-html-php"><pre>
