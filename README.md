@@ -127,48 +127,53 @@ for windows
   for example you can get selected file and show it 
   <div class="highlight highlight-text-html-php"><pre>
   //the inserted file result is 
-  [
-    data :
-    [{
-        0 :
-        {
-            file :
+  {
+    Manager :
+        available:1,
+        data :
+        [{
+            0 :
             {
-                height : "0"
-                icon : "image"
-                id : 115
-                name : "photo2017-04-1512-45-2"
-                quality : "100"
-                size : 60187
-                title_file_disc : "fid_115_v0__uid_21_73cbaf0bc61f0ca763208c33312ed928_1526201846_jpeg"
-                type : "orginal"
-                user : "faramarz"
-                version : null
-                width:  "0"
+                file :
+                {
+                    height : "0"
+                    icon : "image"
+                    id : 115
+                    name : "photo2017-04-1512-45-2"
+                    quality : "100"
+                    size : 60187
+                    title_file_disc : "fid_115_v0__uid_21_73cbaf0bc61f0ca763208c33312ed928_1526201846_jpeg"
+                    type : "orginal"
+                    user : "faramarz"
+                    version : null
+                    width:  "0"
+                },
+                full_url: "http://127.0.0.1:8000/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0",
+                message: "File with ID :115 Inserted",
+                success:true
+                url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0",
+                full_url_large:"http://127.0.0.1:8000/LFM/DownloadFile/ID/24/small/404.png/100/300/180",
+                full_url_medium:"http://127.0.0.1:8000/LFM/DownloadFile/ID/24/medium/404.png/100/300/180",
             }
-            full_url: "http://127.0.0.1:8000/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
-            message: "File with ID :115 Inserted"
-            success:true
-            url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0"
+        }],
+        view :
+        {
+           'list' : 'html grid view code' ,
+           'grid' : 'html grid view code' ,
+           'small' :'html small view code' ,
+           'medium' : 'html thumb view code' ,
+           'large' : 'html large view code' 
         }
-    }],
-    view :
-    {
-       'grid' : 'html grid view code' ,
-       'small' :'html small view code' ,
-       'thumb' : 'html thumb view code' ,
-       'large' : 'html large view code' 
-    }
-  ]  
+  }  
 //to show above data to small view you can use this function  
 function callback(result)
 {
-   $('#show_area_small').append(res.view.small) ;
+   $('#show_area_small').html(res.Manager.view.small) ;
 }
   </pre> </div>
-  to show inserted file , this package provide 4 view . you can 
+  Manager is section name . to show inserted file , this package provide 4 view . you can 
   call these view in callback function as show in above example .
-  inserted view is : small,thumb,large,grid 
+inserted view is : list,grid,small,medium,large 
   </li>
    <li>
     $modal_id : this option use to assign id to main modal and default is 'FileManager' .
@@ -205,6 +210,13 @@ function callback(result)
    <div class="highlight highlight-text-html-php"><pre>
  LFM_GetBase64Image($file_id, $size_type, $not_found_img , $inline_content , $quality , $width , $height )    </pre> </div>
  this helpers config as above with different $inline_content that if it was true you can create base 64 Image .
+ <h3>Genrate public link</h3>
+ if you create shortcut from storage/public_folder in your public folder you can access file directly . as see in below box you can create public download path with this 
+ helper function
+ <div class="highlight highlight-text-html-php"><pre>
+    LFM_GeneratePublicDownloadLink($path,$filename)     </pre> </div>
+    that $psth is path to file and $filename is name of disc file . for example you want access the logo site picture you can 
+    upload this file in public folder and access directly with above helper function .
  <h3>Custom config</h3>
  if you want to have custom config you can chage config/laravel_file_manager.php file as you want .
  <ul>
