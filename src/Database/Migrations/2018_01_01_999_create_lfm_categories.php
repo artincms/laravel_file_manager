@@ -14,12 +14,12 @@ class CreateLfmCategories extends Migration
     public function up()
     {
         Schema::create('lfm_categories', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id', true);
             $table->integer('user_id')->unsigned();
             $table->string('title')->nullable()->default(null);;
             $table->string('title_disc')->nullable()->default(null);
             $table->text('description')->nullable()->default(null);
-            $table->integer('parent_category_id');
+            $table->string('parent_category_id',255)->nullable()->default(null);
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
