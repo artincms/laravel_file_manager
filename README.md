@@ -65,7 +65,7 @@ for windows
   </pre> </div>
   for linux
   <div class="highlight highlight-text-html-php"><pre>
- php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\LfmFileMimeTypesTableSeeder
+ php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\FilemanagerTableSeeder
   </pre> </div>
   <h4>more installation details</h4>
   <p>The package will use these optimizers if they are present on your system:</p>
