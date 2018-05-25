@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                    <iframe class="modal_iframe" src="{{$src}}" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
+                    <iframe class="modal_iframe" src="{{$src}}" id="{{LFM_CheckFalseString($section)}}_iframe" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="close_button_{{LFM_CheckFalseString($modal_id)}}" data-dismiss="modal">cancel</button>
@@ -34,14 +34,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    var {{$section}}_available = {{$available}} ;
+    var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
     var insert_button_id = 'modal_insert_{{LFM_CheckFalseString($modal_id)}}';
     var FrameID = "#create_{{$modal_id}}" ;
     var button_modal_id = '{{$button_id}}';
     $(document).off("click", '#'+button_modal_id);
     $(document).on('click', '#'+button_modal_id, function (e) {
 
-        if ({{$section}}_available > 0)
+        if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
             $(FrameID).modal();
         }
@@ -51,13 +51,12 @@
         }
     });
 
-    //------------------------------------------------------------------------------------//
 
     //------------------------------------------------------------------------------------//
 
     $(document).off("click", '#'+insert_button_id);
     $(document).on('click', '#'+insert_button_id, function (e) {
-        var iframe = $('iframe.modal_iframe');
+        var iframe = $('{{LFM_CheckFalseString($section)}}_iframe');
         iframe.contents().find("#insert_file").click();
         $('#create_{{$modal_id}}').modal('hide');
     });

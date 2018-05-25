@@ -81,7 +81,7 @@
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                                 <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
                                     <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
-                                    <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public Path</span>
+                                    <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public Path</span>
                                 </div>
                             @endif
                             <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
@@ -250,7 +250,7 @@
                         @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                             <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
                                 <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
-                                <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">Copy Public Path</span>
+                                <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">Copy Public Path</span>
                             </div>
                         @endif
                         <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">

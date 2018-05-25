@@ -22,7 +22,8 @@
                 if (result.success)
                 {
                     $('#' + section + '_' + file_id + '_trash_insert_li').remove();
-                    console.log(result);
+                    {{LFM_CheckFalseString($section)}}_available  =result.{{LFM_CheckFalseString($section)}}.available ;
+                    console.log(result.{{LFM_CheckFalseString($section)}} );
                 }
                 else
                 {

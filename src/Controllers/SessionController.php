@@ -21,14 +21,14 @@ class SessionController extends ManagerController
         }
         else
         {
-            $result['success'] = false;
-            $result['error'] = 'Dont select items';
+            $result[$section]['success'] = false;
+            $result[$section]['error'] = 'Dont select items';
             return $result;
         }
         if ($total > $options['max_file_number'])
         {
-            $result['success'] = false;
-            $result['error'] = 'your cant insert more than' . $options['max_file_number'];
+            $result[$section]['success'] = false;
+            $result[$section]['error'] = 'your cant insert more than' . $options['max_file_number'];
             return $result;
         }
         else
@@ -36,13 +36,13 @@ class SessionController extends ManagerController
             $mimeType = LFM_CheckMimeType($options['true_mime_type'], $items);
             if (!$mimeType['success'])
             {
-                $result['success'] = false;
-                $result['error'] = $mimeType['error'];
+                $result[$section]['success'] = false;
+                $result[$section]['error'] = $mimeType['error'];
                 return $result;
             }
             else
             {
-                $result['success'] = true;
+                $result[$section]['success'] = true;
             }
         }
         return $result;
@@ -269,14 +269,14 @@ class SessionController extends ManagerController
         if ($options['success'])
         {
             $check_options = $this->checkSectionOptions($request->section, $options['options'], $request->items);
-            if ($check_options['success'])
+            if ($check_options[$request->section]['success'])
             {
                 $data = $this->createAllInsertData($request);
             }
             else
             {
-                $data['success'] = false;
-                $data['error'] = $check_options['error'];
+                $data[$request->section]['success'] = false;
+                $data[$request->section]['error'] = $check_options[$request->section]['error'];
                 return response()->json($data);
             }
         }
@@ -329,7 +329,8 @@ class SessionController extends ManagerController
                 }
                 $LFM[$section]['selected']['data'] = $selected;
                 session()->put('LFM', $LFM);
-                $result['section'] = $LFM[$section]['selected'];
+                $result[$request->section] = $LFM[$section]['selected'];
+                $result[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
                 $result['success'] = true;
             }
             else

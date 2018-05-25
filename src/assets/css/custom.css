@@ -123,6 +123,16 @@ label#label_modal_sweet {
 #sweet_image {
     cursor: pointer;
 }
+.pointer {
+    cursor: pointer;
+}
+.color_green {
+    color : #28a745 !important;
+}
+.back_public {
+    background-color: #245571;
+    color: white;
+}
 .detail_image {
     font-size: 18px;
 }
@@ -147,6 +157,7 @@ div.user_detail {
 }
 .margin-top-1 {
     margin-top: 1%;
+    line-height: 1.5;
 }
 .margin-top-4 {
     margin-top: 4%;
@@ -159,7 +170,10 @@ div.user_detail {
     margin-right: 3%;
     font-size: 14px;
 }
-
+.filemanager_cateogry_form {
+    margin: auto;
+    width: 50%;
+}
 .sweet_icon {
     font-size: 250px;
 }
@@ -351,8 +365,8 @@ i.jstree-icon.jstree-themeicon:before {
 .modal_body_edit_picture {
     width: 100% !important;
     max-width: 100% !important;
-    height: 90%;
-    max-height: 90%;
+    height: calc(100vh - 135px);
+    max-height: calc(100vh - 135px);
     overflow: auto;
 }
 .modal_body_edit_file_name {
@@ -364,8 +378,8 @@ i.jstree-icon.jstree-themeicon:before {
 }
 .create_edit_picture_modal_iframe {
      width: 100%;
-     max-height: calc(100vh - 135px);
-     height: calc(100vh - 135px);
+     max-height: calc(100vh - 275px);
+     height: calc(100vh - 275px);
      border: none;
  }
 .create_edit_category_modal_iframe {

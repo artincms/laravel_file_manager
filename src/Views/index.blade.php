@@ -12,15 +12,17 @@
     <div class="row">
         <div class="col-md-2">
             <div class="show_cat_foolder">
-                <div class="top_js_tree_folder link_to_category"  id="share_category" data-id="-2"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  id="share_category" data-id="-2"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
                 <div id="js_tree_share_div">
                     <div id="jstree_category_share"></div>
                 </div>
-                <div class="top_js_tree_folder link_to_category"  data-id="-1" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
+                <hr />
+                <div class="top_js_tree_folder link_to_category pointer"  data-id="-1" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
                 <div id="js_tree_public_div">
                     <div id="jstree_category_public"></div>
                 </div>
-                <div class="top_js_tree_folder link_to_category"  id="media_category"  data-id="0"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
+                <hr />
+                <div class="top_js_tree_folder link_to_category pointer"  id="media_category"  data-id="0"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>

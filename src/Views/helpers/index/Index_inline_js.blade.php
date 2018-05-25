@@ -258,7 +258,7 @@
         e.preventDefault() ;
         var target = $(this).attr('data-target-search') ;
         var value = $('#'+target).val() ;
-        var id = 0;
+        var id = {{$parent_id}};
         if(value !='')
         {
             search(id,value) ;
@@ -295,18 +295,19 @@
         var type = $('refresh_page').attr('data-type');
         var items = get_selected(['file'],type,true);
         var available = {!! $available !!} ;
+        console.log(available);
         var datas=[];
-        if ( available !='undefined' && available > 0)
+        if ( available !='undefined' && available >= items.length)
         {
             datas = create_insert_data(items) ;
-            if (datas)
-            {
-
-            }
         }
         else
         {
-            alert('you cant inseeted !') ;
+            swal({
+                type: 'error',
+                title: 'you cant inserted',
+                text: 'you cant inserted more than '+available +' file' ,
+            });
         }
     });
 
@@ -355,10 +356,11 @@
 
             },
             success: function (result) {
-                if (result.{{$section}}.success)
+                console.log(result);
+                if (result.{{LFM_CheckFalseString($section)}}.success)
                 {
                     res = result ;
-                    parent.{{$section}}_available = result.{{$section}}.available ;
+                    parent.{{LFM_CheckFalseString($section)}}_available = result.{{LFM_CheckFalseString($section)}}.available ;
                     clear_page() ;
                     @if($callback)
                     if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
@@ -377,7 +379,7 @@
                     var res = false ;
                     swal({
                         type: 'error',
-                        title: res.error,
+                        title: result.{{LFM_CheckFalseString($section)}}.error,
                     });
                 }
 

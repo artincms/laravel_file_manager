@@ -171,7 +171,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                             '<div class="tooltip_copy input-group-append">' +
-                            '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                            '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
                             '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                             '</div>' ;
                     @endif
@@ -192,7 +192,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_large" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_large" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -211,7 +211,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_medium" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_medium" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -230,7 +230,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                     html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_small" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_small" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -271,7 +271,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -297,7 +297,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_large" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_large" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -323,7 +323,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_medium" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_medium" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -350,7 +350,7 @@
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_small" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_small" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                         '</div>' ;
                     @endif
@@ -393,7 +393,7 @@
                 @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                     html +=
                     '<div class="tooltip_copy input-group-append">' +
-                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                    '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
                     '   <span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public</span>' +
                     '</div>' ;
                 @endif
