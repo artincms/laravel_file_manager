@@ -156,7 +156,7 @@ function LFM_GetSection($section)
 function LFM_GetSectionFile($section)
 {
     $sec = LFM_GetSection($section);
-    if ($sec && isset($sec['selected']['data']) && count($sec['selected']) >= 1)
+    if ($sec && isset($sec['selected']['data']) && count($sec['selected']['data']) >= 1)
     {
         return $sec['selected']['data'];
     }
@@ -166,15 +166,23 @@ function LFM_GetSectionFile($section)
     }
 }
 
-function LFM_SaveSingleFile($obj_model, $column_name, $section)
+function LFM_SaveSingleFile($obj_model, $column_name, $section,$column_option_name=false)
 {
     $files = LFM_GetSectionFile($section);
     if ($files)
     {
-        if (isset($files[0]) && isset($files[0]['id']))
+        if (isset($files[0]['file']) && isset($files[0]['file']['id']))
         {
-            $obj_model->$column_name = $files[0]['id'];//first select
-            $obj_model->save();
+            $obj_model->$column_name = $files[0]['file']['id'];//first select
+            if(isset($files[0]['file']))
+            {
+                $obj_model->$column_option_name = json_encode($files[0]['file']);//first select
+            }
+            $res = $obj_model->save();
+            if($res)
+            {
+                LFM_DestroySection($section);
+            }
         }
         else
         {
@@ -205,7 +213,10 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
             }
         }
         $res = $obj_model->$relation_name()->$attach_type($arr_ids);
-        LFM_DestroySection($section);
+        if($res)
+        {
+            LFM_DestroySection($section);
+        }
         return $res;
     }
     else
