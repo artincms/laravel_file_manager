@@ -113,7 +113,7 @@
                 @endif
                 <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
                     <input type="hidden" id="orginal_copy" value="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
-                    <i id="copy_path" class="fa fa-copy button-green" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Click to Copy</span>
+                    <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Click to Copy</span>
                 </div>
             </td>
         </tr>

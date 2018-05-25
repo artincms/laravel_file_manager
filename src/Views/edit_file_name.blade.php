@@ -4,7 +4,7 @@
     <div class="alert alert-danger hidden" id="show_error">
         <ul id="show_edit_category_error"></ul>
     </div>
-    <form id="form_update_file_name" class="search-form">
+    <form id="form_update_file_name" class="search-form filemanager_cateogry_form">
         {!! csrf_field() !!}
         <input type="hidden" value="{{$file->id}}" name="id">
         <div class="form-group">

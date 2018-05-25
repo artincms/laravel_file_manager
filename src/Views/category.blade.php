@@ -10,7 +10,7 @@
             <ul id="show_edit_category_error">
             </ul>
         </div>
-        <form id="create_category_form" class="search-form">
+        <form id="create_category_form" class="search-form filemanager_cateogry_form">
             {!! csrf_field() !!}
             <div class="form-group">
                 <label for="title" class="control-label">Title</label>
