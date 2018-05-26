@@ -318,9 +318,9 @@ span#size {
 }
 .create_category_modal_iframe {
     width: 100%;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 235px) ;
     border: none;
-    height: calc(100vh - 150px);
+    height:calc(100vh - 235px) ;
 }
 .modal_dialog_category{
     width: 95%!important;
