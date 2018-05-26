@@ -30,6 +30,7 @@
             </select>
         </div>
         <button class="btn btn-primary hidden" id="btn_submit_edit_category">Submit</button>
+        <button class="btn btn-primary hidden" id="btn_submit_edit_category_close">Submit</button>
     </form>
 @endsection
 @section('javascript')
@@ -41,13 +42,23 @@
             var formData = new FormData(formElement);
             $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
             category_save(formData);
-            if(typeof parent.refresh !== 'undefined')
-            {
-                parent.refresh() ;
-            }
-        });
 
-        function category_save(FormData) {
+        });
+     $(document).off("click", '#btn_submit_edit_category_close');
+            $(document).on('click', '#btn_submit_edit_category_close', function (e) {
+                e.preventDefault();
+                var formElement = document.querySelector('#create_category_form');
+                var formData = new FormData(formElement);
+                $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+                category_save(formData,true);
+                if(typeof parent.refresh !== 'undefined')
+                {
+                    parent.refresh() ;
+                }
+            });
+
+        function category_save(FormData,close) {
+            var close = close || false ;
             $.ajax({
                 type: "POST",
                 url: "{{route('LFM.UpdateCategory')}}",
@@ -57,6 +68,18 @@
                 contentType: false,
                 success: function (result) {
                     if (result.success == true) {
+                        if(close)
+                        {
+                            parent.$('#create_edit_category_modal').modal('hide');
+                        }
+                        else
+                        {
+                            document.location.reload();
+                        }
+                        if(typeof parent.refresh !== 'undefined')
+                        {
+                            parent.refresh() ;
+                        }
                     }
                 },
                 error: function (e) {

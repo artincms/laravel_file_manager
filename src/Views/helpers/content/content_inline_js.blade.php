@@ -122,14 +122,12 @@
 
     function init_fullscreen()
     {
-
         $('.demo-image').addClass('cursor_wait');
         setTimeout( function () {
             $('.demo-image').removeClass('cursor_wait');
             var elements = document.querySelectorAll( '.demo-image' );
             Intense( elements );
-        },1000 ) ;
-
+        },2000 ) ;
     }
 
     function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_orginal_path,public_large_path,public_medium_path,public_small_path) {

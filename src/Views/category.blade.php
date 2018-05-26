@@ -29,6 +29,7 @@
                 </select>
             </div>
             <button class="btn btn-primary hidden" id="btn_submit_category">Submit</button>
+            <button class="btn btn-primary hidden" id="btn_submit_category_close">Submit</button>
         </form>
 @endsection
 @section('javascript')

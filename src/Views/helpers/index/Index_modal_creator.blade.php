@@ -54,7 +54,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_category_modal_button">Submit Form</button>
+                <button type="button" class="btn btn-primary" id="create_category_modal_button">save</button>
+                <button type="button" class="btn btn-primary" id="create_category_modal_button_close">save & close</button>
             </div>
         </div>
     </div>
@@ -76,7 +77,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button">Submit Form</button>
+                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button">save</button>
+                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button_close">save & close</button>
             </div>
         </div>
     </div>
@@ -98,7 +100,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">Submit</button>
+                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">save</button>
+                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button_close">save & close</button>
             </div>
         </div>
     </div>

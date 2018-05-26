@@ -12,6 +12,7 @@
             <input id="title" class="form-control" placeholder="Category Name" type="text" name="name" value="{{$file->originalName}}">
         </div>
         <button class="btn btn-primary hidden" id="btn_submit_update_file_name">Submit</button>
+        <button class="btn btn-primary hidden" id="btn_submit_update_file_name_close">Submit</button>
     </form>
 @endsection
 @section('javascript')
@@ -23,13 +24,20 @@
             var formElement = document.querySelector('#form_update_file_name');
             var formData = new FormData(formElement);
             edit_file_name(formData);
-            if(typeof parent.refresh !== 'undefined')
-            {
-                parent.refresh() ;
-            }
         });
 
-        function edit_file_name(FormData) {
+        $(document).off("click", '#btn_submit_update_file_name_close');
+        $(document).on('click', '#btn_submit_update_file_name_close', function (e) {
+            e.preventDefault();
+            console.log('d');
+            $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+            var formElement = document.querySelector('#form_update_file_name');
+            var formData = new FormData(formElement);
+            edit_file_name(formData,true);
+
+        });
+
+        function edit_file_name(FormData,close) {
             $.ajax({
                 type: "POST",
                 url: "{{route('LFM.EditFileName')}}",
@@ -39,6 +47,14 @@
                 contentType: false,
                 success: function (result) {
                     if (result.success == true) {
+                        if(typeof parent.refresh !== 'undefined')
+                        {
+                            parent.refresh() ;
+                        }
+                        if(close)
+                        {
+                            parent.$('#create_edit_file_name_modal').modal('hide');
+                        }
                         document.location.reload();
                     }
                 },

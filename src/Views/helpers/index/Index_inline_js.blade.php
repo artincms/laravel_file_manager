@@ -122,8 +122,14 @@
                 var selector = iframe.contents().find("#btn_submit_edit_category");
                 selector.click();
             });
+            iframe.on("load", function() {
+                $(document).off('click','#create_edit_category_modal_button_close');
+                $(document).on('click','#create_edit_category_modal_button_close', function (e) {
+                    var selector = iframe.contents().find("#btn_submit_edit_category_close");
+                    selector.click();
+                });
+            });
         });
-
     });
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#EditFile');
@@ -208,6 +214,11 @@
                 var selector = iframe.contents().find("#btn_submit_update_file_name");
                 selector.click();
             });
+            $(document).off('click','#create_edit_file_name_modal_button_close');
+            $(document).on('click','#create_edit_file_name_modal_button_close', function (e) {
+                var selector = iframe.contents().find("#btn_submit_update_file_name_close");
+                selector.click();
+            });
         });
     });
 
@@ -221,6 +232,11 @@
             $(document).off('click','#create_category_modal_button');
             $(document).on('click','#create_category_modal_button', function (e) {
                 var selector = iframe.contents().find("#btn_submit_category");
+                selector.click();
+            });
+            $(document).off('click','#create_category_modal_button_close');
+            $(document).on('click','#create_category_modal_button_close', function (e) {
+                var selector = iframe.contents().find("#btn_submit_category_close");
                 selector.click();
             });
         });
