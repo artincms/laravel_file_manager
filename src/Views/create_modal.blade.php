@@ -44,6 +44,7 @@
         if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
             $(FrameID).modal();
+            $( '#{{LFM_CheckFalseString($section)}}_iframe' ).attr( 'src', function ( i, val ) { return val; });
         }
         else
         {
