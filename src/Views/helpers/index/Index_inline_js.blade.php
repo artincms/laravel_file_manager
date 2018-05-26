@@ -141,6 +141,7 @@
                 else
                     alert("resultFrame.show_crop_orginal NOT found");
                 $('#nva_orginal').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
             });
 
             //---------------------------show large crop----------------------------------------------//
@@ -151,6 +152,7 @@
                 else
                     alert("resultFrame.show_crop_large NOT found");
                 $('#nva_large').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','large') ;
             });
 
             //---------------------------show medium crop----------------------------------------------//
@@ -161,7 +163,7 @@
                 else
                     alert("resultFrame.show_crop_medium NOT found");
                 $('#nva_medium').tab('show');
-                $('#create_edit_picture_modal_button').attr('data-type','small') ;
+                $('#create_edit_picture_modal_button').attr('data-type','medium') ;
 
             });
 
@@ -178,7 +180,9 @@
 
             $(document).off('click', '#create_edit_picture_modal_button');
             $(document).on('click', '#create_edit_picture_modal_button', function (e) {
-                var selector = iframe.contents().find("#");
+                var type = $(this).attr('data-type');
+                var selector = iframe.contents().find('#crope_button_'+type);
+                console.log(selector,'#crop_button_'+type);
                 selector.click();
             });
         });
