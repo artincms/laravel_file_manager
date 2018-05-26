@@ -103,21 +103,21 @@ class File extends Model
 
     public function getPublicOrginalLinkAttribute()
     {
-        return LFM_GeneratePublicDownloadLink($this->path,$this->filename) ;
+        return LFM_GeneratePublicDownloadLink($this->path,$this->filename,'orginal') ;
     }
 
     public function getPublicLargeLinkAttribute()
     {
-        return LFM_GeneratePublicDownloadLink($this->path,$this->large_filename) ;
+        return LFM_GeneratePublicDownloadLink($this->path,$this->large_filename,'large') ;
     }
 
     public function getPublicMediumLinkAttribute()
     {
-        return LFM_GeneratePublicDownloadLink($this->path,$this->medium_filename) ;
+        return LFM_GeneratePublicDownloadLink($this->path,$this->medium_filename,'medium') ;
     }
 
     public function getPublicSmallLinkAttribute()
     {
-        return LFM_GeneratePublicDownloadLink($this->path,$this->small_filename) ;
+        return LFM_GeneratePublicDownloadLink($this->path,$this->small_filename,'small') ;
     }
 }

@@ -341,10 +341,10 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
     return $tree;
 }
 
-function LFM_GeneratePublicDownloadLink($path,$filename)
+function LFM_GeneratePublicDownloadLink($path,$filename,$type='orginal')
 {
     $p = str_replace('public_folder/','',$path);
-    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/files/orginal/'.$filename );
+    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/files/'.$type.'/'.$filename );
     return url($path) ;
 }
 
