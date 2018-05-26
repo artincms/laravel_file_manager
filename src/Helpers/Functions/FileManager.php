@@ -344,7 +344,7 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
 function LFM_GeneratePublicDownloadLink($path,$filename)
 {
     $p = str_replace('public_folder/','',$path);
-    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/'.$filename );
+    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/files/orginal/'.$filename );
     return url($path) ;
 }
 
