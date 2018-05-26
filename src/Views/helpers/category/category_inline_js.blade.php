@@ -12,10 +12,7 @@
         @else
         category_save(formData, '{{$callback}}');
         @endif
-        if(typeof parent.refresh !== 'undefined')
-        {
-            parent.refresh() ;
-        }
+
 
     });
 
@@ -30,6 +27,10 @@
             contentType: false,
             success: function (result) {
                 if (result.success == true) {
+                    if(typeof parent.refresh !== 'undefined')
+                    {
+                        parent.refresh() ;
+                    }
                    @if($callback)
                        if(parent.callback)
                         {
