@@ -19,7 +19,7 @@
 </div>
 <div class="modal fade " id="create_erro_modal" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="height: calc(100vh - 220px);">
             <div class="modal-header">
                 <h5 class="modal-title">{{$header}}</h5>
             </div>
@@ -56,8 +56,9 @@
 
     $(document).off("click", '#'+insert_button_id);
     $(document).on('click', '#'+insert_button_id, function (e) {
-        var iframe = $('{{LFM_CheckFalseString($section)}}_iframe');
+        var iframe = $('#{{LFM_CheckFalseString($section)}}_iframe');
         iframe.contents().find("#insert_file").click();
+        console.log(iframe);
         $('#create_{{$modal_id}}').modal('hide');
     });
   //------------------------------------------------------------------------------------//

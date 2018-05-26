@@ -8,6 +8,7 @@ use ArtinCMS\LFM\Models\Category;
 use ArtinCMS\LFM\Helpers\Classes\Media;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Validator;
 
 
 class ManagerController extends Controller
@@ -189,10 +190,23 @@ class ManagerController extends Controller
             {
                 $user_id = 0;
             }
-            $validatedData = $request->validate([
-                 'title' => 'required|max:255',
-                 'description' => 'required',
-             ]);
+
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|max:255',
+                'description' => 'required',
+            ]) ;
+            $check = Category::where([
+                ['parent_category_id', '=', $request->parent_category_id],
+                ['title', '=', $request->title]
+            ])->get();
+            if (count($check) != 0)
+            {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('field', 'title is repeated');
+                });
+            }
+
+            $validator->validate();
             $result = \DB::transaction(function () use ($request, $user_id) {
                 $cat = new Category;
                 $cat->title = $request->title;
