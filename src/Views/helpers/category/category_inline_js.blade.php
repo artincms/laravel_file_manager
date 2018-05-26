@@ -27,10 +27,7 @@
             contentType: false,
             success: function (result) {
                 if (result.success == true) {
-                    if(typeof parent.refresh !== 'undefined')
-                    {
-                        parent.refresh() ;
-                    }
+                    parent.refresh() ;
                    @if($callback)
                        if(parent.callback)
                         {
