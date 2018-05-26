@@ -185,6 +185,11 @@
                 console.log(selector,'#crop_button_'+type);
                 selector.click();
             });
+
+            $("#create_edit_picture_modal").on("hidden.bs.modal", function () {
+                $('#nva_orginal').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
+            });
         });
 
     });
