@@ -12,21 +12,19 @@
         @else
         category_save(formData, '{{$callback}}');
         @endif
-
-
     });
     $(document).off("click", '#btn_submit_category_close');
-        $(document).on('click', '#btn_submit_category_close', function (e) {
-            e.preventDefault() ;
-            var formElement = document.querySelector('#create_category_form');
-            var formData = new FormData(formElement);
-            $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
-            @if (!$callback)
-            category_save(formData,false,true);
-            @else
-            category_save(formData, '{{$callback}}',true);
-            @endif
-        });
+    $(document).on('click', '#btn_submit_category_close', function (e) {
+        e.preventDefault() ;
+        var formElement = document.querySelector('#create_category_form');
+        var formData = new FormData(formElement);
+        $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+        @if (!$callback)
+        category_save(formData,false,true);
+        @else
+        category_save(formData, '{{$callback}}',true);
+        @endif
+    });
 
     function category_save(FormData,callback,close) {
         callback = callback || false ;

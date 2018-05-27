@@ -246,6 +246,7 @@
                     if (res)
                     {
                         show_crop_small() ;
+                        parent.refresh();
                     }
                 }
             });
@@ -275,10 +276,8 @@
                 {
                     res = true ;
                 }
-                console.log(result) ;
             },
             error: function (e) {
-                console.log(e);
             }
         });
         return res ;

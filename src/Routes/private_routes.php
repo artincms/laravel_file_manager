@@ -16,6 +16,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
     //file uploades
     Route::get('FileUpload/{category_id?}/{callback?}/{section?}', ['as' => 'LFM.FileUpload', 'uses' => 'UploadController@fileUpload']);
+    Route::get('FileUploadForm/{category_id?}/{section?}/{callback?}', ['as' => 'LFM.FileUploadForm', 'uses' => 'UploadController@fileUploadForm']);
     Route::post('StoreUploads', ['as' => 'LFM.StoreUploads', 'uses' => 'UploadController@storeUploads']);
 
     //edit photo

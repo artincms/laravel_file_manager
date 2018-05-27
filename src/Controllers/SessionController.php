@@ -215,7 +215,7 @@ class SessionController extends ManagerController
         return $result;
     }
 
-    private function setInsertedView($section, $data)
+    public function setInsertedView($section, $data)
     {
         $view['list'] = $this->listInsertedView($data, $section);
         $view['grid'] = $this->gridInsertedView($data, $section);

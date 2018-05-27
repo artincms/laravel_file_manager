@@ -126,20 +126,6 @@ function LFM_CheckFalseString($input, $replace_input = "false")
     }
 }
 
-function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
-{
-    if ($options)
-    {
-        $session_option = LFM_SetSessionOption($section, $options);
-    }
-    //create html content and button
-    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
-    $available = LFM_CheckAllowInsert($section)['available'] ;
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id','available'))->render();
-    $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
-    return $result;
-}
-
 function LFM_GetSection($section)
 {
     $LFM = session()->get('LFM');
@@ -426,5 +412,45 @@ function LFM_CheckAllowInsert($section_name)
         $result['available'] = 'undefined' ;
     }
     return $result;
+}
+
+function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
+{
+    if ($options)
+    {
+        $session_option = LFM_SetSessionOption($section, $options);
+    }
+    //create html content and button
+    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
+    $available = LFM_CheckAllowInsert($section)['available'] ;
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id','available'))->render();
+    $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
+    return $result;
+}
+
+function LFM_CreateModalUpload($section,$category_id,$callback='show_upload_file',$options=[],$result_area_id = false,$modal_id = 'UploadFileManager', $header = 'Upload_FileManager',$button_id = 'ShowModalUpload',$button_content = 'Upload'){
+    LFM_setSectionOptions($section,$options) ;
+    $available = LFM_CheckAllowInsert($section)['available'] ;
+    $src = route('LFM.FileUploadForm', ['section' => $section, 'callback' => $callback,'category_id'=> $category_id] );
+    $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id' ,'header', 'button_content', 'section', 'callback', 'button_id','available','result_area_id','options'))->render();
+    $result['button'] = '<button type="button" class="btn btn-default"  id="' .$button_id . '"  data-toggle="modal">' . $button_content . '</button>';
+    return $result;
+}
+
+function LFM_setSectionOptions($section,$options)
+{
+    $LFM[$section]['options']=$options ;
+    $LFM[$section]['selected'] = ['data' => [], 'view' => []];
+    session()->put('LFM', $LFM);
+    return $LFM[$section]['options'];
+}
+
+function LFM_setSelectedTOSection($section_name,$data)
+{
+    $LFM = session()->get('LFM');
+    $LFM[$section_name] =LFM_GetSection($section_name) ;
+    $LFM[$section_name]['selected']['data'] = $data;
+    session()->put('LFM', $LFM);
+    return session()->get('LFM') ;
 }
 

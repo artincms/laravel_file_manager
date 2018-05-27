@@ -113,7 +113,7 @@ class Media
             $FileSave->save();
 
         }
-        $result = array('ID' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename, 'OrginalFileName' => $OriginalFileName, 'is_picture' => $is_picture);
+        $result = array('id' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename,'size'=>$FileSave->size,'icon'=>'fa-file-o','created'=>$FileSave->created_at,'updated'=>$FileSave->updated_at,'user'=>$FileSave->user_id, 'name' => $OriginalFileName, 'is_picture' => $is_picture);
         return $result;
     }
 

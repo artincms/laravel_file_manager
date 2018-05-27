@@ -85,8 +85,8 @@ a.btn.btn-sm.btn-primary.grid-trash-o {
     width: 67%;
 }
 a.grid-row-delete {
-     color: red;
- }
+    color: red;
+}
 a.grid-row-delete i {
     padding-right: 50%;
 }
@@ -306,7 +306,7 @@ span#size {
 }
 #modal_dialog_upload {
     width: 95%!important;
-   max-width: 95%!important;
+    max-width: 95%!important;
 }
 .category_upload_body
 {
@@ -377,11 +377,11 @@ i.jstree-icon.jstree-themeicon:before {
     overflow: auto;
 }
 .create_edit_picture_modal_iframe {
-     width: 100%;
-     max-height: calc(100vh - 275px);
-     height: calc(100vh - 275px);
-     border: none;
- }
+    width: 100%;
+    max-height: calc(100vh - 275px);
+    height: calc(100vh - 275px);
+    border: none;
+}
 .create_edit_category_modal_iframe {
     width: 100%;
     max-height: calc(100vh - 135px);
@@ -389,9 +389,9 @@ i.jstree-icon.jstree-themeicon:before {
     border: none;
 }
 .create_modal_content_edit_picture {
-     max-height: calc(100vh - 40px);
-     height: calc(100vh - 69px);
- }
+    max-height: calc(100vh - 40px);
+    height: calc(100vh - 69px);
+}
 .create_modal_content_edit_category {
     max-height: calc(100vh - 60px);
     height: calc(100vh - 60px);
@@ -554,7 +554,3 @@ i.jstree-icon.jstree-themeicon:before {
 
 
 /*____________________________________End Full Screem View css_______________________________________________*/
-
-
-
-
