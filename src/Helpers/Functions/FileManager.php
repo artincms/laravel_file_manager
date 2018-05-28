@@ -164,7 +164,7 @@ function LFM_SaveSingleFile($obj_model, $column_name, $section,$column_option_na
         if (isset($files[0]['file']) && isset($files[0]['file']['id']))
         {
             $obj_model->$column_name = $files[0]['file']['id'];//first select
-            if(isset($files[0]['file']))
+            if($column_option_name)
             {
                 $obj_model->$column_option_name = json_encode($files[0]['file']);//first select
             }
