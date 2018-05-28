@@ -320,7 +320,6 @@
         var type = $('refresh_page').attr('data-type');
         var items = get_selected(['file'],type,true);
         var available = {!! $available !!} ;
-        console.log(available);
         var datas=[];
         if ( available !='undefined' && available >= items.length)
         {
@@ -381,7 +380,6 @@
 
             },
             success: function (result) {
-                console.log(result);
                 if (result.{{LFM_CheckFalseString($section)}}.success)
                 {
                     res = result ;
@@ -393,9 +391,9 @@
                         parent.{{LFM_CheckFalseString($callback)}}(result) ;
                     }
                     @endif
-                    if(typeof parent.hidemodal !== 'undefined')
+                    if(typeof parent.hidemodal_{{$section}} !== 'undefined')
                     {
-                        parent.hidemodal();
+                        parent.hidemodal_{{$section}}();
                     }
 
                 }

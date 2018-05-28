@@ -22,7 +22,7 @@
                     <div class="insert_thumb_info center">
                         <div class="user_detail row">
                             <div class="col-md-12">
-                                <h4>{{$file_item['file']['name']}}</h4>
+                                <h4>{{$file_item['file']['originalName']}}</h4>
                             </div>
                             <i class="fa fa-calendar-plus-o col-md-6" aria-hidden="true">
                                 <span class="icon_info_image">{{$file_item['file']['created']}}</span>

@@ -6,7 +6,7 @@
                 <i class="fa fa-trash" style="    color: red;"></i>
             </a>
             <div type="text" class="col-md-8">
-                <a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a>
+                <a href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a>
             </div>
             <span class="pull-right">{{$file_item['file']['size']}}</span>
         </div>

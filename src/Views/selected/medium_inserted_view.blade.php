@@ -16,7 +16,7 @@
                         @endif
                     </div>
                     <div class="insert_thumb_info center">
-                        {{$file_item['file']['name']}}
+                        {{$file_item['file']['originalName']}}
                     </div>
                 </div>
             </li>

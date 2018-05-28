@@ -1,20 +1,24 @@
 <?php
 /* Hamahang File Manager :: LFM*/
 
-function LFM_SetSessionOption($name, $option)
+function LFM_SetSessionOption($section, $option)
 {
+    $LFM = session()->get('LFM');
     $mime = [];
-    foreach ($option['true_file_extension'] as $ext)
+    if (isset($option['true_file_extension']))
     {
-        $MimeType = ArtinCMS\LFM\Models\FileMimeType::where('ext', '=', $ext)->first();
-        if ($MimeType)
+        foreach ($option['true_file_extension'] as $ext)
         {
-            $mime[] = $MimeType->mimeType;
+            $MimeType = ArtinCMS\LFM\Models\FileMimeType::where('ext', '=', $ext)->first();
+            if ($MimeType)
+            {
+                $mime[] = $MimeType->mimeType;
+            }
         }
+        $option['true_mime_type'] = $mime;
     }
-    $option['true_mime_type'] = $mime;
-    $LFM[$name]['options'] = $option;
-    $LFM[$name]['selected'] = ['data' => [], 'view' => []];
+    $LFM[$section]['options'] = $option;
+    $LFM[$section]['selected'] = ['data' => [], 'view' => []];
     session()->put('LFM', $LFM);
     return $LFM;
 }
@@ -211,6 +215,60 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
     }
 }
 
+function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 'files')
+{
+    $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
+    $LFM = session()->get('LFM') ;
+    if($LFM)
+    {
+        if (isset($LFM[$section]))
+        {
+            $data = [] ;
+            $LFM[$section]['selected'] = ['data' => [], 'view' => []];
+            foreach ($files as $file)
+            {
+                $res['file']=$file ;
+                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
+                $data[] = $res ;
+            }
+            $view = LFM_SetInsertedView($section,  $data) ;
+            $LFM[$section]['selected']['data'] = $data ;
+            $LFM[$section]['selected']['view'] = $view ;
+            session()->put('LFM',$LFM) ;
+            $result['data']= $data ;
+            $result['view']=$view ;
+        }
+    }
+    return  $result ;
+}
+
+function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_name=false)
+{
+    $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
+    $LFM = session()->get('LFM') ;
+    if($LFM)
+    {
+        if (isset($LFM[$section]))
+        {
+            $data = [] ;
+            $LFM[$section]['selected'] = ['data' => [], 'view' => []];
+            foreach ($files as $file)
+            {
+                $res['file']=$file ;
+                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
+                $data[] = $res ;
+            }
+            $view = LFM_SetInsertedView($section,  $data) ;
+            $LFM[$section]['selected']['data'] = $data ;
+            $LFM[$section]['selected']['view'] = $view ;
+            session()->put('LFM',$LFM) ;
+            $result['data']= $data ;
+            $result['view']=$view ;
+        }
+    }
+    return  $result ;
+}
+
 function LFM_DestroySection($section)
 {
     if (session()->has('LFM'))
@@ -218,7 +276,7 @@ function LFM_DestroySection($section)
         $LFM = session()->get('LFM');
         if (isset($LFM[$section]))
         {
-            unset($LFM[$section]);
+            $LFM[$section]['selected'] = ['data' => [], 'view' => []];
             session()->put('LFM', $LFM);
             return true;
         }
@@ -414,8 +472,20 @@ function LFM_CheckAllowInsert($section_name)
     return $result;
 }
 
-function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = 'FileManager', $header = 'File manager', $button_id = 'show_modal', $button_content = 'input file')
+function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = 'input file')
 {
+    if(!$header)
+    {
+        $header = 'File Manager '.$section ;
+    }
+    if(!$button_id)
+    {
+        $button_id = 'show_modal_'.$section;
+    }
+    if (!$modal_id)
+    {
+        $modal_id = 'FileManager_'.$section ;
+    }
     if ($options)
     {
         $session_option = LFM_SetSessionOption($section, $options);
@@ -429,7 +499,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
 }
 
 function LFM_CreateModalUpload($section,$category_id,$callback='show_upload_file',$options=[],$result_area_id = false,$modal_id = 'UploadFileManager', $header = 'Upload_FileManager',$button_id = 'ShowModalUpload',$button_content = 'Upload'){
-    LFM_setSectionOptions($section,$options) ;
+    LFM_SetSessionOption($section,$options) ;
     $available = LFM_CheckAllowInsert($section)['available'] ;
     $src = route('LFM.FileUploadForm', ['section' => $section, 'callback' => $callback,'category_id'=> $category_id] );
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id' ,'header', 'button_content', 'section', 'callback', 'button_id','available','result_area_id','options'))->render();
@@ -437,20 +507,40 @@ function LFM_CreateModalUpload($section,$category_id,$callback='show_upload_file
     return $result;
 }
 
-function LFM_setSectionOptions($section,$options)
+function LFM_SetInsertedView($section, $data)
 {
-    $LFM[$section]['options']=$options ;
-    $LFM[$section]['selected'] = ['data' => [], 'view' => []];
-    session()->put('LFM', $LFM);
-    return $LFM[$section]['options'];
+    $view['list'] = LFM_ListInsertedView($data, $section);
+    $view['grid'] =LFM_GridInsertedView($data, $section);
+    $view['small'] = LFM_SmallInsertedView($data, $section);
+    $view['medium'] = LFM_MediumInsertedView($data, $section);
+    $view['large'] = LFM_LargeInsertedView($data, $section);
+    return $view;
+}
+function LFM_ListInsertedView($data, $section = false)
+{
+    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section'))->render();
 }
 
-function LFM_setSelectedTOSection($section_name,$data)
+function LFM_GridInsertedView($data, $section = false)
 {
-    $LFM = session()->get('LFM');
-    $LFM[$section_name] =LFM_GetSection($section_name) ;
-    $LFM[$section_name]['selected']['data'] = $data;
-    session()->put('LFM', $LFM);
-    return session()->get('LFM') ;
+    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section'))->render();
 }
+
+function LFM_SmallInsertedView($data, $section = false)
+{
+    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section'))->render();
+}
+
+function LFM_MediumInsertedView($data, $section = false)
+{
+    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section'))->render();
+}
+
+function LFM_LargeInsertedView($data, $section = false)
+{
+    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section'))->render();
+}
+
+
+
 

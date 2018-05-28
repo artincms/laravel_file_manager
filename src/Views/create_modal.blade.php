@@ -1,4 +1,4 @@
-<div class="modal fade " id="create_{{$modal_id}}" role="dialog">
+<div class="modal fade " id="{{$modal_id}}" role="dialog">
     <div class="modal-dialog modal-lg" role="document" style="width: 95% !important;max-width: 95% !important;max-height:90% !important;margin: 5px auto !important;">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,15 +35,11 @@
 </div>
 <script type="text/javascript">
     var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
-    var insert_button_id = 'modal_insert_{{LFM_CheckFalseString($modal_id)}}';
-    var FrameID = "#create_{{$modal_id}}" ;
-    var button_modal_id = '{{$button_id}}';
-    $(document).off("click", '#'+button_modal_id);
-    $(document).on('click', '#'+button_modal_id, function (e) {
-
+    $(document).off("click", '#{{$button_id}}');
+    $(document).on('click', '#{{$button_id}}', function (e) {
         if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
-            $(FrameID).modal();
+            $('#{{$modal_id}}').modal();
             $( '#{{LFM_CheckFalseString($section)}}_iframe' ).attr( 'src', function ( i, val ) { return val; });
         }
         else
@@ -55,17 +51,16 @@
 
     //------------------------------------------------------------------------------------//
 
-    $(document).off("click", '#'+insert_button_id);
-    $(document).on('click', '#'+insert_button_id, function (e) {
+    $(document).off("click", '#modal_insert_{{LFM_CheckFalseString($modal_id)}}');
+    $(document).on('click', '#modal_insert_{{LFM_CheckFalseString($modal_id)}}', function (e) {
         var iframe = $('#{{LFM_CheckFalseString($section)}}_iframe');
         iframe.contents().find("#insert_file").click();
-        console.log(iframe);
         $('#create_{{$modal_id}}').modal('hide');
     });
   //------------------------------------------------------------------------------------//
 
-    function hidemodal() {
-        $('#close_button_{{LFM_CheckFalseString($modal_id)}}').click();
+    function hidemodal_{{$section}}() {
+        $('#{{$modal_id}}').modal('hide');
         $('.modal-backdrop').removeClass();
     }
     //------------------------------------------------------------------------------------//

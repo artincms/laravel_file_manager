@@ -69,7 +69,7 @@ class UploadController extends ManagerController
                 }
                 else
                 {
-                    $result[]= ['successs'=>false , 'name' =>$originalName];
+                    $result[]= ['successs'=>false , 'originalName' =>$originalName];
                 }
             }
 
@@ -103,13 +103,13 @@ class UploadController extends ManagerController
                     }
                     else
                     {
-                        $result[]= ['successs'=>false , 'name' =>$originalName];
+                        $result[]= ['successs'=>false , 'originalName' =>$originalName];
                     }
 
                 }
                 else
                 {
-                    $result[]= ['successs'=>false , 'name' =>$originalName];
+                    $result[]= ['successs'=>false , 'originalName' =>$originalName];
                 }
             }
             $r =$this->setSelectedFileToSession($request,$request->section,$result);

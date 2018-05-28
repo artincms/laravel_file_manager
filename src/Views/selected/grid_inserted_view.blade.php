@@ -15,7 +15,7 @@
                 <td>{{$i}}</td>
                 @php($i++)
                 <td>{{$file_item['file']['id']}}</td>
-                <td><a href="{{$file_item['full_url']}}">{{$file_item['file']['name']}}</a></td>
+                <td><a href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
                 <td>
                     <a class="grid-row-delete pull-right myicon" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                         <i class="fa fa-trash" style="color: red;"></i>

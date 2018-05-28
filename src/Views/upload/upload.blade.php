@@ -70,11 +70,11 @@
             console.log(data);
             $.each(data.response, function (index, value) {
                 if (value.success) {
-                    var fname = value.file.name;
+                    var fname = value.file.originalName;
                     out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</div>';
                 }
                 else {
-                    var fname = value.name;
+                    var fname = value.originalName;
                     out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - ' + fname + '</div>';
                     /*  $('#kv-error-2 ul').append(out);
                       $('#kv-error-2').fadeIn('slow');*/

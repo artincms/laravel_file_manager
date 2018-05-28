@@ -165,7 +165,7 @@ class SessionController extends ManagerController
         $data['url'] = $url;
         $data['file'] = [
             'id' => $file->id,
-            'name' => $file->originalName,
+            'originalName' => $file->originalName,
             'type' => $item['type'],
             'width' => $item['width'],
             'height' => $item['height'],
