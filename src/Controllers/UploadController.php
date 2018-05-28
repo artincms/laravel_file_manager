@@ -60,6 +60,37 @@ class UploadController extends ManagerController
                 $size = $file->getSize();
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
+                    $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
+                        $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $originalName, $size);
+                        $result['success'] = true;
+                        $result['file'] = $res;
+                        return $result;
+                    });
+                }
+                else
+                {
+                    $result[]= ['successs'=>false , 'name' =>$originalName];
+                }
+            }
+
+            return response()->json($result);
+        }
+    }
+
+    public function storeSingleUploads(Request $request)
+    {
+        if ($request->file)
+        {
+            $CategoryID = $request->category_id;
+            $result = [];
+            foreach ($request->file as $file)
+            {
+                $mimeType = $file->getMimeType();
+                $FileMimeType = FileMimeType::where('mimeType', '=', $mimeType)->first();
+                $originalName = $file->getClientOriginalName();
+                $size = $file->getSize();
+                if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
+                {
                     if(LFM_CheckAllowInsert($request->section)['available'] > 0)
                     {
                         $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
