@@ -49,13 +49,13 @@ class ManagerController extends Controller
         $parent_id = $id;
         $category = Category::with('parent_category')->find((int)$id);
         $breadcrumbs = $this->getBreadcrumbs($id, $category);
+        $available = LFM_CheckAllowInsert($section)['available'];
         if ($id == 0)
         {
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
-            $available = LFM_CheckAllowInsert($section)['available'];
             $category = false;
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback','available'))->render();
             $result['message'] = '';
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = $id;
@@ -86,8 +86,7 @@ class ManagerController extends Controller
             {
                 $category = false ;
             }
-            $available = LFM_CheckAllowInsert($section)['available'];
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback','available'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
@@ -141,7 +140,6 @@ class ManagerController extends Controller
             {
                 $trueMimeType = false;
             }
-
         }
         else
         {
