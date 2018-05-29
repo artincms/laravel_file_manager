@@ -140,12 +140,14 @@ class ManagerController extends Controller
             {
                 $trueMimeType = false;
             }
+            $available = LFM_CheckAllowInsert($section)['available'];
         }
         else
         {
             $trueMimeType = false;
+            $available = 'true';
+
         }
-        $available = LFM_CheckAllowInsert($section)['available'];
         $files = File::get_uncategory_files($trueMimeType);
         $categories = Category::get_root_categories();
         $category = false;
