@@ -22,7 +22,6 @@ class CreateLFMFileable extends Migration
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
         });
-        });
     }
     /**
      * Reverse the migrations.
