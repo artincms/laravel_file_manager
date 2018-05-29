@@ -33,6 +33,7 @@
     <script type="text/javascript">
 
         //-----------------------------------------------------------------------------------------------------//
+        console.log({{$category_id}} );
         $("#input-708").fileinput({
             theme: "fa",
             uploadUrl: "{{route('LFM.StoreUploads')}}",

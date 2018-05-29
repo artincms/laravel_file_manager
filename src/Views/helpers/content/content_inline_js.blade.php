@@ -643,7 +643,6 @@
     });
 
     //-----------------------------------------------------------------------------------------------------------------------//
-
     function show_category(id) {
         $.ajax({
             type: "POST",
@@ -652,6 +651,7 @@
                 category_id: id ,
                 section:'{{LFM_CheckFalseString($section)}}',
                 insert: '{{LFM_CheckFalseString($insert)}}',
+                callback: '{{LFM_CheckFalseString($callback)}}',
             },
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (result) {
