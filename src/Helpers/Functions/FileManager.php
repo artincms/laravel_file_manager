@@ -202,7 +202,7 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
                 $arr_ids[$file['file']['id']] = ['type' => $type];
             }
         }
-        $res = $obj_model->$relation_name()->$attach_type($arr_ids);
+        $res = $obj_model->$relation_name()->wherePivot('type','=',$type)->$attach_type($arr_ids);
         if($res)
         {
             LFM_DestroySection($section);
