@@ -38,7 +38,7 @@ class Media
         {
             $Path = 'share_folder/';
         }
-        elseif(in_array(-1, Category::getAllParentId($CategoryID)))
+        elseif (in_array(-1, Category::getAllParentId($CategoryID)))
         {
             $Path = 'public_folder/';
         }
@@ -53,13 +53,13 @@ class Media
         {
             foreach ($parents as $parent)
             {
-                if ($parent->parent_category && $parent->parent_category->parent_category_id != '#' )
+                if ($parent->parent_category && $parent->parent_category->parent_category_id != '#')
                 {
                     $Path .= $parent->parent_category->title_disc . '/';
                 }
 
             }
-            if( $parent->parent_category_id != '#')
+            if ($parent->parent_category_id != '#')
             {
                 $Path .= $parent->title_disc;
             }
@@ -113,7 +113,7 @@ class Media
             $FileSave->save();
 
         }
-        $result = array('id' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename,'size'=>$FileSave->size,'icon'=>'fa-file-o','created'=>$FileSave->created_at,'updated'=>$FileSave->updated_at,'user'=>$FileSave->user_id, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
+        $result = array('id' => $FileSave->id, 'UID' => $CustomUID, 'Path' => $Path, 'Size' => $size, 'FileName' => $filename, 'size' => $FileSave->size, 'icon' => 'fa-file-o', 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $FileSave->user_id, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
         return $result;
     }
 
@@ -208,7 +208,6 @@ class Media
             else
             {
                 $headers = array("Content-Type:{$file->mimeType}");
-
                 //check local storage for check file exist
                 if ($size_type == 'orginal')
                 {

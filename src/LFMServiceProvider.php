@@ -27,6 +27,11 @@ class LFMServiceProvider extends ServiceProvider
 		    __DIR__ . '/Views' => resource_path('views/vendor/laravel_file_manager'),
 	    ]);
 
+	    //publish storage file
+         $this->publishes([
+                    __DIR__ . '/Storage/SystemFiles' => storage_path() . '/app/System',
+                ]);
+
 	    $this->publishes([
 		    __DIR__ . '/Database/Migrations/' => database_path('migrations')
 	    ], 'migrations');

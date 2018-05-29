@@ -38,10 +38,17 @@ class UploadController extends ManagerController
             $result = [];
             foreach ($request->file as $file)
             {
-                $mimeType = $file->getMimeType();
-                $FileMimeType = FileMimeType::where('mimeType', '=', $mimeType)->first();
-                $originalName = $file->getClientOriginalName();
-                $size = $file->getSize();
+                try {
+                    $mimeType = $file->getMimeType();
+                    $FileMimeType = FileMimeType::where('mimeType', '=', $mimeType)->first();
+                    $originalName = $file->getClientOriginalName();
+                    $size = $file->getSize();
+                }
+                catch (Exception $e)
+                {
+                    die("Your file is not corrent");
+                }
+
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
                     $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $originalName, $size) {
