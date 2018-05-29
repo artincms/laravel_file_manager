@@ -44,9 +44,9 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
 });
 
-Route::group(['prefix' => config('laravel_file_manager.upload_route_prefix'), 'namespace' => 'ArtinCMS\LFM\Controllers', 'middleware' => config('laravel_file_manager.upload_middlewares')], function () {
+/*Route::group(['prefix' => config('laravel_file_manager.upload_route_prefix'), 'namespace' => 'ArtinCMS\LFM\Controllers', 'middleware' => config('laravel_file_manager.upload_middlewares')], function () {
     Route::get('SingleUpload/{path?}/{section?}/{callback?}', ['as' => 'LFM.SingleUpload', 'uses' => 'SpecificUploadController@singleUpload']);
-   /* Route::post('StoreSingleUploads', ['as' => 'LFM.StoreSingleUploads', 'uses' => 'SpecificUploadController@StoreSingleUploads']);*/
+    Route::post('StoreSingleUploads', ['as' => 'LFM.StoreSingleUploads', 'uses' => 'SpecificUploadController@StoreSingleUploads']);
 
 
-});
+});*/
