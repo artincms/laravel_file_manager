@@ -21,7 +21,7 @@ class CreateLFMFileable extends Migration
             $table->string('type', 255)->nullable()->default(null);
             $table->integer('created_by')->unsigned()->nullable()->default(null);
             $table->timestamps();
-            $table->softDeletes();
+        });
         });
     }
     /**
