@@ -13,22 +13,37 @@ use Validator;
 
 class ManagerController extends Controller
 {
-    private function show($id, $insert = false, $callback = false, $section = false)
+    private function show($id, $insert = false, $callback = false, $section=false)
     {
-
         $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id', '=', $this->getUserId())->get(), 'parent_category_id', false, $id, 0);
         $allCategories['share'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, $id, -2);
         $allCategories['public'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, $id, -1);
         if ($section)
         {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+            if(isset($LFM[$section]))
+            {
+                if (isset( $LFM[$section]['options']))
+                {
+                    $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+
+                }
+                else
+                {
+
+                    $trueMimeType = false ;
+                }
+            }
+        else
+            {
+                $trueMimeType = false ;
+            }
         }
         else
         {
             $trueMimeType = false;
-            $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
         }
+        $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
         $result['allCategories'] = $allCategories;
         $result['success'] = true;
         $parent_id = $id;
@@ -40,7 +55,7 @@ class ManagerController extends Controller
             $categories = Category::get_root_categories();
             $available = LFM_CheckAllowInsert($section)['available'];
             $category = false;
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback'))->render();
             $result['message'] = '';
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = $id;
@@ -72,7 +87,7 @@ class ManagerController extends Controller
                 $category = false ;
             }
             $available = LFM_CheckAllowInsert($section)['available'];
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id','callback'))->render();
             $result['message'] = '';
             $result['parent_category_id'] = $id;
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => $id, 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
@@ -111,14 +126,22 @@ class ManagerController extends Controller
         if ($section)
         {
             $LFM = session()->get('LFM');
-            if ($LFM[$section]['options']['true_mime_type'])
+            if ($LFM[$section])
             {
-                $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+                if ($LFM[$section]['options']['true_mime_type'])
+                {
+                    $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+                }
+                else
+                {
+                    $trueMimeType = false;
+                }
             }
             else
             {
                 $trueMimeType = false;
             }
+
         }
         else
         {
@@ -345,7 +368,7 @@ class ManagerController extends Controller
 
     public function showCategory(Request $request)
     {
-        $result = $this->show($request->category_id, $request->insert, $request->section);
+        $result = $this->show($request->category_id, $request->insert,$request->callback, $request->section);
         return response()->json($result);
     }
 
