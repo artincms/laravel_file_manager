@@ -389,7 +389,7 @@ class ManagerController extends Controller
         {
             $this->delete_category($request->id);
         }
-        $result = $this->show($request->parent_id, $request->insert, $request->section);
+        $result = $this->show($request->parent_id, $request->insert,$request->callback, $request->section);
         return response()->json($result);
     }
 
@@ -407,7 +407,7 @@ class ManagerController extends Controller
                 $this->delete_category($item['id']);
             }
         }
-        $result = $this->show($item['parent_id'], $request->insert, $request->section);
+        $result = $this->show($item['parent_id'], $request->insert,$request->callback ,$request->section);
         return response()->json($result);
     }
 

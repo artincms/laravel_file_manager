@@ -474,6 +474,7 @@
                 parent_id :info['parent_id'],
                 section:'{{LFM_CheckFalseString($section)}}',
                 insert: '{{LFM_CheckFalseString($insert)}}',
+                callback: '{{LFM_CheckFalseString($callback)}}',
             },
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
@@ -593,6 +594,7 @@
                 items:items ,
                 section:'{{LFM_CheckFalseString($section)}}',
                 insert: '{{LFM_CheckFalseString($insert)}}',
+                callback: '{{LFM_CheckFalseString($callback)}}',
             },
             success: function (result) {
                 var display = $( "#refresh_page" ).attr('data-type');
