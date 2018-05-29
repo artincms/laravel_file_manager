@@ -4,10 +4,10 @@
         e.preventDefault();
         var file_id = $(this).attr('data-file_id');
         var section = $(this).attr('data-section');
-        delete_inserted_item_from_session(section, file_id);
+        delete_inserted_item_from_session_{{$section}}(section, file_id);
     });
 
-    function delete_inserted_item_from_session(section, file_id) {
+    function delete_inserted_item_from_session_{{$section}}(section, file_id) {
         $.ajax({
             type: "POST",
             url: "{{route('LFM.DeleteSessionInsertItem')}}",
@@ -21,6 +21,7 @@
             success: function (result) {
                 if (result.success)
                 {
+                    console.log(result);
                     $('#' + section + '_' + file_id + '_trash_insert_li').remove();
                     {{LFM_CheckFalseString($section)}}_available  =result.{{LFM_CheckFalseString($section)}}.available ;
                     console.log(result.{{LFM_CheckFalseString($section)}} );

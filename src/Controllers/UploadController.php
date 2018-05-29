@@ -5,12 +5,10 @@ namespace ArtinCMS\LFM\Controllers;
 use Illuminate\Http\Request;
 use ArtinCMS\LFM\Models\FileMimeType;
 use ArtinCMS\LFM\Helpers\Classes\Media;
-use ArtinCMS\LFM\Traits\ShowView ;
 use Illuminate\Routing\Route;
 
 class UploadController extends ManagerController
 {
-    use ShowView;
     public function fileUpload($category_id = 0, $callback = false, $section = false)
     {
         if ($section and $section != 'false')
@@ -114,7 +112,7 @@ class UploadController extends ManagerController
             }
             $r =$this->setSelectedFileToSession($request,$request->section,$result);
             $data['data'] = $result ;
-            $data['view']=$this->setInsertedView($request->section,  LFM_GetSection($request->section)['selected']['data']) ;
+            $data['view']=LFM_SetInsertedView($request->section,  LFM_GetSection($request->section)['selected']['data']) ;
             $data['available'] = LFM_CheckAllowInsert($request->section)['available'] ;
             return response()->json($data);
         }

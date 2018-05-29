@@ -5,7 +5,9 @@
             <th>Row</th>
             <th>ID</th>
             <th>Name</th>
-            <th>Action</th>
+            @if(!$show)
+                <th>Action</th>
+            @endif
         </tr>
         </thead>
         <tbody>
@@ -16,11 +18,13 @@
                 @php($i++)
                 <td>{{$file_item['file']['id']}}</td>
                 <td><a href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
-                <td>
-                    <a class="grid-row-delete pull-right myicon" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
-                        <i class="fa fa-trash" style="color: red;"></i>
-                    </a>
-                </td>
+                @if(!$show)
+                    <td>
+                        <a class="grid-row-delete pull-right myicon" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                            <i class="fa fa-trash" style="color: red;"></i>
+                        </a>
+                    </td>
+                @endif
             </tr>
         @endforeach
         </tbody>
