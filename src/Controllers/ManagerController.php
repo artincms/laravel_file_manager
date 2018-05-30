@@ -43,7 +43,7 @@ class ManagerController extends Controller
         {
             $trueMimeType = false;
         }
-        $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => 'false']);
+        $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => $id, 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section)]);
         $result['allCategories'] = $allCategories;
         $result['success'] = true;
         $parent_id = $id;

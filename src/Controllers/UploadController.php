@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use ArtinCMS\LFM\Models\FileMimeType;
 use ArtinCMS\LFM\Helpers\Classes\Media;
 use Illuminate\Routing\Route;
+use Mockery\Exception;
 
 class UploadController extends ManagerController
 {
@@ -46,7 +47,7 @@ class UploadController extends ManagerController
                 }
                 catch (Exception $e)
                 {
-                    die("Your file is not corrent");
+                    return $e->getMessage();
                 }
 
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)

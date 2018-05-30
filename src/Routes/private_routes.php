@@ -45,8 +45,3 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::get('GetSession/{section}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
 });
-
-/*Route::group(['prefix' => config('laravel_file_manager.upload_route_prefix'), 'namespace' => 'ArtinCMS\LFM\Controllers', 'middleware' => config('laravel_file_manager.upload_middlewares')], function () {
-    Route::get('SingleUpload/{category_id?}/{section?}/{callback?}', ['as' => 'LFM.SingleUpload', 'uses' => 'SpecificUploadController@singleUpload']);
-
-});*/

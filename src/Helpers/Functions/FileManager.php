@@ -223,115 +223,10 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
 
 function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 'files')
 {
-    $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
-    $LFM = session()->get('LFM') ;
-    if($LFM)
+    if ($obj_model)
     {
-        if (isset($LFM[$section]))
-        {
-            $data = [] ;
-            $LFM[$section]['selected'] = ['data' => [], 'view' => []];
-            foreach ($files as $file)
-            {
-                $res['file']=$file ;
-                if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
-                {
-                    $res['file']['icon']='image';
-                }
-                else
-                {
-                    $class = $file->FileMimeType->icon_class;
-                    if ($class)
-                    {
-                        $res['file']['icon'] = $file->FileMimeType->icon_class;
-                    }
-                    else
-                    {
-                        $res['file']['icon'] ='fa-file-o';
-                    }
-                }
-                $res['file']['created'] = $file->created_at;
-                $res['file']['updated'] = $file->updated_at;
-                if (isset($file->user->name))
-                {
-                    $res['file']['user'] = $file->user->name;
-                }
-                else
-                {
-                    $res['file']['user'] = 'Public';
-                }
-                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-                $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-                $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-                $data[] = $res ;
-            }
-            $view = LFM_SetInsertedView($section,  $data) ;
-            $LFM[$section]['selected']['data'] = $data ;
-            $LFM[$section]['selected']['view'] = $view ;
-            session()->put('LFM',$LFM) ;
-            $result['data']= $data ;
-            $result['view']=$view ;
-        }
-    }
-    return  $result ;
-}
-
-function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
-{
-    $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
-    $data = [] ;
-    $view = [] ;
-    if ($files)
-    {
-        foreach ($files as $file)
-        {
-            $res['file']=$file ;
-            if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
-            {
-                $res['file']['icon']='image';
-            }
-            else
-            {
-                $class = $file->FileMimeType->icon_class;
-                if ($class)
-                {
-                    $res['file']['icon'] = $file->FileMimeType->icon_class;
-                }
-                else
-                {
-                    $res['file']['icon'] ='fa-file-o';
-                }
-            }
-            $res['file']['created'] = $file->created_at;
-            $res['file']['updated'] = $file->updated_at;
-            if (isset($file->user->name))
-            {
-                $res['file']['user'] = $file->user->name;
-            }
-            else
-            {
-                $res['file']['user'] = 'Public';
-            }
-            $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-            $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-            $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-            $data[] = $res ;
-        }
-        $view = LFM_SetInsertedView('Show',  $data,true) ;
-    }
-    $result['data']= $data ;
-    $result['view']=$view ;
-    return $result ;
-}
-
-function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_name=false)
-{
-    $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
-    $data = [] ;
-    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
-    $LFM = session()->get('LFM') ;
-    if($files[0])
-    {
+        $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
+        $LFM = session()->get('LFM') ;
         if($LFM)
         {
             if (isset($LFM[$section]))
@@ -376,10 +271,134 @@ function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_na
                 $LFM[$section]['selected']['data'] = $data ;
                 $LFM[$section]['selected']['view'] = $view ;
                 session()->put('LFM',$LFM) ;
-
+                $result['data']= $data ;
+                $result['view']=$view ;
             }
         }
     }
+    else
+    {
+        abort(404);
+    }
+
+    return  $result ;
+}
+
+function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
+{
+    $data = [] ;
+    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+    if ($obj_model)
+    {
+        $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
+        if ($files)
+        {
+            foreach ($files as $file)
+            {
+                $res['file']=$file ;
+                if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                {
+                    $res['file']['icon']='image';
+                }
+                else
+                {
+                    $class = $file->FileMimeType->icon_class;
+                    if ($class)
+                    {
+                        $res['file']['icon'] = $file->FileMimeType->icon_class;
+                    }
+                    else
+                    {
+                        $res['file']['icon'] ='fa-file-o';
+                    }
+                }
+                $res['file']['created'] = $file->created_at;
+                $res['file']['updated'] = $file->updated_at;
+                if (isset($file->user->name))
+                {
+                    $res['file']['user'] = $file->user->name;
+                }
+                else
+                {
+                    $res['file']['user'] = 'Public';
+                }
+                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
+                $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
+                $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
+                $data[] = $res ;
+            }
+            $view = LFM_SetInsertedView('Show',  $data,true) ;
+        }
+    }
+    else
+    {
+        abort(404);
+    }
+    $result['data']= $data ;
+    $result['view']=$view ;
+    return $result ;
+}
+
+function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_name=false)
+{
+    $data = [] ;
+    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+    if ($obj_model)
+    {
+        $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
+        $LFM = session()->get('LFM') ;
+        if($files[0])
+        {
+            if($LFM)
+            {
+                if (isset($LFM[$section]))
+                {
+                    $data = [] ;
+                    $LFM[$section]['selected'] = ['data' => [], 'view' => []];
+                    foreach ($files as $file)
+                    {
+                        $res['file']=$file ;
+                        if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                        {
+                            $res['file']['icon']='image';
+                        }
+                        else
+                        {
+                            $class = $file->FileMimeType->icon_class;
+                            if ($class)
+                            {
+                                $res['file']['icon'] = $file->FileMimeType->icon_class;
+                            }
+                            else
+                            {
+                                $res['file']['icon'] ='fa-file-o';
+                            }
+                        }
+                        $res['file']['created'] = $file->created_at;
+                        $res['file']['updated'] = $file->updated_at;
+                        if (isset($file->user->name))
+                        {
+                            $res['file']['user'] = $file->user->name;
+                        }
+                        else
+                        {
+                            $res['file']['user'] = 'Public';
+                        }
+                        $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
+                        $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
+                        $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
+                        $data[] = $res ;
+                    }
+                    $view = LFM_SetInsertedView($section,  $data) ;
+                    $LFM[$section]['selected']['data'] = $data ;
+                    $LFM[$section]['selected']['view'] = $view ;
+                    session()->put('LFM',$LFM) ;
+
+                }
+            }
+        }
+    }
+
     $result['data']= $data ;
     $result['view']=$view ;
     return  $result ;
@@ -387,46 +406,53 @@ function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_na
 
 function LFM_ShowingleFile($obj_model, $column_name,$column_option_name=false)
 {
-    $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
     $data = [] ;
     $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
-    if (isset($files[0]))
+    if ($obj_model)
     {
-        foreach ($files as $file)
+        $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
+        if (isset($files[0]))
         {
-            $res['file']=$file ;
-            if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+            foreach ($files as $file)
             {
-                $res['file']['icon']='image';
-            }
-            else
-            {
-                $class = $file->FileMimeType->icon_class;
-                if ($class)
+                $res['file']=$file ;
+                if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
                 {
-                    $res['file']['icon'] = $file->FileMimeType->icon_class;
+                    $res['file']['icon']='image';
                 }
                 else
                 {
-                    $res['file']['icon'] ='fa-file-o';
+                    $class = $file->FileMimeType->icon_class;
+                    if ($class)
+                    {
+                        $res['file']['icon'] = $file->FileMimeType->icon_class;
+                    }
+                    else
+                    {
+                        $res['file']['icon'] ='fa-file-o';
+                    }
                 }
+                $res['file']['created'] = $file->created_at;
+                $res['file']['updated'] = $file->updated_at;
+                if (isset($file->user->name))
+                {
+                    $res['file']['user'] = $file->user->name;
+                }
+                else
+                {
+                    $res['file']['user'] = 'Public';
+                }
+                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
+                $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
+                $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
+                $data[] = $res ;
             }
-            $res['file']['created'] = $file->created_at;
-            $res['file']['updated'] = $file->updated_at;
-            if (isset($file->user->name))
-            {
-                $res['file']['user'] = $file->user->name;
-            }
-            else
-            {
-                $res['file']['user'] = 'Public';
-            }
-            $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-            $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-            $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-            $data[] = $res ;
+            $view = LFM_SetInsertedView('Show',  $data,true) ;
         }
-        $view = LFM_SetInsertedView('Show',  $data,true) ;
+    }
+    else
+    {
+        abort(404);
     }
     $result['data']= $data ;
     $result['view']=$view ;

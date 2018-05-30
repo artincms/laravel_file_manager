@@ -27,11 +27,7 @@
         <div id="kv-error-2"  class="alert alert-danger" style="margin-top:10px;display:none"></div>
         <div id="kv-success-2" class="alert alert-success" style="margin-top:10px;display:none"></div>
     </div>
-{{--
-    {{dd(LFM_ConvertMimeTypeToExt(config('laravel_file_manager.allowed')))}}
---}}
     <script type="text/javascript">
-
         //-----------------------------------------------------------------------------------------------------//
         console.log({{$category_id}} );
         $("#input-708").fileinput({
@@ -44,10 +40,10 @@
             },
             delete:false,
             @if($section && $section !='false' && $options !=false)
-            maxFileCount: '{{$options['max_file_number']}}',
-            allowedFileExtensions: [{!! $true_ext !!}],
+                maxFileCount: '{{$options['max_file_number']}}',
+                allowedFileExtensions: [{!! $true_ext !!}],
             @else
-            allowedFileExtensions:[{!!$ext !!}],
+                allowedFileExtensions:[{!!$ext !!}],
             @endif
             elErrorContainer: "#errorBlock",
             browseClass: "btn btn-success",
@@ -67,15 +63,11 @@
                 {
                     var fname = value.result.OrginalFileName;
                     out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</div>';
-                    /*$('#kv-success-2 ul').append(out);
-                    $('#kv-success-2').fadeIn('slow');*/
                 }
                 else
                 {
                     var fname = value.OrginalFileName;
                     out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</div>';
-                  /*  $('#kv-error-2 ul').append(out);
-                    $('#kv-error-2').fadeIn('slow');*/
                 }
                 if(typeof parent.refresh !== 'undefined')
                 {
