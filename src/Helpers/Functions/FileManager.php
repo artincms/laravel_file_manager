@@ -690,9 +690,9 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
 }
 
 function LFM_CreateModalUpload($section,$category_id,$callback='show_upload_file',$options=[],$result_area_id = false,$modal_id = 'UploadFileManager', $header = 'Upload_FileManager',$button_id = 'ShowModalUpload',$button_content = 'Upload'){
-    LFM_SetSessionOption($section,$options) ;
+    $session = LFM_SetSessionOption($section,$options,config('laravel_file_manager.upload_route_prefix')) ;
     $available = LFM_CheckAllowInsert($section)['available'] ;
-    $src = route('LFM.FileUploadForm', ['section' => $section, 'callback' => $callback,'category_id'=> $category_id] );
+    $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback] );
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id' ,'header', 'button_content', 'section', 'callback', 'button_id','available','result_area_id','options'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' .$button_id . '"  data-toggle="modal">' . $button_content . '</button>';
     return $result;
@@ -707,31 +707,63 @@ function LFM_SetInsertedView($section, $data,$show=false)
     $view['large'] = LFM_LargeInsertedView($data, $section,$show);
     return $view;
 }
+
 function LFM_ListInsertedView($data, $section = false,$show=false)
 {
-    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section','show'))->render();
+    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section','show','prefix'))->render();
 }
 
 function LFM_GridInsertedView($data, $section = false,$show=false)
 {
-    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section','show'))->render();
+    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section','show','prefix'))->render();
 }
 
 function LFM_SmallInsertedView($data, $section = false,$show=false)
 {
-    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section','show'))->render();
+    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section','show','prefix'))->render();
 }
 
 function LFM_MediumInsertedView($data, $section = false,$show=false)
 {
-    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section','show'))->render();
+    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section','show','prefix'))->render();
 }
 
 function LFM_LargeInsertedView($data, $section = false,$show=false)
 {
-    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section','show'))->render();
+    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section','show','prefix'))->render();
 }
 
+function LFM_SetSelectedFileToSession($request, $section, $data)
+{
+    if ($request->has('section'))
+    {
+        if (session()->has('LFM'))
+        {
+            $LFM = session()->get('LFM');
+            if (isset($LFM[$request->section]))
+            {
+                $result['success'] = true;
+                $LFM[$section]['selected']['data'] = array_merge($LFM[$section]['selected']['data'], $data);
+                $LFM[$section]['selected']['view'] = LFM_SetInsertedView($request->section, $LFM[$section]['selected']['data'],false);
+                session()->put('LFM', $LFM);
+                return $result;
+            }
+            else
+            {
+                $result['success'] = false;
+            }
+        }
+        else
+        {
+            $result['success'] = false;
+        }
+    }
+    else
+    {
+        $result['success'] = false;
+    }
+    return $result;
+}
 
 
 

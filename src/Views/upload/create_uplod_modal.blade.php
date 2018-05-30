@@ -70,9 +70,9 @@
     }
     //-------------------------------------------------------------------------------------//
     function {{$callback}}(data) {
-        console.log(data);
         @if($result_area_id)
-       $('#{{$result_area_id}}').html(data.view.{{$options['show_file_uploaded']}})
+        console.log(data);
+        $('#{{$result_area_id}}').html(data.{{$section}}.view.{{$options['show_file_uploaded']}})
         @endif
     }
 </script>

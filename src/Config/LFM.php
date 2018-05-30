@@ -4,10 +4,12 @@ return [
 
     /* Important Settings */
     'private_middlewares' => ['web'],
+    'upload_middlewares' => ['web'],
     'public_middlewares' => ['web'],
     // you can change default route from sms-admin to anything you want
     'private_route_prefix' => 'LFM',
     'public_route_prefix' => 'LFM',
+    'upload_route_prefix' => 'UFM',
     // SMS.ir Api Key
     'api-key' => env('SMSIR-API-KEY','Your api key'),
     // ======================================================================
@@ -21,6 +23,7 @@ return [
     'size_medium' =>['height' =>800 ,'width' =>600 ],
     'crop_chose' => 'fit' ,
     'driver_disk' => 'local' ,
+    'driver_disk_upload' => 'local' ,
     'user_model' => 'App\User' ,
     //optomise Image
     'Optimise_image' => false,

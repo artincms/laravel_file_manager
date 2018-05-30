@@ -13,7 +13,7 @@
             url: "{{route('LFM.DeleteSessionInsertItem')}}",
             data: {
                 section: section,
-                file_id: file_id
+                file_id: file_id,
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

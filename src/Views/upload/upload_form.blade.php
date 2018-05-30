@@ -33,11 +33,11 @@
     {
         $("#input-708").fileinput({
             theme: "fa",
-            uploadUrl: "{{route('LFM.StoreSingleUploads')}}",
+            uploadUrl: "{{route('LFM.StoreDirectUploads')}}",
             uploadAsync: false,
             uploadExtraData: {
-                category_id: {{$category_id}} ,
-                section : '{{$section}}',
+                section : '{{LFM_CheckFalseString($section)}}',
+                callback : '{{LFM_CheckFalseString($callback)}}',
                 _token: $('#token').val()
             },
             delete:false,
@@ -62,7 +62,7 @@
             $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
             complete(data);
-            parent.{{LFM_CheckFalseString($section)}}_available = data.response.available ;
+            parent.{{LFM_CheckFalseString($section)}}_available = data.response.{{LFM_CheckFalseString($section)}}.available ;
             if (typeof parent.refresh !== 'undefined') {
                 parent.refresh();
             }

@@ -354,5 +354,82 @@ class Media
         $result = array('ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'OrginalFileName' => $FileSave->OriginalFileName);
         return $result;
     }
+
+    public static function directUpload($file, $path , $FileMimeType, $quality = 90, $crop_type = false, $height = False, $width = false)
+    {
+        $time = time();
+        $size = $file->getSize() ;
+        if (auth()->check())
+        {
+            $user_id = auth()->id();
+        }
+        else
+        {
+            $user_id = 0;
+        }
+        $extension = $FileMimeType->ext;
+        $mimeType = $FileMimeType->mimeType;
+        $path .= '/' ;
+        $is_picture = false;
+        $originalName =  $file->getClientOriginalName() ;
+        $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
+        $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
+        $extension = LFM_Sanitize($extension);
+        //save data to database
+        $FileSave = new File;
+        $FileSave->originalName = $OriginalFileName;
+        $FileSave->extension = $extension;
+        $FileSave->file_mime_type_id = $FileMimeType->id;
+        $FileSave->user_id = $user_id;
+        $FileSave->category_id = -5;
+        $FileSave->mimeType = $mimeType;
+        $FileSave->filename = '';
+        $FileSave->file_md5 = md5_file($file);
+        $FileSave->size = $size;
+        $FileSave->path = $path;
+        $FileSave->created_by = $user_id;
+        $FileSave->save();
+        $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $user_id . '_' . md5_file($file) . "_" . $time . '_' . $extension;
+        $is_picture = true;
+
+        //upload every files in path folder
+        $file_content = \File::get($file);
+        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path.'/'.$filename, $file_content);
+        $FileSave->file_md5 = md5_file($file);
+        $FileSave->filename = $filename ;
+        $FileSave->save();
+        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $FileSave->user_id, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
+        if (in_array($FileSave->mimeType,config('laravel_file_manager.allowed_pic')))
+        {
+            $result['icon']='image';
+        }
+        else
+        {
+            $class = $FileSave->FileMimeType->icon_class;
+            if ($class)
+            {
+                $result['icon'] = $FileSave->FileMimeType->icon_class;
+            }
+            else
+            {
+                $result['icon'] ='fa-file-o';
+            }
+        }
+        $result['file']['created'] = $FileSave->created_at;
+        $result['file']['updated'] = $FileSave->updated_at;
+        if (isset($file->user->name))
+        {
+            $result['file']['user'] = $FileSave->user->name;
+        }
+        else
+        {
+            $result['file']['user'] = 'Public';
+        }
+        $result['full_url']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
+        $result['full_url_medium']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
+        $result['full_url_large']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
+        return $result;
+    }
+
 }
 

@@ -281,6 +281,7 @@ class SessionController extends ManagerController
     {
         $section = $request->section;
         $file_id = $request->file_id;
+
         $LFM = session()->get('LFM');
         if ($LFM[$section])
         {
