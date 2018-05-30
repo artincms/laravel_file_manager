@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hamahang
- * Date: 4/19/2018
- * Time: 10:11 AM
- */
-
 namespace ArtinCMS\LFM\Helpers\Classes;
 
 use ArtinCMS\LFM\Models\Category;
@@ -288,6 +281,74 @@ class Media
         return $res;
     }
 
+    public static function downloadDirectById($file_id, $not_found_img = '404.png',  $quality = 100, $width = false, $height = False)
+    {
+        $discPpath = \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->path('');
+        $not_fund_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
+
+        $file = File::find($file_id);
+        $not_found_img_path = $not_fund_path.'/System/' . $not_found_img;
+        //check database for check file exist
+        if ($file)
+        {
+            $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
+            $headers = array("Content-Type:{$file->mimeType}");
+            //check local storage for check file exist
+            $filename = $file->filename;
+            $file_path =$file->path.'/' .$filename;
+            if (\Storage::disk(config('laravel_file_manager.driver_disk_upload'))->has($file_path))
+            {
+                $fullPath=$discPpath.$file->path.'/' .$filename;
+                if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
+                {
+                    if ($width && $height)
+                    {
+                        $res = Image::make($fullPath)->fit((int)$width, (int)$height)->response($file_EXT, (int)$quality);
+                    }
+                    else
+                    {
+                        if ($quality < 100)
+                        {
+
+                            $res = Image::make($fullPath)->response('jpg', (int)$quality);
+                        }
+                        else
+                        {
+                            $res = Image::make($fullPath)->response($file_EXT, (int)$quality);
+                        }
+                    }
+                }
+                else
+                {
+                    $res = response()->download($fullPath, $file->filename . '.' . $file_EXT, $headers);
+                }
+            }
+            else
+            {
+                if ($width or $height)
+                {
+                    $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                }
+                else
+                {
+                    $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                }
+            }
+        }
+        else
+        {
+            if ($width or $height)
+            {
+                $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+            }
+            else
+            {
+                $res = Image::make($not_found_img_path)->response('jpg', $quality);
+            }
+        }
+        return $res;
+    }
+
     public static function downloadByName($FileName, $not_found_img = '404.png', $size_type = 'orginal', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $file = File::where('filename', '=', $FileName)->first();
@@ -425,9 +486,7 @@ class Media
         {
             $result['file']['user'] = 'Public';
         }
-        $result['full_url']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
-        $result['full_url_medium']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
-        $result['full_url_large']=LFM_GenerateDownloadLink('ID',$FileSave->id,'orginal') ;
+
         return $result;
     }
 

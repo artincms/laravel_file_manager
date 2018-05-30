@@ -23,12 +23,24 @@ class DirectUploadController extends Controller
         return view('laravel_file_manager::upload.upload_form', compact('category_id', 'callback', 'section','options'));
     }
 
+    public function downloadDirect( $id = -1, $default_img = '404.png', $quality = 100, $width = false, $height = false)
+    {
+        if ($id == -1)
+        {
+            return Media::downloadDirectById(-1, 'orginal', $default_img);//"Not Valid Request";
+        }
+        else
+        {
+            return Media::downloadDirectById($id, $default_img, false, $quality, $width, $height);
+        }
+    }
     public function storeDirectUploads(Request $request)
     {
         if ($request->file)
         {
             $CategoryID = $request->category_id;
             $result = [];
+            $data = [];
             foreach ($request->file as $file)
             {
                 try {
@@ -45,42 +57,52 @@ class DirectUploadController extends Controller
                     $section = LFM_GetSection($request->section);
                     if($section)
                     {
-                        if ($section['options']['path'])
+                        if (isset($section['options']['path']))
                         {
                             $path = $section['options']['path'] ;
+                            if(LFM_CheckAllowInsert($request->section)['available'] > 0)
+                            {
+                                $result[] = \DB::transaction(function () use ($file, $path,$FileMimeType) {
+                                    $res = Media::directUpload($file,$path ,$FileMimeType);
+                                    $result['success'] = true;
+                                    $result['file'] = $res;
+                                    $result['full_url'] = LFM_DirectGenerateDownloadLink($res['id']);
+                                    $result['full_url_medium']=LFM_DirectGenerateDownloadLink($res['id']) ;
+                                    $result['full_url_large']=LFM_DirectGenerateDownloadLink($res['id']) ;
+                                    return $result;
+                                });
+                            }
+                            else
+                            {
+                                $result[]= ['successs'=>false , 'originalName' =>$originalName,'error' => 'You Reach Maximum Upload'];
+                            }
                         }
                         else
                         {
-                            $path = '';
+                            $data[$request->section]['data'][]=['successs'=>false , 'originalName' =>$originalName,'error' =>'Your Upload Path not define'];
+                            $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'] ;
+                            $data[$request->section]['view'] = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+                            return response()->json($data);
                         }
-                    }
-                    if(LFM_CheckAllowInsert($request->section)['available'] > 0)
-                    {
-                        $result[] = \DB::transaction(function () use ($file, $path,$FileMimeType) {
-                            $res = Media::directUpload($file,$path ,$FileMimeType);
-                            $result['success'] = true;
-                            $result['file'] = $res;
-                            $result['full_url'] = LFM_GenerateDownloadLink('ID',$res['id'],'orginal');
-                            return $result;
-                        });
                     }
                     else
                     {
-                        $result[]= ['successs'=>false , 'originalName' =>$originalName];
+                        $data[$request->section]['data'][]=['successs'=>false , 'originalName' =>$originalName,'error' =>'Your Section Not Define'];
+                        $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'] ;
+                        $data[$request->section]['view'] = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+                        return response()->json($data);
                     }
-
                 }
                 else
                 {
-                    $result[]= ['successs'=>false , 'originalName' =>$originalName];
+                    $result[]= ['successs'=>false , 'originalName' =>$originalName,'error' => 'Your Myme Type Is Not Allowed'];
+
                 }
             }
-            $prefix = config('laravel_file_manager.upload_route_prefix');
-            $set =LFM_SetSelectedFileToSession($request,$request->section,$result);
+            LFM_SetSelectedFileToSession($request,$request->section,$result);
             $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'] ;
             $data[$request->section]['data'] = $result ;
             $data[$request->section]['view']=LFM_GetSection($request->section)['selected']['view'] ;
-
             return response()->json($data);
         }
     }

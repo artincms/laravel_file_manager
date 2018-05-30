@@ -80,19 +80,18 @@
        $('#{{$section}}_kv_main').html('<h3>You reach your maximum file upload</h3><br/><h4>for more upload you should remove previous upload file</h4>');
     }
     function complete(data) {
+        console.log(data);
         var out = '';
-        $.each(data.response.data, function (index, value) {
+        $.each(data.response.{{$section}}.data, function (index, value) {
             if (value.success) {
                 var fname = value.file.originalName;
                 out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</div>';
             }
             else {
                 var fname = value.originalName;
-                out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - ' + fname + '</div>';
+                out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - ' + fname ;
+                out += '<p>' + value.error + '</p></div>';
             }
-
-
-
         });
 
 

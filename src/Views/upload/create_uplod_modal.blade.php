@@ -71,7 +71,6 @@
     //-------------------------------------------------------------------------------------//
     function {{$callback}}(data) {
         @if($result_area_id)
-        console.log(data);
         $('#{{$result_area_id}}').html(data.{{$section}}.view.{{$options['show_file_uploaded']}})
         @endif
     }
