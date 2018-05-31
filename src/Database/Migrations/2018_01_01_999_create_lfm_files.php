@@ -25,6 +25,7 @@ class CreateLFMFiles extends Migration
             $table->string('filename', 255)->nullable()->default(null);
             $table->string('file_md5' ,255)->nullable()->default(null);
             $table->string('large_filename' ,255)->nullable()->default(null);
+            $table->enum('is_direct',['1',0])->default(0);
             $table->string('medium_filename' ,255)->nullable()->default(null);
             $table->string('small_filename' ,255)->nullable()->default(null);
             $table->integer('version')->unsigned()->default(0);
