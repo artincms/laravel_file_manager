@@ -156,7 +156,7 @@ function LFM_GetSectionFile($section)
     }
 }
 
-function LFM_SaveSingleFile($obj_model, $column_name, $section,$column_option_name=false)
+function LFM_SaveSingleFile($obj_model, $column_name, $section, $column_option_name = false)
 {
     $files = LFM_GetSectionFile($section);
     if ($files)
@@ -164,16 +164,16 @@ function LFM_SaveSingleFile($obj_model, $column_name, $section,$column_option_na
         if (isset($files[0]['file']) && isset($files[0]['file']['id']))
         {
             $obj_model->$column_name = $files[0]['file']['id'];//first select
-            if($column_option_name)
+            if ($column_option_name)
             {
                 $obj_model->$column_option_name = json_encode($files[0]['file']);//first select
             }
             $res = $obj_model->save();
-            if($res)
+            if ($res)
             {
                 LFM_DestroySection($section);
             }
-            return $res ;
+            return $res;
         }
         else
         {
@@ -207,8 +207,8 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
                 $arr_ids[$file['file']['id']] = ['type' => $type];
             }
         }
-        $res = $obj_model->$relation_name()->wherePivot('type','=',$type)->$attach_type($arr_ids);
-        if($res)
+        $res = $obj_model->$relation_name()->wherePivot('type', '=', $type)->$attach_type($arr_ids);
+        if ($res)
         {
             LFM_DestroySection($section);
         }
@@ -216,7 +216,7 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
     }
     else
     {
-        $res = $obj_model->$relation_name()->wherePivot('type','=',$type)->$attach_type($arr_ids);
+        $res = $obj_model->$relation_name()->wherePivot('type', '=', $type)->$attach_type($arr_ids);
         return false;
     }
 }
@@ -225,20 +225,20 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
 {
     if ($obj_model)
     {
-        $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
-        $LFM = session()->get('LFM') ;
-        if($LFM)
+        $files = $obj_model->$relation_name()->where('type', '=', $type)->get();
+        $LFM = session()->get('LFM');
+        if ($LFM)
         {
             if (isset($LFM[$section]))
             {
-                $data = [] ;
+                $data = [];
                 $LFM[$section]['selected'] = ['data' => [], 'view' => []];
                 foreach ($files as $file)
                 {
-                    $res['file']=$file ;
-                    if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                    $res['file'] = $file;
+                    if (in_array($file->mimeType, config('laravel_file_manager.allowed_pic')))
                     {
-                        $res['file']['icon']='image';
+                        $res['file']['icon'] = 'image';
                     }
                     else
                     {
@@ -249,7 +249,7 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                         }
                         else
                         {
-                            $res['file']['icon'] ='fa-file-o';
+                            $res['file']['icon'] = 'fa-file-o';
                         }
                     }
                     $res['file']['created'] = $file->created_at;
@@ -262,17 +262,17 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                     {
                         $res['file']['user'] = 'Public';
                     }
-                    $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-                    $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-                    $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-                    $data[] = $res ;
+                    $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                    $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
+                    $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
+                    $data[] = $res;
                 }
-                $view = LFM_SetInsertedView($section,  $data) ;
-                $LFM[$section]['selected']['data'] = $data ;
-                $LFM[$section]['selected']['view'] = $view ;
-                session()->put('LFM',$LFM) ;
-                $result['data']= $data ;
-                $result['view']=$view ;
+                $view = LFM_SetInsertedView($section, $data);
+                $LFM[$section]['selected']['data'] = $data;
+                $LFM[$section]['selected']['view'] = $view;
+                session()->put('LFM', $LFM);
+                $result['data'] = $data;
+                $result['view'] = $view;
             }
         }
     }
@@ -281,24 +281,25 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
         abort(404);
     }
 
-    return  $result ;
+    return $result;
 }
 
 function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
 {
-    $data = [] ;
-    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+    //if $direct is true your disc is driver_disk_upload
+    $data = [];
+    $view = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
     if ($obj_model)
     {
-        $files = $obj_model->$relation_name()->where('type','=',$type)->get() ;
+        $files = $obj_model->$relation_name()->where('type', '=', $type)->get();
         if ($files)
         {
             foreach ($files as $file)
             {
-                $res['file']=$file ;
-                if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                $res['file'] = $file;
+                if (in_array($file->mimeType, config('laravel_file_manager.allowed_pic')))
                 {
-                    $res['file']['icon']='image';
+                    $res['file']['icon'] = 'image';
                 }
                 else
                 {
@@ -309,7 +310,7 @@ function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
                     }
                     else
                     {
-                        $res['file']['icon'] ='fa-file-o';
+                        $res['file']['icon'] = 'fa-file-o';
                     }
                 }
                 $res['file']['created'] = $file->created_at;
@@ -322,45 +323,45 @@ function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
                 {
                     $res['file']['user'] = 'Public';
                 }
-                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-                $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-                $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-                $data[] = $res ;
+                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
+                $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
+                $data[] = $res;
             }
-            $view = LFM_SetInsertedView('Show',  $data,true) ;
+            $view = LFM_SetInsertedView('Show', $data, true);
         }
     }
     else
     {
         abort(404);
     }
-    $result['data']= $data ;
-    $result['view']=$view ;
-    return $result ;
+    $result['data'] = $data;
+    $result['view'] = $view;
+    return $result;
 }
 
-function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_name=false)
+function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_name = false)
 {
-    $data = [] ;
-    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+    $data = [];
+    $view = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
     if ($obj_model)
     {
         $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
-        $LFM = session()->get('LFM') ;
-        if($files[0])
+        $LFM = session()->get('LFM');
+        if ($files[0])
         {
-            if($LFM)
+            if ($LFM)
             {
                 if (isset($LFM[$section]))
                 {
-                    $data = [] ;
+                    $data = [];
                     $LFM[$section]['selected'] = ['data' => [], 'view' => []];
                     foreach ($files as $file)
                     {
-                        $res['file']=$file ;
-                        if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                        $res['file'] = $file;
+                        if (in_array($file->mimeType, config('laravel_file_manager.allowed_pic')))
                         {
-                            $res['file']['icon']='image';
+                            $res['file']['icon'] = 'image';
                         }
                         else
                         {
@@ -371,7 +372,7 @@ function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_na
                             }
                             else
                             {
-                                $res['file']['icon'] ='fa-file-o';
+                                $res['file']['icon'] = 'fa-file-o';
                             }
                         }
                         $res['file']['created'] = $file->created_at;
@@ -384,30 +385,30 @@ function LFM_loadSingleFile($obj_model, $column_name, $section,$column_option_na
                         {
                             $res['file']['user'] = 'Public';
                         }
-                        $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-                        $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-                        $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-                        $data[] = $res ;
+                        $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                        $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
+                        $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
+                        $data[] = $res;
                     }
-                    $view = LFM_SetInsertedView($section,  $data) ;
-                    $LFM[$section]['selected']['data'] = $data ;
-                    $LFM[$section]['selected']['view'] = $view ;
-                    session()->put('LFM',$LFM) ;
+                    $view = LFM_SetInsertedView($section, $data);
+                    $LFM[$section]['selected']['data'] = $data;
+                    $LFM[$section]['selected']['view'] = $view;
+                    session()->put('LFM', $LFM);
 
                 }
             }
         }
     }
 
-    $result['data']= $data ;
-    $result['view']=$view ;
-    return  $result ;
+    $result['data'] = $data;
+    $result['view'] = $view;
+    return $result;
 }
 
-function LFM_ShowingleFile($obj_model, $column_name,$column_option_name=false)
+function LFM_ShowingleFile($obj_model, $column_name, $column_option_name = false)
 {
-    $data = [] ;
-    $view = ['list'=>'','grid'=>'','large'=>'','medium'=>'','small'=>''] ;
+    $data = [];
+    $view = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
     if ($obj_model)
     {
         $files[] = \ArtinCMS\LFM\Models\File::find($obj_model->$column_name);
@@ -415,10 +416,10 @@ function LFM_ShowingleFile($obj_model, $column_name,$column_option_name=false)
         {
             foreach ($files as $file)
             {
-                $res['file']=$file ;
-                if (in_array($file->mimeType,config('laravel_file_manager.allowed_pic')))
+                $res['file'] = $file;
+                if (in_array($file->mimeType, config('laravel_file_manager.allowed_pic')))
                 {
-                    $res['file']['icon']='image';
+                    $res['file']['icon'] = 'image';
                 }
                 else
                 {
@@ -429,7 +430,7 @@ function LFM_ShowingleFile($obj_model, $column_name,$column_option_name=false)
                     }
                     else
                     {
-                        $res['file']['icon'] ='fa-file-o';
+                        $res['file']['icon'] = 'fa-file-o';
                     }
                 }
                 $res['file']['created'] = $file->created_at;
@@ -442,23 +443,22 @@ function LFM_ShowingleFile($obj_model, $column_name,$column_option_name=false)
                 {
                     $res['file']['user'] = 'Public';
                 }
-                $res['full_url']=LFM_GenerateDownloadLink('ID',$file->id,'orginal') ;
-                $res['full_url_medium']=LFM_GenerateDownloadLink('ID',$file->id,'medium') ;
-                $res['full_url_large']=LFM_GenerateDownloadLink('ID',$file->id,'large') ;
-                $data[] = $res ;
+                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
+                $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
+                $data[] = $res;
             }
-            $view = LFM_SetInsertedView('Show',  $data,true) ;
+            $view = LFM_SetInsertedView('Show', $data, true);
         }
     }
     else
     {
         abort(404);
     }
-    $result['data']= $data ;
-    $result['view']=$view ;
-    return  $result ;
+    $result['data'] = $data;
+    $result['view'] = $view;
+    return $result;
 }
-
 
 function LFM_DestroySection($section)
 {
@@ -485,11 +485,6 @@ function LFM_DestroySection($section)
 function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
 {
     return route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
-}
-
-function LFM_DirectGenerateDownloadLink($id = -1, $default_img = '404.png', $quality = 100, $width = false, $height = false)
-{
-    return route('LFM.DownloadDirectFile', ['id' => $id, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
 
 function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
@@ -526,39 +521,38 @@ function LFM_FileSizeConvert($bytes)
 function LFM_ConvertMimeTypeToExt($mimeTypes)
 {
     $res = '';
-    $text = '' ;
+    $text = '';
     foreach ($mimeTypes as $mime)
     {
         $extensions = \ArtinCMS\LFM\Models\FileMimeType::select('ext')->where('mimeType', '=', $mime)->get();
-        foreach($extensions as $ex)
+        foreach ($extensions as $ex)
         {
             $res .= "'$ex->ext',";
-            $text .=".$ex->ext,";
+            $text .= ".$ex->ext,";
         }
 
     }
-    $result['ext'] = rtrim($res,',');
+    $result['ext'] = rtrim($res, ',');
     $result['accept'] = $text;
     return $result;
 }
 
-function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNode = false, $parent = 0 , $idKey = 'id', $children_key = 'children')
+function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNode = false, $parent = 0, $idKey = 'id', $children_key = 'children')
 {
     $grouped = array();
     foreach ($flat_array as $sub)
     {
         $sub['text'] = $sub['title'];
-        $sub['a_attr']=['class'=> 'link_to_category jstree_a_tag','data-id'=>$sub['id']];
+        $sub['a_attr'] = ['class' => 'link_to_category jstree_a_tag', 'data-id' => $sub['id']];
         if ($sub['id'] == (int)$selectedNode)
         {
-            $sub['state'] = ['selected' => true , 'opened' =>true] ;
+            $sub['state'] = ['selected' => true, 'opened' => true];
 
         }
         $grouped[$sub[$pidKey]][] = $sub;
 
     }
-    $fnBuilder = function ($siblings) use (&$fnBuilder, $grouped, $idKey, $children_key)
-    {
+    $fnBuilder = function ($siblings) use (&$fnBuilder, $grouped, $idKey, $children_key) {
         foreach ($siblings as $k => $sibling)
         {
             $id = $sibling[$idKey];
@@ -581,44 +575,45 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
     return $tree;
 }
 
-function LFM_GeneratePublicDownloadLink($path,$filename,$type='orginal')
+function LFM_GeneratePublicDownloadLink($path, $filename, $type = 'orginal')
 {
-    $p = str_replace('public_folder/','',$path);
-    $path = str_replace('//','/',config('laravel_file_manager.symlink_public_folder_name').'/'.$p.'/files/'.$type.'/'.$filename );
-    return url($path) ;
+    $p = str_replace('public_folder/', '', $path);
+    $path = str_replace('//', '/', config('laravel_file_manager.symlink_public_folder_name') . '/' . $p . '/files/' . $type . '/' . $filename);
+    return url($path);
 }
 
 function LFM_GetAllParentId($id)
 {
-    $parrents_id = [] ;
-    $cats = \ArtinCMS\LFM\Models\Category::all_parents($id) ;
-    foreach($cats as $cat){
-        $parrents_id[]=$cat->id ;
+    $parrents_id = [];
+    $cats = \ArtinCMS\LFM\Models\Category::all_parents($id);
+    foreach ($cats as $cat)
+    {
+        $parrents_id[] = $cat->id;
     }
-    return $parrents_id ;
+    return $parrents_id;
 }
 
-function LFM_GetFoolderPath($id,$cat_name='undefined',$file_name=false)
+function LFM_GetFoolderPath($id, $cat_name = 'undefined', $file_name = false)
 {
     $result = [];
-    $path = '' ;
+    $path = '';
     while ($id != 0)
     {
         $cat = \ArtinCMS\LFM\Models\Category::with('parent_category')->find($id);
         if ($id == -2 || $id == -1)
         {
-          $id = 0 ;
+            $id = 0;
         }
         else
         {
-            if(isset($cat->parent_category_id))
+            if (isset($cat->parent_category_id))
             {
                 $result[] = $cat;
                 $id = $cat->parent_category_id;
             }
             else
             {
-                $id = 0 ;
+                $id = 0;
             }
 
         }
@@ -631,56 +626,56 @@ function LFM_GetFoolderPath($id,$cat_name='undefined',$file_name=false)
         {
             if ($parent->parent_category)
             {
-                $path .=  $parent->parent_category->title.'/';
+                $path .= $parent->parent_category->title . '/';
             }
         }
     }
-    $path .=$cat_name ;
+    $path .= $cat_name;
     if ($file_name)
     {
-        $path .=  '/'.$file_name;
+        $path .= '/' . $file_name;
     }
-   return $path ;
+    return $path;
 }
 
 function LFM_CheckAllowInsert($section_name)
 {
-    $section = LFM_GetSection($section_name) ;
-    if ($section['options']['max_file_number'] !=false)
+    $section = LFM_GetSection($section_name);
+    if (isset($section['options']['max_file_number']))
     {
-        $available = $section['options']['max_file_number'] - count($section['selected']['data']) ;
+        $available = $section['options']['max_file_number'] - count($section['selected']['data']);
         if ($available == 0)
         {
-            $result['success'] = false ;
+            $result['success'] = false;
             $result['available'] = 0;
         }
         else
         {
-            $result['success'] = true ;
+            $result['success'] = true;
             $result['available'] = $available;
         }
     }
     else
     {
-        $result['success'] = false ;
-        $result['available'] = 'undefined' ;
+        $result['success'] = false;
+        $result['available'] = 'undefined';
     }
     return $result;
 }
 
 function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = 'input file')
 {
-    if(!$header)
+    if (!$header)
     {
-        $header = 'File Manager '.$section ;
+        $header = 'File Manager ' . $section;
     }
-    if(!$button_id)
+    if (!$button_id)
     {
-        $button_id = 'show_modal_'.$section;
+        $button_id = 'show_modal_' . $section;
     }
     if (!$modal_id)
     {
-        $modal_id = 'FileManager_'.$section ;
+        $modal_id = 'FileManager_' . $section;
     }
     if ($options)
     {
@@ -688,54 +683,55 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
-    $available = LFM_CheckAllowInsert($section)['available'] ;
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id','available'))->render();
+    $available = LFM_CheckAllowInsert($section)['available'];
+    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
     return $result;
 }
 
-function LFM_CreateModalUpload($section,$category_id,$callback='show_upload_file',$options=[],$result_area_id = false,$modal_id = 'UploadFileManager', $header = 'Upload_FileManager',$button_id = 'ShowModalUpload',$button_content = 'Upload'){
-    $session = LFM_SetSessionOption($section,$options,config('laravel_file_manager.upload_route_prefix')) ;
-    $available = LFM_CheckAllowInsert($section)['available'] ;
-    $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback] );
-    $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id' ,'header', 'button_content', 'section', 'callback', 'button_id','available','result_area_id','options'))->render();
-    $result['button'] = '<button type="button" class="btn btn-default"  id="' .$button_id . '"  data-toggle="modal">' . $button_content . '</button>';
+function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $options = [], $result_area_id = false, $modal_id = 'UploadFileManager', $header = 'Upload_FileManager', $button_id = 'ShowModalUpload', $button_content = 'Upload')
+{
+    $session = LFM_SetSessionOption($section, $options, config('laravel_file_manager.upload_route_prefix'));
+    $available = LFM_CheckAllowInsert($section)['available'];
+    $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
+    $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
+    $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '"  data-toggle="modal">' . $button_content . '</button>';
     return $result;
 }
 
-function LFM_SetInsertedView($section, $data,$show=false)
+function LFM_SetInsertedView($section, $data, $show = false)
 {
-    $view['list'] = LFM_ListInsertedView($data, $section,$show);
-    $view['grid'] =LFM_GridInsertedView($data, $section,$show);
-    $view['small'] = LFM_SmallInsertedView($data, $section,$show);
-    $view['medium'] = LFM_MediumInsertedView($data, $section,$show);
-    $view['large'] = LFM_LargeInsertedView($data, $section,$show);
+    $view['list'] = LFM_ListInsertedView($data, $section, $show);
+    $view['grid'] = LFM_GridInsertedView($data, $section, $show);
+    $view['small'] = LFM_SmallInsertedView($data, $section, $show);
+    $view['medium'] = LFM_MediumInsertedView($data, $section, $show);
+    $view['large'] = LFM_LargeInsertedView($data, $section, $show);
     return $view;
 }
 
-function LFM_ListInsertedView($data, $section = false,$show=false)
+function LFM_ListInsertedView($data, $section = false, $show = false)
 {
-    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section','show','prefix'))->render();
+    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
-function LFM_GridInsertedView($data, $section = false,$show=false)
+function LFM_GridInsertedView($data, $section = false, $show = false)
 {
-    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section','show','prefix'))->render();
+    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
-function LFM_SmallInsertedView($data, $section = false,$show=false)
+function LFM_SmallInsertedView($data, $section = false, $show = false)
 {
-    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section','show','prefix'))->render();
+    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
-function LFM_MediumInsertedView($data, $section = false,$show=false)
+function LFM_MediumInsertedView($data, $section = false, $show = false)
 {
-    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section','show','prefix'))->render();
+    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
-function LFM_LargeInsertedView($data, $section = false,$show=false)
+function LFM_LargeInsertedView($data, $section = false, $show = false)
 {
-    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section','show','prefix'))->render();
+    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
 function LFM_SetSelectedFileToSession($request, $section, $data)
@@ -749,7 +745,7 @@ function LFM_SetSelectedFileToSession($request, $section, $data)
             {
                 $result['success'] = true;
                 $LFM[$section]['selected']['data'] = array_merge($LFM[$section]['selected']['data'], $data);
-                $LFM[$section]['selected']['view'] = LFM_SetInsertedView($request->section, $LFM[$section]['selected']['data'],false);
+                $LFM[$section]['selected']['view'] = LFM_SetInsertedView($request->section, $LFM[$section]['selected']['data'], false);
                 session()->put('LFM', $LFM);
                 return $result;
             }
@@ -769,6 +765,7 @@ function LFM_SetSelectedFileToSession($request, $section, $data)
     }
     return $result;
 }
+
 
 
 

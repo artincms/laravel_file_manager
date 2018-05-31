@@ -1,4 +1,5 @@
 <?php
+
 namespace ArtinCMS\LFM\Helpers\Classes;
 
 use ArtinCMS\LFM\Models\Category;
@@ -187,13 +188,29 @@ class Media
     {
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $file = File::find($file_id);
-        $not_found_img_path = $base_path.'/System/' . $not_found_img;
+        $not_found_img_path = $base_path . '/System/' . $not_found_img;
         //check database for check file exist
         if ($file)
         {
+            $filename = $file->filename;
+            if ($file->is_direct == '1')
+            {
+                $config = config('laravel_file_manager.driver_disk_upload');
+                $base_path = \Storage::disk($config)->path('');
+                $file_path = $file->path . '/' . $filename;
+            }
+            else
+            {
+                if ($size_type != 'orginal')
+                {
+                    $filename = $file[$size_type . '_filename'];
+                }
+                $config = config('laravel_file_manager.driver_disk');
+                $file_path = $file->path . '/files/' . $size_type . '/' . $filename;
+            }
             $hash = $file_id . '_' . $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height;
             $file_name_hash = 'tmp_fid_' . $file->id . '_' . md5($hash);
-            $tmp_path = $base_path.'/media_folder/tmp/' . $file_name_hash;
+            $tmp_path = $base_path . '/media_folder/tmp/' . $file_name_hash;
             $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($tmp_path))
             {
@@ -203,21 +220,14 @@ class Media
             {
                 $headers = array("Content-Type:{$file->mimeType}");
                 //check local storage for check file exist
-                if ($size_type == 'orginal')
+
+                if (\Storage::disk($config)->has($file_path))
                 {
-                    $filename = $file->filename;
-                }
-                else
-                {
-                    $filename = $file[$size_type . '_filename'];
-                }
-                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file->path . '/files/' . $size_type . '/' . $filename))
-                {
-                    $file_path = $base_path.'/' . $file->path . '/files/' . $size_type . '/' . $filename;
+                    $file_base_path = $base_path . '/' . $file_path;
                     if ($inline_content)
                     {
                         $file_EXT_without_dot = str_replace('.', '', $file_EXT);
-                        $data = file_get_contents($file_path);
+                        $data = file_get_contents($file_base_path);
                         $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
                         file_put_contents($tmp_path, $base64);
                         $res = $base64;
@@ -228,7 +238,7 @@ class Media
                         {
                             if ($width && $height)
                             {
-                                $res = Image::make($file_path)->fit((int)$width, (int)$height);
+                                $res = Image::make($file_base_path)->fit((int)$width, (int)$height);
                                 $res->save($tmp_path);
                                 $res = $res->response($file_EXT, (int)$quality);
                             }
@@ -236,13 +246,13 @@ class Media
                             {
                                 if ($quality < 100)
                                 {
-                                    $res = Image::make($file_path);
+                                    $res = Image::make($file_base_path);
                                     $res->save($tmp_path);
                                     $res = $res->response('jpg', (int)$quality);
                                 }
                                 else
                                 {
-                                    $res = Image::make($file_path);
+                                    $res = Image::make($file_base_path);
                                     $res->save($tmp_path);
                                     $res = $res->response($file_EXT, (int)$quality);
                                 }
@@ -250,7 +260,7 @@ class Media
                         }
                         else
                         {
-                            $res = response()->download($file_path, $file->filename . '.' . $file_EXT, $headers);
+                            $res = response()->download($file_base_path, $file->filename . '.' . $file_EXT, $headers);
                         }
                     }
                 }
@@ -264,74 +274,6 @@ class Media
                     {
                         $res = Image::make($not_found_img_path)->response('jpg', $quality);
                     }
-                }
-            }
-        }
-        else
-        {
-            if ($width or $height)
-            {
-                $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
-            }
-            else
-            {
-                $res = Image::make($not_found_img_path)->response('jpg', $quality);
-            }
-        }
-        return $res;
-    }
-
-    public static function downloadDirectById($file_id, $not_found_img = '404.png',  $quality = 100, $width = false, $height = False)
-    {
-        $discPpath = \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->path('');
-        $not_fund_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
-
-        $file = File::find($file_id);
-        $not_found_img_path = $not_fund_path.'/System/' . $not_found_img;
-        //check database for check file exist
-        if ($file)
-        {
-            $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
-            $headers = array("Content-Type:{$file->mimeType}");
-            //check local storage for check file exist
-            $filename = $file->filename;
-            $file_path =$file->path.'/' .$filename;
-            if (\Storage::disk(config('laravel_file_manager.driver_disk_upload'))->has($file_path))
-            {
-                $fullPath=$discPpath.$file->path.'/' .$filename;
-                if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
-                {
-                    if ($width && $height)
-                    {
-                        $res = Image::make($fullPath)->fit((int)$width, (int)$height)->response($file_EXT, (int)$quality);
-                    }
-                    else
-                    {
-                        if ($quality < 100)
-                        {
-
-                            $res = Image::make($fullPath)->response('jpg', (int)$quality);
-                        }
-                        else
-                        {
-                            $res = Image::make($fullPath)->response($file_EXT, (int)$quality);
-                        }
-                    }
-                }
-                else
-                {
-                    $res = response()->download($fullPath, $file->filename . '.' . $file_EXT, $headers);
-                }
-            }
-            else
-            {
-                if ($width or $height)
-                {
-                    $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
-                }
-                else
-                {
-                    $res = Image::make($not_found_img_path)->response('jpg', $quality);
                 }
             }
         }
@@ -369,12 +311,12 @@ class Media
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         if (\Storage::disk('public')->has($path . '/' . $file_name . '.' . $file_EXT))
         {
-            $file_path = $base_path.'/public/' . $path . '/' . $file_name . '.' . $file_EXT;
+            $file_path = $base_path . '/public/' . $path . '/' . $file_name . '.' . $file_EXT;
             return response()->download($file_path, $file_name . "." . $file_EXT, $headers);
         }
         else
         {
-            return response()->download($base_path.'/public/flags/404.png');
+            return response()->download($base_path . '/public/flags/404.png');
         }
     }
 
@@ -388,26 +330,26 @@ class Media
 
                 $FileSave->version++;
                 $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path.'/' . $FileSave->path . '/files/orginal/' . $filename, base64_decode($data));
+                \File::put($base_path . '/' . $FileSave->path . '/files/orginal/' . $filename, base64_decode($data));
                 $FileSave->filename = $filename;
                 $FileSave->file_md5 = md5(base64_decode($data));
                 break;
             case "large":
                 $FileSave->large_version++;
                 $large_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->large_version . '_uid_' . $FileSave->user_id . '_large_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path.'/' . $FileSave->path . '/files/large/' . $large_filename, base64_decode($data));
+                \File::put($base_path . '/' . $FileSave->path . '/files/large/' . $large_filename, base64_decode($data));
                 $FileSave->large_filename = $large_filename;
                 break;
             case "medium":
                 $FileSave->medium_version++;
                 $medium_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->medium_version . '_uid_' . $FileSave->user_id . '_medium_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path.'/' . $FileSave->path . '/files/medium/' . $medium_filename, base64_decode($data));
+                \File::put($base_path . '/' . $FileSave->path . '/files/medium/' . $medium_filename, base64_decode($data));
                 $FileSave->medium_filename = $medium_filename;
                 break;
             case "small" :
                 $FileSave->small_version++;
                 $small_filename = 'fid_' . $FileSave->id . '_v' . $FileSave->small_version . '_uid_' . $FileSave->user_id . '_small_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path.'/' . $FileSave->path . '/files/small/' . $small_filename, base64_decode($data));
+                \File::put($base_path . '/' . $FileSave->path . '/files/small/' . $small_filename, base64_decode($data));
                 $FileSave->small_filename = $small_filename;
                 break;
         }
@@ -416,10 +358,10 @@ class Media
         return $result;
     }
 
-    public static function directUpload($file, $path , $FileMimeType, $quality = 90, $crop_type = false, $height = False, $width = false)
+    public static function directUpload($file, $path, $FileMimeType, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         $time = time();
-        $size = $file->getSize() ;
+        $size = $file->getSize();
         if (auth()->check())
         {
             $user_id = auth()->id();
@@ -430,9 +372,9 @@ class Media
         }
         $extension = $FileMimeType->ext;
         $mimeType = $FileMimeType->mimeType;
-        $path .= '/' ;
+        $path .= '/';
         $is_picture = false;
-        $originalName =  $file->getClientOriginalName() ;
+        $originalName = $file->getClientOriginalName();
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
         $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
         $extension = LFM_Sanitize($extension);
@@ -449,20 +391,29 @@ class Media
         $FileSave->size = $size;
         $FileSave->path = $path;
         $FileSave->created_by = $user_id;
+        $FileSave->is_direct = '1';
         $FileSave->save();
         $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $user_id . '_' . md5_file($file) . "_" . $time . '_' . $extension;
         $is_picture = true;
 
         //upload every files in path folder
         $file_content = \File::get($file);
-        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path.'/'.$filename, $file_content);
+        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path . '/' . $filename, $file_content);
         $FileSave->file_md5 = md5_file($file);
-        $FileSave->filename = $filename ;
+        $FileSave->filename = $filename;
         $FileSave->save();
-        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $FileSave->user_id, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
-        if (in_array($FileSave->mimeType,config('laravel_file_manager.allowed_pic')))
+        if (isset($file->user->name))
         {
-            $result['icon']='image';
+            $username = $FileSave->user->name;
+        }
+        else
+        {
+            $username = 'Public';
+        }
+        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
+        if (in_array($FileSave->mimeType, config('laravel_file_manager.allowed_pic')))
+        {
+            $result['icon'] = 'image';
         }
         else
         {
@@ -473,20 +424,9 @@ class Media
             }
             else
             {
-                $result['icon'] ='fa-file-o';
+                $result['icon'] = 'fa-file-o';
             }
         }
-        $result['file']['created'] = $FileSave->created_at;
-        $result['file']['updated'] = $FileSave->updated_at;
-        if (isset($file->user->name))
-        {
-            $result['file']['user'] = $FileSave->user->name;
-        }
-        else
-        {
-            $result['file']['user'] = 'Public';
-        }
-
         return $result;
     }
 
