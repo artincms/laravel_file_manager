@@ -84,8 +84,8 @@
                                     <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public Path</span>
                                 </div>
                             @endif
-                            <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
-                                <input type="hidden" id="orginal_copy" value="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
+                            <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GenerateDownloadLink()}}">
+                                <input type="hidden" id="orginal_copy" value="{{LFM_GenerateDownloadLink('ID',$file['id'])}}">
                                 <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Copy Path</span>
                             </div>
                             <a href="#" class="media-attachment-chexbox">
@@ -94,9 +94,8 @@
                             <div class="clearfix text-center showThumbial">
                                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                                     <a>
-                                        <span id="loader"></span>
-                                        <img id="sweet_image" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type'=>'small','default_img'=>'404.png','quality'=>100,'width'=>190,'height'=>127])}}"
-                                             class="img-category-thumbnail" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                                        <img id="sweet_image" src="{{LFM_GenerateDownloadLink('ID',$file->id,'small','404.png',100,190,127)}}"
+                                             class="img-category-thumbnail" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
                                              data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                              data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
                                              data-humman_size_small="{{$file->humman_size_small}}"
@@ -105,7 +104,7 @@
                                               @endif                                        />
                                     </a>
                                 @elseif($file->filemimetype->icon_class)
-                                    <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}"
+                                    <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}"
                                        data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
                                        data-humman_size_small="{{$file->humman_size_small}}"
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
@@ -116,7 +115,7 @@
                                     ">
                                         <i class="fa {{$file->filemimetype->icon_class}} img-file-thumbnail"></i></a>
                                 @else
-                                    <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}"
+                                    <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}"
                                        data-size="{{$file->size}}" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman-size_large="{{$file->humman_size_large}}"
                                        data-humman-size_medium="{{$file->humman_size_medium}}" data-humman-size_small="{{$file->humman_size_small}}"
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
@@ -159,7 +158,6 @@
             <thead>
             <tr>
                 <th></th>
-                <th>ID</th>
                 <th>name</th>
                 <th>user</th>
                 <th>action</th>
@@ -198,10 +196,9 @@
                             <input type="checkbox" class="grid-row-checkbox check" data-view="list" data-type="file" data-id="{{$file['id']}}" data-parent-id="{{$file->category_id}}" data-name="{{$file['originalName']}}"/>
                         </a>
                     </td>
-                    <td>{{$file['id']}}</td>
                     <td>
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                            <a id="sweet_image" class="blue" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                            <a id="sweet_image" class="blue" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
@@ -211,7 +208,7 @@
                             </a>
 
                         @elseif($file->filemimetype->icon_class)
-                            <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}"
+                            <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
@@ -220,7 +217,7 @@
                                 @endif                            ">
                                 <i class="fa {{$file->filemimetype->icon_class}} icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                         @else
-                            <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{$file->id}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
+                            <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
@@ -233,16 +230,16 @@
                     </td>
                     <td>@if ($file->user) {{$file->user->name}}@else public @endif</td>
                     <td>
-                        <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="file" data-id="{{$file['id']}}" data-parent-id="{{$file->category_id}}">
+                        <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}" data-parent-id="{{$file->category_id}}">
                             <i class="fa fa-trash"></i>
                         </a>
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                            <a href="{{route('LFM.EditPicture',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFile" data-type="file" data-id="{{$file['id']}}"
+                            <a href="{{route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit pull-right myicon" id="EditFile" data-type="file" data-id="{{$file['id']}}"
                                data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_modal">
                                 <i class="fa fa-edit"></i>
                             </a>
                         @else
-                            <a href="{{route('LFM.EditFile',['file_id'=>$file['id']])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{$file['id']}}"
+                            <a href="{{route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{$file['id']}}"
                                data-parent-id="{{$category['parent_category_id']}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['originalName']}}">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -253,8 +250,8 @@
                                 <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">Copy Public Path</span>
                             </div>
                         @endif
-                        <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
-                            <input type="hidden" id="orginal_copy" value="{{route('LFM.DownloadFile',['type' =>'ID' , 'id'=> $file['id'],])}}">
+                        <div class="tooltip_copy grid-row-copy pull-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GenerateDownloadLink('ID',LFM_getEncodeId($file['id']))}}">
+                            <input type="hidden" id="orginal_copy" value="{{LFM_GenerateDownloadLink('ID',LFM_getEncodeId($file['id']))}}">
                             <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Click to Copy</span>
                         </div>
                     </td>

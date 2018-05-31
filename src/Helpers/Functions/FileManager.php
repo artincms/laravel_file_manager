@@ -484,7 +484,11 @@ function LFM_DestroySection($section)
 
 function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
 {
-    return route('LFM.DownloadFile', ['type' => 'ID', 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
+    if ($type == 'ID')
+    {
+       $id = LFM_getEncodeId($id);
+    }
+    return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
 
 function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
@@ -764,6 +768,11 @@ function LFM_SetSelectedFileToSession($request, $section, $data)
         $result['success'] = false;
     }
     return $result;
+}
+
+function LFM_getEncodeId($id) {
+    $hashids = new \Hashids\Hashids(md5('sadeghi'));
+     return $hashids->encode($id);
 }
 
 

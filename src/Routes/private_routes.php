@@ -44,10 +44,11 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     Route::post('GetSessionInsertedItems}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSessionInsertedItems']);
     Route::get('GetSession/{section}', ['as' => 'LFM.GetSession', 'uses' => 'SessionController@getSession']);
     Route::post('DeleteSessionInsertItem', ['as' => 'LFM.DeleteSessionInsertItem', 'uses' => 'SessionController@deleteSessionInsertItem']);
+
+
 });
 
 Route::group(['prefix' => config('laravel_file_manager.upload_route_prefix'), 'namespace' => 'ArtinCMS\LFM\Controllers', 'middleware' => config('laravel_file_manager.upload_middlewares')], function () {
     Route::get('DirectUpload/{section?}/{callback?}', ['as' => 'LFM.DirectUpload', 'uses' => 'DirectUploadController@directUpload']);
     Route::post('StoreDirectUploads', ['as' => 'LFM.StoreDirectUploads', 'uses' => 'DirectUploadController@storeDirectUploads']);
-    Route::get('DownloadDirectFile/{id?}/{default_img?}/{quality?}/{width?}/{height?}', array('as' => 'LFM.DownloadDirectFile', 'uses' => 'DirectUploadController@downloadDirect'));
 });

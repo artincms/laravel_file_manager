@@ -87,7 +87,7 @@ class UploadController extends ManagerController
                 return Media::downloadFromPublicStorage($id, 'flags');
                 break;
             default:
-                return Media::downloadById(-1, $default_img);
+                return Media::downloadById(-1, 'orginal',$default_img);
         }
     }
 }

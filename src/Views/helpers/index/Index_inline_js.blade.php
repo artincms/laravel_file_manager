@@ -440,8 +440,7 @@
         var quality_file = quality || 90 ;
         var width_file = width || 0 ;
         var height_file = height || 0 ;
-
-        var url = '/LFM/DownloadFile/ID/'+id+'/'+typ_file+'/'+default_img+'/'+quality_file+'/'+width_file+'/'+height_file ;
+        var url = base_url+'/LFM/DownloadFile/ID/'+id+'/'+typ_file+'/'+default_img+'/'+quality_file+'/'+width_file+'/'+height_file ;
         return url ;
     }
     //-------------------------------------------------------------------------------------------------------------------------//

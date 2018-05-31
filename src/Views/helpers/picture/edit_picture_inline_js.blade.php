@@ -10,7 +10,7 @@
     });
     function show_crop_orginal()
     {
-        $('#show_edit_picture').html('<div class="crop_orginal" id = "image_orginal"><img id="img_orginal" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'orginal'])}}"></div>');
+        $('#show_edit_picture').html('<div class="crop_orginal" id = "image_orginal"><img id="img_orginal" src="{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}"></div>');
             var width_orginal = $('#img_orginal').width();
             var height_orginal = $('#img_orginal').height();
             if(width_orginal == 0 || height_orginal == 0)
@@ -50,7 +50,7 @@
                 boundary: {width: width_orginal, height: height_orginal},
             });
             orginal_croppie.bind({
-                url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'orginal'])}}",
+                url: "{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}",
 
             });
             $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary hidden">Crope</button>');
@@ -89,7 +89,7 @@
 
     function show_crop_large()
     {
-        $('#show_edit_picture').html('<div class="crop_large" id = "image_large"><img id="img_large" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'large'])}}"></div>');
+        $('#show_edit_picture').html('<div class="crop_large" id = "image_large"><img id="img_large" src="{{LFM_GenerateDownloadLink('ID',$file->id,'large')}}"></div>');
         var width_large_config = {{ config('laravel_file_manager.size_large.width')}} ;
         var height_large_config = {{ config('laravel_file_manager.size_large.height')}} ;
         var rate_large = width_large_config / height_large_config;
@@ -109,7 +109,7 @@
             boundary: {width: width_large, height: height_large},
         });
         large_croppie.bind({
-            url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'large'])}}",
+            url: "{{LFM_GenerateDownloadLink('ID',$file->id,'large')}}",
         });
         $(".crop_large").append('<button type="button" id="crope_button_large" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_large');
@@ -147,7 +147,7 @@
 
     function show_crop_medium()
     {
-        $('#show_edit_picture').html('<div class="crop_medium" id = "image_medium"><img id="img_medium" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'medium'])}}"></div>');
+        $('#show_edit_picture').html('<div class="crop_medium" id = "image_medium"><img id="img_medium" src="{{LFM_GenerateDownloadLink('ID',$file->id,'medium')}}"></div>');
         var width_medium_config = {{ config('laravel_file_manager.size_medium.width')}} ;
         var height_medium_config = {{ config('laravel_file_manager.size_medium.height')}} ;
         var rate_medium = width_medium_config / height_medium_config;
@@ -167,7 +167,7 @@
             boundary: {width: width_medium, height: height_medium},
         });
         medium_croppie.bind({
-            url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'medium'])}}",
+            url: "{{LFM_GenerateDownloadLink('ID',$file->id,'medium')}}",
         });
         $(".crop_medium").append('<button type="button" id="crope_button_medium" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_medium');
@@ -204,7 +204,7 @@
 
     function show_crop_small()
     {
-        $('#show_edit_picture').html('<div class="crop_small" id = "image_small"><img id="img_small" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'small'])}}"></div>');
+        $('#show_edit_picture').html('<div class="crop_small" id = "image_small"><img id="img_small" src="{{LFM_GenerateDownloadLink('ID',$file->id,'small')}}"></div>');
         var width_small_config = {{ config('laravel_file_manager.size_small.width')}} ;
         var height_small_config = {{ config('laravel_file_manager.size_small.height')}} ;
         var rate_small = width_small_config / height_small_config;
@@ -224,7 +224,7 @@
             boundary: {width: width_small, height: height_small},
         });
         small_croppie.bind({
-            url: "{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' =>'small'])}}",
+            url: "{{LFM_GenerateDownloadLink('ID',$file->id,'small')}}",
         });
         $(".crop_small").append('<button type="button" id="crope_button_small" class="btn btn-primary hidden">Crope</button>');
         $(document).off("click", '#crope_button_small');

@@ -19,7 +19,8 @@
 
     },
     "require": {
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "hashids/hashids": "^3.0"
     },
     "extra": {
         "laravel": {
