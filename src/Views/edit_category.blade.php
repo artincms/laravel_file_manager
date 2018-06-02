@@ -1,10 +1,4 @@
 @extends('laravel_file_manager::layouts.master')
-@section('add_css')
-    <link href="{{ asset('vendor/laravel_file_manager/packages/select2/css/select2.min.css') }}" rel="stylesheet">
-@endsection
-@section('add_js')
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/packages/select2/js/select2.js')}}"></script>
-@endsection
 @section('content')
         <div class="alert alert-danger hidden" id="show_error">
            <ul id="show_edit_category_error"></ul>

@@ -1,13 +1,5 @@
 @extends('laravel_file_manager::layouts.master')
 @section('page_title','Show Categories')
-@section('add_css')
-    <link href="{{ asset('vendor/laravel_file_manager/packages/datatabels/datatables.min.css') }}" rel="stylesheet">
-@endsection
-@section('add_js')
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/FullScreenView.js')}}"></script>
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/packages/datatabels/datatables.min.js')}}"></script>
-
-@endsection
 @section('content')
     <div class="row">
         <div class="col-md-2">

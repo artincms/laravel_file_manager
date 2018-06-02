@@ -1,9 +1,9 @@
 @extends('laravel_file_manager::layouts.master')
 @section('add_css')
-    <link href="{{ asset('vendor/laravel_file_manager/css/croppie.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/laravel_file_manager/css/build/croppie.min.css') }}" rel="stylesheet">
 @endsection
 @section('add_js')
-    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/croppie.min.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('vendor/laravel_file_manager/js/build/croppie.min.js')}}"></script>
 @endsection
 @section('content')
     <div class="container-fluid">
