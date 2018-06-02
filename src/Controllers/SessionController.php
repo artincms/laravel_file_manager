@@ -117,7 +117,7 @@ class SessionController extends ManagerController
         $url = str_replace($protocol, '', $full_url);
         $url = str_replace('://', '', $url);
         $url = str_replace($_SERVER['HTTP_HOST'], '', $url);
-        $file = File::find($item['id']);
+        $file = File::find(LFM_GetDecodeId($item['id']));
         $image_type = config('laravel_file_manager.allowed_pic');
         if (in_array($file->mimeType, $image_type))
         {

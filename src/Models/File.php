@@ -121,9 +121,4 @@ class File extends Model
         return LFM_GeneratePublicDownloadLink($this->path,$this->small_filename,'small') ;
     }
 
-   /* public function getIdAttribute()
-    {
-        $hashids = new \Hashids\Hashids(md5('sadeghi'));
-        return $hashids->encode($this->id);
-    }*/
 }

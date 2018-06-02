@@ -32,6 +32,7 @@
 
     function set_jstree(jdata,parent_category_id)
     {
+        console.log(parent_category_id);
         $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
         $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
         $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
@@ -258,7 +259,6 @@
         e.preventDefault();
         $('.media-content').append(generate_loader_html('لطفا منتظر بمانید...'));
         refresh() ;
-
     });
 
     function refresh() {

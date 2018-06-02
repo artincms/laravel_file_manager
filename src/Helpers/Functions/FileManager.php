@@ -84,7 +84,7 @@ function LFM_CheckMimeType($mimetype, $items)
     {
         foreach ($items as $item)
         {
-            $file = \ArtinCMS\LFM\Models\File::find($item['id']);
+            $file = \ArtinCMS\LFM\Models\File::find(LFM_GetDecodeId($item['id']));
             if (!in_array($file->mimeType, $mimetype))
             {
                 $result['success'] = false;
@@ -547,8 +547,8 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
     foreach ($flat_array as $sub)
     {
         $sub['text'] = $sub['title'];
-        $sub['a_attr'] = ['class' => 'link_to_category jstree_a_tag', 'data-id' => $sub['id']];
-        if ($sub['id'] == (int)$selectedNode)
+        $sub['a_attr'] = ['class' => 'link_to_category jstree_a_tag', 'data-id' => LFM_getEncodeId($sub['id'])];
+        if ((int)$sub['id'] == (int)$selectedNode)
         {
             $sub['state'] = ['selected' => true, 'opened' => true];
 
@@ -771,8 +771,55 @@ function LFM_SetSelectedFileToSession($request, $section, $data)
 }
 
 function LFM_getEncodeId($id) {
-    $hashids = new \Hashids\Hashids(md5('sadeghi'));
-     return $hashids->encode($id);
+    if($id <0)
+    {
+        return $id ;
+    }
+    else
+    {
+        $hashids = new \Hashids\Hashids(md5('sadeghi'));
+        return $hashids->encode($id);
+    }
+
+}
+
+function LFM_GetDecodeId($id,$route=false) {
+    $my_routes = [
+        'LFM.DownloadFile',
+        'LFM.ShowCategories',
+        'LFM.ShowCategories.Create',
+        'LFM.ShowCategories.Edit',
+        'LFM.EditFile',
+        'LFM.FileUpload',
+        'LFM.FileUploadForm',
+        'LFM.EditPicture',
+        'LFM.Breadcrumbs',
+        ];
+    if((int)$id <0)
+    {
+        return (int)$id ;
+    }
+    else
+    {
+        $hashids = new \Hashids\Hashids(md5('sadeghi'));
+        if ($route)
+        {
+            if (in_array($route->getName(),$my_routes))
+            {
+                return $hashids->decode($id)[0];
+            }
+            else
+            {
+                return $id ;
+            }
+        }
+        else
+        {
+            return $hashids->decode($id)[0];
+
+        }
+    }
+
 }
 
 

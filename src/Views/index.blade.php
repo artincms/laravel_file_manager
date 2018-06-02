@@ -12,17 +12,17 @@
     <div class="row">
         <div class="col-md-2">
             <div class="show_cat_foolder">
-                <div class="top_js_tree_folder link_to_category pointer"  id="share_category" data-id="-2"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  id="share_category" data-id="{{LFM_getEncodeId(-2)}}"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
                 <div id="js_tree_share_div">
                     <div id="jstree_category_share"></div>
                 </div>
                 <hr />
-                <div class="top_js_tree_folder link_to_category pointer"  data-id="-1" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  data-id="{{LFM_getEncodeId(-1)}}" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
                 <div id="js_tree_public_div">
                     <div id="jstree_category_public"></div>
                 </div>
                 <hr />
-                <div class="top_js_tree_folder link_to_category pointer"  id="media_category"  data-id="0"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  id="media_category"  data-id="{{LFM_getEncodeId(0)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>
@@ -51,20 +51,20 @@
                                     <i class="fa fa-list"></i>
                                 </label>
                             </div>
-                            <label href="{{route('LFM.FileUpload' , ['category_id' =>0 , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile"
+                            <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId(0) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile"
                                    data-toggle="modal"
                                    data-target="#create_upload_modal">
                                 <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
                             </label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-sm btn-success create_category" title="create new category"
-                                       href="{{route('LFM.ShowCategories.Create',['category_id' => 0, 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
+                                       href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId(0), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                                        data-target="#create_category_modal">
                                     <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
                                 </label>
                             </div>
                             <label class="btn btn-sm btn-primary grid-trash-o" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
-                            <label class="btn btn-sm btn-primary grid-refresh" id="refresh_page" data-id="0" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
+                            <label class="btn btn-sm btn-primary grid-refresh" id="refresh_page" data-id="{{LFM_getEncodeId(0)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
                                    data-callback="{{LFM_CheckFalseString($callback)}}" data-category-type="media"><i class="fa fa-refresh"></i></label>
                             <div class="btn-group" data-toggle="buttons">
                                 @if($insert == 'insert')

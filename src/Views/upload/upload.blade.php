@@ -27,18 +27,14 @@
         <div id="kv-error-2"  class="alert alert-danger" style="margin-top:10px;display:none"></div>
         <div id="kv-success-2" class="alert alert-success" style="margin-top:10px;display:none"></div>
     </div>
-{{--
-    {{dd(LFM_ConvertMimeTypeToExt(config('laravel_file_manager.allowed')))}}
---}}
     <script type="text/javascript">
-
         //-----------------------------------------------------------------------------------------------------//
         $("#input-708").fileinput({
             theme: "fa",
             uploadUrl: "{{route('LFM.StoreUploads')}}",
             uploadAsync: false,
             uploadExtraData: {
-                category_id: {{$category_id}} ,
+                category_id: '{{$category_id}}' ,
                 _token: $('#token').val()
             },
             delete:false,

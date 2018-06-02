@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="tab-content" id="show_edit_picture">
                 <div class="crop_orginal" id="image_orginal">
-                    <img id="img_orginal" src="{{route('LFM.DownloadFile',['type' => 'ID','id'=> $file->id,'size_type' => 'orginal'])}}">
+                    <img id="img_orginal" src="{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}">
                 </div>
         </div>
     </div>

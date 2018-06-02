@@ -12,6 +12,7 @@ class UploadController extends ManagerController
 {
     public function fileUpload($category_id = 0, $callback = false, $section = false)
     {
+        $category_id = LFM_getEncodeId($category_id) ;
         if ($section and $section != 'false')
         {
             $options = $this->getSectionOptions($section);
@@ -35,7 +36,7 @@ class UploadController extends ManagerController
     {
         if ($request->file)
         {
-            $CategoryID = $request->category_id;
+            $CategoryID =LFM_GetDecodeId($request->category_id);
             $result = [];
             foreach ($request->file as $file)
             {
