@@ -9643,6 +9643,19 @@ class FilemanagerTableSeeder extends Seeder
         \DB::table('lfm_categories')->insert(array (
             0 =>
                 array (
+                    'id' => -5,
+                    'user_id' => 0,
+                    'title' => 'Direct upload',
+                    'title_disc' => 'direct_folder',
+                    'description' => 'direct upload folder',
+                    'parent_category_id' => '#',
+                    'created_by' => 0,
+                    'created_at' => NULL,
+                    'updated_at' => NULL,
+                    'deleted_at' => NULL,
+                ),
+            1 =>
+                array (
                     'id' => -2,
                     'user_id' => 0,
                     'title' => 'Share folder',
@@ -9654,7 +9667,7 @@ class FilemanagerTableSeeder extends Seeder
                     'updated_at' => NULL,
                     'deleted_at' => NULL,
                 ),
-            1 =>
+            2 =>
                 array (
                     'id' => -1,
                     'user_id' => 0,
@@ -9667,7 +9680,7 @@ class FilemanagerTableSeeder extends Seeder
                     'updated_at' => NULL,
                     'deleted_at' => NULL,
                 ),
-            2 =>
+            3 =>
                 array (
                     'id' => 0,
                     'user_id' => 0,
