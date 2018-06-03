@@ -816,7 +816,6 @@ function LFM_GetDecodeId($id,$route=false) {
         else
         {
             return $hashids->decode($id)[0];
-
         }
     }
 

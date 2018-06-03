@@ -67,8 +67,15 @@ class Category extends Model
             if ($id != -100)
             {
                 $cat = Category::with('parent_category')->find($id);
-                $result[] = $cat;
-                $id = $cat->parent_category_id;
+                if ($cat)
+                {
+                    $result[] = $cat;
+                    $id = $cat->parent_category_id;
+                }
+                else
+                {
+                    $id = 0 ;
+                }
             }
             else
             {
