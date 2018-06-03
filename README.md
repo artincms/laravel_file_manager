@@ -301,11 +301,12 @@ LFM_ShowingleFile($obj_model, $column_name, $column_option_name)
  </ul>
  
 <h1>Example</h1>
-
-<h2>Example of use LFM_SaveMultiFile and LFM_SaveSingleFile <h2>
+THe full Example : 
+<h5>Example of use LFM_SaveMultiFile and LFM_SaveSingleFile <h5>
 <p>
  in this example we assing zip file and user profile picture to article and save it .
- at first in Route :</p> 
+ at first in Route :</p>
+  
  <div class="highlight highlight-text-html-php-blade"><pre>
  Route::get('/MultiFile', 'HomeController@multiSection')->name('multiSection');
  Route::get('/MultiFile/{id}', 'HomeController@multiSectionEdit')->name('multiSectionEdit');
