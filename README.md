@@ -50,7 +50,7 @@ Register provider and facade on your config/app.php file.
  <div class="highlight highlight-text-html-php"><pre>
  $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider
 </pre> </div>
-if update package for publish vendor you can run : 
+if update package for publish vendor you should run : 
  <div class="highlight highlight-text-html-php"><pre>
  $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider --force
 </pre> </div>
@@ -189,6 +189,71 @@ inserted view is : list,grid,small,medium,large
    </li>
   </ul>
   <p>  you can access to file manager with :http://www.yourdomain.com/LFM/ShowCategories</p>
+ <h2>Helper Functions</h2>
+ in this section we descripe some most helpfull function . you can use this functions in your project .
+ <h3>Save File</h3>
+ for save file in your project you can use LFM_SaveMultiFile and LFM_SaveSingleFile . in continue we explain two functions .
+ <h4>Save Multi File </h4>
+ this helpers use for save multi inserted files in fileable table : 
+ <div class="highlight highlight-text-html-php-blade"><pre>
+  $res = LFM_SaveMultiFile($obj_model, $section, $type , $relation_name , $attach_type)
+ </pre> </div>
+ at first you should define your morph relation  in your model . we create files relation
+ and and put it in trait .for use this relation should use it in your model .
+ <div class="highlight highlight-text-html-php-blade"><pre>
+   public function files()
+   {
+          return $this->morphToMany('ArtinCMS\LFM\Models\File' , 'fileable','lfm_fileables','fileable_id','file_id')->withPivot('type')->withTimestamps() ;
+   }
+ </pre> </div>
+ you can use this trait or create your morph relation .
+ the $obj_model is name of your model , $section is name of your section , $type is type of file (music,picture,zip,..) its optional 
+ and default is null , $relation_name is name of morph relation and default is 'files' and with $attach_type you can select attach or sync file.
+ <h4>Save single File</h4>
+ if you want save file in one to many relation and save file_id in your table models you should use this helpers .
+ <div class="highlight highlight-text-html-php-blade"><pre>
+ LFM_SaveSingleFile($obj_model, $column_name, $section,$column_option_name)
+ </pre> </div>
+ The $obj_model is name of your model ($article = new Article), and column_name is name of 
+ column you want save inserted id for example 'default_img_file_id' , $section is name of section and $column_option_name is 
+  name of column that save options(for example save width,height,quality,.. in json format).
+  <h4>Direct upload </h4>
+  if you want upload file in specific path you can use this helpers . 
+  <div class="highlight highlight-text-html-php-blade"><pre>
+  LFM_CreateModalUpload($section, $callback , $options, $result_area_id , $modal_id , $header , $button_id , $button_content)
+  </pre> </div>
+  the input helper functions is same LFM_CreateModalFileManager with diffrent $result_area_id that define area id when 
+  upload file . you should define your favorit path in options as below .
+   <div class="highlight highlight-text-html-php-blade"><pre>
+           $options = ['size_file' => 1000, 'max_file_number' =>5, 'min_file_number' => 2,'show_file_uploaded'=>'medium', 'true_file_extension' => ['png','jpg','zip'],'path'=>'myuploads/sdadeghi'];
+   </div>
+  <h3>load files</h3>
+  <h4>Load Multi Files</h4>
+  <div class="highlight highlight-text-html-php-blade"><pre>
+  for load files (for example you can use this helper functons when you want edit) you can use this helpers function
+  LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 'files')
+ </pre> </div>
+ the input this helpers funciton is same to LFM_SaveMultiFile and you can get files .Remember you should use same section
+ name when you save file and load it .you can delete our insert new file after load files .
+ <h4>Load Single Files </h4>
+ for load single file you can use this helpers as below :
+ <div class="highlight highlight-text-html-php-blade"><pre>
+ LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_name = false)
+ </pre></div>
+ the input this helpers function is same to LFM_SaveSingleFile . just remember you should same section name when you save
+ and load file .you can delete our insert new file after load files .
+ <h3>Show Files</h3>
+ <h4>Show Multi File</h4>
+ for show inserted files you can use this helpers function .
+ <div class="highlight highlight-text-html-php-blade"><pre>
+    LFM_ShowMultiFile($obj_model, $type, $relation_name )  
+ </pre></div>
+ The diffrent between this function and LFM_LoadMultiFile is , you cant delete files .
+ <h4>Show Single Files</h4>
+  for show single files you can this helpers function . remember you cant delete file .
+<div class="highlight highlight-text-html-php-blade"><pre>
+LFM_ShowingleFile($obj_model, $column_name, $column_option_name)
+</pre></div>
  <h3>Generate Link</h3>
  <h4> Generate Download Link </h4>
   whit this below helper function you can generate download link in anywhere of your project .
@@ -234,36 +299,105 @@ inserted view is : list,grid,small,medium,large
    one of : fit,resize and smart that 'fit' is default crop and resize resize image  with due attention to config size you set and smart type is smart crop but it was slowler than other crop type .</li>
  </ul>
  
- #example
- if you want assign file to articles you can use this filemanager . in your conttroller 
+<h1>Example</h1>
+<h2>Example of use LFM_SaveMultiFile and LFM_SaveSingleFile<h2>
+
+ in this example we assing zip file and user profile picture to article and save it .
+ at first in Route : 
+ <div class="highlight highlight-text-html-php-blade"><pre>
+ Route::get('/MultiFile', 'HomeController@multiSection')->name('multiSection');
+ Route::get('/MultiFile/{id}', 'HomeController@multiSectionEdit')->name('multiSectionEdit');
+ Route::get('/ShowMultiFile/{id}', 'HomeController@showMultiFile')->name('showMultiFile');
+ Route::post('/StoreArticle', ['as' => 'StoreArticle', 'uses' => 'HomeController@StoreArticle']);
+ Route::post('/StoreEditArticle', ['as' => 'StoreEditArticle', 'uses' => 'HomeController@StoreEditArticle']);
+</pre> </div>
+you should define your relation in article models :
+<div class="highlight highlight-text-html-php-blade"><pre>
+use ArtinCMS\LFM\Traits\lfmFillable ;
+use ArtinCMS\LFM\Models\File;
+class Article extends Model
+{
+    use lfmFillable;
+}
+</pre></div>
+as you see multisection route use for save article with zip file and profile picture . in your controller :
+<div class="highlight highlight-text-html-php-blade"><pre>
+    public function multiSection()
+    {
+            $optionsAttach = ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['zip']];
+            $option_single = ['size_file' => 100, 'max_file_number' => 1, 'true_file_extension' => ['png','jpg']];
+            $attach =  LFM_CreateModalFileManager('Attach',$optionsAttach , 'insert','showAttach');
+            $single = LFM_CreateModalFileManager('Single',$option_single , 'insert','showSingle');
+            return view('multiSection',compact('attach','single'));
+    }
+    </pre> 
+    <pre>
+     public function multiSectionEdit($id)
+    {
+        $optionsAttach = ['size_file' => 100, 'max_file_number' => 5, 'true_file_extension' => ['zip']];
+        $option_single = ['size_file' => 100, 'max_file_number' => 1, 'true_file_extension' => ['png','jpg']];
+        $attach =  LFM_CreateModalFileManager('Attach',$optionsAttach , 'insert','showAttach');
+        $article = Article::find($id);
+        $load_attch = LFM_LoadMultiFile($article,'Attach','zip','files') ;
+        $single = LFM_CreateModalFileManager('Single',$option_single , 'insert','showSingle');
+        $load_single = LFM_loadSingleFile($article,'default_img_file_id','Single');
+        return view('multiSectionedit',compact('attach','single','load_attch','load_single','article'));
+    }
+    </pre>
+    <pre>
+    public function showMultiFile ($id)
+    {
+        $article = Article::find($id);
+        $show_attch = LFM_ShowMultiFile($article,'zip','files') ;
+        $show__single = LFM_ShowingleFile($article,'default_img_file_id','Single');
+        return view('showMultiFile',compact('show_attch','show__single','article'));
+    }
+    </pre>
+    <pre>
+    public function StoreArticle(Request $request)
+    {
+        $article = new Article ;
+        $article->title = $request->title ;
+        $article->body = $request->body ;
+        $article->save() ;
+        $res['Attach'] = LFM_SaveMultiFile($article,'Attach','zip','files' , 'attach');
+        $res['Single'] = LFM_SaveSingleFile($article,'default_img_file_id','Single','options');
+        return $res ;
+    }
+    </pre>
+    <pre>
+    public function StoreEditArticle(Request $request)
+    {
+        $article =Article::find($request->id);
+        $res['Attach'] = LFM_SaveMultiFile($article,'Attach','zip','files' , 'sync');
+        $res['Single'] = LFM_SaveSingleFile($article,'default_img_file_id','Single','options');
+        return $res ;
+    }
+    </pre>
+     </div>
+
+and in multisection.blade.php
+ <div class="highlight highlight-text-html-php"><pre>
+    {!! $attach['button'] !!}
+    {!! $attach['modal_content'] !!}
+   div#show_area_Attach_list
+     function showAttach(res) {
+        $('#show_area_Attach_list').html(res.Attach.view.list) ;
+        $('#show_area_Attach_grod').html(res.Attach.view.grid) ;
+        $('#show_area_Attach_small').html(res.Attach.view.small) ;
+        $('#show_area_Attach_medium').html(res.Attach.view.medium) ;
+        $('#show_area_Attach_large').html(res.Attach.view.large) ;
+        }
+</pre> </div>
+
+and in multisectioneditl.blade.php 
 
 <div class="highlight highlight-text-html-php"><pre>
-$options = ['size_file' => 100, 'max_file_number' => 30, 'true_file_extension' => ['png','jpg']];
-$result = LFM_CreateModalFileManager('Manager',false , 'insert','show');
-return view('article',compact('result'));
- </pre> </div>
- 
- and in your view add this html  : 
-<div class="highlight highlight-text-html-php-blade"><pre>
-{!! $result['button'] !!}
-and 
-{!! $result['modal_content'] !!}
+    {!! $attach['button'] !!}
+    {!! $attach['modal_content'] !!}
+    div#show_area_Attach  {!! $load_attch['view']['list'] !!}
+  function showAttach(res) {
+        console.log(res);
+        $('#show_area_Attach').html(res.Attach.view.list,'slider') ;
+    }
 </pre> </div>
-
-for save inserted files you can add this code in your controller :
-
-for save one inserted file
-<div class="highlight highlight-text-html-php-blade"><pre>
-LFM_SaveSingleFile($obj_model, $column_name, $section)
- 
-</pre> </div>
-that obj_model name of model example $article = new Article . and column_name is name of 
-column you want save inserted id for example 'default_img_file_id' and $section is name of section .
-
-for save multi inserted files : 
-<div class="highlight highlight-text-html-php-blade"><pre>
- $res = LFM_SaveMultiFile($obj_model, $section, $type , $relation_name , $attach_type)
-</pre> </div>
-that obj_model name of model example $article = new Article , $section is optional and type of file that default is null , $relation_name is name of relation default is 'files' and with $attach_type you can select attach or sync file.
-
-  
