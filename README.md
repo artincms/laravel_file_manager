@@ -283,6 +283,7 @@ LFM_ShowingleFile($obj_model, $column_name, $column_option_name)
     that $psth is path to file and $filename is name of disc file . for example you want access the logo site picture you can 
     upload this file in public folder and access directly with above helper function .
  <h3>Custom config</h3>
+ 
  if you want to have custom config you can chage config/laravel_file_manager.php file as you want .
  <ul>
  <li>'private_middlewares' and 'public_middlewares' describe what middelware should assign to private and public route ,you can add auth and other middelware you want .</li>
@@ -300,6 +301,7 @@ LFM_ShowingleFile($obj_model, $column_name, $column_option_name)
  </ul>
  
 <h1>Example</h1>
+
 <h2>Example of use LFM_SaveMultiFile and LFM_SaveSingleFile<h2>
 
  in this example we assing zip file and user profile picture to article and save it .
