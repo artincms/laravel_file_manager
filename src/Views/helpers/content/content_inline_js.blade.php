@@ -400,7 +400,7 @@
             html +=
                 '<div class="detail_image clearfix">' +
                 '<div class="user_detail row">' +
-                '<i class="fa fa-calendar-plus-o col-md-6 6" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
+                '<i class="fa fa-calendar-plus-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+created_date+'</span></i>'+
                 '<i class="fa fa-user col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+user_name+'<span></i>'+
                 '<i class="fa fa-calendar-o col-md-6 margin-top-1" aria-hidden="true"><span class="icon_info_image">'+updated_date+'</span></i>'+
                 '</div> ' +

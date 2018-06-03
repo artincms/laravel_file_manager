@@ -16,7 +16,6 @@ class FilemanagerTableSeeder extends Seeder
         
 
         \DB::table('lfm_file_mime_types')->delete();
-        \DB::table('lfm_categories')->delete();
 
         \DB::table('lfm_file_mime_types')->insert(array (
             0 => 
@@ -4478,7 +4477,7 @@ class FilemanagerTableSeeder extends Seeder
                 'name' => 'Micosoft Word - Macro-Enabled Document',
                 'mimeType' => 'application/vnd.ms-word.document.macroenabled.12',
                 'ext' => 'docm',
-                'icon_class' => '',
+                'icon_class' => 'fa-file-word-o',
                 'description' => 'IANA: MS Word',
                 'created_by' => 1,
                 'created_at' => NULL,
@@ -4926,7 +4925,7 @@ class FilemanagerTableSeeder extends Seeder
                 'name' => 'Microsoft Office - OOXML - Word Document',
                 'mimeType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'ext' => 'docx',
-                'icon_class' => '',
+                'icon_class' => 'fa-file-word-o',
                 'description' => 'IANA: OOXML - Word Document',
                 'created_by' => 1,
                 'created_at' => NULL,
@@ -5346,7 +5345,7 @@ class FilemanagerTableSeeder extends Seeder
                 'name' => 'Microsoft Word',
                 'mimeType' => 'application/msword',
                 'ext' => 'doc',
-                'icon_class' => '',
+                'icon_class' => 'fa-file-word-o',
                 'description' => 'Wikipedia: Microsoft Word',
                 'created_by' => 1,
                 'created_at' => NULL,
@@ -9640,6 +9639,22 @@ class FilemanagerTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
+        \DB::table('lfm_categories')->delete();
+        \DB::table('lfm_categories')->insert(
+            array (
+                'id' => '0',
+                'user_id' => 0,
+                'title' => 'Root folder',
+                'title_disc' => 'root_folder',
+                'description' => 'root',
+                'parent_category_id' => '#',
+                'created_by' => 0,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+                'deleted_at' => NULL,
+            )
+        );
+        \DB::unprepared("UPDATE lfm_categories SET id=0");
         \DB::table('lfm_categories')->insert(array (
             0 =>
                 array (
@@ -9680,21 +9695,7 @@ class FilemanagerTableSeeder extends Seeder
                     'updated_at' => NULL,
                     'deleted_at' => NULL,
                 ),
-            3 =>
-                array (
-                    'id' => 0,
-                    'user_id' => 0,
-                    'title' => 'Root folder',
-                    'title_disc' => 'root_folder',
-                    'description' => 'root',
-                    'parent_category_id' => '#',
-                    'created_by' => 0,
-                    'created_at' => NULL,
-                    'updated_at' => NULL,
-                    'deleted_at' => NULL,
-                ),
         ));
-            
 
     }
 }

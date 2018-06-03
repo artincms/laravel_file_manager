@@ -46,7 +46,7 @@
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a href="#" class="media-attachment-chexbox">
-                                <input type="checkbox" class="grid-row-checkbox check" data-view="grid" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{$category['parent_category_id']}}"/>
+                                <input type="checkbox" class="grid-row-checkbox check" data-view="grid" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}"/>
                             </a>
                             <div class="clearfix center" data-object="">
                                 <a title="{{$category['title']}}" href="" data-id="{{LFM_getEncodeId($category['id'])}}" class="link_to_category"

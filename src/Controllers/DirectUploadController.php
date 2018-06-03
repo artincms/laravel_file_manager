@@ -67,7 +67,7 @@ class DirectUploadController extends Controller
                                     $result['success'] = true;
                                     $result['file'] = $res;
                                     $result['full_url'] = LFM_GenerateDownloadLink('ID',$res['id'],'orginal') ;
-                                    $result['full_url_medium']=LFM_GenerateDownloadLink('ID',$res['id'],'orginal') ;
+                                    $result['full_url_medium']=LFM_GenerateDownloadLink('ID',$res['id'],'orginal','404.png',100,170,120) ;
                                     $result['full_url_large']=LFM_GenerateDownloadLink('ID',$res['id'],'orginal') ;
                                     return $result;
                                 });

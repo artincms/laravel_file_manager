@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     {{--add style sheet--}}
     <link href="{{ asset('vendor/laravel_file_manager/css/build/init_core.min.css') }}" rel="stylesheet" rel="stylesheet">
-    <link href="{{ asset('vendor/laravel_file_manager/css/custom.css') }}" rel="stylesheet" rel="stylesheet">
+    <link href="{{ asset('vendor/laravel_file_manager/css/build/custom.min.css') }}" rel="stylesheet" rel="stylesheet">
 
     @yield('add_css')
     {{--add js file--}}

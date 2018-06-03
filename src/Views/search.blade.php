@@ -36,11 +36,11 @@
             <td>@if ($category->user) {{$category->user->name}}@else public @endif</td>
             <td>{{LFM_GetFoolderPath($category->id,$category->title)}}</td>
             <td>
-                <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
+                <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="">
                     <i class="fa fa-trash"></i>
                 </a>
                 <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit pull-right myicon" data-category-name="{{$category['title']}}" data-toggle="modal" data-target="#create_modal" id="EditCategory" data-type="category"
-                   data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
+                   data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="">
                     <i class="fa fa-edit"></i>
                 </a>
             </td>
