@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="{{config('laravel_file_manager.lang')}}">
+<html style="direction: {{config('laravel_file_manager.direction')}}">
 <head>
     <title>@yield('page_title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     {{--add style sheet--}}
-    @if(config('laravel_file_manager.lang') =='fa')
+    @if(config('laravel_file_manager.direction') =='rtl')
         <link href="{{ asset('vendor/laravel_file_manager/css/build/init_core_rtl.min.css') }}" rel="stylesheet" rel="stylesheet">
         <link href="{{ asset('vendor/laravel_file_manager/css/rtl/custom_rtl.css') }}" rel="stylesheet" rel="stylesheet">
     @else
@@ -25,9 +25,7 @@
 <body style="padding: 1%;">
     <div class="container-fluid">
         <div class="row">
-            <div class="media-manager col-md-12">
                 @yield('content')
-            </div>
         </div>
     </div>
     @yield('javascript')

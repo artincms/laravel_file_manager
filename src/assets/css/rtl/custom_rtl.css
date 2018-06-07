@@ -1,4 +1,4 @@
-@import url("../../fonts/IranSans/style.css") ;
+@import url("../fonts/IranSans/style.css") ;
 body {
     font-family: IRANSans;
     font-weight: 300;
@@ -16,6 +16,7 @@ body {
 .panel.panel-headline .panel-heading {
     border-bottom: none;
 }
+
 .margin-left-1 {
     margin-right: 1%;
 }
@@ -45,7 +46,7 @@ body {
     padding: 0;
 }
 .media-content li {
-    float: left;
+    float: right;
     width: 196px;
     border: 1px solid #eee;
     margin-bottom: 10px;
@@ -60,7 +61,7 @@ body {
     color: #ffffff;
 }
 .margin-right-1{
-    margin-right: 1%;
+    margin-left: 1%;
 }
 .panel.panel-headline button#search-btn {
     background: #3c8dbc;
@@ -94,7 +95,7 @@ a.grid-row-delete i {
     padding-right: 50%;
 }
 a.media-attachment-chexbox {
-    padding-left: 3%;
+    padding-right: 3%;
 }
 .thumbnail-back {
     font-size: 118px;
@@ -170,7 +171,7 @@ div.user_detail {
     line-height: 0;
 }
 .myicon {
-    margin-right: 3%;
+    margin-left: 3%;
     font-size: 14px;
 }
 .filemanager_cateogry_form {
@@ -200,6 +201,9 @@ a.btn.btn-sm.btn-success.uploadfile {
     width: 25%;
     float: left;
     margin-right: 5%;
+}
+.padding-0 {
+    padding: 0px !important;
 }
 .width-100 {
     width: 100%!important;
@@ -338,7 +342,7 @@ span#size {
     font-size: 14px;
 }
 .show_top_folder_name{
-    margin-left: 2%;
+    margin-right: 2%;
 }
 .jstree-default .jstree-themeicon{
     font: normal normal normal 14px/1 FontAwesome;

@@ -28,5 +28,6 @@ return [
     //optomise Image
     'Optimise_image' => false,
     'symlink_public_folder_name' => 'public',
-    'lang' => 'fa'
+    'lang' => 'fa',
+    'direction' => 'ltr'
 ];
