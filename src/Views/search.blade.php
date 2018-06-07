@@ -4,7 +4,7 @@
             @if($breadcrumb['type'] =="DisableLink")
                 <li class="breadcrumb-item">{{$breadcrumb['title']}}</li>
             @else
-                <li class="breadcrumb-item"><a href="#" data-id="{{$breadcrumb['id']}}" class="link_to_category">{{$breadcrumb['title']}}</a></li>
+                <li class="breadcrumb-item"><a href="#" data-id="{{LFM_getEncodeId($breadcrumb['id'])}}" class="link_to_category">{{$breadcrumb['title']}}</a></li>
             @endif
         @endforeach
     </ol>

@@ -1,10 +1,7 @@
 <script type="text/javascript">
 
     //---------------------------------------------------------------------------------------------------------------------//
-    //Edit Picture
-
-
-
+    //Cut selected file
     //---------------------------------------------------------------------------------------------------------------------//
     //js tree
     $( document ).ready(function() {
@@ -29,7 +26,6 @@
             });
         $('#media_category').addClass('jstree-root');
     });
-
     function set_jstree(jdata,parent_category_id)
     {
         console.log(parent_category_id);

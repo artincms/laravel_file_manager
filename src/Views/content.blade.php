@@ -11,7 +11,7 @@
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="show_grid_content" role="tabpanel">
-        <nav aria-label="breadcrumb">
+        <nav class="col-md-12" style="clear: both;" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 @foreach($breadcrumbs as $breadcrumb)
                     @if($breadcrumb['type'] =="DisableLink")
@@ -141,7 +141,7 @@
         </script>
     </div>
     <div class="tab-pane" id="show_list_content" role="tabpanel">
-        <nav aria-label="breadcrumb">
+        <nav class="col-md-12" style="clear: both;" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 @foreach($breadcrumbs as $breadcrumb)
                     @if($breadcrumb['type'] =="DisableLink")

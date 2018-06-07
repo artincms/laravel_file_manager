@@ -486,7 +486,7 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);
                     set_jstree(result.allCategories,result.parent_category_id);
-
+                    $('#search_media').val('');
                 }
             },
             error: function (e) {
@@ -611,6 +611,7 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);
                     set_jstree(result.allCategories,result.parent_category_id);
+                    $('#search_media').val('');
                 }
             },
             error: function (e) {
@@ -674,6 +675,7 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);//set no inserted
                     set_jstree(result.allCategories,result.parent_category_id);
+                    $('#search_media').val('');
                 }
             },
             error: function (e) {
