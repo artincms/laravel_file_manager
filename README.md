@@ -168,7 +168,7 @@ for windows
 //to show above data to small view you can use this function  
 function callback(result)
 {
-   $('#show_area_small').html(res.Manager.view.small) ;
+   $('#show_area_small').html(result.Manager.view.small) ;
 }
   </pre> </div>
   Manager is section name . to show inserted file , this package provide 4 view . you can 
