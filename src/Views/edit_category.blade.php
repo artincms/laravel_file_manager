@@ -7,15 +7,15 @@
         {!! csrf_field() !!}
         <input type="hidden" value="{{$category->id}}" name="id">
         <div class="form-group">
-            <label for="title" class="control-label">Title</label>
-            <input id="title" class="form-control" placeholder="Category Name" type="text" name="title" value="{{$category->title}}">
+            <label for="title" class="control-label">@lang('filemanager.title')</label>
+            <input id="title" class="form-control" placeholder="@lang('filemanager.category_name_placeholder')" type="text" name="title" value="{{$category->title}}">
         </div>
         <div class="form-group">
-            <label for="description" class="control-label">Description</label>
-            <input id="description" class="form-control" placeholder="some description .." type="text" name="description" value="{{$category->description}}">
+            <label for="description" class="control-label">@lang('filemanager.description')</label>
+            <input id="description" class="form-control" placeholder="@lang('filemanager.category_description_placeholder')" type="text" name="description" value="{{$category->description}}">
         </div>
         <div class="form-group">
-            <label data-error="wrong" data-success="right" for="orangeForm-name">Select parrent of Categorie</label>
+            <label data-error="wrong" data-success="right" for="orangeForm-name">@lang('filemanager.category_select_parent')</label>
             <select class="form-control select_category" id="sel1" name="parent_category_id" disabled>
                 <option value="0">none</option>
                 @foreach($categories as $category)
@@ -34,7 +34,7 @@
             e.preventDefault();
             var formElement = document.querySelector('#create_category_form');
             var formData = new FormData(formElement);
-            $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+            $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
             category_save(formData);
 
         });
@@ -44,7 +44,7 @@
         console.log('dd');
         var formElement = document.querySelector('#create_category_form');
         var formData = new FormData(formElement);
-        $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
         category_save(formData,true);
         if(typeof parent.refresh !== 'undefined')
         {
@@ -82,6 +82,7 @@
                 $.each(e.responseJSON.errors,function (index,value) {
                     $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');
                 });
+                $('.total_loader').remove();
             }
         });
     }

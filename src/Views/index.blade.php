@@ -4,17 +4,17 @@
     <div class="row">
         <div class="col-md-2">
             <div class="show_cat_foolder">
-                <div class="top_js_tree_folder link_to_category pointer"  id="share_category" data-id="{{LFM_getEncodeId(-2)}}"><i class="fa fa-folder"></i><span class="show_top_folder_name">Share Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  id="share_category" data-id="{{LFM_getEncodeId(-2)}}"><i class="fa fa-folder"></i><span class="show_top_folder_name">@lang('filemanager.share_folder')</span></div>
                 <div id="js_tree_share_div">
                     <div id="jstree_category_share"></div>
                 </div>
                 <hr />
-                <div class="top_js_tree_folder link_to_category pointer"  data-id="{{LFM_getEncodeId(-1)}}" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">Pulic Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  data-id="{{LFM_getEncodeId(-1)}}" id="public_category"><i class="fa fa-folder"></i><span class="show_top_folder_name">@lang('filemanager.public_folder')</span></div>
                 <div id="js_tree_public_div">
                     <div id="jstree_category_public"></div>
                 </div>
                 <hr />
-                <div class="top_js_tree_folder link_to_category pointer"  id="media_category"  data-id="{{LFM_getEncodeId(0)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">Root Folder</span></div>
+                <div class="top_js_tree_folder link_to_category pointer"  id="media_category"  data-id="{{LFM_getEncodeId(0)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">@lang('filemanager.root_folder')</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>
@@ -29,10 +29,10 @@
                         <div class="col-md-9 col-sm-9">
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default btn-sm">
-                                    <a href="" id="select_all" class="selectbox">select all</a>
+                                    <a href="" id="select_all" class="selectbox">@lang('filemanager.select_all')</a>
                                 </label>
                                 <label class="btn btn-sm btn-default selectbox ">
-                                    <a href="" id="select_none" class="selectbox">none</a>
+                                    <a href="" id="select_none" class="selectbox">@lang('filemanager.none')</a>
                                 </label>
                             </div>
                             <div class="btn-group" data-toggle="buttons">
@@ -46,13 +46,13 @@
                             <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId(0) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile"
                                    data-toggle="modal"
                                    data-target="#create_upload_modal">
-                                <i class="fa fa-upload"></i>&nbsp;&nbsp;upload
+                                <i class="fa fa-upload"></i>&nbsp;&nbsp;@lang('filemanager.upload')
                             </label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-sm btn-success create_category" title="create new category"
                                        href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId(0), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                                        data-target="#create_category_modal">
-                                    <i class="fa fa-folder"></i>&nbsp;&nbsp;Cat
+                                    <i class="fa fa-folder"></i>&nbsp;&nbsp;@lang('filemanager.cat')
                                 </label>
                             </div>
                             <label class="btn btn-sm btn-primary grid-trash-o" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
@@ -71,7 +71,7 @@
                         <div class="col-md-3 col-sm-3">
                             <form action="" method="get" class="search-form" pjax-container="">
                                 <div class="input-group input-group-sm ">
-                                    <input type="text" id="search_media" name="title" class="form-control" placeholder="Search...">
+                                    <input type="text" id="search_media" name="title" class="form-control" placeholder="@lang('filemanager.search_placeholder')">
                                     <span class="input-group-append">
                             <button type="submit" name="search" id="search-btn" data-target-search="search_media" class="btn btn-flat"><i class="fa fa-search"></i></button>
                         </span>

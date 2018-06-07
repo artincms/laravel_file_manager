@@ -7,23 +7,23 @@
         <form id="create_category_form" class="search-form filemanager_cateogry_form">
             {!! csrf_field() !!}
             <div class="form-group">
-                <label for="title" class="control-label">Title</label>
-                <input id="title" class="form-control" placeholder="Category Name" type="text" name="title">
+                <label for="title" class="control-label">@lang('filemanager.title')</label>
+                <input id="title" class="form-control" placeholder="@lang('filemanager.category_name_placeholder')" type="text" name="title">
             </div>
             <div class="form-group">
-                <label for="description" class="control-label">Description</label>
-                <input id="description" class="form-control" placeholder="some description .." type="text" name="description">
+                <label for="description" class="control-label">@lang('filemanager.description')</label>
+                <input id="description" class="form-control" placeholder="@lang('filemanager.category_description_placeholder')" type="text" name="description">
             </div>
             <div class="form-group">
-                <label data-error="wrong" data-success="right" for="orangeForm-name">Select parrent of Categorie</label>
+                <label data-error="wrong" data-success="right" for="orangeForm-name">@lang('filemanager.category_select_parent')</label>
                 <select class="form-control select_category" id="parent_category_id" name="parent_category_id">
                     @foreach($categories as $category)
                         <option value="{{$category->id}}" @if($category_id == $category->id) selected @endif>{{$category->title}}</option>
                     @endforeach
                 </select>
             </div>
-            <button class="btn btn-primary hidden" id="btn_submit_category">Submit</button>
-            <button class="btn btn-primary hidden" id="btn_submit_category_close">Submit</button>
+            <button class="btn btn-primary hidden" id="btn_submit_category"></button>
+            <button class="btn btn-primary hidden" id="btn_submit_category_close"></button>
         </form>
 @endsection
 @section('javascript')

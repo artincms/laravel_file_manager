@@ -51,9 +51,8 @@
             });
             orginal_croppie.bind({
                 url: "{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}",
-
             });
-            $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary hidden">Crope</button>');
+            $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary hidden"></button>');
             $(document).off("click", '#crope_button_orginal');
             $(document).on('click', '#crope_button_orginal', function () {
                     orginal_croppie.result('base64').then(function(base64) {
@@ -226,7 +225,7 @@
         small_croppie.bind({
             url: "{{LFM_GenerateDownloadLink('ID',$file->id,'small')}}",
         });
-        $(".crop_small").append('<button type="button" id="crope_button_small" class="btn btn-primary hidden">Crope</button>');
+        $(".crop_small").append('<button type="button" id="crope_button_small" class="btn btn-primary hidden"></button>');
         $(document).off("click", '#crope_button_small');
         $(document).on('click', '#crope_button_small', function () {
             small_croppie.result('base64').then(function(base64) {

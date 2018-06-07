@@ -25,11 +25,11 @@
                 <h5 class="modal-title">{{$header}}</h5>
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                <h2>You Reach Your Maximum File Upload</h2>
-                <h5>for upload new file you should remove previus uploaded file</h5>
+                <h2>@lang('filemanager.reach_maximum_file_upload')</h2>
+                <h5>@lang('filemanager.for_upload_remove_previus_uploadded_file')</h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">@lang('filemanager.ok')</button>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
     }
     //-------------------------------------------------------------------------------------//
     function clearupload() {
-        $('#{{$section}}_body_upload_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('#{{$section}}_body_upload_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
     }
     //-------------------------------------------------------------------------------------//
     function {{$callback}}(data) {

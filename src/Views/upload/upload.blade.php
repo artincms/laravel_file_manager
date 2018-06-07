@@ -63,13 +63,11 @@
             $.each(data.response, function (index, value) {
                 if (value.success) {
                     var fname = value.file.originalName;
-                    out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</div>';
+                    out = out + '<div class="alert alert-success">' + '@lang('filemanager.uploaded_file') # ' + (index + 1) + ' - ' + fname + ' @lang('filemanager.successfully').' + '</div>';
                 }
                 else {
                     var fname = value.originalName;
-                    out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - ' + fname + '</div>';
-                    /*  $('#kv-error-2 ul').append(out);
-                      $('#kv-error-2').fadeIn('slow');*/
+                    out = out + '<div class="alert alert-danger">' + '@lang('filemanager.error_uploaded_file') # ' + (index + 1) + ' - ' + fname ;
                 }
                 if (typeof parent.refresh !== 'undefined') {
                     parent.refresh();
@@ -82,14 +80,13 @@
             }
             @endif
             swal({
-                title: '<h4>Upload Status</h4>',
+                title: '<h4>@lang('filemanager.upload_status')</h4>',
                 html: out,
                 showCloseButton: false,
                 focusConfirm: false,
-                confirmButtonText:
-                    'More Upload',
+                confirmButtonText:'@lang('filemanager.more_upload')',
                 showCancelButton: true,
-                cancelButtonText: 'Close',
+                cancelButtonText: '@lang('filemanager.close')',
                 cancelButtonClass: 'close_upload',
                 confirmButtonClass: 'clear_upload',
             }).then(function (result) {

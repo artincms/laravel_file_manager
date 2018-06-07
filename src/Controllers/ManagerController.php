@@ -226,7 +226,7 @@ class ManagerController extends Controller
             if (count($check) != 0)
             {
                 $validator->after(function ($validator) {
-                    $validator->errors()->add('field', 'title is repeated');
+                    $validator->errors()->add('field', "@lang('filemanager.error_title_repeated')");
                 });
             }
 

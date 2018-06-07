@@ -13,8 +13,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_modal_button">Submit Form</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
+                <button type="button" class="btn btn-primary" id="create_modal_button">@lang('filemanager.submit_form')</button>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
     <div class="modal-dialog modal-lg" id="modal_dialog_upload" role="document">
         <div class="modal-content create_modal_content_edit_category">
             <div class="modal-header">
-                <h5>Upload File</h5>
+                <h5>@lang('filemanager.upload_file')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -44,7 +44,7 @@
     <div class="modal-dialog modal-lg modal_dialog_category" role="document">
         <div class="modal-content create_modal_content_edit_category">
             <div class="modal-header">
-                <h5>Create Category</h5>
+                <h5>@lang('filemanager.create_category')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -53,9 +53,9 @@
                     <iframe class="modal_iframe create_category_modal_iframe" id="modal_iframe_category"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_category_modal_button">save</button>
-                <button type="button" class="btn btn-primary" id="create_category_modal_button_close">save & close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
+                <button type="button" class="btn btn-primary" id="create_category_modal_button">@lang('filemanager.save')</button>
+                <button type="button" class="btn btn-primary" id="create_category_modal_button_close">@lang('filemanager.save_and_close')</button>
             </div>
         </div>
     </div>
@@ -76,9 +76,9 @@
                     <iframe class="modal_iframe create_edit_category_modal_iframe" id="modal_iframe_edit_category"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button">save</button>
-                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button_close">save & close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button">@lang('filemanager.save')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_category_modal_button_close">@lang('filemanager.save_and_close')</button>
             </div>
         </div>
     </div>
@@ -99,9 +99,9 @@
                     <iframe class="modal_iframe create_edit_file_name_modal_iframe" id="modal_iframe_edit_file_name"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">save</button>
-                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button_close">save & close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button">@lang('filemanager.save')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_file_name_modal_button_close">@lang('filemanager.save_and_close')</button>
             </div>
         </div>
     </div>
@@ -114,10 +114,10 @@
         <div class="modal-content create_modal_content_edit_picture" >
             <div class="modal-header">
                 <nav class="nav nav-pills nav-justified">
-                    <a class="nav-link active" id="nva_orginal">Orginal Image</a>
-                    <div class="nav-link" id="nva_large">Large Image</div>
-                    <a class="nav-link" id="nva_medium">Medium Image</a>
-                    <a class="nav-link" id="nva_small">Small Image</a>
+                    <a class="nav-link active" id="nva_orginal">@lang('filemanager.orginal_image')</a>
+                    <div class="nav-link" id="nva_large">@lang('filemanager.large_image')</div>
+                    <a class="nav-link" id="nva_medium">@lang('filemanager.medium_image')</a>
+                    <a class="nav-link" id="nva_small">@lang('filemanager.small_image')</a>
                 </nav>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -127,8 +127,8 @@
                     <iframe class="modal_iframe create_edit_picture_modal_iframe " id="modal_iframe_edit_picture"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="create_edit_picture_modal_button" data-type="orginal">Crop Image</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_picture_modal_button" data-type="orginal">@lang('filemanager.crop_image')</button>
             </div>
         </div>
     </div>

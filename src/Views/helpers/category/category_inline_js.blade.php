@@ -6,7 +6,7 @@
         e.preventDefault() ;
         var formElement = document.querySelector('#create_category_form');
         var formData = new FormData(formElement);
-        $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
         @if (!$callback)
         category_save(formData);
         @else
@@ -18,7 +18,7 @@
         e.preventDefault() ;
         var formElement = document.querySelector('#create_category_form');
         var formData = new FormData(formElement);
-        $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
         @if (!$callback)
         category_save(formData,false,true);
         @else
@@ -55,6 +55,7 @@
                 }
             },
             error: function (e) {
+                console.log(e.responseJSON.errors);
                     $('.total_loader').remove();
                     $('#show_error').removeClass('hidden');
                 $('#show_edit_category_error').html('');

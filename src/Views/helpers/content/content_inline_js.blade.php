@@ -9,7 +9,7 @@
     $(document).off("click", '.link_to_category');
     $(document).on('click', '.link_to_category', function (e) {
         e.preventDefault();
-        $('.media-content').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('.media-content').append(generate_loader_html('@lang('filemanager.please_wait')'));
         var id = $(this).attr('data-id');
         show_category(id);
     });
@@ -548,39 +548,44 @@
     $(document).off("click", '#bulk_delete');
     $(document).on('click', '#bulk_delete', function (e) {
         e.preventDefault();
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then((result) => {
-            if (result.value) {
-                var type = $('refresh_page').attr('data-type');
-                items = get_selected(['file','category'],type) ;
+        var type = $('refresh_page').attr('data-type');
+        var items = get_selected(['file','category'],type) ;
+        if (items.length > 0)
+        {
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+
                 bulk_delete(items) ;
                 swal(
                     'Deleted!',
                     'Your file has been deleted.',
                     'success'
-                )
-            }
-            else if (result.dismiss === swal.DismissReason.cancel)
-            {
-                swal(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                )
-            }
-        })
+                    )
+                }
+                else if (result.dismiss === swal.DismissReason.cancel)
+                {
+                    swal(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        }
+
     });
     //------------------------------------------------------------------------------------------------------------------------------------------//
 

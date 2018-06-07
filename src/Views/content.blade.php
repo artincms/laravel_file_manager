@@ -59,9 +59,7 @@
                         </div>
                     </li>
                 @endforeach
-
                 @foreach($files as $file)
-
                         <li>
                         <div class="media-attachment-info">
                             <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}" data-parent-id="{{LFM_getEncodeId($file->category_id)}}">

@@ -115,7 +115,7 @@
         var src = $(this).attr('href') ;
         var iframe = $('#modal_iframe_edit_category');
         var title=$(this).attr('data-category-name');
-        $('h5.title_edit_category').html('Edit Category '+title);
+        $('h5.title_edit_category').html('@lang('filemanager.edit_category') '+title);
         iframe.attr("src",src);
         iframe.on("load", function() {
             $(document).off('click','#create_edit_category_modal_button');
@@ -203,9 +203,9 @@
     $(document).on('click', '#EditFileName', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        var title =$().attr('data-file-name');
+        var title =$(this).attr('data-file-name');
         var iframe = $('#modal_iframe_edit_file_name');
-        $('.title_edit_file_name').html('Edit file ' +title);
+        $('.title_edit_file_name').html('@lang('filemanager.edit_file') ' +title);
         iframe.attr("src",src);
         iframe.on("load", function() {
             $(document).off('click','#create_edit_file_name_modal_button');
@@ -255,7 +255,7 @@
     $(document).off("click", '#refresh_page');
     $(document).on('click', '#refresh_page', function (e) {
         e.preventDefault();
-        $('.media-content').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('.media-content').append(generate_loader_html('@lang('filemanager.please_wait')'));
         refresh() ;
     });
 

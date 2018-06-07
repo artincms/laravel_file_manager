@@ -49,13 +49,13 @@
             removeLabel: "Clear",
             removeIcon: "<i class=\"glyphicon glyphicon-refresh\"></i> ",
             uploadClass: "btn btn-info",
-            uploadLabel: "Upload",
+            uploadLabel: "@lang('filemanager.upload')",
             uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
         }).on('filebatchpreupload', function(event, data) {
 
         }).on('filebatchpreupload', function(event, data, id, index) {
-            $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
-            $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
+            $('#kv-success-2').html('<h4>@lang('filemanager.upload_status')</h4><ul></ul>').hide();
+            $('#kv-error-2').html('<h4>@lang('filemanager.error_status')</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
             complete(data);
             parent.{{LFM_CheckFalseString($section)}}_available = data.response.{{LFM_CheckFalseString($section)}}.available ;
@@ -81,18 +81,18 @@
         $.each(data.response.{{$section}}.data, function (index, value) {
             if (value.success) {
                 var fname = value.file.originalName;
-                out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - ' + fname + ' successfully.' + '</div>';
+                out = out + '<div class="alert alert-success">' + '@lang('filemanager.uploaded_file') # ' + (index + 1) + ' - ' + fname + ' @lang('filemanager.successfully').' + '</div>';
             }
             else {
                 var fname = value.originalName;
-                out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - ' + fname ;
+                out = out + '<div class="alert alert-danger">' + '@lang('filemanager.error_uploaded_file') # ' + (index + 1) + ' - ' + fname ;
                 out += '<p>' + value.error + '</p></div>';
             }
         });
 
 
         swal({
-            title: '<h4>Upload Status</h4>',
+            title: '<h4>@lang('filemanager.upload_status')</h4>',
             html: out,
             showCloseButton: false,
             focusConfirm: false,
@@ -119,7 +119,7 @@
         parent.$('.modal').modal('hide');
     });
     function clearupload() {
-        $('#{{$section}}_kv_main').append(generate_loader_html('لطفا منتظر بمانید...'));
+        $('#{{$section}}_kv_main').append(generate_loader_html('@lang('filemanager.please_wait')'));
         document.location.reload() ;
     }
     function generate_loader_html(loading_text) {

@@ -8,11 +8,11 @@
         {!! csrf_field() !!}
         <input type="hidden" value="{{$file->id}}" name="id">
         <div class="form-group">
-            <label for="title" class="control-label">Name</label>
-            <input id="title" class="form-control" placeholder="Category Name" type="text" name="name" value="{{$file->originalName}}">
+            <label for="title" class="control-label">@lang('filemanager.name')</label>
+            <input id="title" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->originalName}}">
         </div>
-        <button class="btn btn-primary hidden" id="btn_submit_update_file_name">Submit</button>
-        <button class="btn btn-primary hidden" id="btn_submit_update_file_name_close">Submit</button>
+        <button class="btn btn-primary hidden" id="btn_submit_update_file_name"></button>
+        <button class="btn btn-primary hidden" id="btn_submit_update_file_name_close"></button>
     </form>
 @endsection
 @section('javascript')
@@ -20,7 +20,7 @@
         $(document).off("click", '#btn_submit_update_file_name');
         $(document).on('click', '#btn_submit_update_file_name', function (e) {
             e.preventDefault();
-            $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+            $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
             var formElement = document.querySelector('#form_update_file_name');
             var formData = new FormData(formElement);
             edit_file_name(formData);
@@ -30,7 +30,7 @@
         $(document).on('click', '#btn_submit_update_file_name_close', function (e) {
             e.preventDefault();
             console.log('d');
-            $('#create_category_form').append(generate_loader_html('لطفا منتظر بمانید...'));
+            $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
             var formElement = document.querySelector('#form_update_file_name');
             var formData = new FormData(formElement);
             edit_file_name(formData,true);
