@@ -705,37 +705,28 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
 
 function LFM_SetInsertedView($section, $data, $show = false)
 {
-    $view['list'] = LFM_ListInsertedView($data, $section, $show);
-    $view['grid'] = LFM_GridInsertedView($data, $section, $show);
-    $view['small'] = LFM_SmallInsertedView($data, $section, $show);
-    $view['medium'] = LFM_MediumInsertedView($data, $section, $show);
-    $view['large'] = LFM_LargeInsertedView($data, $section, $show);
+    switch (config('laravel_file_manager.insertde_view_theme'))
+    {
+        case 'bootstrap_v4' :
+            $path = 'selected.bootstrap.bootstrap_v_4' ;
+            break;
+        case 'bootstrap_v3' :
+            $path = 'selected.bootstrap.bootstrap_v_3' ;
+            break;
+        case 'inline' :
+            $path = 'selected.inline' ;
+            break;
+
+        default :
+            $path = 'selected.bootstrap.bootstrap_v_4' ;
+            break;
+    }
+    $view['list'] = view('laravel_file_manager::'.$path.'.list_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['grid'] = view('laravel_file_manager::'.$path.'.grid_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['small'] = view('laravel_file_manager::'.$path.'.small_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['medium'] = view('laravel_file_manager::'.$path.'.medium_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['large'] = view('laravel_file_manager::'.$path.'.large_inserted_view', compact('data', 'section', 'show'))->render();
     return $view;
-}
-
-function LFM_ListInsertedView($data, $section = false, $show = false)
-{
-    return view('laravel_file_manager::selected.list_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
-}
-
-function LFM_GridInsertedView($data, $section = false, $show = false)
-{
-    return view('laravel_file_manager::selected.grid_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
-}
-
-function LFM_SmallInsertedView($data, $section = false, $show = false)
-{
-    return view('laravel_file_manager::selected.small_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
-}
-
-function LFM_MediumInsertedView($data, $section = false, $show = false)
-{
-    return view('laravel_file_manager::selected.medium_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
-}
-
-function LFM_LargeInsertedView($data, $section = false, $show = false)
-{
-    return view('laravel_file_manager::selected.large_inserted_view', compact('data', 'section', 'show', 'prefix'))->render();
 }
 
 function LFM_SetSelectedFileToSession($request, $section, $data)

@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="app()->getLocale() " style="direction: @if(in_array(config('laravel_file_manager.locale'),config('laravel_file_manager.lang_rtl'))) rtl @else ltr @endif">
+<html lang="app()->getLocale() " style="direction: @if(in_array(app()->getLocale() ,config('laravel_file_manager.lang_rtl'))) rtl @else ltr @endif">
 <head>
     <title>@yield('page_title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     {{--add style sheet--}}
-    @if(in_array(config('laravel_file_manager.locale'),config('laravel_file_manager.lang_rtl')))
+    @if(in_array(app()->getLocale(),config('laravel_file_manager.lang_rtl')))
         <link href="{{ asset('vendor/laravel_file_manager/css/build/init_core_rtl.min.css') }}" rel="stylesheet" rel="stylesheet">
         <link href="{{ asset('vendor/laravel_file_manager/css/rtl/custom_rtl.css') }}" rel="stylesheet" rel="stylesheet">
     @else

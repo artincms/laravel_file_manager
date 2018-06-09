@@ -16,6 +16,9 @@ return [
     'select_all' => "select all",
     'none' => "none",
     'name' => "Name",
+    'user' => "User",
+    'action' => "Action",
+    'path' => "Path",
     'root_folder' => "Root Folder",
     'public_folder' => "Pulic Folder",
     'share_folder' => "Share Folder",
@@ -27,6 +30,11 @@ return [
     'save' => "Save",
     'save_and_close' => "Save & Close",
     'orginal_image' => "Orginal Image",
+    'orginal' => 'orginal' ,
+    'medium' => 'Medium' ,
+    'small' => 'Small' ,
+    'large' => 'Large' ,
+    'insert' => 'insert' ,
     'large_image' => "Large Image",
     'medium_image' => "Medium Image",
     'small_image' => "Small Image",
@@ -50,6 +58,17 @@ return [
     'for_upload_remove_previus_uploadded_file' => "for upload new file you should remove previus uploaded file",
     'ok' => "Ok",
     'edit_file' => "Edit file",
+    'browse_label' => "Browse",
+    'clear' => "Clear",
+    'cancel' => "cancel",
+    'browse_caption_name' => "select file ..",
+    'result' => "Result",
+    'filemanager' => "File Manager",
+    'click_to_copy' => "Click to Copy",
+    'copy_public' => "Copy Public",
+    'copied' => "Copied",
+    'row' => 'Row'
+
 
 
 ];

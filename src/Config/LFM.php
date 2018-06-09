@@ -28,6 +28,28 @@ return [
     //optomise Image
     'Optimise_image' => false,
     'symlink_public_folder_name' => 'public',
-    'lang' => 'fa',
-    'direction' => 'ltr'
+    'insertde_view_theme' =>'inline', //you can select inline or bootstrap_v3 or bootstrap_v4
+    'lang_rtl'    => [
+        'ae',	/* Avestan */
+        'ar',   /* 'العربية', Arabic */
+        'arc',  /* Aramaic */
+        'bcc',  /* 'بلوچی مکرانی', Southern Balochi */
+        'bqi',  /* 'بختياري', Bakthiari */
+        'ckb',  /* 'Soranî / کوردی', Sorani */
+        'dv',   /* Dhivehi */
+        'fa',   /* 'فارسی', Persian */
+        'glk',  /* 'گیلکی', Gilaki */
+        'he',   /* 'עברית', Hebrew */
+        'ku',   /* 'Kurdî / كوردی', Kurdish */
+        'mzn',  /* 'مازِرونی', Mazanderani */
+        'nqo',  /* N'Ko */
+        'pnb',  /* 'پنجابی', Western Punjabi */
+        'ps',   /* 'پښتو', Pashto, */
+        'sd',   /* 'سنڌي', Sindhi */
+        'ug',   /* 'Uyghurche / ئۇيغۇرچە', Uyghur */
+        'ur',   /* 'اردو', Urdu */
+        'yi'    /* 'ייִדיש', Yiddish */
+    ],
+
+
 ];
