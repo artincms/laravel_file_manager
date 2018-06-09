@@ -4,6 +4,7 @@
 @endsection
 @section('add_js')
     <script type="text/javascript" src="{{asset('vendor/laravel_file_manager/js/build/fileinput.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('vendor/laravel_file_manager/packages/bootstrap-fileinput-master/js/locales/fa.js')}}"></script>
 @endsection
 @section('content')
     <div class="container kv-main">
@@ -27,8 +28,11 @@
         //-----------------------------------------------------------------------------------------------------//
         $("#input-708").fileinput({
             theme: "fa",
+            language: "{{app()->getLocale()}}",
             uploadUrl: "{{route('LFM.StoreUploads')}}",
             uploadAsync: false,
+            browseLabel : '@lang('filemanager.browse_label')',
+            elCaptionText : '',
             uploadExtraData: {
                 category_id: '{{$category_id}}' ,
                 _token: $('#token').val()
@@ -43,10 +47,10 @@
             elErrorContainer: "#errorBlock",
             browseClass: "btn btn-success",
             removeClass: "btn btn-danger",
-            removeLabel: "Clear",
+            removeLabel: '@lang('filemanager.clear')',
             removeIcon: "<i class=\"glyphicon glyphicon-refresh\"></i> ",
             uploadClass: "btn btn-info",
-            uploadLabel: "Upload",
+            uploadLabel: "@lang('filemanager.upload')",
             uploadIcon: "<i class=\"glyphicon glyphicon-upload\"></i> "
         }).on('filebatchpreupload', function(event, data, id, index) {
             $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();

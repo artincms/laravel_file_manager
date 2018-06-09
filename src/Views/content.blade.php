@@ -82,12 +82,12 @@
                                 @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                                     <div class="tooltip_copy grid-row-copy float-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
                                         <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
-                                        <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Copy Public Path</span>
+                                        <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">@lang('filemanager.copy_public')</span>
                                     </div>
                                 @endif
                                 <div class="tooltip_copy grid-row-copy float-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GenerateDownloadLink('ID',$file['id'])}}">
                                     <input type="hidden" id="orginal_copy" value="{{LFM_GenerateDownloadLink('ID',$file['id'])}}">
-                                    <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">Copy Path</span>
+                                    <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>
                                 </div>
                             </div>
                             <a href="#" class="media-attachment-chexbox">
@@ -160,9 +160,9 @@
             <thead>
             <tr>
                 <th></th>
-                <th>name</th>
-                <th>user</th>
-                <th>action</th>
+                <th>@lang('filemanager.name')</th>
+                <th>@lang('filemanager.user')</th>
+                <th>@lang('filemanager.action')</th>
             </tr>
             </thead>
             <tbody>
@@ -248,12 +248,12 @@
                         @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                             <div class="tooltip_copy grid-row-copy float-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
                                 <input type="hidden" id="orginal_public_copy" value="{{LFM_GeneratePublicDownloadLink($file['path'],$file['filename'])}}">
-                                <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">Copy Public Path</span>
+                                <i id="copy_path" class="fa fa-link link_fontawsome color_green" data-clipboard-target="orginal_public_copy"></i><span class="tooltiptext" id="myTooltip">@lang('filemanager.copy_public')</span>
                             </div>
                         @endif
                         <div class="tooltip_copy grid-row-copy float-right myicon" id="CopyOrginalPath" data-orginal="{{LFM_GenerateDownloadLink('ID',$file['id'])}}">
                             <input type="hidden" id="orginal_copy" value="{{LFM_GenerateDownloadLink('ID',LFM_getEncodeId($file['id']))}}">
-                            <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">Click to Copy</span>
+                            <i id="copy_path" class="fa fa-link link_fontawsome" data-clipboard-target="orginal_copy"></i><span class="tooltiptext tootltip_public_path" id="myTooltip">@lang('filemanager.click_to_copy')</span>
                         </div>
                     </td>
                 </tr>

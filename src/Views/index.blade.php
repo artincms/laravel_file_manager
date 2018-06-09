@@ -60,7 +60,7 @@
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
                             @if($insert == 'insert')
                                 <label class="btn btn-default btn-sm display" id="insert_file" data-value=0>
-                                    <i class="fa fa-share-square-o"><span>insert</span>
+                                    <i class="fa fa-share-square-o"><span class="insert_span">@lang('filemanager.insert')</span>
                                     </i>
                                 </label>
                                 <label class="btn-secondary btn-default" id="show_selected_item"></label>

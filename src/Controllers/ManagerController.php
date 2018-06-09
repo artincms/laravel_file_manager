@@ -60,7 +60,7 @@ class ManagerController extends Controller
             $result['message'] = '';
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => LFM_getEncodeId($id), 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = LFM_getEncodeId($id);
-            $result['parent_category_name'] = 'media';
+            $result['parent_category_name'] = __('filemanager.root_folder');
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => LFM_getEncodeId($id), 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
         }
         else
@@ -157,8 +157,8 @@ class ManagerController extends Controller
         $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id', '=', $this->getUserId())->get(), 'parent_category_id', false, false, 0);
         $allCategories = json_encode($allCategories);
         $parent_id = 0;
-        $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
-        $result['parent_category_name'] = 'media';
+        $breadcrumbs[] = ['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'];
+        $result['parent_category_name'] = __('filemanager.root_folder');
         return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id','available'));
     }
 
@@ -443,15 +443,15 @@ class ManagerController extends Controller
     {
         if (in_array(-2, Category::getAllParentId($id)))
         {
-            $breadcrumbs[] = ['id' => -2, 'title' => 'share', 'type' => 'Enable'];
+            $breadcrumbs[] = ['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'];
         }
         elseif (in_array(-1, Category::getAllParentId($id)))
         {
-            $breadcrumbs[] = ['id' => -1, 'title' => 'public', 'type' => 'Enable'];
+            $breadcrumbs[] = ['id' => -1, 'title' =>  __('filemanager.public_folder'), 'type' => 'Enable'];
         }
         else
         {
-            $breadcrumbs[] = ['id' => 0, 'title' => 'media', 'type' => 'Enable'];
+            $breadcrumbs[] = ['id' => 0, 'title' =>  __('filemanager.root_folder'), 'type' => 'Enable'];
         }
         $parents = Category::all_parents($id);
         if ($parents)
@@ -529,7 +529,7 @@ class ManagerController extends Controller
             ['user_id', '=', $this->getUserId()],
             ['originalName', 'like', '%' . $request->search . '%']
         ])->get();
-        $breadcrumbs = [['id' => 0, 'title' => 'media', 'type' => 'Enable'], ['id' => 0, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
+        $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
         $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
         $result['success'] = true;
         return response()->json($result);

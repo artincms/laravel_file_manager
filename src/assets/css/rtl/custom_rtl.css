@@ -47,7 +47,7 @@ body {
 }
 .media-content li {
     float: right;
-    width: 196px;
+    width: 192px;
     border: 1px solid #eee;
     margin-bottom: 10px;
     margin-right: 5px;
@@ -391,9 +391,14 @@ i.jstree-icon.jstree-themeicon:before {
 }
 .create_edit_category_modal_iframe {
     width: 100%;
-    max-height: calc(100vh - 135px);
-    height: calc(100vh - 135px);
+    max-height: calc(100vh - 275px);
+    height: calc(100vh - 275px);
     border: none;
+}
+.insert_span{
+    margin-right: 13%;
+    font-size: 14px;
+    font-weight: 600;
 }
 .create_modal_content_edit_picture {
     max-height: calc(100vh - 40px);

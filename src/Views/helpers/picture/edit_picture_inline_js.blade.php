@@ -58,7 +58,7 @@
                     orginal_croppie.result('base64').then(function(base64) {
                     crop_type = 'orginal' ;
                     swal({
-                        title: 'Result',
+                        title: '@lang('filemanager.result')',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
@@ -66,6 +66,8 @@
                         imageUrl: base64,
                         imageWidth:width_orginal_viewport,
                         imageHeight:height_orginal_viewport,
+                        cancelButtonText:'@lang('filemanager.cancel')',
+                        confirmButtonText:'@lang('filemanager.ok')',
                     }).then((result) => {
                         if (result.value) {
                         var res = send_croped(base64 , crop_type) ;
@@ -116,7 +118,7 @@
             large_croppie.result('base64').then(function(base64) {
                 crop_type = 'large' ;
                 swal({
-                    title: 'Result',
+                    title: '@lang('filemanager.result')',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -124,6 +126,8 @@
                     imageUrl: base64,
                     imageWidth:width_large* rate_large,
                     imageHeight:height_large * rate_large,
+                    cancelButtonText:'@lang('filemanager.cancel')',
+                    confirmButtonText:'@lang('filemanager.ok')',
                 }).then((result) => {
                     if (result.value) {
                     var res = send_croped(base64 , crop_type) ;
@@ -174,7 +178,7 @@
             medium_croppie.result('base64').then(function(base64) {
                 crop_type = 'medium' ;
                 swal({
-                    title: 'Result',
+                    title: '@lang('filemanager.result')',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -182,6 +186,8 @@
                     imageUrl: base64,
                     imageWidth:width_medium * rate_medium,
                     imageHeight:height_medium * rate_medium,
+                    cancelButtonText:'@lang('filemanager.cancel')',
+                    confirmButtonText:'@lang('filemanager.ok')',
                 }).then((result) => {
                     if (result.value) {
                         var res = send_croped(base64 , crop_type) ;
@@ -231,7 +237,7 @@
             small_croppie.result('base64').then(function(base64) {
                 crop_type = 'small' ;
                 swal({
-                    title: 'Result',
+                    title: '@lang('filemanager.result')',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -239,6 +245,8 @@
                     imageUrl: base64,
                     imageWidth:width_small* rate_small,
                     imageHeight:height_small * rate_small,
+                    cancelButtonText:'@lang('filemanager.cancel')',
+                    confirmButtonText:'@lang('filemanager.ok')',
                 }).then((result) => {
                     if (result.value) {
                     var res = send_croped(base64 , crop_type) ;

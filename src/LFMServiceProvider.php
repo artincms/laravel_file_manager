@@ -50,6 +50,9 @@ class LFMServiceProvider extends ServiceProvider
 	    $this->publishes([
 		    __DIR__ . '/Lang/En/Filemanager.php' => resource_path('lang/en/filemanager.php'),
 	    ]);
+        $this->publishes([
+            __DIR__ . '/Lang/Fa/Filemanager.php' => resource_path('lang/fa/filemanager.php'),
+        ]);
     }
 
     /**

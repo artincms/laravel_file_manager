@@ -671,7 +671,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
 {
     if (!$header)
     {
-        $header = 'File Manager ' . $section;
+        $header = __('filemanager.filemanager') . $section;
     }
     if (!$button_id)
     {

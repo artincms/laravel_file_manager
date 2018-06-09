@@ -13,10 +13,10 @@
     <thead>
     <tr>
         <th></th>
-        <th>name</th>
-        <th>user</th>
-        <th>Path</th>
-        <th>action</th>
+        <th>@lang('filemanager.name')</th>
+        <th>@lang('filemanager.user')</th>
+        <th>@lang('filemanager.path')</th>
+        <th>@lang('filemanager.action')</th>
     </tr>
     </thead>
     <tbody>

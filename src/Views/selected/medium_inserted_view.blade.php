@@ -11,18 +11,18 @@
                         @endif
                     </div>
                     <div style="clear: both;>
-                        @if($file_item['file']['icon'] == 'image')
+                    @if($file_item['file']['icon'] == 'image')
                             <a href="{{$file_item['full_url']}}"><img src="{{$file_item['full_url_medium']}}" style="height:125px ;width: 175px;"></a>
-                        @else
-                            <a href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-top: 8%;"></i></a>
-                        @endif
-                    </div>
-                    <div class="insert_thumb_info center">
-                        {{$file_item['file']['originalName']}}
-                    </div>
+                    @else
+                        <a href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-top: 8%;"></i></a>
+                    @endif
                 </div>
-            </li>
-        @endforeach
-    </ul>
+                <div class="insert_thumb_info center">
+                    {{$file_item['file']['originalName']}}
+                </div>
 </div>
-@include('laravel_file_manager::selected.helpers.inline_js')
+</li>
+@endforeach
+</ul>
+</div>
+@include('laravel_file_manager::selected.helpers.inline_js')vvvv

@@ -29,6 +29,8 @@
     {
         $("#input-708").fileinput({
             theme: "fa",
+            language: "{{app()->getLocale()}}",
+            browseLabel : '@lang('filemanager.browse_label')',
             uploadUrl: "{{route('LFM.StoreDirectUploads')}}",
             uploadAsync: false,
             uploadExtraData: {
@@ -46,7 +48,7 @@
             elErrorContainer: "#errorBlock",
             browseClass: "btn btn-success",
             removeClass: "btn btn-danger",
-            removeLabel: "Clear",
+            removeLabel: '@lang('filemanager.clear')',
             removeIcon: "<i class=\"glyphicon glyphicon-refresh\"></i> ",
             uploadClass: "btn btn-info",
             uploadLabel: "@lang('filemanager.upload')",
