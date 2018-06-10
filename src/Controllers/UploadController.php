@@ -46,6 +46,7 @@ class UploadController extends ManagerController
                     return response()->json($result);
                 }
             }
+
             foreach ($request->file as $file)
             {
                 try {

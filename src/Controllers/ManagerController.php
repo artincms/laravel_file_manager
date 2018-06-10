@@ -597,15 +597,33 @@ class ManagerController extends Controller
 
     public function searchMedia(Request $request)
     {
-        $categories = Category::with('user')->where([
-            ['user_id', '=', $this->getUserId()],
-            ['title', 'like', '%' . $request->search . '%']
-        ])->get();
-        $files = File::with('user', 'FileMimeType')->where([
-            ['user_id', '=', $this->getUserId()],
-            ['originalName', 'like', '%' . $request->search . '%']
-        ])->get();
-        $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
+
+        if (config('laravel_file_manager.allow_upload_private_file'))
+        {
+            $array_id = LFM_CreateArrayId(LFM_GetChildCategory([0])) ;
+            $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
+            $categories = Category::with('user')->where([
+                ['user_id', '=', $this->getUserId()],
+                ['title', 'like', '%' . $request->search . '%']
+            ])->get();
+            $files = File::with('user', 'FileMimeType')->where([
+                ['user_id', '=', $this->getUserId()],
+                ['originalName', 'like', '%' . $request->search . '%']
+            ])->get();
+        }
+        else
+        {
+            $array_id = LFM_CreateArrayId(LFM_GetChildCategory([-2,-1])) ;
+            $breadcrumbs = [['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'], ['id' => -2, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
+            $categories = Category::with('user')->where([
+                ['user_id', '=', $this->getUserId()],
+                ['title', 'like', '%' . $request->search . '%']
+            ])->whereIn('id', $array_id)->get();
+            $files = File::with('user', 'FileMimeType')->where([
+                ['user_id', '=', $this->getUserId()],
+                ['originalName', 'like', '%' . $request->search . '%']
+            ])->get();
+        }
         $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
         $result['success'] = true;
         return response()->json($result);
