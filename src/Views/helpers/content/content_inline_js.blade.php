@@ -440,13 +440,18 @@
     $(document).on('click', '#trashfile', function (e) {
         e.preventDefault();
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: '@lang('filemanager.are_you_sure')',
+            text: "@lang('filemanager.you_wont_be_able_to_revert_this')",
+            cancelButtonText: '@lang('filemanager.no_cancel')',
+            confirmButtonText: '@lang('filemanager.yes_delete_it')',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+            reverseButtons: true
         }).then((result) => {
             if (result.value) {
                 var info = [] ;
@@ -455,9 +460,8 @@
                 info['parent_id'] = $(this).attr('data-parent-id');
                 trash(info);
                 swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
+                    '@lang('filemanager.deleted')!',
+                    '@lang('filemanager.your_file_has_been_deleted')'
                 )
             }
         })
@@ -553,14 +557,14 @@
         if (items.length > 0)
         {
             swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: '@lang('filemanager.are_you_sure')',
+                text: "@lang('filemanager.you_wont_be_able_to_revert_this')",
+                cancelButtonText: '@lang('filemanager.no_cancel')',
+                confirmButtonText: '@lang('filemanager.yes_delete_it')',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger',
                 buttonsStyling: false,
@@ -570,17 +574,14 @@
 
                 bulk_delete(items) ;
                 swal(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
+                    '@lang('filemanager.deleted')!',
+                    '@lang('filemanager.your_file_has_been_deleted')'
                     )
                 }
                 else if (result.dismiss === swal.DismissReason.cancel)
                 {
                     swal(
-                        'Cancelled',
-                        'Your imaginary file is safe :)',
-                        'error'
+                        '@lang('filemanager.cancelled')!',
                     )
                 }
             })

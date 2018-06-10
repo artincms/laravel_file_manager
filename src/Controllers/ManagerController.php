@@ -67,13 +67,30 @@ class ManagerController extends Controller
         {
             if (in_array(-2, Category::getAllParentId($id)))
             {
-                $files = File::where('category_id', '=', $id)->get();
+                if ($trueMimeType)
+                {
+                    $files = File::where('category_id', '=', $id);
+                    $files = $files->whereIn('mimeType', $trueMimeType)->get();
+                }
+                else
+                {
+                    $files = File::where('category_id', '=', $id)->get();
+                }
+
                 $categories = $category->child_categories;
                 $result['parent_category_name'] = 'Share';
             }
             elseif (in_array(-1, Category::getAllParentId($id)))
             {
-                $files = File::where('category_id', '=', $id)->get();
+                if ($trueMimeType)
+                {
+                    $files = File::where('category_id', '=', $id);
+                    $files = $files->whereIn('mimeType', $trueMimeType)->get();
+                }
+                else
+                {
+                    $files = File::where('category_id', '=', $id)->get();
+                }
                 $categories = $category->child_categories;
                 $result['parent_category_name'] = 'Public';
             }
@@ -149,33 +166,52 @@ class ManagerController extends Controller
             $available = 'true';
 
         }
-        $files = File::get_uncategory_files($trueMimeType);
-        $categories = Category::get_root_categories();
-        $category = false;
         $allCategories['share'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, false, -2);
         $allCategories['public'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, false, -1);
         $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id', '=', $this->getUserId())->get(), 'parent_category_id', false, false, 0);
+        $category = false;
         $allCategories = json_encode($allCategories);
-        $parent_id = 0;
-        $breadcrumbs[] = ['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'];
-        $result['parent_category_name'] = __('filemanager.root_folder');
+        //check user can upload private file
+        if (config('laravel_file_manager.allow_upload_private_file'))
+        {
+            $files = File::get_uncategory_files($trueMimeType);
+            $categories = Category::get_root_categories();
+            $parent_id = 0;
+            $breadcrumbs[] = ['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'];
+            $result['parent_category_name'] = __('filemanager.root_folder');
+        }
+        else
+        {
+            $files = File::where('category_id','=',-2)->get();
+            $categories = Category::where('parent_category_id','=',-2)->get();
+            $parent_id = -2;
+            $breadcrumbs[] = ['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'];
+            $result['parent_category_name'] = __('filemanager.root_folder');
+        }
+
         return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id','available'));
     }
 
     public function createCategory($category_id = 0, $callback = false, $section = false)
     {
-        if (in_array(-2, Category::getAllParentId($category_id)))
+        if(!config('laravel_file_manager.allow_upload_private_file'))
         {
-            $categories = Category::all();
-        }
-        elseif (in_array(-1, Category::getAllParentId($category_id)))
-        {
-            $categories = Category::all();
+            $categories = LFM_GetChildCategory([-1,-2]);
         }
         else
         {
-            $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->orWhere('id', '=', 0)->get();
-
+            if (in_array(-2, Category::getAllParentId($category_id)))
+            {
+                $categories = Category::all();
+            }
+            elseif (in_array(-1, Category::getAllParentId($category_id)))
+            {
+                $categories = Category::all();
+            }
+            else
+            {
+                $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->orWhere('id', '=', 0)->get();
+            }
         }
         $messages = [];
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
@@ -185,18 +221,24 @@ class ManagerController extends Controller
     {
         $messages = [];
         $category = Category::find($category_id);
-        if (in_array(-2, Category::getAllParentId($category_id)))
+        if(!config('laravel_file_manager.allow_upload_private_file'))
         {
-            $categories = Category::all();
-        }
-        elseif (in_array(-1, Category::getAllParentId($category_id)))
-        {
-            $categories = Category::all();
+            $categories = LFM_GetChildCategory([-1,-2]);
         }
         else
         {
-            $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->orWhere('id', '=', 0)->get();
-
+            if (in_array(-2, Category::getAllParentId($category_id)))
+            {
+                $categories = Category::all();
+            }
+            elseif (in_array(-1, Category::getAllParentId($category_id)))
+            {
+                $categories = Category::all();
+            }
+            else
+            {
+                $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->orWhere('id', '=', 0)->get();
+            }
         }
         $parent_category_id = $category->parent_category_id;
         return view('laravel_file_manager::edit_category', compact('categories', 'category', 'category_id', 'parent_category_id'));
@@ -204,6 +246,7 @@ class ManagerController extends Controller
 
     public function storeCategory(Request $request)
     {
+
         if ($request->ajax())
         {
             if (auth()->check())
@@ -226,10 +269,18 @@ class ManagerController extends Controller
             if (count($check) != 0)
             {
                 $validator->after(function ($validator) {
-                    $validator->errors()->add('field', "@lang('filemanager.error_title_repeated')");
+                    $validator->errors()->add(__('filemanager.error'), __('filemanager.error_title_repeated'));
                 });
             }
-
+            if (!config('laravel_file_manager.allow_upload_private_file'))
+            {
+                if (!in_array($request->parent_category_id,LFM_CreateArrayId(LFM_GetChildCategory([-2,-1]))))
+                {
+                    $validator->after(function ($validator) {
+                        $validator->errors()->add(__('filemanager.error'), __('filemanager.error_not_allow_permition_to_create_category'));
+                    });
+                }
+            }
             $validator->validate();
             $result = \DB::transaction(function () use ($request, $user_id) {
                 $cat = new Category;
@@ -279,11 +330,22 @@ class ManagerController extends Controller
 
     public function updateCategory(Request $request)
     {
-        $validatedData = $this->validate($request, [
+        $validator = $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required'
         ]);
-        $cat = Category::find($request->id);
+
+        if (!config('laravel_file_manager.allow_upload_private_file'))
+        {
+            if (!in_array(LFM_GetDecodeId($request->id),LFM_CreateArrayId(LFM_GetChildCategory([-2,-1]))))
+            {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add(__('filemanager.error'), __('filemanager.error_not_allow_permition_to_create_category'));
+                });
+            }
+        }
+        $validator->validate();
+        $cat = Category::find(LFM_GetDecodeId($request->id));
         $cat->title = $request->title;
         $cat->description = $request->description;
         $cat->save();
@@ -437,6 +499,20 @@ class ManagerController extends Controller
     {
         $file = File::find(LFM_GetDecodeId($file_id));
         return view('laravel_file_manager::edit_picture', compact('file'));
+    }
+
+    public function storeEditPictureName(Request $request)
+    {
+        $validatedData = $this->validate($request, [
+            'name' => 'required|max:255',
+        ]);
+        $file = File::find(LFM_GetDecodeId($request->id));
+        $file->originalName = $request->name;
+        $file->save();
+        $result['success'] = true;
+        $result['name'] = $request->name;
+        $result['message'] = "pictrue renamed";
+        return response()->json($result);
     }
 
     public function getBreadcrumbs($id, $category)

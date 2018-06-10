@@ -24,7 +24,12 @@
                     'data' : jdata.root
                 }
             });
-        $('#media_category').addClass('jstree-root');
+        @if(config('laravel_file_manager.allow_upload_private_file'))
+            $('#media_category').addClass('jstree-root');
+        @else
+            $('#share_category').addClass('jstree-root');
+            $('#share_category i').removeClass('fa-folder').addClass('fa-folder-open');
+        @endif
     });
     function set_jstree(jdata,parent_category_id)
     {
@@ -143,6 +148,7 @@
                     alert("resultFrame.show_crop_orginal NOT found");
                 $('#nva_orginal').tab('show');
                 $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
+                change_html_modal_picture_button('@lang('filemanager.crop_image')');
             });
 
             //---------------------------show large crop----------------------------------------------//
@@ -154,6 +160,7 @@
                     alert("resultFrame.show_crop_large NOT found");
                 $('#nva_large').tab('show');
                 $('#create_edit_picture_modal_button').attr('data-type','large') ;
+                change_html_modal_picture_button('@lang('filemanager.crop_image')');
             });
 
             //---------------------------show medium crop----------------------------------------------//
@@ -165,9 +172,19 @@
                     alert("resultFrame.show_crop_medium NOT found");
                 $('#nva_medium').tab('show');
                 $('#create_edit_picture_modal_button').attr('data-type','medium') ;
-
+                change_html_modal_picture_button('@lang('filemanager.crop_image')');
             });
-
+            //---------------------------Rename picture----------------------------------------------//
+            $(document).off('click', '#nav_rename');
+            $(document).on('click', '#nav_rename', function (e) {
+                if (typeof (iframe[0].contentWindow.rename_picture) == "function")
+                    iframe[0].contentWindow.rename_picture();
+                else
+                    alert("result_Functon.rename_picture NOT found");
+                $('#nav_rename').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','rename') ;
+                change_html_modal_picture_button('@lang('filemanager.rename_picture')');
+            });
             //---------------------------show small crop----------------------------------------------//
             $(document).off('click', '#nva_small');
             $(document).on('click', '#nva_small', function (e) {
@@ -177,13 +194,13 @@
                     alert("resultFrame.show_crop)small NOT found");
                 $('#nva_small').tab('show');
                 $('#create_edit_picture_modal_button').attr('data-type','small') ;
+                change_html_modal_picture_button('@lang('filemanager.crop_image')');
             });
 
             $(document).off('click', '#create_edit_picture_modal_button');
             $(document).on('click', '#create_edit_picture_modal_button', function (e) {
                 var type = $(this).attr('data-type');
                 var selector = iframe.contents().find('#crope_button_'+type);
-                console.log(selector,'#crop_button_'+type);
                 selector.click();
             });
 
@@ -191,8 +208,13 @@
                 $('#nva_orginal').tab('show');
                 $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
             });
-        });
+            //-----------------------------------------------------------------------------------------------------------//
+            function change_html_modal_picture_button(rename)
+            {
+                $('#create_edit_picture_modal_button').html(rename);
+            }
 
+        });
     });
     //---------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#EditFileName');
@@ -322,9 +344,9 @@
         else
         {
             swal({
-                type: 'error',
-                title: 'you cant inserted',
-                text: 'you cant inserted more than '+available +' file' ,
+                type: '@lang('filemanager.error')',
+                title: '@lang('filemanager.you_cant_inserted')',
+                text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file')' ,
             });
         }
     });

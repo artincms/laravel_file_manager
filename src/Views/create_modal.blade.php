@@ -23,9 +23,9 @@
             <div class="modal-header">
                 <h5 class="modal-title">{{$header}}</h5>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                <h2>You Reach Your Maximum File Inserted</h2>
-                <h5>for insert new file you should remove previus inserted file</h5>
+            <div class="modal-body " style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;text-align: center ;">
+                <h2>@lang('filemanager.you_reach_your_maximum_file_inserted')</h2>
+                <h5>@lang('filemanager.for_insert_new_file_you_should_remove_previus_inserted_file')</h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"  data-dismiss="modal">Ok</button>

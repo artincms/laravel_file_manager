@@ -70,7 +70,8 @@
                         confirmButtonText:'@lang('filemanager.ok')',
                     }).then((result) => {
                         if (result.value) {
-                        var res = send_croped(base64 , crop_type) ;
+                            $('#image_orginal').append(generate_loader_html('@lang('filemanager.please_wait')'));
+                            var res = send_croped(base64 , crop_type) ;
                             if (res)
                             {
                                 show_crop_orginal() ;
@@ -130,6 +131,7 @@
                     confirmButtonText:'@lang('filemanager.ok')',
                 }).then((result) => {
                     if (result.value) {
+                    $('#image_large').append(generate_loader_html('@lang('filemanager.please_wait')'));
                     var res = send_croped(base64 , crop_type) ;
                         if (res)
                         {
@@ -190,7 +192,8 @@
                     confirmButtonText:'@lang('filemanager.ok')',
                 }).then((result) => {
                     if (result.value) {
-                        var res = send_croped(base64 , crop_type) ;
+                    $('#image_medium').append(generate_loader_html('@lang('filemanager.please_wait')'));
+                    var res = send_croped(base64 , crop_type) ;
                         if (res)
                         {
                             show_crop_medium() ;
@@ -240,18 +243,21 @@
                     title: '@lang('filemanager.result')',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    reverseButtons: true,
-                    imageUrl: base64,
-                    imageWidth:width_small* rate_small,
-                    imageHeight:height_small * rate_small,
-                    cancelButtonText:'@lang('filemanager.cancel')',
-                    confirmButtonText:'@lang('filemanager.ok')',
-                }).then((result) => {
-                    if (result.value) {
+                cancelButtonColor: '#d33',
+                reverseButtons: true,
+                imageUrl: base64,
+                imageWidth:width_small* rate_small,
+                imageHeight:height_small * rate_small,
+                cancelButtonText:'@lang('filemanager.cancel')',
+                confirmButtonText:'@lang('filemanager.ok')',
+            }).then((result) => {
+                if (result.value) {
+                    $('#image_small').append(generate_loader_html('@lang('filemanager.please_wait')'));
                     var res = send_croped(base64 , crop_type) ;
                     if (res)
+                    //send crop imagte to database
                     {
+
                         show_crop_small() ;
                         parent.refresh();
                     }
@@ -260,34 +266,108 @@
             });
         });
     }
+
     //--------------------------------------------------------------------------------------------------------------//
-    //send crop imagte to database
-    function send_croped(base64 , crop_type) {
-        var res = false ;
+    // rename picture
+    $(document).off('click','#tab_rename');
+    $(document).on('click','#tab_rename',function () {
+        rename_picture();
+    });
+
+    $(document).off('click','#crope_button_rename');
+    $(document).on('click','#crope_button_rename',function (e) {
+        e.preventDefault() ;
+        var formElement = document.querySelector('#edit_picture_name');
+        var formData = new FormData(formElement);
+        $('#edit_picture_name').append(generate_loader_html('@lang('filemanager.please_wait')'));
+        save(formData);
+    });
+
+    function save(FormData) {
+        console.log(FormData);
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.StoreCropedImage')}}",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: "{{route('LFM.StoreEditPictureName')}}",
+            data: FormData,
             dataType: "json",
-            async: false,
-            data :{
-                file_id:{{ $file->id }} ,
-                category_id:{{ $file->category_id }} ,
-                crop_type : crop_type ,
-                crope_image : base64
-
-
-            },
+            processData: false,
+            contentType: false,
             success: function (result) {
-                if(result.success)
-                {
-                    res = true ;
+                if (result.success == true) {
+                    parent.refresh() ;
+                    $('#picture_name').val(result.name);
+                    $('#show_edit_picture_name_message').html('<div class="alert alert-success" role="alert">'+result.message+'</div>');
+                    $('.total_loader').remove();
                 }
             },
             error: function (e) {
+                $('.total_loader').remove();
             }
         });
-        return res ;
+    }
+    function rename_picture()
+    {
+        $('#show_edit_picture').html('' +
+            '<div class="rename" id = "rename_picture">  ' +
+            '   <div id="show_edit_picture_name_message"></div>' +
+            '   <form id="edit_picture_name" class="search-form edit_picture_name">' +
+            '       <input type="hidden" value="{{LFM_getEncodeId($file->id)}}" name="id">' +
+            '       <div class="form-group">' +
+            '          <label for="title" class="control-label">@lang('filemanager.name')</label> ' +
+            '           <input id="picture_name" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->originalName}}">' +
+            '           <button class="btn btn-primary hidden" id="crope_button_rename">@lang('filemanager.submit')</button>' +
+            '       </div>' +
+            '   </form>' +
+            '</div>');
     }
 
+
+    //--------------------------------------------------------------------------------------------------------------//
+
+    function send_croped(base64 , crop_type) {
+        var res = false ;
+        $.ajax({
+        type: "POST",
+        url: "{{route('LFM.StoreCropedImage')}}",
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        dataType: "json",
+        async: false,
+        data :{
+        file_id:{{ $file->id }} ,
+        category_id:{{ $file->category_id }} ,
+        crop_type : crop_type ,
+        crope_image : base64
+
+
+    },
+        success: function (result) {
+                if(result.success)
+                {
+                    parent.refresh() ;
+                    res = true ;
+                }
+            },
+        error: function (e) {
+            }
+    });
+        return res ;
+    }
+    function generate_loader_html(loading_text) {
+        var loader_html = '' +
+            '<div class="total_loader">' +
+            '   <div class="total_loader_content" style="">' +
+            '       <div class="spinner_area">' +
+            '           <div class="spinner_rects">' +
+            '               <div class="rect1"></div>' +
+            '               <div class="rect2"></div>' +
+            '               <div class="rect3"></div>' +
+            '               <div class="rect4"></div>' +
+            '               <div class="rect5"></div>' +
+            '           </div>' +
+            '       </div>' +
+            '       <div class="text_area">' + loading_text + '</div>' +
+            '   </div>' +
+            '</div>';
+        return loader_html;
+    }
 </script>

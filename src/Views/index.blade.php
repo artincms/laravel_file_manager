@@ -12,11 +12,13 @@
             <div id="js_tree_public_div">
                 <div id="jstree_category_public"></div>
             </div>
-            <hr/>
-            <div class="top_js_tree_folder link_to_category pointer" id="media_category" data-id="{{LFM_getEncodeId(0)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">@lang('filemanager.root_folder')</span></div>
-            <div id="js_tree_root_div">
-                <div id="jstree_category_root"></div>
-            </div>
+            @if(config('laravel_file_manager.allow_upload_private_file'))
+                <hr/>
+                <div class="top_js_tree_folder link_to_category pointer" id="media_category" data-id="{{LFM_getEncodeId($parent_id)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">@lang('filemanager.root_folder')</span></div>
+                <div id="js_tree_root_div">
+                    <div id="jstree_category_root"></div>
+                </div>
+            @endif
         </div>
         <hr/>
 
@@ -42,20 +44,20 @@
                                 <i class="fa fa-list"></i>
                             </label>
                         </div>
-                        <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId(0) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile float-left margin-left-1"
+                        <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile float-left margin-left-1"
                                data-toggle="modal"
                                data-target="#create_upload_modal">
                             <i class="fa fa-upload"></i>&nbsp;&nbsp;@lang('filemanager.upload')
                         </label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
                             <label class="btn btn-sm btn-success create_category" title="create new category"
-                                   href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId(0), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
+                                   href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                                    data-target="#create_category_modal">
                                 <i class="fa fa-folder"></i>&nbsp;&nbsp;@lang('filemanager.cat')
                             </label>
                         </div>
                         <label class="btn btn-sm margin-left-1 btn-primary grid-trash-o float-left" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
-                        <label class="btn btn-sm btn-primary grid-refresh float-left margin-left-1" id="refresh_page" data-id="{{LFM_getEncodeId(0)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
+                        <label class="btn btn-sm btn-primary grid-refresh float-left margin-left-1" id="refresh_page" data-id="{{LFM_getEncodeId($parent_id)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
                                data-callback="{{LFM_CheckFalseString($callback)}}" data-category-type="media"><i class="fa fa-refresh"></i></label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
                             @if($insert == 'insert')

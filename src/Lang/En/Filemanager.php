@@ -67,7 +67,23 @@ return [
     'click_to_copy' => "Click to Copy",
     'copy_public' => "Copy Public",
     'copied' => "Copied",
-    'row' => 'Row'
+    'row' => 'Row',
+    'rename_picture' => 'Rename Picture',
+    'submit' => 'Submit',
+    'error_not_allow_permition_to_create_category' => 'You are not permition to create category in this path',
+    'error' => 'error',
+    'are_you_sure' =>'Are you sure?',
+    'you_wont_be_able_to_revert_this' =>'You wont be able to revert this!',
+    'yes_delete_it' =>'Yes, delete it!',
+    'no_cancel' =>'No, cancel!',
+    'deleted' =>'Deleted',
+    'cancelled' =>'Cancelled',
+    'your_file_has_been_deleted' =>'Your file has been deleted.',
+    'you_reach_your_maximum_file_inserted' =>'You Reach Your Maximum File Inserted',
+    'for_insert_new_file_you_should_remove_previus_inserted_file' =>'for insert new file you should remove previus inserted file',
+    'you_cant_inserted' =>'you cant inserted',
+    'you_cant_inserted_more_than' =>'you cant inserted more than',
+    'file' => 'file',
 
 
 

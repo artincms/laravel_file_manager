@@ -295,13 +295,17 @@ li.inserted_tumb {
 }
 span#size {
     font-size: 13px;
-    padding-left: 4%;
+    padding-right: 4%;
+    direction: ltr;
 }
 #create_upload_modal_iframe {
     width: 100%;
     max-height: calc(100vh - 185px);
     border: none;
     height: calc(100vh - 185px);
+}
+.modal_body_inserted {
+    direction: rtl;
 }
 #modal_upload_div
 {

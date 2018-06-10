@@ -25,4 +25,4 @@
         @endforeach
     </ul>
 </div>
-@include('laravel_file_manager::selected.helpers.inline_js')vvvv
+@include('laravel_file_manager::selected.helpers.inline_js')

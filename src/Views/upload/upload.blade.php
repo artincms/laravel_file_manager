@@ -55,10 +55,8 @@
         }).on('filebatchpreupload', function(event, data, id, index) {
             $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
             $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
-            console.log('d');
         }).on('filebatchuploadsuccess', function(event, data) {
            complete(data);
-
         });
 
         function complete(data) {

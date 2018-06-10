@@ -38,6 +38,14 @@ class UploadController extends ManagerController
         {
             $CategoryID =LFM_GetDecodeId($request->category_id);
             $result = [];
+            if (!config('laravel_file_manager.allow_upload_private_file'))
+            {
+                if (!in_array($request->category_id,LFM_CreateArrayId(LFM_GetChildCategory([-2,-1]))))
+                {
+                    $result[]= ['successs'=>false , 'originalName' =>__('filemanager.error_not_allow_permition_to_create_category')];
+                    return response()->json($result);
+                }
+            }
             foreach ($request->file as $file)
             {
                 try {
@@ -65,6 +73,8 @@ class UploadController extends ManagerController
                     $result[]= ['successs'=>false , 'originalName' =>$originalName];
                 }
             }
+
+
 
             return response()->json($result);
         }

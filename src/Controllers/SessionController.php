@@ -56,7 +56,7 @@ class SessionController extends ManagerController
         {
             foreach ($request->items as $item)
             {
-                $status = LFM_FindSessionSelectedId($section['selected']['data'], $item['id']);
+                $status = LFM_FindSessionSelectedId($section['selected']['data'], LFM_GetDecodeId($item['id']));
                 if (!$status)
                 {
                     $data[] = $this->createData($request, $item);

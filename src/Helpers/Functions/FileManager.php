@@ -579,6 +579,32 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
     return $tree;
 }
 
+function LFM_GetChildCategory($array_id)
+{
+    $category = [];
+    $cats= \ArtinCMS\LFM\Models\Category::all();
+    foreach ($cats as $cat)
+    {
+        foreach ($array_id as $id)
+        {
+            if (in_array($id, LFM_GetAllParentId($cat->id)))
+            {
+                $category[] = $cat;
+            }
+        }
+    }
+    return $category ;
+}
+
+function LFM_CreateArrayId($array)
+{
+    $array_id = [] ;
+    foreach ($array as $value)
+    {
+        $array_id[] = $value->id ;
+    }
+    return $array_id ;
+}
 function LFM_GeneratePublicDownloadLink($path, $filename, $type = 'orginal')
 {
     $p = str_replace('public_folder/', '', $path);

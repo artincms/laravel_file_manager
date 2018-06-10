@@ -68,4 +68,35 @@ return [
     'copy_public' => "کپی آدرس عمومی",
     'copied' => "کپی شد",
     'row' => "ردیف",
+    'rename_picture' => 'تغییر نام',
+    'submit' => 'تایید',
+    'error_not_allow_permition_to_create_category' => 'دسترسی لازم برای ساخت پوشه در این مسیر وجود ندارد .',
+    'error' => 'خطا',
+    'are_you_sure' =>'آیا مایل به حذف هستید ؟',
+    'you_wont_be_able_to_revert_this' =>'این عملیات غیرقابل بازگشت میباشد !',
+    'yes_delete_it' =>'بله پاک شود !',
+    'no_cancel' =>'نه متشکرم !',
+    'deleted' =>'پاک شد',
+    'your_file_has_been_deleted' =>'فایل با موفقیت پاک گردید .',
+    'you_reach_your_maximum_file_inserted' =>'شما به حداکثر تعداد فایل های وارد شده رسیدید .',
+    'for_insert_new_file_you_should_remove_previus_inserted_file' =>'برای ثبت فایل جدید لطفا یک یا چند فایل قبلی را حذف نمایید .',
+    'you_cant_inserted' =>'اجازه ثبت فایل جدید را ندارید .',
+    'you_cant_inserted_more_than' =>'شما نمیتوانید ثبت کنید بیشتر از  ',
+    'file' => 'فایل',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

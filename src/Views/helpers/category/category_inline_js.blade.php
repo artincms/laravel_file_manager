@@ -55,9 +55,8 @@
                 }
             },
             error: function (e) {
-                console.log(e.responseJSON.errors);
-                    $('.total_loader').remove();
-                    $('#show_error').removeClass('hidden');
+                $('.total_loader').remove();
+                $('#show_error').removeClass('hidden');
                 $('#show_edit_category_error').html('');
                 $.each(e.responseJSON.errors,function (index,value) {
                     $('#show_edit_category_error').append('<li><span>'+index+':'+value+'</li>');

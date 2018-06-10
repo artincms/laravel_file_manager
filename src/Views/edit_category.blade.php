@@ -5,7 +5,7 @@
         </div>
     <form id="create_category_form" class="search-form filemanager_cateogry_form">
         {!! csrf_field() !!}
-        <input type="hidden" value="{{$category->id}}" name="id">
+        <input type="hidden" value="{{LFM_getEncodeId($category->id)}}" name="id">
         <div class="form-group">
             <label for="title" class="control-label">@lang('filemanager.title')</label>
             <input id="title" class="form-control" placeholder="@lang('filemanager.category_name_placeholder')" type="text" name="title" value="{{$category->title}}">

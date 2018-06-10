@@ -22,6 +22,7 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //edit photo
     Route::get('EditPicture/{file_id}', ['as' => 'LFM.EditPicture', 'uses' => 'ManagerController@editPicture']);
     Route::post('StoreCropedImage', ['as' => 'LFM.StoreCropedImage', 'uses' => 'ManagerController@storeCropedImage']);
+    Route::post('StoreEditPictureName', ['as' => 'LFM.StoreEditPictureName', 'uses' => 'ManagerController@storeEditPictureName']);
 
     //refresh content page
     Route::post('RefreshPage', ['as' => 'LFM.RefreshPage', 'uses' => 'ManagerController@RefreshPage']);
