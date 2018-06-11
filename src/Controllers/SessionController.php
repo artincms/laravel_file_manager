@@ -194,6 +194,7 @@ class SessionController extends ManagerController
                 {
                     $result['success'] = true;
                     $LFM[$section]['selected']['data'] = array_merge($LFM[$section]['selected']['data'], $data);
+                    session()->put('LFM', $LFM);
                     $LFM[$section]['selected']['view'] = LFM_SetInsertedView($request->section, $LFM[$section]['selected']['data']);
                     session()->put('LFM', $LFM);
                     return $result;

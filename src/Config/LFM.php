@@ -15,7 +15,7 @@ return [
     // ======================================================================
     //allow user to upload private file in filemanager
 
-    'allow_upload_private_file' => true ,
+    'allow_upload_private_file' => false ,
     // set true if you want log to the database
     'db-log' => true,
     'allowed' =>['application/zip', 'application/pdf', 'image/jpeg', 'image/png', 'image/x-icon', 'application/x-rar', 'application/vnd.ms-word.document.macroenabled.12','application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-excel.sheet.binary.macroenabled.12','application/vnd.ms-excel.sheet.macroenabled.12','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','audio/mpeg'] ,
@@ -31,7 +31,7 @@ return [
     //optomise Image
     'Optimise_image' => false,
     'symlink_public_folder_name' => 'public',
-    'insertde_view_theme' =>'bootstrap_v4', //you can select inline or bootstrap_v3 or bootstrap_v4
+    'insertde_view_theme' =>'inline', //you can select inline or bootstrap_v3 or bootstrap_v4
      'lang_rtl'    => [
         'ae',	/* Avestan */
         'ar',   /* 'العربية', Arabic */

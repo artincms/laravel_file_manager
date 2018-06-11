@@ -22,6 +22,7 @@ return [
     'root_folder' => "Root Folder",
     'public_folder' => "Pulic Folder",
     'share_folder' => "Share Folder",
+    'search' => "search",
     'search_placeholder' => "Search...",
     'close' => "Close",
     'submit_form' => "Submit Form",

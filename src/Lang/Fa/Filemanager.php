@@ -22,6 +22,7 @@ return [
     'root_folder' => "پوشه اصلی",
     'public_folder' => "پوشه عمومی",
     'share_folder' => "پوشه مشترک",
+    'search' => "جستجو",
     'search_placeholder' => "جستجو",
     'close' => "بستن",
     'submit_form' => "تایید",

@@ -267,8 +267,9 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                     $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                     $data[] = $res;
                 }
-                $view = LFM_SetInsertedView($section, $data);
                 $LFM[$section]['selected']['data'] = $data;
+                session()->put('LFM', $LFM);
+                $view = LFM_SetInsertedView($section, $data);
                 $LFM[$section]['selected']['view'] = $view;
                 session()->put('LFM', $LFM);
                 $result['data'] = $data;
@@ -390,8 +391,9 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                         $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                         $data[] = $res;
                     }
-                    $view = LFM_SetInsertedView($section, $data);
                     $LFM[$section]['selected']['data'] = $data;
+                    session()->put('LFM', $LFM);
+                    $view = LFM_SetInsertedView($section, $data);
                     $LFM[$section]['selected']['view'] = $view;
                     session()->put('LFM', $LFM);
 
@@ -582,12 +584,22 @@ function LFM_BuildMenuTree($flat_array, $pidKey, $openNodes = true, $selectedNod
 function LFM_GetChildCategory($array_id)
 {
     $category = [];
+    $array_parent_id = [];
     $cats= \ArtinCMS\LFM\Models\Category::all();
     foreach ($cats as $cat)
     {
+        //get parent
+        $array_parent_id = [];
+        $parent_id  = $cat->id ;
+        while ($parent_id !='#')
+        {
+            $subcat = \ArtinCMS\LFM\Models\Category::find($parent_id);
+            $array_parent_id[] = $subcat->id;
+            $parent_id = $subcat->parent_category_id ;
+        }
         foreach ($array_id as $id)
         {
-            if (in_array($id, LFM_GetAllParentId($cat->id)))
+            if (in_array($id,$array_parent_id))
             {
                 $category[] = $cat;
             }
