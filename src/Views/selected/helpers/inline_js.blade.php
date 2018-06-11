@@ -1,4 +1,8 @@
 <script>
+    $( document ).ready(function() {
+        {{LFM_CheckFalseString($section)}}_available  ={{LFM_CheckAllowInsert($section)['available']}} ;
+        console.log({{LFM_CheckFalseString($section)}}_available);
+    });
     $(document).off("click", '#{{$section}}_trash_inserted');
     $(document).on('click', '#{{$section}}_trash_inserted', function (e) {
         e.preventDefault();

@@ -4,7 +4,7 @@
             @if($breadcrumb['type'] =="DisableLink")
                 <li class="breadcrumb-item">{{$breadcrumb['title']}}</li>
             @else
-                <li class="breadcrumb-item"><a href="#" data-id="{{LFM_getEncodeId($breadcrumb['id'])}}" class="link_to_category">{{$breadcrumb['title']}}</a></li>
+                <li class="breadcrumb-item"><a href="#" data-id="{{LFM_getEncodeId($breadcrumb['id'])}}" id="show_grid">{{$breadcrumb['title']}}</a></li>
             @endif
         @endforeach
     </ol>
@@ -36,11 +36,11 @@
             <td>@if ($category->user) {{$category->user->name}}@else public @endif</td>
             <td>{{LFM_GetFoolderPath($category->id,$category->title)}}</td>
             <td>
-                <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="">
+                <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
                     <i class="fa fa-trash"></i>
                 </a>
-                <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit pull-right myicon" data-category-name="{{$category['title']}}" data-toggle="modal" data-target="#create_modal" id="EditCategory" data-type="category"
-                   data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="">
+                <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit pull-right myicon" data-category-name="{{$category['title']}}" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                   data-id="{{LFM_getEncodeId($category['id'])}}"  data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" >
                     <i class="fa fa-edit"></i>
                 </a>
             </td>
@@ -99,12 +99,12 @@
                 </a>
                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                     <a href="{{route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit pull-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                       data-toggle="modal" data-target="#create_modal">
+                       data-toggle="modal" data-target="#create_edit_picture_modal" data-file-name="{{$file['originalName']}}">
                         <i class="fa fa-edit"></i>
                     </a>
                 @else
                     <a href="{{route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit pull-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                       data-toggle="modal" data-target="#create_edit_file_name_modal">
+                       data-toggle="modal" data-target="#create_edit_file_name_modal"  data-file-name="{{$file['originalName']}}">
                         <i class="fa fa-edit"></i>
                     </a>
                 @endif

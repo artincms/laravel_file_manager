@@ -57,7 +57,7 @@
             $('#media_category i').removeClass('fa-folder-open').addClass('fa-folder');
 
         }
-        else if(parent_category_id ==0)
+        else if(parent_category_id ==0 || parent_category_id =='8M')
         {
             $('#media_category').addClass('jstree-root');
             $('#public_category').removeClass('jstree-root');
@@ -302,7 +302,21 @@
         var id = {{$parent_id}};
         if(value !='')
         {
+            $('#media_category').removeClass('jstree-root');
+            $('#public_category').removeClass('jstree-root');
+            $('#share_category').removeClass('jstree-root');
             search(id,value) ;
+        }
+        else
+        {
+            $('#refresh_page').attr('data-type','grid') ;
+            $('#show_grid_tab').tab('show') ;
+            $('#media_category').addClass('jstree-root');
+            $('#public_category').removeClass('jstree-root');
+            $('#share_category').removeClass('jstree-root');
+            $('#media_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            $('#public_category i').removeClass('fa-folder-open').addClass('fa-folder');
+            $('#share_category i').removeClass('fa-folder-open').addClass('fa-folder');
         }
     });
 
@@ -323,6 +337,7 @@
                 {
                     $( "#show_search_result" ).html(result.html);
                     $('#show_search_tab').tab('show') ;
+                    $('#refresh_page').attr('data-type','search') ;
                 }
             },
             error: function (e) {
@@ -344,7 +359,7 @@
         else
         {
             swal({
-                type: '@lang('filemanager.error')',
+                type: 'error',
                 title: '@lang('filemanager.you_cant_inserted')',
                 text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file')' ,
             });

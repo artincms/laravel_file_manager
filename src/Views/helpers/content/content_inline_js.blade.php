@@ -490,7 +490,6 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);
                     set_jstree(result.allCategories,result.parent_category_id);
-                    $('#search_media').val('');
                 }
             },
             error: function (e) {
@@ -504,11 +503,19 @@
         {
             $('#show_grid_tab').tab('show') ;
             $('#refresh_page').attr('data-type','grid') ;
+            $('#search_media').val('');
+        }
+        else if(type == 'search')
+        {
+            var value = $('#search_media').val() ;
+            var id = {{$parent_id}};
+            search(id,value) ;
         }
         else
         {
             $('#show_list_tab').tab('show') ;
             $('#refresh_page').attr('data-type','list') ;
+            $('#search_media').val('');
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------//
@@ -612,7 +619,6 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);
                     set_jstree(result.allCategories,result.parent_category_id);
-                    $('#search_media').val('');
                 }
             },
             error: function (e) {
@@ -676,7 +682,6 @@
                     set_tab_show(type);
                     set_inserted_to_button(0);//set no inserted
                     set_jstree(result.allCategories,result.parent_category_id);
-                    $('#search_media').val('');
                 }
             },
             error: function (e) {
