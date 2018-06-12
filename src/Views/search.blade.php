@@ -34,7 +34,7 @@
 
             </td>
             <td>@if ($category->user) {{$category->user->name}}@else public @endif</td>
-            <td>{{LFM_GetFoolderPath($category->id,$category->title)}}</td>
+            <td><a  data-id="{{LFM_getEncodeId($category['id'])}}" href="" class="link_to_category">{{LFM_GetFoolderPath($category->id,$category->title)}}</a></td>
             <td>
                 <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
                     <i class="fa fa-trash"></i>
@@ -92,7 +92,7 @@
                 @endif
             </td>
             <td>@if ($file->user) {{$file->user->name}}@else public @endif</td>
-            <td>{{LFM_GetFoolderPath($file->category_id,$file->category->title)}}</td>
+            <td><a class="link_to_category" href="" data-id="{{LFM_getEncodeId($file['category_id'])}}">{{LFM_GetFoolderPath($file->category_id,$file->category->title)}}</a></td>
             <td>
                 <a href="" class="grid-row-delete pull-right myicon" id="trashfile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}" data-parent-id="{{LFM_getEncodeId($file->category_id)}}">
                     <i class="fa fa-trash"></i>

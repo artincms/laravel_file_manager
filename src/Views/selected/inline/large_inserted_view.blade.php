@@ -5,18 +5,18 @@
                 <div style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;float: left">
                     <div>
                         @if(!$show)
-                            <a href="" style="float: left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                            <a target="_blank"  href="" style="float: left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                                 <i class="fa fa-trash" style="color: red;"></i>
                             </a>
                         @endif
                     </div>
                     <div style="margin-bottom: 3%;text-align: center">
                         @if($file_item['file']['icon'] == 'image')
-                            <a href="{{$file_item['full_url']}}">
+                            <a target="_blank"  href="{{$file_item['full_url']}}">
                                 <img  src="{{$file_item['full_url_large']}}" style=" width:300px;height:180px;">
                             </a>
                         @else
-                            <a href="{{$file_item['full_url']}}">
+                            <a target="_blank"  href="{{$file_item['full_url']}}">
                                 <i class="fa {{$file_item['file']['icon']}}" style="font-size: 148px;margin-top: 17%;margin-bottom: 3%;"></i>
                             </a>
                         @endif

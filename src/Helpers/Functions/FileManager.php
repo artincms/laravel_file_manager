@@ -605,6 +605,10 @@ function LFM_GetChildCategory($array_id)
             }
         }
     }
+    if (in_array(0,$array_id))
+    {
+        $category[] = \ArtinCMS\LFM\Models\Category::find(0);
+    }
     return $category ;
 }
 

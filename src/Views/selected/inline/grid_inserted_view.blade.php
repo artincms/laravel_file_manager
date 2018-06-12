@@ -15,10 +15,10 @@
             <tr id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li">
                 <td>{{$i}}</td>
                 @php($i++)
-                <td><a href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
+                <td><a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
                 @if(!$show)
                     <td>
-                        <a style="float:right;" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                        <a target="_blank"  style="float:right;" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                             <i class="fa fa-trash" style="color: red;"></i>
                         </a>
                     </td>

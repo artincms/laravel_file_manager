@@ -5,16 +5,16 @@
                 <div style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;">
                     <div class="insert_thumb_action">
                         @if(!$show)
-                            <a href="" class="pull-left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                            <a href="" target="_blank" class="pull-left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                                 <i class="fa fa-trash" style="color: red;"></i>
                             </a>
                         @endif
                     </div>
                     <div style="clear: both;">
                         @if($file_item['file']['icon'] == 'image')
-                            <a href="{{$file_item['full_url']}}"><img src="{{$file_item['full_url_medium']}}" style="height:125px ;width: 175px;"></a>
+                            <a target="_blank" href="{{$file_item['full_url']}}"><img src="{{$file_item['full_url_medium']}}" style="height:125px ;width: 175px;"></a>
                         @else
-                            <a href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-top: 8%;"></i></a>
+                            <a target="_blank" href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-top: 8%;"></i></a>
                         @endif
                     </div>
                     <div class="insert_thumb_info center">

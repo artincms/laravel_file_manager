@@ -9,6 +9,11 @@
     $(document).off("click", '.link_to_category');
     $(document).on('click', '.link_to_category', function (e) {
         e.preventDefault();
+        var type = $('#refresh_page').attr('data-type');
+        if(type == 'search')
+        {
+            $('#refresh_page').attr('data-type','list');
+        }
         $('.media-content').append(generate_loader_html('@lang('filemanager.please_wait')'));
         var id = $(this).attr('data-id');
         show_category(id);

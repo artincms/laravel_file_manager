@@ -4,12 +4,12 @@
         <div id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="float: left;background-color: white; padding: 0.5%;box-shadow: 1px 1px #cccccc;margin-top: 1%;    min-width: 45%;    margin: 1%;
             position: relative;display: inline-flex;vertical-align: middle;">
             @if(!$show)
-                <a href="" style="width: 8%;float: left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
+                <a target="_blank"  href="" style="width: 8%;float: left" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">
                     <i class="fa fa-trash" style="    color: red;"></i>
                 </a>
             @endif
             <div type="text" style="width: 66%;">
-                <a href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a>
+                <a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a>
             </div>
             <span style="float: right">{{$file_item['file']['size']}}</span>
         </div>
