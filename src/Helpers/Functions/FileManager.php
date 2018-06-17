@@ -207,12 +207,21 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
                 $arr_ids[$file['file']['id']] = ['type' => $type];
             }
         }
-        $res = $obj_model->$relation_name()->wherePivot('type', '=', $type)->$attach_type($arr_ids);
-        if ($res)
+        if ($arr_ids)
         {
+            $obj_model->$relation_name()->wherePivot('type', '=', $type)->$attach_type($arr_ids);
             LFM_DestroySection($section);
+            $result['success'] = true;
+            $result['data'] = $arr_ids;
         }
-        return $res;
+        else
+        {
+            $result['success'] = false;
+            $result['data'] = $arr_ids;
+        }
+
+
+        return $result;
     }
     else
     {
