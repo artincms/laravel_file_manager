@@ -84,6 +84,9 @@ return [
     'you_cant_inserted' =>'اجازه ثبت فایل جدید را ندارید .',
     'you_cant_inserted_more_than' =>'شما نمیتوانید ثبت کنید بیشتر از  ',
     'file' => 'فایل',
+    'please_run_seed_at_first' => 'لطفا ابتدا دستور seed زیر را اجرا نمایید .',
+    'for_windows' => 'برای ویندوز',
+    'for_linux' => 'برای لینوکس',
 
 
 

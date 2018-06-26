@@ -15,7 +15,7 @@ return [
     // ======================================================================
     //allow user to upload private file in filemanager
 
-    'allow_upload_private_file' => false ,
+    'allow_upload_private_file' => true ,
     // set true if you want log to the database
     'db-log' => true,
     'allowed' =>['application/zip', 'application/pdf', 'image/jpeg', 'image/png', 'image/x-icon', 'application/x-rar', 'application/vnd.ms-word.document.macroenabled.12','application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-excel.sheet.binary.macroenabled.12','application/vnd.ms-excel.sheet.macroenabled.12','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','audio/mpeg'] ,

@@ -718,6 +718,20 @@ function LFM_CheckAllowInsert($section_name)
     return $result;
 }
 
+function LFM_checkSeed()
+{
+    $category_id = [-2,-1,0,-5];
+    foreach ($category_id as $cat_id)
+    {
+        $res = \ArtinCMS\LFM\Models\Category::find($cat_id);
+        if (!$res)
+        {
+            return false ;
+        }
+    }
+    return true ;
+}
+
 function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = 'input file')
 {
     if (!$header)
@@ -739,8 +753,36 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
     $available = LFM_CheckAllowInsert($section)['available'];
-    $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
-    $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
+    if (LFM_checkSeed())
+    {
+        $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
+        $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
+
+    }
+    else
+    {
+        $html =  '<h1>'.__('filemanager.please_run_seed_at_first').'</h1><br/> ';
+        if (app()->getLocale()=="fa")
+        {
+            $html = '<div style="direction: rtl;text-align: right;">';
+        }
+        else
+        {
+            $html = '<div>';
+        }
+    $html = '
+            <h6>'.__('filemanager.for_windows').'</h6>
+            <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
+                php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder
+            </pre>
+             <h6>'.__('filemanager.for_linux').'</h6>
+            <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
+                 php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\FilemanagerTableSeeder
+            </pre>
+        </div>' ;
+        $result['modal_content'] =$html ;
+        $result['button']  = '' ;
+    }
     return $result;
 }
 

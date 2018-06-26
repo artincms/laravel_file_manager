@@ -85,6 +85,9 @@ return [
     'you_cant_inserted' =>'you cant inserted',
     'you_cant_inserted_more_than' =>'you cant inserted more than',
     'file' => 'file',
+    'please_run_seed_at_first' => 'Please Run Bellow Seed At First',
+    'for_windows' => 'For Windows',
+    'for_linux' => 'For Linux',
 
 
 
