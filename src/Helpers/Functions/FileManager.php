@@ -497,7 +497,7 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal'
 {
     if ($type == 'ID')
     {
-       $id = LFM_getEncodeId($id);
+        $id = LFM_getEncodeId($id);
     }
     return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
@@ -594,42 +594,43 @@ function LFM_GetChildCategory($array_id)
 {
     $category = [];
     $array_parent_id = [];
-    $cats= \ArtinCMS\LFM\Models\Category::all();
+    $cats = \ArtinCMS\LFM\Models\Category::all();
     foreach ($cats as $cat)
     {
         //get parent
         $array_parent_id = [];
-        $parent_id  = $cat->id ;
-        while ($parent_id !='#')
+        $parent_id = $cat->id;
+        while ($parent_id != '#')
         {
             $subcat = \ArtinCMS\LFM\Models\Category::find($parent_id);
             $array_parent_id[] = $subcat->id;
-            $parent_id = $subcat->parent_category_id ;
+            $parent_id = $subcat->parent_category_id;
         }
         foreach ($array_id as $id)
         {
-            if (in_array($id,$array_parent_id))
+            if (in_array($id, $array_parent_id))
             {
                 $category[] = $cat;
             }
         }
     }
-    if (in_array(0,$array_id))
+    if (in_array(0, $array_id))
     {
         $category[] = \ArtinCMS\LFM\Models\Category::find(0);
     }
-    return $category ;
+    return $category;
 }
 
 function LFM_CreateArrayId($array)
 {
-    $array_id = [] ;
+    $array_id = [];
     foreach ($array as $value)
     {
-        $array_id[] = $value->id ;
+        $array_id[] = $value->id;
     }
-    return $array_id ;
+    return $array_id;
 }
+
 function LFM_GeneratePublicDownloadLink($path, $filename, $type = 'orginal')
 {
     $p = str_replace('public_folder/', '', $path);
@@ -720,16 +721,16 @@ function LFM_CheckAllowInsert($section_name)
 
 function LFM_checkSeed()
 {
-    $category_id = [-2,-1,0,-5];
+    $category_id = [-2, -1, 0, -5];
     foreach ($category_id as $cat_id)
     {
         $res = \ArtinCMS\LFM\Models\Category::find($cat_id);
         if (!$res)
         {
-            return false ;
+            return false;
         }
     }
-    return true ;
+    return true;
 }
 
 function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = 'input file')
@@ -761,8 +762,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     else
     {
-        $html =  '<h1>'.__('filemanager.please_run_seed_at_first').'</h1><br/> ';
-        if (app()->getLocale()=="fa")
+        $html = '<h1>' . __('filemanager.please_run_seed_at_first') . '</h1><br/> ';
+        if (app()->getLocale() == "fa")
         {
             $html = '<div style="direction: rtl;text-align: right;">';
         }
@@ -770,18 +771,18 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
         {
             $html = '<div>';
         }
-    $html = '
-            <h6>'.__('filemanager.for_windows').'</h6>
+        $html = '
+            <h6>' . __('filemanager.for_windows') . '</h6>
             <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
                 php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder
             </pre>
-             <h6>'.__('filemanager.for_linux').'</h6>
+             <h6>' . __('filemanager.for_linux') . '</h6>
             <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
                  php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\FilemanagerTableSeeder
             </pre>
-        </div>' ;
-        $result['modal_content'] =$html ;
-        $result['button']  = '' ;
+        </div>';
+        $result['modal_content'] = $html;
+        $result['button'] = '';
     }
     return $result;
 }
@@ -801,24 +802,24 @@ function LFM_SetInsertedView($section, $data, $show = false)
     switch (config('laravel_file_manager.insertde_view_theme'))
     {
         case 'bootstrap_v4' :
-            $path = 'selected.bootstrap.bootstrap_v_4' ;
+            $path = 'selected.bootstrap.bootstrap_v_4';
             break;
         case 'bootstrap_v3' :
-            $path = 'selected.bootstrap.bootstrap_v_3' ;
+            $path = 'selected.bootstrap.bootstrap_v_3';
             break;
         case 'inline' :
-            $path = 'selected.inline' ;
+            $path = 'selected.inline';
             break;
 
         default :
-            $path = 'selected.bootstrap.bootstrap_v_4' ;
+            $path = 'selected.bootstrap.bootstrap_v_4';
             break;
     }
-    $view['list'] = view('laravel_file_manager::'.$path.'.list_inserted_view', compact('data', 'section', 'show'))->render();
-    $view['grid'] = view('laravel_file_manager::'.$path.'.grid_inserted_view', compact('data', 'section', 'show'))->render();
-    $view['small'] = view('laravel_file_manager::'.$path.'.small_inserted_view', compact('data', 'section', 'show'))->render();
-    $view['medium'] = view('laravel_file_manager::'.$path.'.medium_inserted_view', compact('data', 'section', 'show'))->render();
-    $view['large'] = view('laravel_file_manager::'.$path.'.large_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['list'] = view('laravel_file_manager::' . $path . '.list_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['grid'] = view('laravel_file_manager::' . $path . '.grid_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['small'] = view('laravel_file_manager::' . $path . '.small_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['medium'] = view('laravel_file_manager::' . $path . '.medium_inserted_view', compact('data', 'section', 'show'))->render();
+    $view['large'] = view('laravel_file_manager::' . $path . '.large_inserted_view', compact('data', 'section', 'show'))->render();
     return $view;
 }
 
@@ -854,10 +855,11 @@ function LFM_SetSelectedFileToSession($request, $section, $data)
     return $result;
 }
 
-function LFM_getEncodeId($id) {
-    if($id <0)
+function LFM_getEncodeId($id)
+{
+    if ($id < 0)
     {
-        return $id ;
+        return $id;
     }
     else
     {
@@ -867,7 +869,8 @@ function LFM_getEncodeId($id) {
 
 }
 
-function LFM_GetDecodeId($id,$route=false) {
+function LFM_GetDecodeId($id, $route = false)
+{
     $my_routes = [
         'LFM.DownloadFile',
         'LFM.ShowCategories',
@@ -878,23 +881,23 @@ function LFM_GetDecodeId($id,$route=false) {
         'LFM.FileUploadForm',
         'LFM.EditPicture',
         'LFM.Breadcrumbs',
-        ];
-    if((int)$id <0)
+    ];
+    if ((int)$id < 0)
     {
-        return (int)$id ;
+        return (int)$id;
     }
     else
     {
         $hashids = new \Hashids\Hashids(md5('sadeghi'));
         if ($route)
         {
-            if (in_array($route->getName(),$my_routes))
+            if (in_array($route->getName(), $my_routes))
             {
                 return $hashids->decode($id)[0];
             }
             else
             {
-                return $id ;
+                return $id;
             }
         }
         else
