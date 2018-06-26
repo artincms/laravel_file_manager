@@ -22,7 +22,7 @@
                 @endforeach
             </ol>
         </nav>
-        <div class="container-fluid">
+        <div class="container-fluid padding-0">
             <ul class="media-content clearfix col-md-12">
                 @if($category)
                     <li>
@@ -62,7 +62,7 @@
                     </li>
                 @endforeach
                 @foreach($files as $file)
-                        <li>
+                    <li>
                         <div class="media-attachment-info">
                             <div class="action margin-right-1">
                                 <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}" data-parent-id="{{LFM_getEncodeId($file->category_id)}}">
@@ -102,8 +102,8 @@
                                              data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
                                              data-humman_size_small="{{$file->humman_size_small}}"
                                              @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                                data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                                              @endif                                        />
+                                             data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                                                @endif                                        />
                                     </a>
                                 @elseif($file->filemimetype->icon_class)
                                     <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}"
@@ -112,10 +112,10 @@
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                        @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                            data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                                        @endif
-                                    ">
-                                        <i class="fa {{$file->filemimetype->icon_class}} img-file-thumbnail"></i></a>
+                                       data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                                @endif
+                                ">
+                                <i class="fa {{$file->filemimetype->icon_class}} img-file-thumbnail"></i></a>
                                 @else
                                     <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}"
                                        data-size="{{$file->size}}" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman-size_large="{{$file->humman_size_large}}"
@@ -123,8 +123,8 @@
                                        data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
                                        @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                            data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                                        @endif                                    >
+                                       data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                                            @endif                                    >
                                         <i class="fa fa-file img-file-thumbnail"></i></a>
                                 @endif
                             </div>
@@ -203,10 +203,10 @@
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                    data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                                @endif                        ">
-                            <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
-                            </a>
+                               data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                        @endif                        ">
+                        <i class="fa fa-image icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
+                        </a>
 
                         @elseif($file->filemimetype->icon_class)
                             <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}"
@@ -214,17 +214,17 @@
                                data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                    data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                                @endif                            ">
-                                <i class="fa {{$file->filemimetype->icon_class}} icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
+                               data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                        @endif                            ">
+                        <i class="fa {{$file->filemimetype->icon_class}} icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                         @else
                             <a title="{{$file['originalName']}}" href="" id="sweet_image" title="{{$file['originalName']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
-                                    data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
-                               @endif
+                               data-public-orginal-path = "{{$file->public_orginal_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
+                                    @endif
                             >
                                 <i class="fa fa-file icon_file_list margin-right-1"></i>{{$file['originalName']}}</a>
                         @endif

@@ -47,10 +47,13 @@ body {
 }
 .media-content li {
     float: right;
-    width: 192px;
+    width: 215px;
     border: 1px solid #eee;
     margin-bottom: 10px;
     margin-right: 5px;
+}
+ul.media-content {
+    min-height: 185px;
 }
 .panel.panel-headline .btn {
     color: #ffffff;
@@ -221,7 +224,7 @@ span#basic-insert {
     padding-top: 7%;
 }
 .border-doted-left-1{
-    border-left: 1px dotted !important;
+    border-right: 1px dotted !important;
     padding: 4%;
     min-width: 23px;
     font-size: 14px;
@@ -400,7 +403,6 @@ i.jstree-icon.jstree-themeicon:before {
     border: none;
 }
 .insert_span{
-    margin-right: 13%;
     font-size: 14px;
     font-weight: 600;
 }
@@ -417,6 +419,9 @@ i.jstree-icon.jstree-themeicon:before {
     max-height: calc(100vh - 290px);
     height: calc(100vh - 290px);
     border: none;
+}
+.line_height_20 {
+    line-height: 16px!important;
 }
 
 /*____________________________________ADD tooltip csss_______________________________________________*/

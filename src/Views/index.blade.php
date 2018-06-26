@@ -29,43 +29,44 @@
                 <div class="row">
                     <div class="col-md-9 col-sm-9">
                         <div class="btn-group float-left" data-toggle="buttons">
-                            <label class="btn btn-default btn-sm">
+                            <label class="btn btn-default btn-sm line_height_20">
                                 <a href="" id="select_all" class="selectbox">@lang('filemanager.select_all')</a>
                             </label>
-                            <label class="btn btn-sm btn-default selectbox ">
+                            <label class="btn btn-sm btn-default selectbox line_height_20 ">
                                 <a href="" id="select_none" class="selectbox">@lang('filemanager.none')</a>
                             </label>
                         </div>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
-                            <label class="btn btn-default btn-sm display active" id="show_grid">
+                            <label class="btn btn-default btn-sm display active line_height_20" id="show_grid">
                                 <i class="fa fa-th-large"></i>
                             </label>
-                            <label class="btn btn-default btn-sm display" id="show_list" data-id="0">
+                            <label class="btn btn-default btn-sm display line_height_20" id="show_list" data-id="0">
                                 <i class="fa fa-list"></i>
                             </label>
                         </div>
-                        <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile float-left margin-left-1"
+                        <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile float-left margin-left-1 line_height_20"
                                data-toggle="modal"
                                data-target="#create_upload_modal">
                             <i class="fa fa-upload"></i>&nbsp;&nbsp;@lang('filemanager.upload')
                         </label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
-                            <label class="btn btn-sm btn-success create_category" title="create new category"
+                            <label class="btn btn-sm btn-success create_category line_height_20" title="create new category"
                                    href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                                    data-target="#create_category_modal">
                                 <i class="fa fa-folder"></i>&nbsp;&nbsp;@lang('filemanager.cat')
                             </label>
                         </div>
-                        <label class="btn btn-sm margin-left-1 btn-primary grid-trash-o float-left" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
-                        <label class="btn btn-sm btn-primary grid-refresh float-left margin-left-1" id="refresh_page" data-id="{{LFM_getEncodeId($parent_id)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
+                        <label class="btn btn-sm margin-left-1 btn-primary grid-trash-o float-left line_height_20" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
+                        <label class="btn btn-sm btn-primary grid-refresh float-left margin-left-1 line_height_20" id="refresh_page" data-id="{{LFM_getEncodeId($parent_id)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
                                data-callback="{{LFM_CheckFalseString($callback)}}" data-category-type="media"><i class="fa fa-refresh"></i></label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
                             @if($insert == 'insert')
-                                <label class="btn btn-default btn-sm display" id="insert_file" data-value=0>
-                                    <i class="fa fa-share-square-o"><span class="insert_span">@lang('filemanager.insert')</span>
+                                <label class="btn btn-default btn-sm display line_height_20" id="insert_file" data-value=0>
+                                    <i class="fa fa-share-square-o">
                                     </i>
+                                    @lang('filemanager.insert')
                                 </label>
-                                <label class="btn-secondary btn-default" id="show_selected_item"></label>
+                                <label class="btn-secondary btn-default line_height_20" id="show_selected_item"></label>
                             @endif
                         </div>
                     </div>
