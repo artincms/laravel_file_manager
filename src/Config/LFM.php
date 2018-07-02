@@ -31,7 +31,7 @@ return [
     //optomise Image
     'Optimise_image' => false,
     'symlink_public_folder_name' => 'public',
-    'insertde_view_theme' =>'inline', //you can select inline or bootstrap_v3 or bootstrap_v4
+    'insertde_view_theme' =>'bootstrap_v4', //you can select inline or bootstrap_v3 or bootstrap_v4
      'lang_rtl'    => [
         'ae',	/* Avestan */
         'ar',   /* 'العربية', Arabic */
