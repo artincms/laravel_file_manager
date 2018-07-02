@@ -49,7 +49,7 @@ return [
     'please_wait' => "لطفا منتظر بمانید ...",
     'error_title_repeated' => "عنوان تکراری است",
     'edit_category' => "ویرایش مجموعه",
-    'more_upload' => "اپلود بیشتر",
+    'more_upload' => "آپلود بیشتر",
     'upload_status' => "وضعیت فایل های آپلود شده",
     'uploaded_file' => "آپلود فایل",
     'error_uploaded_file' => "خظا در اپلود فایل",
@@ -82,25 +82,10 @@ return [
     'you_reach_your_maximum_file_inserted' =>'شما به حداکثر تعداد فایل های وارد شده رسیدید .',
     'for_insert_new_file_you_should_remove_previus_inserted_file' =>'برای ثبت فایل جدید لطفا یک یا چند فایل قبلی را حذف نمایید .',
     'you_cant_inserted' =>'اجازه ثبت فایل جدید را ندارید .',
-    'you_cant_inserted_more_than' =>'شما نمیتوانید ثبت کنید بیشتر از  ',
+    'you_cant_inserted_more_than' =>'شما نمیتوانید بیشتر از  ',
     'file' => 'فایل',
     'please_run_seed_at_first' => 'لطفا ابتدا دستور seed زیر را اجرا نمایید .',
     'for_windows' => 'برای ویندوز',
     'for_linux' => 'برای لینوکس',
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    'file_insert' => 'فایل ثبت کنید',
 ];

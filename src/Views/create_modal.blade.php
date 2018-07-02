@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                    <iframe class="modal_iframe" src="{{$src}}" id="{{LFM_CheckFalseString($section)}}_iframe" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
+                    <iframe class="modal_iframe" src="" id="{{LFM_CheckFalseString($section)}}_iframe" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="close_button_{{LFM_CheckFalseString($modal_id)}}" data-dismiss="modal">@lang('filemanager.cancel')</button>
@@ -37,6 +37,8 @@
     var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
     $(document).off("click", '#{{$button_id}}');
     $(document).on('click', '#{{$button_id}}', function (e) {
+        var src = $(this).attr('data-href');
+        $('#{{LFM_CheckFalseString($section)}}_iframe').attr("src",src);
         if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
             $('#{{$modal_id}}').modal();
@@ -50,7 +52,7 @@
 
 
     //------------------------------------------------------------------------------------//
-
+    //------------------------------------------------------------------------------------//
     $(document).off("click", '#modal_insert_{{LFM_CheckFalseString($modal_id)}}');
     $(document).on('click', '#modal_insert_{{LFM_CheckFalseString($modal_id)}}', function (e) {
         var iframe = $('#{{LFM_CheckFalseString($section)}}_iframe');

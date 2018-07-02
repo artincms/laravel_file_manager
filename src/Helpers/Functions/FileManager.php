@@ -757,7 +757,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     if (LFM_checkSeed())
     {
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
-        $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
+        $result['button'] = '<button data-href="'.$src.'" type="button" class="btn btn-default"  id="' . $button_id . '">' . $button_content . '</button>';
 
     }
     else

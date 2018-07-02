@@ -361,7 +361,7 @@
             swal({
                 type: 'error',
                 title: '@lang('filemanager.you_cant_inserted')',
-                text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file')' ,
+                text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file_insert')' ,
             });
         }
     });

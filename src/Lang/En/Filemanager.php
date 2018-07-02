@@ -88,7 +88,5 @@ return [
     'please_run_seed_at_first' => 'Please Run Bellow Seed At First',
     'for_windows' => 'For Windows',
     'for_linux' => 'For Linux',
-
-
-
+    'file_insert' => 'file',
 ];
