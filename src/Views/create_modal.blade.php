@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                    <iframe class="modal_iframe" src="" id="{{LFM_CheckFalseString($section)}}_iframe" style="width: 100%;max-height:  calc(100vh - 195px) ;border: none;height:  calc(100vh - 195px) ;"></iframe>
+                <iframe class="modal_iframe" src="" id="{{LFM_CheckFalseString($section)}}_iframe" style="width: 100%;max-height:  calc(100vh - 195px) ;border: none;height:  calc(100vh - 195px) ;"></iframe>
             </div>
             <div class="modal-footer" style="background-color: #f5f5f5;border: 1px solid #e3e3e3;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
                                               box-shadow: inset 0 1px 1px rgba(0,0,0,.05);">
@@ -45,7 +45,7 @@
         $('#{{LFM_CheckFalseString($section)}}_iframe').attr("src",src);
         if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
-            $('#{{$modal_id}}').modal();
+            $('#{{$modal_id}}').modal('show');
             $( '#{{LFM_CheckFalseString($section)}}_iframe' ).attr( 'src', function ( i, val ) { return val; });
         }
         else
@@ -63,7 +63,7 @@
         iframe.contents().find("#insert_file").click();
         $('#create_{{$modal_id}}').modal('hide');
     });
-  //------------------------------------------------------------------------------------//
+    //------------------------------------------------------------------------------------//
 
     function hidemodal_{{$section}}() {
         $('#{{$modal_id}}').modal('hide');
