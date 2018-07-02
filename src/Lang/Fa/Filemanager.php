@@ -88,4 +88,7 @@ return [
     'for_windows' => 'برای ویندوز',
     'for_linux' => 'برای لینوکس',
     'file_insert' => 'فایل ثبت کنید',
+    'quality' => 'کیفیت',
+    'height' => 'ارتفاع',
+    'width' => 'عرض',
 ];

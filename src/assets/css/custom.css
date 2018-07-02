@@ -54,7 +54,9 @@ body {
     margin-bottom: 10px;
     margin-right: 5px;
 }
-
+.padding_top_9{
+    padding-top: 9%!important;
+}
 .panel.panel-headline .btn {
     color: #ffffff;
 }

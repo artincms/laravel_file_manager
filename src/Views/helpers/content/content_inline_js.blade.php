@@ -70,24 +70,24 @@
             '<div class="swal2-actions" style="display: flex;">' +
             '<div class="input-group dimension margin-top-1">' +
             '  <div class="input-group-prepend">' +
-            '    <span class="input-group-text width-100" id="basic-addon1">width</span>' +
+            '    <span class="input-group-text width-100 padding_top_9" id="basic-addon1">@lang('filemanager.width')</span>' +
             '  </div>' +
             '  <input data-id="'+id+'" type="text" class="form-control change_dimention" placeholder="Width" aria-label="width" name="width_picture" aria-describedby="basic-addon1" value="0" id="change_width">' +
             '</div>' +
             '<div class="input-group dimension margin-top-1">' +
             '  <div class="input-group-prepend">' +
-            '    <span class="input-group-text width-100" id="basic-addon1">Height</span>' +
+            '    <span class="input-group-text width-100 padding_top_9" id="basic-addon1">@lang('filemanager.height')</span>' +
             '  </div>' +
             '  <input data-id="'+id+'" type="text" class="form-control change_dimention" placeholder="Height" aria-label="height" name="height_picture" aria-describedby="basic-addon1" value="0" id="change_height">' +
             '</div>' +
             '<div class="input-group dimension margin-top-1">' +
             '  <div class="input-group-prepend">' +
-            '    <span class="input-group-text width-100" id="basic-addon1">Quality</span>' +
+            '    <span class="input-group-text width-100 padding_top_9" id="basic-addon1">@lang('filemanager.quality')</span>' +
             '  </div>' +
             '  <input data-id="'+id+'" type="text" class="form-control change_dimention" placeholder="quality" aria-label="quality" name="quality_picture" aria-describedby="basic-addon1" value="100" id="change_quality">' +
             '</div>' +
-            '   <button type="button" class="swal2-confirm btn pull-right swal2-styled font-size-14" aria-label="" style="border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214);" data-id="'+id+'" data-name="'+title+'" id="insert_btn">insert</button>' +
-            '   <button type="button" class="swal2-cancel swal2-styled font-size-14" aria-label="" style="display: inline-block;" id="cancel_footer_btn">Cancel</button>' ;
+            '   <button type="button" class="swal2-confirm btn pull-right swal2-styled font-size-14" aria-label="" style="border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214);" data-id="'+id+'" data-name="'+title+'" id="insert_btn">@lang('filemanager.insert')</button>' +
+            '   <button type="button" class="swal2-cancel swal2-styled font-size-14" aria-label="" style="display: inline-block;" id="cancel_footer_btn">@lang('filemanager.cancel')</button>' ;
         footer += ''+
             '</div>';
         var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_orginal_path,public_large_path,public_medium_path,public_small_path) ;
@@ -286,7 +286,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="large">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" target="_blank" href="'+src_large+'">large</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="large_link" class="color_white" target="_blank" href="'+src_large+'">@lang('filemanager.large')</a></span>' +
                     '</div>' +
                     '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="large_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_large" value="' + public_large_path + '">' +@endif
@@ -312,7 +312,7 @@
                     '    <div class="input-group-text">' +
                     '      <input type="radio"  name="selectimage" value="medium">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'" target="_blank">Medium</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="medium_link" class="color_white" href="'+src_medium+'" target="_blank">@lang('filemanager.medium')</a></span>' +
                     '</div>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="medium_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_medium" value="' + public_medium_path + '">' +@endif

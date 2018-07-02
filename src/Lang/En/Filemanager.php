@@ -89,4 +89,7 @@ return [
     'for_windows' => 'For Windows',
     'for_linux' => 'For Linux',
     'file_insert' => 'file',
+    'quality' => 'Quality',
+    'height' => 'Height',
+    'width' => 'Width',
 ];

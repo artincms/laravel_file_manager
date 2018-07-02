@@ -40,6 +40,9 @@ body {
 .media-manager {
     margin-top: 1%;
 }
+.padding_top_9{
+    padding-top:9%!important;
+}
 .list-unstyled, .chart-legend, .contacts-list, .users-list, .media-content {
     list-style: none;
     margin: 0;
