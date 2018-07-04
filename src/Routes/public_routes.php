@@ -10,6 +10,4 @@ Route::group(['prefix' => config('laravel_file_manager.public_route_prefix'), 'n
     Route::bind('category_id',function ($v,$r){
         return LFM_GetDecodeId($v,$r);
     });
-
-
 });
