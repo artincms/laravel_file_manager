@@ -92,4 +92,5 @@ return [
     'quality' => 'Quality',
     'height' => 'Height',
     'width' => 'Width',
+    'browse_file' => 'Browse File',
 ];

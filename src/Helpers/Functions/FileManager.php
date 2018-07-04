@@ -733,11 +733,11 @@ function LFM_checkSeed()
     return true;
 }
 
-function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = 'input file')
+function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content =false)
 {
     if (!$header)
     {
-        $header = __('filemanager.filemanager') . $section;
+        $header = __('filemanager.filemanager') ;
     }
     if (!$button_id)
     {
@@ -746,6 +746,10 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     if (!$modal_id)
     {
         $modal_id = 'FileManager_' . $section;
+    }
+    if (!$button_content)
+    {
+        $button_content = __('filemanager.browse_file') ;
     }
     if ($options)
     {

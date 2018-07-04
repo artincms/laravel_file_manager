@@ -91,4 +91,5 @@ return [
     'quality' => 'کیفیت',
     'height' => 'ارتفاع',
     'width' => 'عرض',
+    'browse_file' => 'انتخاب فایل',
 ];

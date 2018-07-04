@@ -19,12 +19,15 @@
         </div>
     </div>
 </div>
-<div class="modal fade " id="create_erro_modal" role="dialog">
+<div class="modal fade " id="create_erro_modal_{{$section}}" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="height: calc(100vh - 220px);">
             <div class="modal-header" style="background-color: #f5f5f5;border: 1px solid #e3e3e3;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
                                              box-shadow: inset 0 1px 1px rgba(0,0,0,.05);">
                 <h5 class="modal-title">{{$header}}</h5>
+                <button type="button" class="close close_error_modal_{{LFM_CheckFalseString($modal_id)}}" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;text-align: center ;">
                 <h2>@lang('filemanager.you_reach_your_maximum_file_inserted')</h2>
@@ -50,7 +53,7 @@
         }
         else
         {
-            $('#create_erro_modal').modal('show');
+            $('#create_erro_modal_{{$section}}').modal('show');
         }
     });
 
