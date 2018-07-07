@@ -142,7 +142,6 @@ for windows
                     name : "photo2017-04-1512-45-2"
                     quality : "100"
                     size : 60187
-                    title_file_disc : "fid_115_v0__uid_21_73cbaf0bc61f0ca763208c33312ed928_1526201846_jpeg"
                     type : "original"
                     user : "faramarz"
                     version : null

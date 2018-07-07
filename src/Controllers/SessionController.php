@@ -170,7 +170,6 @@ class SessionController extends ManagerController
             'width' => $item['width'],
             'height' => $item['height'],
             'quality' => $item['quality'],
-            'title_file_disc' => $file_title_disc,
             'created' => $file->created_at,
             'updated' => $file->updated_at,
             'user' => $user,

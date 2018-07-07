@@ -107,6 +107,4 @@ class DirectUploadController extends Controller
             return response()->json($data);
         }
     }
-
-
 }
