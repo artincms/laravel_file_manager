@@ -13,7 +13,7 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class Media
 {
-    public static function upload($file, $CustomPath = false, $CustomUID = False, $CategoryID, $FileMimeType, $originalName = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
+    public static function upload($file, $CustomPath = false, $CustomUID = False, $CategoryID, $FileMimeType, $original_name = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         $time = time();
         if (!$CustomUID)
@@ -57,13 +57,13 @@ class Media
                 $Path .= $parent->title_disc;
             }
         }
-        $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
-        $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
+        $original_nameWithoutExt = substr($original_name, 0, strlen($original_name) - strlen($extension) - 1);
+        $OriginalFileName = LFM_Sanitize($original_nameWithoutExt);
         $extension = LFM_Sanitize($extension);
 
         //save data to database
         $FileSave = new File;
-        $FileSave->originalName = $OriginalFileName;
+        $FileSave->original_name = $OriginalFileName;
         $FileSave->extension = $extension;
         $FileSave->file_mime_type_id = $FileMimeType->id;
         $FileSave->user_id = $CustomUID;
@@ -76,9 +76,9 @@ class Media
         $FileSave->created_by = $CustomUID;
         $FileSave->save();
         $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $CustomUID . '_' . md5_file($file) . "_" . $time . '_' . $extension;
-        $FullPath = $Path . '/files/orginal/' . $filename;
+        $FullPath = $Path . '/files/original/' . $filename;
 
-        //upload every files in orginal folder
+        //upload every files in original folder
         $file_content = \File::get($file);
         \Storage::disk(config('laravel_file_manager.driver_disk'))->put($FullPath, $file_content);
 
@@ -88,7 +88,7 @@ class Media
             $crop_database_name = self::resizeImageUpload($file, $FileSave, $FullPath, $filename);
             $is_picture = true;
             $FileSave->file_md5 = $crop_database_name['md5'];
-            $FileSave->filename = $crop_database_name['orginal'];
+            $FileSave->filename = $crop_database_name['original'];
             $FileSave->version = 0;
             $FileSave->large_filename = $crop_database_name['large'];
             $FileSave->large_version = 0;
@@ -96,7 +96,7 @@ class Media
             $FileSave->small_version = 0;
             $FileSave->medium_filename = $crop_database_name['medium'];
             $FileSave->medium_version = 0;
-            $FileSave->size = $crop_database_name['size_orginal'];
+            $FileSave->size = $crop_database_name['size_original'];
             $FileSave->large_size = $crop_database_name['size_large'];
             $FileSave->medium_size = $crop_database_name['size_medium'];
             $FileSave->small_size = $crop_database_name['size_small'];
@@ -120,26 +120,26 @@ class Media
                 'created' => $FileSave->created_at,
                 'updated' => $FileSave->updated_at,
                 'user' => $FileSave->user_id,
-                'originalName' => $OriginalFileName,
+                'original_name' => $OriginalFileName,
                 'is_picture' => $is_picture
             ];
         return $result;
     }
 
-    public static function resizeImageUpload($file, $FileSave, $FullPath, $orginal_name, $quality = 90)
+    public static function resizeImageUpload($file, $FileSave, $FullPath, $original_name, $quality = 90)
     {
         $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('media_folder/');
-        $orginal_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
+        $original_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $tmp_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('media_tmp_folder/');
         if (config('laravel_file_manager.Optimise_image'))
         {
             $optimizerChain = OptimizerChainFactory::create();
-            $optimizerChain->optimize($orginal_file . $FullPath);
+            $optimizerChain->optimize($original_file . $FullPath);
         }
         foreach (config('laravel_file_manager.crop_type') as $crop_type)
         {
             $target_path = $FileSave->path . '/files/' . $crop_type;
-            if ($crop_type != 'orginal')
+            if ($crop_type != 'original')
             {
                 $OptionIMG = config('laravel_file_manager.size_' . $crop_type);
                 $filename = 'fid_' . $FileSave->id . "_v0_" . '_uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($file) . "_" . time() . '_' . $FileSave->extension;
@@ -182,25 +182,25 @@ class Media
             }
             else
             {
-                $name['md5'] = md5_file($orginal_file . $FullPath);
-                $name['orginal'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
+                $name['md5'] = md5_file($original_file . $FullPath);
+                $name['original'] = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $name['md5'] . "_" . time() . '_' . $FileSave->extension;
                 if ($name['md5'] != $FileSave->file_md5)
                 {
                     $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size($FullPath);
-                    $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['orginal']);
-                    $name['size_orginal'] = $opt_size;
+                    $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move($FullPath, $FileSave->path . '/files/' . $crop_type . '/' . $name['original']);
+                    $name['size_original'] = $opt_size;
                 }
                 else
                 {
-                    $name['orginal'] = $orginal_name;
-                    $name['size_orginal'] = $FileSave->size;
+                    $name['original'] = $original_name;
+                    $name['size_original'] = $FileSave->size;
                 }
             }
         }
         return $name;
     }
 
-    public static function downloadById($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+    public static function downloadById($file_id, $size_type = 'original', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('media_tmp_folder');
@@ -218,7 +218,7 @@ class Media
             }
             else
             {
-                if ($size_type != 'orginal')
+                if ($size_type != 'original')
                 {
                     $filename = $file[$size_type . '_filename'];
                 }
@@ -235,7 +235,7 @@ class Media
             //check if exist in tmp folder
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($relative_tmp_path))
             {
-                $res = response()->download($tmp_path, $file->originalName . '.' . $file_EXT, $headers);
+                $res = response()->download($tmp_path, $file->original_name . '.' . $file_EXT, $headers);
             }
             else
             {
@@ -314,7 +314,7 @@ class Media
         return $res;
     }
 
-    public static function downloadByName($FileName, $not_found_img = '404.png', $size_type = 'orginal', $inline_content = false, $quality = 90, $width = false, $height = False)
+    public static function downloadByName($FileName, $not_found_img = '404.png', $size_type = 'original', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $file = File::where('filename', '=', $FileName)->first();
         if ($file)
@@ -349,10 +349,10 @@ class Media
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         switch ($crop_type)
         {
-            case "orginal":
+            case "original":
                 $FileSave->version++;
                 $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path . '/' . $FileSave->path . '/files/orginal/' . $filename, base64_decode($data));
+                \File::put($base_path . '/' . $FileSave->path . '/files/original/' . $filename, base64_decode($data));
                 $FileSave->filename = $filename;
                 $FileSave->file_md5 = md5(base64_decode($data));
                 break;
@@ -376,7 +376,7 @@ class Media
                 break;
         }
         $FileSave->save();
-        $result = array('ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'OrginalFileName' => $FileSave->OriginalFileName);
+        $result = array('ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'originalFileName' => $FileSave->OriginalFileName);
         return $result;
     }
 
@@ -396,14 +396,14 @@ class Media
         $mimeType = $FileMimeType->mimeType;
         $path .= '/';
         $is_picture = false;
-        $originalName = $file->getClientOriginalName();
-        $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
-        $OriginalFileName = LFM_Sanitize($originalNameWithoutExt);
+        $original_name = $file->getClientOriginalName();
+        $original_nameWithoutExt = substr($original_name, 0, strlen($original_name) - strlen($extension) - 1);
+        $OriginalFileName = LFM_Sanitize($original_nameWithoutExt);
         $extension = LFM_Sanitize($extension);
 
         //save data to database
         $FileSave = new File;
-        $FileSave->originalName = $OriginalFileName;
+        $FileSave->original_name = $OriginalFileName;
         $FileSave->extension = $extension;
         $FileSave->file_mime_type_id = $FileMimeType->id;
         $FileSave->user_id = $user_id;
@@ -433,7 +433,7 @@ class Media
         {
             $username = 'Public';
         }
-        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'originalName' => $OriginalFileName, 'is_picture' => $is_picture);
+        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'original_name' => $OriginalFileName, 'is_picture' => $is_picture);
         if (in_array($FileSave->mimeType, config('laravel_file_manager.allowed_pic')))
         {
             $result['icon'] = 'image';

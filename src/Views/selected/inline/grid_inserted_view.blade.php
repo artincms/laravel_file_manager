@@ -15,7 +15,7 @@
             <tr id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li">
                 <td>{{$i}}</td>
                 @php($i++)
-                <td><a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
+                <td><a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['original_name']}}</a></td>
                 @if(!$show)
                     <td>
                         <a target="_blank"  style="float:right;" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">

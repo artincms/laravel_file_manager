@@ -139,15 +139,15 @@
         var iframe = $('#modal_iframe_edit_picture');
         iframe.attr("src",src);
         iframe.on("load", function() {
-            //---------------------------show orginal----------------------------------------------//
-            $(document).off('click', '#nva_orginal');
-            $(document).on('click', '#nva_orginal', function (e) {
-                if (typeof (iframe[0].contentWindow.show_crop_orginal) == "function")
-                    iframe[0].contentWindow.show_crop_orginal();
+            //---------------------------show original----------------------------------------------//
+            $(document).off('click', '#nva_original');
+            $(document).on('click', '#nva_original', function (e) {
+                if (typeof (iframe[0].contentWindow.show_crop_original) == "function")
+                    iframe[0].contentWindow.show_crop_original();
                 else
-                    alert("resultFrame.show_crop_orginal NOT found");
-                $('#nva_orginal').tab('show');
-                $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
+                    alert("resultFrame.show_crop_original NOT found");
+                $('#nva_original').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','original') ;
                 change_html_modal_picture_button('@lang('filemanager.crop_image')');
             });
 
@@ -205,8 +205,8 @@
             });
 
             $("#create_edit_picture_modal").on("hidden.bs.modal", function () {
-                $('#nva_orginal').tab('show');
-                $('#create_edit_picture_modal_button').attr('data-type','orginal') ;
+                $('#nva_original').tab('show');
+                $('#create_edit_picture_modal_button').attr('data-type','original') ;
             });
             //-----------------------------------------------------------------------------------------------------------//
             function change_html_modal_picture_button(rename)
@@ -386,7 +386,7 @@
         var width = $('#change_width').val() || 0;
         var height  = $('#change_height').val() || 0 ;
         var quality = $('#change_quality').val() || 100;
-        var type  = $('input[name=selectimage]:checked').val() || 'orginal' ;
+        var type  = $('input[name=selectimage]:checked').val() || 'original' ;
         var datas = [{id:id , width : width , height:height , quality : quality , type : type}] ;
         var result = create_insert_data(datas) ;
         $('#cancel_footer_btn').click();
@@ -466,7 +466,7 @@
     }
 
     function download_url(id , type,img,quality,width,height) {
-        var typ_file = type || 'orginal' ;
+        var typ_file = type || 'original' ;
         var default_img = img || '404.png' ;
         var quality_file = quality || 90 ;
         var width_file = width || 0 ;

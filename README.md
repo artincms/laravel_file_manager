@@ -143,15 +143,15 @@ for windows
                     quality : "100"
                     size : 60187
                     title_file_disc : "fid_115_v0__uid_21_73cbaf0bc61f0ca763208c33312ed928_1526201846_jpeg"
-                    type : "orginal"
+                    type : "original"
                     user : "faramarz"
                     version : null
                     width:  "0"
                 },
-                full_url: "http://127.0.0.1:8000/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0",
+                full_url: "http://127.0.0.1:8000/LFM/DownloadFile/ID/115/original/404.png/100/0/0",
                 message: "File with ID :115 Inserted",
                 success:true
-                url: "/LFM/DownloadFile/ID/115/orginal/404.png/100/0/0",
+                url: "/LFM/DownloadFile/ID/115/original/404.png/100/0/0",
                 full_url_large:"http://127.0.0.1:8000/LFM/DownloadFile/ID/24/small/404.png/100/300/180",
                 full_url_medium:"http://127.0.0.1:8000/LFM/DownloadFile/ID/24/medium/404.png/100/300/180",
             }
@@ -264,7 +264,7 @@ LFM_ShowingleFile($obj_model, $column_name, $column_option_name)
 <li>if you want generate file link with ID the $type = 'ID' and if you want generate by name you can use $type = 'Name'
 </li>
 <li>$id : if you want generate link with id you should fill this item with file id and default is -1 that reffer no file id selected .</li>
-<li>$size_type can pick one on of : orginal , large , medium , small that reffer which size you want to download</li>
+<li>$size_type can pick one on of : original , large , medium , small that reffer which size you want to download</li>
 <li>if image not found with $default_img you can choose image you want to show , default is '404.png'</li>
 <li>$quality is quality of image , it is between 0 and 100 . </li>
 <li>$width is width of result image</li>

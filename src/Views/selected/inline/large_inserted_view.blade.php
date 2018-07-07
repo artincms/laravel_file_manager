@@ -24,7 +24,7 @@
                     <div>
                         <div>
                             <div style="width: 100%;">
-                                <h4>{{$file_item['file']['originalName']}}</h4>
+                                <h4>{{$file_item['file']['original_name']}}</h4>
                             </div>
 
                             <i style="width: 50%;float: left;text-align: left;" class="fa fa-calendar-plus-o" aria-hidden="true">

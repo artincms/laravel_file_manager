@@ -1,62 +1,62 @@
 <script type="text/javascript">
     //-------------------------------------------------------------------------------------------------------------//
-    //show orginal tab
+    //show original tab
     $(document).ready(function() {
-        show_crop_orginal();
+        show_crop_original();
     });
     $(document).off('click','#tab_img_large');
     $(document).on('click','#tab_img_large',function () {
-        show_crop_orginal();
+        show_crop_original();
     });
-    function show_crop_orginal()
+    function show_crop_original()
     {
-        $('#show_edit_picture').html('<div class="crop_orginal" id = "image_orginal"><img id="img_orginal" src="{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}"></div>');
-            var width_orginal = $('#img_orginal').width();
-            var height_orginal = $('#img_orginal').height();
-            if(width_orginal == 0 || height_orginal == 0)
+        $('#show_edit_picture').html('<div class="crop_original" id = "image_original"><img id="img_original" src="{{LFM_GenerateDownloadLink('ID',$file->id,'original')}}"></div>');
+            var width_original = $('#img_original').width();
+            var height_original = $('#img_original').height();
+            if(width_original == 0 || height_original == 0)
             {
-                width_orginal = 800 ;
-                height_orginal = 600 ;
+                width_original = 800 ;
+                height_original = 600 ;
             }
 
-            var width_orginal_div = $('#image_orginal').width() ;
-            console.log(width_orginal,height_orginal,width_orginal_div);
-            var rate_orginal = width_orginal / height_orginal;
-            if(width_orginal_div < width_orginal)
+            var width_original_div = $('#image_original').width() ;
+            console.log(width_original,height_original,width_original_div);
+            var rate_original = width_original / height_original;
+            if(width_original_div < width_original)
             {
-                width_orginal = width_orginal_div ;
-                var width_rate = width_orginal / width_orginal_div ;
-                height_orginal = width_rate * height_orginal ;
+                width_original = width_original_div ;
+                var width_rate = width_original / width_original_div ;
+                height_original = width_rate * height_original ;
             }
 
-            if (rate_orginal > 1) {
-                var width_orginal_viewport = width_orginal/rate_orginal;
-                var height_orginal_viewport = height_orginal/rate_orginal;
+            if (rate_original > 1) {
+                var width_original_viewport = width_original/rate_original;
+                var height_original_viewport = height_original/rate_original;
             }
-            else if(rate_orginal == 1){
-                var width_orginal_viewport = width_orginal * 0.8;
-                var height_orginal_viewport = height_orginal* 0.8;
+            else if(rate_original == 1){
+                var width_original_viewport = width_original * 0.8;
+                var height_original_viewport = height_original* 0.8;
             }
             else
             {
-                var width_orginal_viewport = width_orginal*rate_orginal;
-                var height_orginal_viewport = height_orginal*rate_orginal;
+                var width_original_viewport = width_original*rate_original;
+                var height_original_viewport = height_original*rate_original;
             }
-            $('#img_orginal').addClass('hidden') ;
-            var crop_orginal = document.getElementById('image_orginal');
-            var orginal_croppie = new Croppie(crop_orginal, {
+            $('#img_original').addClass('hidden') ;
+            var crop_original = document.getElementById('image_original');
+            var original_croppie = new Croppie(crop_original, {
                 enableExif: true,
-                viewport: {width: width_orginal_viewport, height:  height_orginal_viewport},
-                boundary: {width: width_orginal, height: height_orginal},
+                viewport: {width: width_original_viewport, height:  height_original_viewport},
+                boundary: {width: width_original, height: height_original},
             });
-            orginal_croppie.bind({
-                url: "{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}",
+            original_croppie.bind({
+                url: "{{LFM_GenerateDownloadLink('ID',$file->id,'original')}}",
             });
-            $(".crop_orginal").append('<button type="button" id="crope_button_orginal" class="btn btn-primary hidden"></button>');
-            $(document).off("click", '#crope_button_orginal');
-            $(document).on('click', '#crope_button_orginal', function () {
-                    orginal_croppie.result('base64').then(function(base64) {
-                    crop_type = 'orginal' ;
+            $(".crop_original").append('<button type="button" id="crope_button_original" class="btn btn-primary hidden"></button>');
+            $(document).off("click", '#crope_button_original');
+            $(document).on('click', '#crope_button_original', function () {
+                    original_croppie.result('base64').then(function(base64) {
+                    crop_type = 'original' ;
                     swal({
                         title: '@lang('filemanager.result')',
                         showCancelButton: true,
@@ -64,17 +64,17 @@
                         cancelButtonColor: '#d33',
                         reverseButtons: true,
                         imageUrl: base64,
-                        imageWidth:width_orginal_viewport,
-                        imageHeight:height_orginal_viewport,
+                        imageWidth:width_original_viewport,
+                        imageHeight:height_original_viewport,
                         cancelButtonText:'@lang('filemanager.cancel')',
                         confirmButtonText:'@lang('filemanager.ok')',
                     }).then((result) => {
                         if (result.value) {
-                            $('#image_orginal').append(generate_loader_html('@lang('filemanager.please_wait')'));
+                            $('#image_original').append(generate_loader_html('@lang('filemanager.please_wait')'));
                             var res = send_croped(base64 , crop_type) ;
                             if (res)
                             {
-                                show_crop_orginal() ;
+                                show_crop_original() ;
                             }
                         }
                     });
@@ -314,7 +314,7 @@
             '       <input type="hidden" value="{{LFM_getEncodeId($file->id)}}" name="id">' +
             '       <div class="form-group">' +
             '          <label for="title" class="control-label">@lang('filemanager.name')</label> ' +
-            '           <input id="picture_name" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->originalName}}">' +
+            '           <input id="picture_name" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->original_name}}">' +
             '           <button class="btn btn-primary hidden" id="crope_button_rename">@lang('filemanager.submit')</button>' +
             '       </div>' +
             '   </form>' +

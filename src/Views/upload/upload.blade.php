@@ -64,11 +64,11 @@
             console.log(data);
             $.each(data.response, function (index, value) {
                 if (value.success) {
-                    var fname = value.file.originalName;
+                    var fname = value.file.original_name;
                     out = out + '<div class="alert alert-success">' + '@lang('filemanager.uploaded_file') # ' + (index + 1) + ' - ' + fname + ' @lang('filemanager.successfully').' + '</div>';
                 }
                 else {
-                    var fname = value.originalName;
+                    var fname = value.original_name;
                     out = out + '<div class="alert alert-danger">' + '@lang('filemanager.error_uploaded_file') # ' + (index + 1) + ' - ' + fname ;
                 }
                 if (typeof parent.refresh !== 'undefined') {

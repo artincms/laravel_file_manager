@@ -9,7 +9,7 @@
         <input type="hidden" value="{{$file->id}}" name="id">
         <div class="form-group">
             <label for="title" class="control-label">@lang('filemanager.name')</label>
-            <input id="title" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->originalName}}">
+            <input id="title" class="form-control" placeholder="@lang('filemanager.file_name_placeholder')" type="text" name="name" value="{{$file->original_name}}">
         </div>
         <button class="btn btn-primary hidden" id="btn_submit_update_file_name"></button>
         <button class="btn btn-primary hidden" id="btn_submit_update_file_name_close"></button>

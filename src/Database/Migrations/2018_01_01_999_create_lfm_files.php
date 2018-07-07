@@ -18,7 +18,7 @@ class CreateLFMFiles extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('category_id');
             $table->integer('file_mime_type_id')->unsigned();
-            $table->string('originalName', 255)->nullable()->default(null);
+            $table->string('original_name', 255)->nullable()->default(null);
             $table->string('extension', 255)->nullable()->default(null);
             $table->string('mimeType', 255)->nullable()->default(null);
             $table->string('path', 255)->nullable()->default(null);

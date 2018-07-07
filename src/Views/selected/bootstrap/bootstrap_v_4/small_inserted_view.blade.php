@@ -8,7 +8,7 @@
                 </a>
             @endif
             <div type="text" class="col-md-8">
-                <a target="_blank" href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a>
+                <a target="_blank" href="{{$file_item['full_url']}}">{{$file_item['file']['original_name']}}</a>
             </div>
             <span class="pull-right">{{$file_item['file']['size']}}</span>
         </div>

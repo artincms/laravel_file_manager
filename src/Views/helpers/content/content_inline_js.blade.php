@@ -52,7 +52,7 @@
         var updated_date = $(this).attr('data-updated-date');
         var type = $(this).attr('data-type') ;
         var icon = $(this).attr('data-icon') ;
-        var src_orginal = download_url(id,'orginal');
+        var src_original = download_url(id,'original');
         var src_large = download_url(id,'large');
         var src_medium = download_url(id,'medium');
         var src_small = download_url(id,'small');
@@ -62,7 +62,7 @@
         var humman_size_large = $(this).attr('data-humman_size_large');
         var humman_size_medium = $(this).attr('data_humman_size_medium');
         var humman_size_small = $(this).attr('data-humman_size_small');
-        var public_orginal_path = $(this).attr('data-public-orginal-path');
+        var public_original_path = $(this).attr('data-public-original-path');
         var public_large_path = $(this).attr('data-public-large-path');
         var public_medium_path = $(this).attr('data-public-medium-path');
         var public_small_path = $(this).attr('data-public-small-path');
@@ -90,7 +90,7 @@
             '   <button type="button" class="swal2-cancel swal2-styled font-size-14" aria-label="" style="display: inline-block;" id="cancel_footer_btn">@lang('filemanager.cancel')</button>' ;
         footer += ''+
             '</div>';
-        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_orginal_path,public_large_path,public_medium_path,public_small_path) ;
+        var html = create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_original,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_original_path,public_large_path,public_medium_path,public_small_path) ;
         if (insert == 'insert' && type == 'Image' )
         {
             swal({
@@ -135,14 +135,14 @@
         },2000 ) ;
     }
 
-    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_orginal,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_orginal_path,public_large_path,public_medium_path,public_small_path) {
+    function create_html(id,insert,title,user_name,created_date,updated_date,type,icon,src_original,src_large,src_medium,src_small,src_img,humman_size,humman_size_large,humman_size_medium,humman_size_small,public_original_path,public_large_path,public_medium_path,public_small_path) {
         var parent_cat_name = $('#refresh_page').attr('data-category-name');
         var html =
             '' +
             '<div class="row">' +
             '<div class="demos col-md-6 sweet_icon">';
         if (type == "Image") {
-            html += '<div data-title="' + title + '" data-caption="create at :' + created_date + ' by ' + user_name + '" class="demo-image first my_crop_image" data-image="' + src_orginal + '" >' +
+            html += '<div data-title="' + title + '" data-caption="create at :' + created_date + ' by ' + user_name + '" class="demo-image first my_crop_image" data-image="' + src_original + '" >' +
                 '<img data-id="'+id+'" src="' + src_img + '"  class="my_crop_image" onload="init_fullscreen()" >' +
                 '</div>';
         }
@@ -161,32 +161,32 @@
             if (insert != 'insert') {
                 html +=
                     '<div class="input-group margin-top-1">' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">@lang('filemanager.orginal')</a></span>' +
-                    '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
-                        @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="orginal_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_orginal" value="' + public_orginal_path + '">' +@endif
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="original_link" target="_blank" class="color_white" href="'+src_original+'">@lang('filemanager.original')</a></span>' +
+                    '   <input type="text" name="original_path" disabled class="form-control col-md-9" id="original" value="' + src_original + '">' +
+                        @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="original_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_original" value="' + public_original_path + '">' +@endif
                     '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
-                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></button>' +
+                    '   <button id="copy_path" class="btn btn-default" data-clipboard-target="original" ><i class="fa fa-copy"></i></button>' +
                     '   <span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                     '</div>' ;
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                             '<div class="tooltip_copy input-group-append">' +
-                            '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                            '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_original" ><i class="fa fa-copy"></i></button>' +
                             '   <span class="tooltiptext tootltip_public_path" id="myTooltip">@lang('filemanager.copy_public')</span>' +
                             '</div>' ;
                     @endif
                     html +=
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_large+'">@lang('filemanager.large')</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="original_link" target="_blank" class="color_white" href="'+src_large+'">@lang('filemanager.large')</a></span>' +
                     '   <input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="large_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_large" value="' + public_large_path + '">' +@endif
 
                             '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_large+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_large+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
                     '   <button id="copy_path" class="btn btn-default" data-clipboard-target="large" ><i class="fa fa-copy"></i></button>' +
@@ -202,11 +202,11 @@
                      html +=
                     '</div>' +
                     '<div class="input-group margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_medium+'">@lang('filemanager.medium')</a></span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="original_link" target="_blank" class="color_white" href="'+src_medium+'">@lang('filemanager.medium')</a></span>' +
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                      @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="medium_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_medium" value="' + public_medium_path + '">' +@endif
                      '<div class="input-group-append width_22">' +
-                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_medium+'</span>'+
+                    '<span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_medium+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
                     '<button id="copy_path" class="btn btn-default" data-clipboard-target="medium" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
@@ -221,11 +221,11 @@
                     html +=
                     '</div>' +
                     '<div class="input-group clearfix margin-top-1">' +
-                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="orginal_link" target="_blank" class="color_white" href="'+src_small+'">@lang('filemanager.small')</a></span>' +
+                    '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="original_link" target="_blank" class="color_white" href="'+src_small+'">@lang('filemanager.small')</a></span>' +
                     '<input type="text" name="small_path" disabled class="form-control col-md-9" id="small" value="' + src_small + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="small_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_small" value="' + public_small_path + '">' +@endif
                             '<div class="input-group-append width_22">' +
-                    '<span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_small+'</span>'+
+                    '<span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_small+'</span>'+
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
                     '<button id="copy_path" class="btn btn-default" data-clipboard-target="small" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
@@ -258,23 +258,23 @@
                     '<div class="input-group margin-top-1">' +
                     '<div class="input-group-prepend width-30">' +
                     '    <div class="input-group-text">' +
-                    '      <input type="radio" name="selectimage" value="orginal">' +
+                    '      <input type="radio" name="selectimage" value="original">' +
                     '    </div>' +
-                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="orginal_link" target="_blank" class="color_white" href="'+src_orginal+'">@lang('filemanager.orginal')</a></span>' +
+                    '   <span class="input-group-addon btn-primary color_white" id="basic-insert"><a id="original_link" target="_blank" class="color_white" href="'+src_original+'">@lang('filemanager.original')</a></span>' +
                     '</div>' +
-                    '   <input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
-                        @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="orginal_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_orginal" value="' + public_orginal_path + '">' +@endif
+                    '   <input type="text" name="original_path" disabled class="form-control col-md-9" id="original" value="' + src_original + '">' +
+                        @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="original_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_original" value="' + public_original_path + '">' +@endif
                         '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size+'</span>'+
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="original" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
                     '</div>' ;
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
                         '<div class="tooltip_copy input-group-append">' +
-                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                        '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_original" ><i class="fa fa-copy"></i></button>' +
                         '   <span class="tooltiptext tootltip_public_path" id="myTooltip">@lang('filemanager.copy_public')</span>' +
                         '</div>' ;
                     @endif
@@ -291,7 +291,7 @@
                     '<input type="text" name="large_path" disabled class="form-control col-md-9" id="large" value="' + src_large + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="large_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_large" value="' + public_large_path + '">' +@endif
                             '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_large+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_large+'</span>'+
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
@@ -317,7 +317,7 @@
                     '<input type="text" name="medium_path" disabled class="form-control col-md-9" id="medium" value="' + src_medium + '">' +
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="medium_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_medium" value="' + public_medium_path + '">' +@endif
                             '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_medium+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_medium+'</span>'+
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
@@ -344,7 +344,7 @@
                             @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="small_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_small" value="' + public_small_path + '">' +@endif
 
                             '<div class="input-group-append width_22">' +
-                    '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size_small+'</span>'+
+                    '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size_small+'</span>'+
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
@@ -384,19 +384,19 @@
         {
             html +=
                 '<div class="input-group margin-top-1">' +
-                '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="small_link" class="color_white" href="'+src_orginal+'" target="_blank">@lang('filemanager.orginal')</a></span>' +
-                '<input type="text" name="orginal_path" disabled class="form-control col-md-9" id="orginal" value="' + src_orginal + '">' +
-                    @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="orginal_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_orginal" value="' + public_orginal_path + '">' +@endif
+                '<span class="input-group-addon btn-primary color_white" id="basic-addon1"><a id="small_link" class="color_white" href="'+src_original+'" target="_blank">@lang('filemanager.original')</a></span>' +
+                '<input type="text" name="original_path" disabled class="form-control col-md-9" id="original" value="' + src_original + '">' +
+                    @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))'<input disabled type="text" name="original_public_path" data-type="public" class="form-control col-md-9 public_path_input" id="public_original" value="' + public_original_path + '">' +@endif
                     '<div class="input-group-append width_22">' +
-                '   <span id="size" class="btn btn-default" data-clipboard-target="orginal" >'+humman_size+'</span>'+
+                '   <span id="size" class="btn btn-default" data-clipboard-target="original" >'+humman_size+'</span>'+
                 '</div>' +
                 '<div class="tooltip_copy input-group-append">' +
-                '<button id="copy_path" class="btn btn-default" data-clipboard-target="orginal" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
+                '<button id="copy_path" class="btn btn-default" data-clipboard-target="original" ><i class="fa fa-copy"></i></button><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                 '</div>' ;
                 @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                     html +=
                     '<div class="tooltip_copy input-group-append">' +
-                    '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_orginal" ><i class="fa fa-copy"></i></button>' +
+                    '   <button id="copy_path" class="btn btn-default back_public" data-clipboard-target="public_original" ><i class="fa fa-copy"></i></button>' +
                     '   <span class="tooltiptext tootltip_public_path" id="myTooltip">@lang('filemanager.copy_public')</span>' +
                     '</div>' ;
                 @endif
@@ -427,7 +427,7 @@
     }) ;
 
     function set_path(id,width,height,quality) {
-        $.each(['orginal','large','medium','small'],function (index,value) {
+        $.each(['original','large','medium','small'],function (index,value) {
             url = download_url(id , value,'404.png',quality,width,height) ;
             $('#'+value).attr('value',url);
             $('#'+value+'_link').attr('href',url);
@@ -632,9 +632,9 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------//
 
-    $(document).off("click", '#CopyOrginalPath');
-    $(document).on('click', '#CopyOrginalPath', function (e) {
-        value = $(this).attr('data-orginal');
+    $(document).off("click", '#CopyoriginalPath');
+    $(document).on('click', '#CopyoriginalPath', function (e) {
+        value = $(this).attr('data-original');
         setClipboard(value);
     });
     function setClipboard(value) {
@@ -728,7 +728,7 @@
                     {
                         item = {
                             'id' : $this.data('id') ,
-                            'type' : 'orginal' ,
+                            'type' : 'original' ,
                             'parent_id' : $this.data('parent-id') ,
                             'name' :  $this.data('name'),
                             'width' : 0,

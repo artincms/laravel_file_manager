@@ -27,11 +27,9 @@ class ManagerController extends Controller
                 if (isset($LFM[$section]['options']))
                 {
                     $trueMimeType = $LFM[$section]['options']['true_mime_type'];
-
                 }
                 else
                 {
-
                     $trueMimeType = false;
                 }
             }
@@ -334,7 +332,6 @@ class ManagerController extends Controller
             'title' => 'required|max:255',
             'description' => 'required'
         ]);
-
         if (!config('laravel_file_manager.allow_upload_private_file'))
         {
             if (!in_array(LFM_GetDecodeId($request->id), LFM_CreateArrayId(LFM_GetChildCategory([-2, -1]))))
@@ -359,7 +356,7 @@ class ManagerController extends Controller
             'name' => 'required|max:255',
         ]);
         $file = File::find($request->id);
-        $file->originalName = $request->name;
+        $file->original_name = $request->name;
         $file->save();
         $result['success'] = true;
         $messages[] = "Your Category is created";
@@ -507,7 +504,7 @@ class ManagerController extends Controller
             'name' => 'required|max:255',
         ]);
         $file = File::find(LFM_GetDecodeId($request->id));
-        $file->originalName = $request->name;
+        $file->original_name = $request->name;
         $file->save();
         $result['success'] = true;
         $result['name'] = $request->name;
@@ -621,7 +618,7 @@ class ManagerController extends Controller
                 }
             }
             $subfiles = File::with('user', 'FileMimeType')->where([
-                ['originalName', 'like', '%' . $request->search . '%'],
+                ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
             ])->get();
             foreach ($subfiles as $file)
@@ -654,7 +651,7 @@ class ManagerController extends Controller
                 }
             }
             $subfiles = File::with('user', 'FileMimeType')->where([
-                ['originalName', 'like', '%' . $request->search . '%'],
+                ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
             ])->get();
             foreach ($subfiles as $file)

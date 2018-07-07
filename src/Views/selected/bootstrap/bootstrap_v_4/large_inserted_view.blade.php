@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <ul class="media-content clearfix col-md-12">
         @foreach($data as $file_item)
-            <li class="pull-left" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width: 33%;padding: 1%;text-align: center">
+            <li class="float-left" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width: 342px;padding: 1%;text-align: center">
                 <div class="pull-left" style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;">
                     <div class="insert_thumb_action">
                         @if(!$show)
@@ -24,7 +24,7 @@
                     <div class="insert_thumb_info center">
                         <div class="user_detail row">
                             <div class="col-md-12">
-                                <h4>{{$file_item['file']['originalName']}}</h4>
+                                <h4>{{$file_item['file']['original_name']}}</h4>
                             </div>
                             <i class="fa fa-calendar-plus-o col-md-6" style="font-size: 14px;" aria-hidden="true">
                                 <span class="icon_info_image">{{$file_item['file']['created']}}</span>

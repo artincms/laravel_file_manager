@@ -114,7 +114,7 @@
         <div class="modal-content create_modal_content_edit_picture" >
             <div class="modal-header">
                 <nav class="nav nav-pills nav-justified">
-                    <a class="nav-link active" id="nva_orginal">@lang('filemanager.orginal_image')</a>
+                    <a class="nav-link active" id="nva_original">@lang('filemanager.original_image')</a>
                     <div class="nav-link pointer" id="nva_large">@lang('filemanager.large_image')</div>
                     <a class="nav-link pointer" id="nva_medium">@lang('filemanager.medium_image')</a>
                     <a class="nav-link pointer" id="nva_small">@lang('filemanager.small_image')</a>
@@ -129,7 +129,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('filemanager.close')</button>
-                <button type="button" class="btn btn-primary" id="create_edit_picture_modal_button" data-type="orginal">@lang('filemanager.crop_image')</button>
+                <button type="button" class="btn btn-primary" id="create_edit_picture_modal_button" data-type="original">@lang('filemanager.crop_image')</button>
             </div>
         </div>
     </div>

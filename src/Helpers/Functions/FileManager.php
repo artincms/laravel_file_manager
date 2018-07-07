@@ -88,7 +88,7 @@ function LFM_CheckMimeType($mimetype, $items)
             if (!in_array($file->mimeType, $mimetype))
             {
                 $result['success'] = false;
-                $result['error'] = 'File ' . $file->originalName . ' Not true mime type';
+                $result['error'] = 'File ' . $file->original_name . ' Not true mime type';
                 $result['item_error'] = $item;
                 return $result;
             }
@@ -271,7 +271,7 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                     {
                         $res['file']['user'] = 'Public';
                     }
-                    $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                    $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'original');
                     $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
                     $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                     $data[] = $res;
@@ -333,7 +333,7 @@ function LFM_ShowMultiFile($obj_model, $type = null, $relation_name = 'files')
                 {
                     $res['file']['user'] = 'Public';
                 }
-                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'original');
                 $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
                 $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                 $data[] = $res;
@@ -395,7 +395,7 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                         {
                             $res['file']['user'] = 'Public';
                         }
-                        $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                        $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'original');
                         $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
                         $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                         $data[] = $res;
@@ -454,7 +454,7 @@ function LFM_ShowingleFile($obj_model, $column_name, $column_option_name = false
                 {
                     $res['file']['user'] = 'Public';
                 }
-                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'orginal');
+                $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'original');
                 $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
                 $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
                 $data[] = $res;
@@ -493,7 +493,7 @@ function LFM_DestroySection($section)
     }
 }
 
-function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal', $default_img = '404.png', $quality = 100, $width = false, $height = false)
+function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original', $default_img = '404.png', $quality = 100, $width = false, $height = false)
 {
     if ($type == 'ID')
     {
@@ -502,7 +502,7 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'orginal'
     return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
 }
 
-function LFM_GetBase64Image($file_id, $size_type = 'orginal', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
+function LFM_GetBase64Image($file_id, $size_type = 'original', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
 {
     $res = \ArtinCMS\LFM\Helpers\Classes\Media::downloadById($file_id, $size_type, $not_found_img, true, $quality, $width, $height);
     return $res;
@@ -631,7 +631,7 @@ function LFM_CreateArrayId($array)
     return $array_id;
 }
 
-function LFM_GeneratePublicDownloadLink($path, $filename, $type = 'orginal')
+function LFM_GeneratePublicDownloadLink($path, $filename, $type = 'original')
 {
     $p = str_replace('public_folder/', '', $path);
     $path = str_replace('//', '/', config('laravel_file_manager.symlink_public_folder_name') . '/' . $p . '/files/' . $type . '/' . $filename);

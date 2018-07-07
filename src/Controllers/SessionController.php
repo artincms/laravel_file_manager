@@ -138,7 +138,7 @@ class SessionController extends ManagerController
         }
         switch ($request->type)
         {
-            case "orginal":
+            case "original":
                 $file_title_disc = $file->filename;
                 $version = $file->versioin;
                 break;
@@ -165,7 +165,7 @@ class SessionController extends ManagerController
         $data['url'] = $url;
         $data['file'] = [
             'id' => $file->id,
-            'originalName' => $file->originalName,
+            'original_name' => $file->original_name,
             'type' => $item['type'],
             'width' => $item['width'],
             'height' => $item['height'],

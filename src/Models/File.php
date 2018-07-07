@@ -101,9 +101,9 @@ class File extends Model
         return LFM_FileSizeConvert($this->small_size) ;
     }
 
-    public function getPublicOrginalLinkAttribute()
+    public function getPublicoriginalLinkAttribute()
     {
-        return LFM_GeneratePublicDownloadLink($this->path,$this->filename,'orginal') ;
+        return LFM_GeneratePublicDownloadLink($this->path,$this->filename,'original') ;
     }
 
     public function getPublicLargeLinkAttribute()

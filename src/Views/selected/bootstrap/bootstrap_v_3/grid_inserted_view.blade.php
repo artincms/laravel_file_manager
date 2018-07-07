@@ -17,7 +17,7 @@
                 <td>{{$i}}</td>
                 @php($i++)
                 <td>{{$file_item['file']['id']}}</td>
-                <td><a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a></td>
+                <td><a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['original_name']}}</a></td>
                 @if(!$show)
                     <td>
                         <a target="_blank"  class="grid-row-delete pull-right myicon" id="{{$section}}_trash_inserted" data-type="file" data-section="{{$section}}" data-file_id="{{$file_item['file']['id']}}">

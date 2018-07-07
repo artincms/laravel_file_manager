@@ -61,12 +61,12 @@
             $.each(data.response, function(index, value) {
                 if(value.success)
                 {
-                    var fname = value.result.OrginalFileName;
+                    var fname = value.result.originalFileName;
                     out = out + '<div class="alert alert-success">' + 'Uploaded file # ' + (index + 1) + ' - '  +  fname + ' successfully.' + '</div>';
                 }
                 else
                 {
-                    var fname = value.OrginalFileName;
+                    var fname = value.originalFileName;
                     out = out + '<div class="alert alert-danger">' + 'Eror Uploaded file # ' + (index + 1) + ' - '  +  fname + '</div>';
                 }
                 if(typeof parent.refresh !== 'undefined')

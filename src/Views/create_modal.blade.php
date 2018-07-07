@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade " id="create_erro_modal_{{$section}}" role="dialog">
+<div class="modal fade " id="create_erro_modal_{{$section}}" role="dialog" style="z-index: 100">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="height: calc(100vh - 220px);">
             <div class="modal-header" style="background-color: #f5f5f5;border: 1px solid #e3e3e3;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer" style="background-color: #f5f5f5;border: 1px solid #e3e3e3;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
                                               box-shadow: inset 0 1px 1px rgba(0,0,0,.05);">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">@lang('filemanager.ok')</button>
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@
                 </a>
             @endif
             <div type="text" style="width: 66%;">
-                <a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['originalName']}}</a>
+                <a target="_blank"  href="{{$file_item['full_url']}}">{{$file_item['file']['original_name']}}</a>
             </div>
             <span style="float: right">{{$file_item['file']['size']}}</span>
         </div>

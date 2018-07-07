@@ -8,8 +8,8 @@
 @section('content')
     <div class="container-fluid">
         <div class="tab-content" id="show_edit_picture">
-                <div class="crop_orginal" id="image_orginal">
-                    <img id="img_orginal" src="{{LFM_GenerateDownloadLink('ID',$file->id,'orginal')}}">
+                <div class="crop_original" id="image_original">
+                    <img id="img_original" src="{{LFM_GenerateDownloadLink('ID',$file->id,'original')}}">
                 </div>
         </div>
     </div>

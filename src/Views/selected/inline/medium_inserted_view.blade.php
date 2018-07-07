@@ -18,7 +18,7 @@
                         @endif
                     </div>
                     <div>
-                        {{$file_item['file']['originalName']}}
+                        {{$file_item['file']['original_name']}}
                     </div>
                 </div>
             </li>
