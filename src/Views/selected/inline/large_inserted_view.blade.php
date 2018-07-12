@@ -1,7 +1,7 @@
 <div style="width: 100%;padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;">
 <ul style="clear: both;">
         @foreach($data as $file_item)
-            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="float:left;list-style: none;width: 343px;padding: 1%;text-align: center">
+            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="float:right;list-style: none;width: 343px;padding: 1%;text-align: center;">
                 <div style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;float: left">
                     <div>
                         @if(!$show)

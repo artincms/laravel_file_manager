@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <ul class="media-content clearfix col-md-12">
         @foreach($data as $file_item)
-            <li class="pull-left" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width: 342px;padding: 1%;text-align: center">
+            <li class="pull-left" id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width: 342px;padding: 1%;text-align: center;float: right">
                 <div class="pull-left" style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;">
                     <div class="insert_thumb_action">
                         @if(!$show)
