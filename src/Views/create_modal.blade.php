@@ -21,7 +21,7 @@
 </div>
 <div class="modal fade " id="create_erro_modal_{{$section}}" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="height: calc(100vh - 35px);">
+        <div class="modal-content">
             <div class="modal-header" style="background-color: #f5f5f5;border: 1px solid #e3e3e3;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
                                              box-shadow: inset 0 1px 1px rgba(0,0,0,.05);">
                 <h5 class="modal-title">{{$header}}</h5>
@@ -29,7 +29,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  450px ;text-align: center ;display: flex;justify-content: center; flex-direction: column;">
+            <div class="modal-body" style="text-align: center ;">
                 <div class="modal_body_error_contet">
                     <h2>@lang('filemanager.you_reach_your_maximum_file_inserted')</h2>
                     <h5>@lang('filemanager.for_insert_new_file_you_should_remove_previus_inserted_file')</h5>
