@@ -1,7 +1,7 @@
 <div style="width: 100%;padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;">
     <ul>
         @foreach($data as $file_item)
-            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width:208px;padding: 1%;text-align: center;float:right;">
+            <li id="{{$section}}_{{$file_item['file']['id']}}_trash_insert_li" style="list-style: none;width:208px;padding: 1%;text-align: center;@if(app()->getLocale() == 'en')float: left ; @else float:right ; @endif">
                 <div style="padding: 2%;box-shadow: 1px 1px #dedcdc;background-color: white;    margin: 1%;">
                     <div>
                         @if(!$show)

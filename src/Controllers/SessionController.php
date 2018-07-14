@@ -139,23 +139,18 @@ class SessionController extends ManagerController
         switch ($request->type)
         {
             case "original":
-                $file_title_disc = $file->filename;
                 $version = $file->versioin;
                 break;
             case "large":
-                $file_title_disc = $file->large_filename;
                 $version = $file->large_version;
                 break;
             case "medium":
-                $file_title_disc = $file->medium_filename;
                 $version = $file->medium_version;
                 break;
             case "small":
-                $file_title_disc = $file->small_filename;
                 $version = $file->small_version;
                 break;
             default:
-                $file_title_disc = $file->filename;
                 $version = $file->versioin;
                 break;
         }

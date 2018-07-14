@@ -29,7 +29,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="text-align: center ;">
+            <div class="modal-body" style="text-align: center ;min-height: 275px">
                 <div class="modal_body_error_contet">
                     <h2>@lang('filemanager.you_reach_your_maximum_file_inserted')</h2>
                     <h5>@lang('filemanager.for_insert_new_file_you_should_remove_previus_inserted_file')</h5>
