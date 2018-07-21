@@ -399,7 +399,6 @@ and in multisectioneditl.blade.php
     {!! $attach['modal_content'] !!}
     div#show_area_Attach  {!! $load_attch['view']['list'] !!}
   function showAttach(res) {
-        console.log(res);
         $('#show_area_Attach').html(res.Attach.view.list,'slider') ;
     }
 </pre> </div>

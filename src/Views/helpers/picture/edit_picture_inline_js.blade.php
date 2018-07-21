@@ -20,7 +20,6 @@
             }
 
             var width_original_div = $('#image_original').width() ;
-            console.log(width_original,height_original,width_original_div);
             var rate_original = width_original / height_original;
             if(width_original_div < width_original)
             {
@@ -284,7 +283,6 @@
     });
 
     function save(FormData) {
-        console.log(FormData);
         $.ajax({
             type: "POST",
             url: "{{route('LFM.StoreEditPictureName')}}",

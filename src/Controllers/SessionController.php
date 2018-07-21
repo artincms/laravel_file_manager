@@ -22,13 +22,13 @@ class SessionController extends ManagerController
         else
         {
             $result[$section]['success'] = false;
-            $result[$section]['error'] = 'Dont select items';
+            $result[$section]['error'] = __('filemanager.dont_select_items') ;
             return $result;
         }
         if ($total > $options['max_file_number'])
         {
             $result[$section]['success'] = false;
-            $result[$section]['error'] = 'your cant insert more than' . $options['max_file_number'];
+            $result[$section]['error'] = __('filemanager.you_cant_inserted_more_than') . $options['max_file_number'] .__('filemanager.file_upload');
             return $result;
         }
         else

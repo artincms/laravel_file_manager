@@ -29,7 +29,6 @@
         $(document).off("click", '#btn_submit_update_file_name_close');
         $(document).on('click', '#btn_submit_update_file_name_close', function (e) {
             e.preventDefault();
-            console.log('d');
             $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));
             var formElement = document.querySelector('#form_update_file_name');
             var formData = new FormData(formElement);

@@ -33,7 +33,6 @@
     });
     function set_jstree(jdata,parent_category_id)
     {
-        console.log(parent_category_id);
         $('#js_tree_share_div').html('<div id="jstree_category_share"></div>') ;
         $('#js_tree_public_div').html('<div id="jstree_category_public"></div>') ;
         $('#js_tree_root_div').html('<div id="jstree_category_root"></div>') ;
@@ -352,18 +351,30 @@
         var items = get_selected(['file'],type,true);
         var available = {!! $available !!} ;
         var datas=[];
-        if ( available !='undefined' && available >= items.length)
+        if(items.length>0)
         {
-            datas = create_insert_data(items) ;
+            if ( available !='undefined' && available >= items.length)
+            {
+                datas = create_insert_data(items) ;
+            }
+            else
+            {
+                swal({
+                    type: 'error',
+                    title: '@lang('filemanager.you_cant_inserted')',
+                    text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file_insert')' ,
+                });
+            }
         }
         else
         {
             swal({
                 type: 'error',
-                title: '@lang('filemanager.you_cant_inserted')',
-                text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file_insert')' ,
+                title: '@lang('filemanager.dont_select_items')',
+                text: '@lang('filemanager.please_first_select_items')' ,
             });
         }
+
     });
 
     function clear_page() {
@@ -381,21 +392,31 @@
     //-----------------------------------------------------------------------------------------------------------------------//
     $(document).off("click", '#insert_btn');
     $(document).on('click', '#insert_btn', function (e){
-        var data = {} ;
         var id = $(this).attr('data-id');
         var width = $('#change_width').val() || 0;
         var height  = $('#change_height').val() || 0 ;
         var quality = $('#change_quality').val() || 100;
         var type  = $('input[name=selectimage]:checked').val() || 'original' ;
-        var datas = [{id:id , width : width , height:height , quality : quality , type : type}] ;
-        var result = create_insert_data(datas) ;
-        $('#cancel_footer_btn').click();
-            @if ($callback)
+        var data = [{id:id , width : width , height:height , quality : quality , type : type}] ;
+        var available = {!! $available !!} ;
+        if ( available !='undefined' && available >= items.length)
         {
-            parent.{{LFM_CheckFalseString($callback)}}(result) ;
+            var result = create_insert_data(data) ;
+            $('#cancel_footer_btn').click();
+                @if ($callback)
+            {
+                parent.{{LFM_CheckFalseString($callback)}}(result) ;
+            }
+            @endif
         }
-        @endif
-
+        else
+        {
+            swal({
+                type: 'error',
+                title: '@lang('filemanager.you_cant_inserted')',
+                text: '@lang('filemanager.you_cant_inserted_more_than')'+available +' @lang('filemanager.file_insert')' ,
+            });
+        }
     });
     function create_insert_data(value)
     {

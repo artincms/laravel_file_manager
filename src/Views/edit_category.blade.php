@@ -41,7 +41,6 @@
      $(document).off("click", '#btn_submit_edit_category_close');
     $(document).on('click', '#btn_submit_edit_category_close', function (e) {
         e.preventDefault();
-        console.log('dd');
         var formElement = document.querySelector('#create_category_form');
         var formData = new FormData(formElement);
         $('#create_category_form').append(generate_loader_html('@lang('filemanager.please_wait')'));

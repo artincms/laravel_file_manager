@@ -59,9 +59,7 @@ function dataTablesGrid(selector, var_grid_name, url, columns, more_data, initCo
             rowCallback: function (row, data, dataIndex) {
                 if (row_select) {
                     var rowId = data;
-                    //console.log(data,'-----',window[var_grid_name + '_rows_selected']);
                     // If row ID is in the list of selected row IDs
-                    //console.log('id',data['id'],window[var_grid_name + '_rows_selected']);
                     if (func_search_in_obj('id', data['id'], window[var_grid_name + '_rows_selected'])) {
                         $(row).find('input[type="checkbox"]').prop('checked', true);
                         $(row).addClass('selected');
