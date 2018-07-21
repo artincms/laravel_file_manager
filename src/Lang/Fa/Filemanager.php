@@ -79,7 +79,7 @@ return [
     'no_cancel' =>'نه متشکرم !',
     'deleted' =>'پاک شد',
     'your_file_has_been_deleted' =>'فایل با موفقیت پاک گردید .',
-    'you_reach_your_maximum_file_inserted' =>'شما به حداکثر تعداد فایل های وارد شده رسیدید .',
+    'you_reach_your_maximum_file_inserted' =>'شما به حداکثر تعداد فایل های وارد شده رسیده اید .',
     'for_insert_new_file_you_should_remove_previus_inserted_file' =>'برای ثبت فایل جدید لطفا یک یا چند فایل قبلی را حذف نمایید .',
     'you_cant_inserted' =>'اجازه ثبت فایل جدید را ندارید .',
     'you_cant_inserted_more_than' =>'شما نمیتوانید بیشتر از  ',
@@ -92,4 +92,7 @@ return [
     'height' => 'ارتفاع',
     'width' => 'عرض',
     'browse_file' => 'انتخاب فایل',
+    'file_upload' => 'فایل آپلود کنید',
+    'dont_select_items' => 'فایلی انتخاب نشده است .',
+    'please_first_select_items' => 'لطفا ابتدا یک فایل انتخاب نمایید .',
 ];

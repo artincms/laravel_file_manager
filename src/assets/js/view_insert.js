@@ -7,7 +7,6 @@ $(document).on('click', '#trash_insert', function (e){
 });
 
 function delete_inserted(name,id) {
-    console.log(name,id);
     $.ajax({
         type: "POST",
         url: "{{route('LFM.DeleteSelectedPostId')}}",

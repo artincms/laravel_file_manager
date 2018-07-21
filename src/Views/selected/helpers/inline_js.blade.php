@@ -1,7 +1,6 @@
 <script>
     $( document ).ready(function() {
         {{LFM_CheckFalseString($section)}}_available  ={{LFM_CheckAllowInsert($section)['available']}} ;
-        console.log({{LFM_CheckFalseString($section)}}_available);
     });
     $(document).off("click", '#{{$section}}_trash_inserted');
     $(document).on('click', '#{{$section}}_trash_inserted', function (e) {
@@ -25,20 +24,16 @@
             success: function (result) {
                 if (result.success)
                 {
-                    console.log(result);
                     $('#' + section + '_' + file_id + '_trash_insert_li').remove();
                     {{LFM_CheckFalseString($section)}}_available  =result.{{LFM_CheckFalseString($section)}}.available ;
-                    console.log(result.{{LFM_CheckFalseString($section)}} );
                 }
                 else
                 {
                     alert('has error: please check the console log');
-                    console.log(result);
                 }
             },
             error: function (e) {
                 alert('has error: please check the console log');
-                console.log(e);
             }
         });
     }

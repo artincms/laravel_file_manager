@@ -93,4 +93,7 @@ return [
     'height' => 'Height',
     'width' => 'Width',
     'browse_file' => 'Browse File',
+    'file_upload' => 'file',
+    'dont_select_items' => 'Dont select items',
+    'please_first_select_items' => 'Dont select items',
 ];

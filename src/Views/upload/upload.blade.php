@@ -61,7 +61,6 @@
 
         function complete(data) {
             var out = '';
-            console.log(data);
             $.each(data.response, function (index, value) {
                 if (value.success) {
                     var fname = value.file.original_name;

@@ -78,7 +78,6 @@
        $('#{{$section}}_kv_main').html('<h3>You reach your maximum file upload</h3><br/><h4>for more upload you should remove previous upload file</h4>');
     }
     function complete(data) {
-        console.log(data);
         var out = '';
         $.each(data.response.{{$section}}.data, function (index, value) {
             if (value.success) {
