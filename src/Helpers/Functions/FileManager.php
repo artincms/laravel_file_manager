@@ -896,7 +896,14 @@ function LFM_GetDecodeId($id, $route = false)
         {
             if (in_array($route->getName(), $my_routes))
             {
-                return $hashids->decode($id)[0];
+                if($hashids->decode($id) != [])
+                {
+                    return $hashids->decode($id)[0];
+                }
+                else
+                {
+                    return null ;
+                }
             }
             else
             {

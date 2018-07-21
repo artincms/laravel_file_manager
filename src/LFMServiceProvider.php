@@ -16,8 +16,8 @@ class LFMServiceProvider extends ServiceProvider
     public function boot()
     {
     	// the main router
-	    include_once __DIR__.'/Routes/private_routes.php';
-	    include_once __DIR__.'/Routes/public_routes.php';
+	    $this->loadRoutesFrom(__DIR__.'/Routes/private_routes.php');
+	    $this->loadRoutesFrom(__DIR__.'/Routes/public_routes.php');
 	    // the main views folder
 	    $this->loadViewsFrom(__DIR__ . '/Views', 'laravel_file_manager');
 	    // the main migration folder for create sms_ir tables
