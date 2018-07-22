@@ -902,7 +902,7 @@ function LFM_GetDecodeId($id, $route = false)
                 }
                 else
                 {
-                    return null ;
+                    return $id ;
                 }
             }
             else

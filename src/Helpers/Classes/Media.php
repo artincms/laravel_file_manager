@@ -311,7 +311,7 @@ class Media
                 }
                 else
                 {
-                    $res = Image::make($not_found_default_img_path)->response('jpg');
+                    $res = Image::make($not_found_default_img_path)->fit((int)$width, (int)$height)->response('jpg');
 
                 }
             }
