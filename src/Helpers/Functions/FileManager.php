@@ -163,7 +163,7 @@ function LFM_SaveSingleFile($obj_model, $column_name, $section, $column_option_n
     {
         if (isset($files[0]['file']) && isset($files[0]['file']['id']))
         {
-            $obj_model->$column_name = $files[0]['file']['id'];//first select
+            $obj_model->$column_name = LFM_GetDecodeId($files[0]['file']['id']);//first select
             if ($column_option_name)
             {
                 $obj_model->$column_option_name = json_encode($files[0]['file']);//first select
@@ -204,7 +204,7 @@ function LFM_SaveMultiFile($obj_model, $section, $type = null, $relation_name = 
         {
             if (isset($file['file']['id']))
             {
-                $arr_ids[$file['file']['id']] = ['type' => $type];
+                $arr_ids[LFM_GetDecodeId($file['file']['id'])] = ['type' => $type];
             }
         }
         if ($arr_ids)
@@ -896,7 +896,14 @@ function LFM_GetDecodeId($id, $route = false)
         {
             if (in_array($route->getName(), $my_routes))
             {
-                return $hashids->decode($id)[0];
+                if($hashids->decode($id) != [])
+                {
+                    return $hashids->decode($id)[0];
+                }
+                else
+                {
+                    return $id ;
+                }
             }
             else
             {

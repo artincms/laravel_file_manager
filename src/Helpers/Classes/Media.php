@@ -206,6 +206,7 @@ class Media
         $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('media_tmp_folder');
         $file = File::find($file_id);
         $not_found_img_path = $base_path . 'System/' . $not_found_img;
+        $not_found_default_img_path = $base_path . 'System/' .'404.png';
         //check database for check file exist
         if ($file)
         {
@@ -304,7 +305,15 @@ class Media
         {
             if ($width or $height)
             {
-                $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($not_found_img_path))
+                {
+                    $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                }
+                else
+                {
+                    $res = Image::make($not_found_default_img_path)->fit((int)$width, (int)$height)->response('jpg');
+
+                }
             }
             else
             {

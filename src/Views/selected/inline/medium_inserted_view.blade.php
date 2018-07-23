@@ -14,7 +14,7 @@
                         @if($file_item['file']['icon'] == 'image')
                             <a target="_blank"  href="{{$file_item['full_url']}}"><img src="{{$file_item['full_url_medium']}}" style="height:125px ;width: 175px;"></a>
                         @else
-                            <a href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-top: 8%;"></i></a>
+                            <a href="{{$file_item['full_url']}}"><i class="fa  {{$file_item['file']['icon']}} img-file-thumbnail" style="font-size: 107px;margin-bottom: 8%;"></i></a>
                         @endif
                     </div>
                     <div>

@@ -18,7 +18,7 @@ return [
     'allow_upload_private_file' => true ,
     // set true if you want log to the database
     'db-log' => true,
-    'allowed' =>['application/zip', 'application/pdf', 'image/jpeg', 'image/png', 'image/x-icon', 'application/x-rar', 'application/vnd.ms-word.document.macroenabled.12','application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-excel.sheet.binary.macroenabled.12','application/vnd.ms-excel.sheet.macroenabled.12','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','audio/mpeg'] ,
+    'allowed' =>['application/zip', 'application/pdf', 'image/jpeg', 'image/png', 'image/x-icon', 'application/x-rar', 'application/vnd.ms-word.document.macroenabled.12','application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-excel.sheet.binary.macroenabled.12','application/vnd.ms-excel.sheet.macroenabled.12','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain','audio/mpeg','video/mp4','video/webm','video/ogg','audio/ogg','audio/x-wav'] ,
     'allowed_pic' => ['image/jpeg', 'image/png'] ,
     'crop_type' => ['large', 'medium', 'small','original'],
     'size_large' =>['height' =>1024 ,'width' =>768],

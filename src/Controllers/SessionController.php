@@ -159,7 +159,7 @@ class SessionController extends ManagerController
         $data['full_url_large'] = $full_url_large;
         $data['url'] = $url;
         $data['file'] = [
-            'id' => $file->id,
+            'id' => LFM_getEncodeId($file->id),
             'original_name' => $file->original_name,
             'type' => $item['type'],
             'width' => $item['width'],

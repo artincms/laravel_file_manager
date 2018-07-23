@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "ArtinCMS\\LFM\\": "src"
+            "ArtinCMS\\LFM\\": "src/"
         },
         "files": [
             "src/Helpers/Functions/FileManager.php"
@@ -19,8 +19,8 @@
 
     },
     "require": {
-        "intervention/image": "^2.4",
-        "hashids/hashids": "^3.0"
+        "hashids/hashids": "^3.0",
+        "yajra/laravel-datatables-oracle": "~8.0"
     },
     "extra": {
         "laravel": {
