@@ -20,7 +20,7 @@
     },
     "require": {
         "hashids/hashids": "^3.0",
-        "yajra/laravel-datatables-oracle": "~8.0"
+        "intervention/image": "^2.4"
     },
     "extra": {
         "laravel": {
