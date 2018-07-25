@@ -740,7 +740,7 @@ function LFM_checkSeed()
     return true;
 }
 
-function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content =false,$button_class='btn-default')
+function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content =false,$button_class='btn-default',$font_button_class=false)
 {
     if (!$header)
     {
@@ -768,7 +768,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     if (LFM_checkSeed())
     {
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
-        $result['button'] = '<button data-href="' . $src . '" type="button" class="btn '.$button_class.'"  id="' . $button_id . '">' . $button_content . '</button>';
+        $result['button'] = '<button data-href="' . $src . '" type="button" class="btn '.$button_class.'"  id="' . $button_id . '"><i class="'.$font_button_class.'"></i>' . $button_content . '</button>';
         $result['src']=$src ;
     }
     else
