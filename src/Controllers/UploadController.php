@@ -53,7 +53,7 @@ class UploadController extends ManagerController
                     $mimeType = $file->getMimeType();
                     $FileMimeType = FileMimeType::where('mimeType', '=', $mimeType)->first();
                     $original_name = $file->getClientOriginalName();
-                    $size = $file->getSize();
+
                 } catch (Exception $e)
                 {
                     return $e->getMessage();
@@ -61,8 +61,8 @@ class UploadController extends ManagerController
 
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
-                    $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $original_name, $size) {
-                        $res = Media::upload($file, false, false, $CategoryID, $FileMimeType, $original_name, $size);
+                    $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $original_name) {
+                        $res = Media::upload($file,false, $CategoryID, $FileMimeType, $original_name,$file->getSize());
                         $result['success'] = true;
                         $result['file'] = $res;
                         return $result;

@@ -13,8 +13,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class File extends Model
 {
     protected $table = 'lfm_files';
-    use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $appends =['encode_id'];
+    use SoftDeletes;
 
     public function category()
     {
@@ -120,5 +121,11 @@ class File extends Model
     {
         return LFM_GeneratePublicDownloadLink($this->path,$this->small_filename,'small') ;
     }
+
+    public function getEncodeIdAttribute()
+    {
+        return LFM_getEncodeId($this->id);
+    }
+
 
 }

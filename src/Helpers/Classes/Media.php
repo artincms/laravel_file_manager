@@ -13,7 +13,7 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class Media
 {
-    public static function upload($file, $CustomPath = false, $CustomUID = False, $CategoryID, $FileMimeType, $original_name = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
+    public static function upload($file, $CustomUID = false, $CategoryID, $FileMimeType, $original_name = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         $time = time();
         if (!$CustomUID)
@@ -71,7 +71,7 @@ class Media
         $FileSave->mimeType = $mimeType;
         $FileSave->filename = '';
         $FileSave->file_md5 = md5_file($file);
-        $FileSave->size = $size;
+        $FileSave->size = $file->getSize();
         $FileSave->path = $Path;
         $FileSave->created_by = $CustomUID;
         $FileSave->save();
@@ -113,7 +113,7 @@ class Media
                 'id' => $FileSave->id,
                 'UID' => $CustomUID,
                 'Path' => $Path,
-                'Size' => $size,
+                'Size' => $file->getSize(),
                 'FileName' => $filename,
                 'size' => $FileSave->size,
                 'icon' => 'fa-file-o',
