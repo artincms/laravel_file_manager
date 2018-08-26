@@ -1,5 +1,5 @@
 <?php
-namespace ArtinCMS\LFM\Traits ;
+namespace App\Traits ;
 
 trait lfmFillable {
     public function files()
