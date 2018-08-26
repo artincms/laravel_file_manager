@@ -46,12 +46,16 @@ class LFMServiceProvider extends ServiceProvider
 		    __DIR__ . '/Config/LFM.php' => config_path('laravel_file_manager.php'),
 	    ]);
 
-	    // publish language
-	    $this->publishes([
-		    __DIR__ . '/Lang/En/Filemanager.php' => resource_path('lang/en/filemanager.php'),
-	    ]);
+        // publish language
+        $this->publishes([
+            __DIR__ . '/Lang/En/Filemanager.php' => resource_path('lang/en/filemanager.php'),
+        ]);
         $this->publishes([
             __DIR__ . '/Lang/Fa/Filemanager.php' => resource_path('lang/fa/filemanager.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/Traits/lfmFillable.php' => app_path('Traits/lfmFillable.php'),
         ]);
     }
 
