@@ -952,7 +952,14 @@ function LFM_GetDecodeId($id, $route = false)
         }
         else
         {
-            return $hashids->decode($id)[0];
+            if (isset($hashids->decode($id)[0]))
+            {
+                return $hashids->decode($id)[0];
+            }
+            else
+            {
+                return $id ;
+            }
         }
     }
 
