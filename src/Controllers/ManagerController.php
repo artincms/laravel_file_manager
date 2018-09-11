@@ -406,7 +406,7 @@ class ManagerController extends Controller
                 $path .= $cat->title_disc;
                 foreach ($subcats as $subcat)
                 {
-                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory($path . '/files/' . $subcat);
+                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name').'/'.$path . '/files/' . $subcat);
                 }
                 $category_id = $request->parent_category_id;
                 $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
