@@ -27,6 +27,9 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
     //refresh content page
     Route::post('RefreshPage', ['as' => 'LFM.RefreshPage', 'uses' => 'ManagerController@RefreshPage']);
 
+    //Trash tmp foolder
+    Route::post('trashTempFolder', ['as' => 'LFM.trashTempFolder', 'uses' => 'ManagerController@trashTempFolder']);
+
     //search media
     Route::post('SearchMedia', ['as' => 'LFM.SearchMedia', 'uses' => 'ManagerController@searchMedia']);
 

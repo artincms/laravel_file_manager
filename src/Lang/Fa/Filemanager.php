@@ -95,4 +95,10 @@ return [
     'file_upload' => 'فایل آپلود کنید',
     'dont_select_items' => 'فایلی انتخاب نشده است .',
     'please_first_select_items' => 'لطفا ابتدا یک فایل انتخاب نمایید .',
+    'deleted_temp_folder_success' => 'پوشه موقت با موفقیت پاک گردید .',
+    'deleted_temp_folder_error' => 'پوشه موقت وجود ندارد .',
+    'temp_trash' => 'پاک کردن پوشه موقت',
+    'create_folder' => 'ایجاد پوشه',
+    'no_have_new_file' => 'فایل و پوشه جدیدی وجود ندارد برای ادامه میتوانید از لینک های زیر استفاده نمایید .',
+    'do_you_want_delete_temp_folder' => 'آیا شما برای پاک کردن پوشه موقت مطمین هستید ؟',
 ];

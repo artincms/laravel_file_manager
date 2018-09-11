@@ -50,7 +50,6 @@ class File extends Model
         }
 
         return $res->get() ;
-
     }
 
     public function user()
@@ -127,5 +126,31 @@ class File extends Model
         return LFM_getEncodeId($this->id);
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        if((string)app()->getLocale() == 'fa')
+        {
+            $date = LFM_Date_GtoJ($value,'Y-m-d');;
+        }
+        else
+        {
+            $date = $value ;
+        }
 
+        return $date ;
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        if((string)app()->getLocale() == 'fa')
+        {
+            $date = LFM_Date_GtoJ($value,'Y-m-d');;
+        }
+        else
+        {
+            $date = $value ;
+        }
+
+        return $date ;
+    }
 }

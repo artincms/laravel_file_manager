@@ -96,4 +96,10 @@ return [
     'file_upload' => 'file',
     'dont_select_items' => 'Dont select items',
     'please_first_select_items' => 'Dont select items',
+    'deleted_temp_folder_success' => 'Delete temp folder successfully',
+    'deleted_temp_folder_error' => 'No have Temp Directory',
+    'temp_trash' => 'Delete Temp Folder',
+    'create_folder' => 'Create Folder',
+    'no_have_new_file' => 'No have file and folder you can follow below link to continue',
+    'do_you_want_delete_temp_folder' => 'Do you want to delete temp folder ?',
 ];

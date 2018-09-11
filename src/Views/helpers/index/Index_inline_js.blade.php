@@ -24,11 +24,16 @@
                     'data' : jdata.root
                 }
             });
-        @if(config('laravel_file_manager.allow_upload_private_file'))
+        @if(config('laravel_file_manager.allow_upload_private_file') && $parent_id==0)
             $('#media_category').addClass('jstree-root');
         @else
-            $('#share_category').addClass('jstree-root');
-            $('#share_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            @if( $parent_id == "-1")
+                $('#public_category').addClass('jstree-root');
+                $('#public_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            @elseif( $parent_id== "-2")
+                $('#share_category').addClass('jstree-root');
+                $('#share_category i').removeClass('fa-folder').addClass('fa-folder-open');
+            @endif
         @endif
     });
     function set_jstree(jdata,parent_category_id)
@@ -399,11 +404,12 @@
         var type  = $('input[name=selectimage]:checked').val() || 'original' ;
         var data = [{id:id , width : width , height:height , quality : quality , type : type}] ;
         var available = {!! $available !!} ;
+        var items = get_selected(['file'],type,true);
         if ( available !='undefined' && available >= items.length)
         {
             var result = create_insert_data(data) ;
             $('#cancel_footer_btn').click();
-                @if ($callback)
+            @if ($callback)
             {
                 parent.{{LFM_CheckFalseString($callback)}}(result) ;
             }
@@ -500,4 +506,39 @@
     $('.close_upload').on('click', function () {
         ('#create_upload_modal').modal('hide');
     });
+
+    $('#trashTempFolder').off('click');
+    $('#trashTempFolder').on('click',trashTempFolder);
+    function trashTempFolder()
+    {
+        $.ajax({
+            type: "POST",
+            url: "{{route('LFM.trashTempFolder')}}",
+            dataType: "json",
+            success: function (res) {
+                swal({
+                    title: '@lang('filemanager.do_you_want_delete_temp_folder')',
+                    text: "@lang('filemanager.you_wont_be_able_to_revert_this')",
+                    cancelButtonText: '@lang('filemanager.no_cancel')',
+                    confirmButtonText: '@lang('filemanager.yes_delete_it')',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false,
+                    reverseButtons: true
+            }).then((result) => {
+                    if (result.value) {
+                        swal({
+                            type: res.type,
+                            title: '@lang('filemanager.temp_trash')',
+                            text:res.message ,
+                    });
+                    }
+            })
+            },
+        })
+    }
 </script>

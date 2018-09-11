@@ -14,7 +14,7 @@
             </div>
             @if(config('laravel_file_manager.allow_upload_private_file'))
                 <hr/>
-                <div class="top_js_tree_folder link_to_category pointer" id="media_category" data-id="{{LFM_getEncodeId($parent_id)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">@lang('filemanager.root_folder')</span></div>
+                <div class="top_js_tree_folder link_to_category pointer" id="media_category" data-id="{{LFM_getEncodeId(0)}}"><i class="fa fa-folder-open"></i><span class="show_top_folder_name">@lang('filemanager.root_folder')</span></div>
                 <div id="js_tree_root_div">
                     <div id="jstree_category_root"></div>
                 </div>
@@ -44,7 +44,8 @@
                                 <i class="fa fa-list"></i>
                             </label>
                         </div>
-                        <label href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}" class="btn btn-sm btn-success uploadfile float-left margin-left-1 line_height_20"
+                        <label class="btn btn-sm btn-success uploadfile float-left margin-left-1 line_height_20"
+                               href="{{$button_upload_link}}"
                                data-toggle="modal"
                                data-target="#create_upload_modal">
                             <i class="fa fa-upload"></i>&nbsp;&nbsp;@lang('filemanager.upload')
@@ -57,6 +58,7 @@
                             </label>
                         </div>
                         <label class="btn btn-sm margin-left-1 btn-primary grid-trash-o float-left line_height_20" id="bulk_delete"><i class="fa fa-trash-o"></i></label>
+                        <label class="btn btn-sm margin-left-1 btn-primary float-left line_height_20" style="color: white;background: #3c8dbc;" id="trashTempFolder"><i class="fa fa-eraser"></i></label>
                         <label class="btn btn-sm btn-primary grid-refresh float-left margin-left-1 line_height_20" id="refresh_page" data-id="{{LFM_getEncodeId($parent_id)}}" data-type="grid" data-category-name="media" data-section="{{LFM_CheckFalseString($section)}}"
                                data-callback="{{LFM_CheckFalseString($callback)}}" data-category-type="media"><i class="fa fa-refresh"></i></label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">

@@ -786,14 +786,32 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     if ($options)
     {
+        if (!isset($options['true_file_extension']))
+        {
+            $options['true_file_extension'] = config('laravel_file_manager.lfm_default_true_extension') ;
+        }
+        if (!isset($options['max_file_number']))
+        {
+            $options['max_file_number'] = 1 ;
+        }
+        if (!isset($options['size_file']))
+        {
+            $options['size_file'] = 2000 ;
+        }
         $session_option = LFM_SetSessionOption($section, $options);
     }
-    //create html content and button
+    else
+    {
+        $options = ['size_file' => 2000, 'max_file_number' => 1, 'true_file_extension' => config('laravel_file_manager.lfm_default_true_extension')] ;
+    }
+    $true_myme_type = $options['true_file_extension'] ;
+    $header = $header.'( <span style="font-size:80%"> پسوند های قابل استفاده : '.implode(' , ',$true_myme_type) . '</span> )';
+        //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
     $available = LFM_CheckAllowInsert($section)['available'];
     if (LFM_checkSeed())
     {
-        $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available'))->render();
+        $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available','true_myme_type'))->render();
         $result['button'] = '<button data-href="' . $src . '" type="button" class="btn ' . $button_class . '"  id="' . $button_id . '"><i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
         $result['src'] = $src;
     }
@@ -969,5 +987,38 @@ function LFM_uploadFile($file,$CustomUid=false, $CategoryID, $FileMimeType, $ori
 {
     \ArtinCMS\LFM\Helpers\Classes\Media::upload($file,$CustomUid=false, $CategoryID, $FileMimeType, $original_name) ;
 }
+
+function LFM_Date_GtoJ($GDate = null, $Format = "Y/m/d-H:i", $convert = true)
+{
+    if ($GDate == '-0001-11-30 00:00:00' || $GDate == null)
+    {
+        return '--/--/----';
+    }
+    $date = new ArtinCMS\LFM\Helpers\Classes\jDateTime($convert, true, 'Asia/Tehran');
+    $time = is_numeric($GDate) ? strtotime(date('Y-m-d H:i:s', $GDate)) : strtotime($GDate);
+
+    return $date->date($Format, $time);
+
+}
+function LFM_Date_JtoG($jDate, $delimiter = '/', $to_string = false, $with_time = false, $input_format = 'Y/m/d H:i:s')
+{
+    $jDate = ConvertNumbersFatoEn($jDate);
+    $parseDateTime = ArtinCMS\LFM\Helpers\Classes\jDateTime::parseFromFormat($input_format, $jDate);
+    $r = ArtinCMS\LFM\Helpers\Classes\jDateTime::toGregorian($parseDateTime['year'], $parseDateTime['month'], $parseDateTime['day']);
+    if ($to_string)
+    {
+        if ($with_time)
+        {
+            $r = $r[0] . $delimiter . $r[1] . $delimiter . $r[2] . ' ' . $parseDateTime['hour'] . ':' . $parseDateTime['minute'] . ':' . $parseDateTime['second'];
+        }
+        else
+        {
+            $r = $r[0] . $delimiter . $r[1] . $delimiter . $r[2];
+        }
+    }
+
+    return ($r);
+}
+
 
 

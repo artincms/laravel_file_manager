@@ -24,6 +24,26 @@
         </nav>
         <div class="container-fluid padding-0">
             <ul class="media-content clearfix col-md-12">
+            @if($show_icon_folder)
+            <div style="opacity: 0.5;-webkit-transition: opacity 0.5s ease-in-out;text-align: center;">
+                <h4 style="color:#a7a9ab">@lang('filemanager.no_have_new_file')</h4>
+                <div class="float-left uploadfile col-md-3 offset-md-3 text-center pointer" style="padding: 10px;border: 1px solid #efefef;"
+                     href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}"
+                     data-toggle="modal"
+                     data-target="#create_upload_modal">
+                    <i class="fa fa-file-archive-o" aria-hidden="true" style="font-size: 80px;color: #a5a5a5;width: 100%;"></i>
+                    <div style="margin-top: 5%;">@lang('filemanager.upload_file')</div>
+
+                </div>
+                <div class="float-left create_category_first col-md-3 text-center pointer create_category" style="padding: 10px;border: 1px solid #efefef" title="create new category"
+                     href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
+                     data-target="#create_category_modal">
+                    <i class="fa fa-folder-open-o" aria-hidden="true" style="font-size: 80px;width: 100%;color: #a5a5a5;"></i>
+                    <div style="margin-top: 5%;">@lang('filemanager.create_folder')</div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+                @else
                 @if($category)
                     <li>
                         <div class="media-attachment-info back_to_category_size">
@@ -134,6 +154,7 @@
                         </div>
                     </li>
                 @endforeach
+            @endif
             </ul>
         </div>
         <script>
