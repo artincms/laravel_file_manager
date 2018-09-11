@@ -39,7 +39,6 @@
             },
             delete:false,
             @if($section && $section !='false' && $options !=false)
-            maxFileCount: '{{$options['max_file_number']}}',
             allowedFileExtensions: [{!! $true_ext !!}],
             @else
             allowedFileExtensions:[{!!$ext !!}],

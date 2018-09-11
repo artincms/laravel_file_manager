@@ -248,6 +248,7 @@
     $(document).on('click', '.create_category', function (e) {
         var src = $(this).attr('href') ;
         var iframe = $('#modal_iframe_category');
+        iframe.contents().find("body").html('');
         iframe.attr("src",src);
         iframe.on("load", function() {
             $(document).off('click','#create_category_modal_button');
@@ -269,7 +270,9 @@
     $(document).on('click', '.uploadfile', function (e) {
         e.preventDefault() ;
         var src = $(this).attr('href') ;
-        $('iframe.modal_iframe').attr("src",src);
+        var iframe =$('iframe.modal_iframe') ;
+        iframe.contents().find("body").html('');
+        iframe.attr("src",src);
     });
 
     //---------------------------------------------------------------------------------------------------------------------//
