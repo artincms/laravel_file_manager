@@ -761,9 +761,9 @@ class ManagerController extends Controller
     public function trashTempFolder(Request $request)
     {
         $tmp = \Storage::disk(config('laravel_file_manager.driver_disk'));
-        if($tmp->has('media_tmp_folder/'))
+        if($tmp->has(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/'))
         {
-            $tmp->deleteDirectory('media_tmp_folder/');
+            $tmp->deleteDirectory(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/');
             $message= __('filemanager.deleted_temp_folder_success');
             $success= true ;
             $type= 'success' ;
