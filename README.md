@@ -48,24 +48,19 @@ Register provider and facade on your config/app.php file.
  
 <h6>publish vendor</h6>
  <div class="highlight highlight-text-html-php"><pre>
- $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider
+ $ php artisan vendor:publish --provider="ArtinCMS\LFM\LFMServiceProvider"
 </pre> </div>
 if update package for publish vendor you should run : 
  <div class="highlight highlight-text-html-php"><pre>
- $ php artisan vendor:publish --provider=ArtinCMS\LFM\LFMServiceProvider --force
+ $ php artisan vendor:publish --provider="ArtinCMS\LFM\LFMServiceProvider" --force
 </pre> </div>
  <h6>migrate tabales</h6>
   <div class="highlight highlight-text-html-php"><pre>
   $ php artisan migrate
   </pre> </div>
 <h6>seed data to lfm_file_mime_type table</h6>
-for windows
  <div class="highlight highlight-text-html-php"><pre>
-  php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder
-  </pre> </div>
-  for linux
-  <div class="highlight highlight-text-html-php"><pre>
- php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\FilemanagerTableSeeder
+  php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
   </pre> </div>
   <h4>more installation details</h4>
   <p>The package will use these optimizers if they are present on your system:</p>
