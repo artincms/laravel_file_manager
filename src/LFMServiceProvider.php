@@ -29,7 +29,7 @@ class LFMServiceProvider extends ServiceProvider
 
 	    //publish storage file
          $this->publishes([
-                    __DIR__ . '/Storage/SystemFiles' => storage_path() . '/app/System',
+                    __DIR__ . '/Storage/SystemFiles' => \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'\System'),
                 ]);
 
 	    $this->publishes([

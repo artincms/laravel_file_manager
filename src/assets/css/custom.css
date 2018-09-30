@@ -96,6 +96,10 @@ a.btn.btn-sm.btn-primary.grid-trash-o {
 a.grid-row-delete {
     color: red;
 }
+#create_category_form ::placeholder {
+    font-size: 12px;
+    color: #6c757d87;
+}
 a.grid-row-delete i {
     padding-right: 50%;
 }
