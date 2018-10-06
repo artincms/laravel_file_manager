@@ -34,7 +34,7 @@ return [
     'lfm_default_true_extension' => env('LFM_DEFAULT_TRUE_EXTENSION', ['jpg', 'jpeg', 'png']),
     'insertde_view_theme'        => env('LFM_INSERTED_VIEW_THEME', 'inline'),
     'lang_rtl'                   => env('LFM_LANG_RTL', [
-        'ae',    /* Avestan */
+        'ae',   /* Avestan */
         'ar',   /* 'العربية', Arabic */
         'arc',  /* Aramaic */
         'bcc',  /* 'بلوچی مکرانی', Southern Balochi */
