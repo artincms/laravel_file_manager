@@ -75,7 +75,7 @@
                                    data-description="{{$category['description']}}"
                                 ><i class="fa fa-folder img img-category-thumbnail"></i></a>
                             </div>
-                            <div class="text-center">
+                            <div class="text-center text-truncate">
                                 <a class="meida-name" href="" title="{{$category['title']}}">{{$category['title']}}</a>
                             </div>
                         </div>
@@ -148,8 +148,8 @@
                                         <i class="fa fa-file img-file-thumbnail"></i></a>
                                 @endif
                             </div>
-                            <div class="text-center">
-                                <a class="meida-name" href="#" title="">{{$file['original_name']}}</a>
+                            <div class="text-center text-truncate">
+                                <a class="meida-name " href="#" title="">{{$file['original_name']}}</a>
                             </div>
                         </div>
                     </li>

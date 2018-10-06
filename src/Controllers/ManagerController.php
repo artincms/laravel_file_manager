@@ -349,7 +349,6 @@ class ManagerController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'title' => 'required|max:255',
-                'description' => 'required',
             ]);
             $check = Category::where([
                 ['parent_category_id', '=', $request->parent_category_id],

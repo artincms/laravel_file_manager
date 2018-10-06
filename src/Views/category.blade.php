@@ -11,16 +11,16 @@
                 <input id="title" class="form-control" placeholder="@lang('filemanager.category_name_placeholder')" type="text" name="title">
             </div>
             <div class="form-group">
-                <label for="description" class="control-label">@lang('filemanager.description')</label>
-                <input id="description" class="form-control" placeholder="@lang('filemanager.category_description_placeholder')" type="text" name="description">
-            </div>
-            <div class="form-group">
                 <label data-error="wrong" data-success="right" for="orangeForm-name">@lang('filemanager.category_select_parent')</label>
                 <select class="form-control select_category" id="parent_category_id" name="parent_category_id">
                     @foreach($categories as $category)
                         <option value="{{$category->id}}" @if($category_id == $category->id) selected @endif>{{$category->title}}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label">@lang('filemanager.description')</label>
+                <input id="description" class="form-control" placeholder="@lang('filemanager.category_description_placeholder')" type="text" name="description">
             </div>
             <button class="btn btn-primary hidden" id="btn_submit_category"></button>
             <button class="btn btn-primary hidden" id="btn_submit_category_close"></button>

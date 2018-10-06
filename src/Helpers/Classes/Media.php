@@ -205,8 +205,8 @@ class Media
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
         $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder');
         $file = File::find(LFM_GetDecodeId($file_id));
-        $not_found_img_path = $base_path . 'System/' . $not_found_img;
-        $not_found_default_img_path = $base_path . 'System/' .$not_found_img;
+        $not_found_img_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'\System/'). $not_found_img;
+        $not_found_default_img_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'\System/'). $not_found_img;
         //check database for check file exist
         if ($file)
         {
