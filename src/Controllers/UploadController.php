@@ -81,7 +81,7 @@ class UploadController extends ManagerController
     {
         if ($id == -1)
         {
-            return Media::downloadById(-1, 'original', $default_img);//"Not Valid Request";
+            return Media::downloadById(-1, 'original', $default_img,false, $quality, $width, $height);//"Not Valid Request";
         }
         switch ($type)
         {
