@@ -206,7 +206,7 @@ class Media
         $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder');
         $file = File::find(LFM_GetDecodeId($file_id));
         $not_found_img_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/System/'. $not_found_img);
-        $not_found_default_img_path = base_path('vendor\artincms\laravel_file_manager\src\Storage\SystemFiles\404.png');
+        $not_found_default_img_path = base_path('vendor/artincms/laravel_file_manager/src/Storage/SystemFiles/404.png');
         //check database for check file exist
         if ($file)
         {
@@ -305,7 +305,7 @@ class Media
         {
             if ($width || $height)
             {
-                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($not_found_img_path))
+                if (\Storage::exists($not_found_img_path))
                 {
                     $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
                 }
@@ -316,7 +316,7 @@ class Media
             }
             else
             {
-                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($not_found_img_path))
+                if (\Storage::exists($not_found_img_path))
                 {
                     $res = Image::make($not_found_img_path)->response('jpg', $quality);
                 }
