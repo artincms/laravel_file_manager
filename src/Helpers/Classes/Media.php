@@ -305,7 +305,7 @@ class Media
         {
             if ($width || $height)
             {
-                if (\Storage::exists($not_found_img_path))
+                if (file_exists($not_found_img_path))
                 {
                     $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
                 }
@@ -316,7 +316,7 @@ class Media
             }
             else
             {
-                if (\Storage::exists($not_found_img_path))
+                if (file_exists($not_found_img_path))
                 {
                     $res = Image::make($not_found_img_path)->response('jpg', $quality);
                 }
