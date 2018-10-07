@@ -316,7 +316,14 @@ class Media
             }
             else
             {
-                $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($not_found_img_path))
+                {
+                    $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                }
+                else
+                {
+                    $res = Image::make($not_found_default_img_path)->response('jpg', $quality);
+                }
             }
         }
         return $res;
