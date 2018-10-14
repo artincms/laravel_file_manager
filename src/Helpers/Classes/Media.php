@@ -226,7 +226,16 @@ class Media
                 $config = config('laravel_file_manager.driver_disk');
                 $file_path = $file->path . '/files/' . $size_type . '/' . $filename;
             }
-            $hash = $file_id . '_' . $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height;
+            if(\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file_path))
+            {
+                $md5_file =  md5(\Storage::disk(config('laravel_file_manager.driver_disk'))->get($file_path));
+            }
+            else
+            {
+                $md5_file = '' ;
+            }
+
+            $hash =  $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height.'_'.$md5_file;
             $file_name_hash = 'tmp_fid_' . $file->id . '_' . md5($hash);
             $relative_tmp_path = config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/' . $file_name_hash;
             $tmp_path = $base_path . $relative_tmp_path;
