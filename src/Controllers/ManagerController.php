@@ -686,11 +686,20 @@ class ManagerController extends Controller
     {
         $categories = [];
         $files = [];
+        if (auth()->check())
+        {
+            $user_id = auth()->id();
+        }
+        else
+        {
+            $user_id = 0;
+        }
         if (config('laravel_file_manager.allow_upload_private_file'))
         {
             $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => __('filemanager.search') . ' : ' . $request->search, 'type' => 'DisableLink']];
             $subcategories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
+                ['user_id', $user_id],
                 ['id', '!=', -5]
             ])->get();
             foreach ($subcategories as $category)
@@ -709,6 +718,7 @@ class ManagerController extends Controller
             }
             $subfiles = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
+                ['user_id', $user_id],
                 ['category_id', '!=', -5]
             ])->get();
             foreach ($subfiles as $file)
@@ -731,6 +741,7 @@ class ManagerController extends Controller
             $breadcrumbs = [['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'], ['id' => -2, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
             $subcategories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
+                ['user_id', $user_id],
                 ['id', '!=', -5]
             ])->get();
             foreach ($subcategories as $category)
@@ -742,6 +753,7 @@ class ManagerController extends Controller
             }
             $subfiles = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
+                ['user_id', $user_id],
                 ['category_id', '!=', -5]
             ])->get();
             foreach ($subfiles as $file)

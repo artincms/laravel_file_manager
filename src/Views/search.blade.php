@@ -20,6 +20,7 @@
     </tr>
     </thead>
     <tbody>
+    @if(count($categories) > 0)
     @foreach($categories as $category)
         <tr>
             <td><a href="#" class="media-attachment-chexbox">
@@ -46,6 +47,8 @@
             </td>
         </tr>
     @endforeach
+    @endif
+    @if(count($files) > 0)
     @foreach($files as $file)
         <tr>
             <td><a href="#" class="media-attachment-chexbox">
@@ -115,6 +118,7 @@
             </td>
         </tr>
     @endforeach
+    @endif
     </tbody>
 </table>
 <script>

@@ -639,8 +639,15 @@ function LFM_GetChildCategory($array_id)
         while ($parent_id != '#')
         {
             $subcat = \ArtinCMS\LFM\Models\Category::find($parent_id);
-            $array_parent_id[] = $subcat->id;
-            $parent_id = $subcat->parent_category_id;
+            if (isset($subcat))
+            {
+                $array_parent_id[] = $subcat->id;
+                $parent_id = $subcat->parent_category_id;
+            }
+            else
+            {
+                $parent_id = '#' ;
+            }
         }
         foreach ($array_id as $id)
         {
@@ -654,7 +661,6 @@ function LFM_GetChildCategory($array_id)
     {
         $category[] = \ArtinCMS\LFM\Models\Category::find(0);
     }
-
     return $category;
 }
 
@@ -663,7 +669,10 @@ function LFM_CreateArrayId($array)
     $array_id = [];
     foreach ($array as $value)
     {
-        $array_id[] = $value->id;
+        if (isset($value))
+        {
+            $array_id[] = $value->id;
+        }
     }
 
     return $array_id;
