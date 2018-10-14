@@ -513,7 +513,7 @@ function LFM_DestroySection($section)
     }
 }
 
-function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original', $default_img = '404.png', $quality = 100, $width = false, $height = false)
+function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original', $default_img = '404.png', $quality = 100, $width = false, $height = false,$check_version=false)
 {
     if ($type == 'ID' && isset($id) && !empty($id))
     {
@@ -523,8 +523,14 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original
     {
         $id = -1;
     }
-
-    return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
+    if ($check_version)
+    {
+        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height,'v'=>$check_version]);
+    }
+    else
+    {
+        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
+    }
 }
 
 function LFM_GetBase64Image($file_id, $size_type = 'original', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
@@ -821,23 +827,18 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     else
     {
-        $html = '<h1>' . __('filemanager.please_run_seed_at_first') . '</h1><br/> ';
+        $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
         if (app()->getLocale() == "fa")
         {
-            $html = '<div style="direction: rtl;text-align: right;">';
+            $html .= '<div style="direction: rtl;text-align: right;">';
         }
         else
         {
-            $html = '<div>';
+            $html .= '<div>';
         }
-        $html = '
-            <h6>' . __('filemanager.for_windows') . '</h6>
+        $html .= '
             <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
-                php artisan db:seed --class=ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder
-            </pre>
-             <h6>' . __('filemanager.for_linux') . '</h6>
-            <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
-                 php artisan db:seed --class=ArtinCMS\\LFM\\Database\\Seeds\\FilemanagerTableSeeder
+                php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
             </pre>
         </div>';
         $result['modal_content'] = $html;
