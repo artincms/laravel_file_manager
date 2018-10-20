@@ -68,18 +68,6 @@ class File extends Model
     /**
      * @return int|null
      */
-    public function getUserIdAttribute()
-    {
-        if (auth()->check())
-        {
-            $user_id = auth()->id();
-        }
-        else
-        {
-            $user_id = 0;
-        }
-        return $user_id ;
-    }
 
     public function getHummanSizeAttribute()
     {

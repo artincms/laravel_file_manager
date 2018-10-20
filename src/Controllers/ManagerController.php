@@ -7,6 +7,7 @@ use ArtinCMS\LFM\Models\File;
 use ArtinCMS\LFM\Models\Category;
 use ArtinCMS\LFM\Helpers\Classes\Media;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -694,75 +695,74 @@ class ManagerController extends Controller
         {
             $user_id = 0;
         }
+        $LFM = Session::get('LFM') ;
+        $section = $request->section ;
+        if (isset($LFM[$section]['options']['true_mime_type']))
+        {
+            $true_myme_types =$LFM[$section]['options']['true_mime_type'] ;
+        }
+        else
+        {
+            $true_myme_types =false ;
+        }
         if (config('laravel_file_manager.allow_upload_private_file'))
         {
             $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => __('filemanager.search') . ' : ' . $request->search, 'type' => 'DisableLink']];
-            $subcategories = Category::with('user')->where([
+            $subcategories= Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
-                ['user_id', $user_id],
                 ['id', '!=', -5]
-            ])->get();
-            foreach ($subcategories as $category)
-            {
-                if (in_array($category->id, LFM_CreateArrayId(LFM_GetChildCategory([0]))))
-                {
-                    if ($category->user_id == $this->getUserId())
-                    {
-                        $categories[] = $category;
-                    }
-                }
-                else
-                {
-                    $categories[] = $category;
-                }
-            }
+            ])->whereIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0]))) ->where('user_id',$this->getUserId())->get();
+            $categories = Category::with('user')->where([
+                ['title', 'like', '%' . $request->search . '%'],
+                ['id', '!=', -5]
+            ])->whereNotIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0])))->get() ;
+            $categories = $categories->merge($subcategories);
             $subfiles = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
-                ['user_id', $user_id],
                 ['category_id', '!=', -5]
-            ])->get();
-            foreach ($subfiles as $file)
+            ])->whereIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0]))) ->where('user_id',$this->getUserId());
+            if ($true_myme_types)
             {
-                if (in_array($file->category_id, LFM_CreateArrayId(LFM_GetChildCategory([0]))))
-                {
-                    if ($file->user_id == $this->getUserId())
-                    {
-                        $files[] = $file;
-                    }
-                }
-                else
-                {
-                    $files[] = $file;
-                }
+                $subfiles->whereIn('mimeType',$true_myme_types);
             }
+            $subfiles = $subfiles->get();
+            $files  = File::with('user', 'FileMimeType')->where([
+                ['original_name', 'like', '%' . $request->search . '%'],
+                ['category_id', '!=', -5]
+            ])->whereNotIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0])));
+            if ($true_myme_types)
+            {
+                $files->whereIn('mimeType',$true_myme_types);
+            }
+            $files = $files->get();
+            $files = $files->merge($subfiles);
         }
         else
         {
             $breadcrumbs = [['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'], ['id' => -2, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
-            $subcategories = Category::with('user')->where([
+            $LFM = Session::get('LFM') ;
+            $section = $request->section ;
+            if (isset($LFM[$section]['options']['true_mime_type']))
+            {
+                $true_myme_types =$LFM[$section]['options']['true_mime_type'] ;
+            }
+            else
+            {
+                $true_myme_types =false ;
+            }
+            $categories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
-                ['user_id', $user_id],
                 ['id', '!=', -5]
-            ])->get();
-            foreach ($subcategories as $category)
-            {
-                if (!in_array($category->id, LFM_CreateArrayId(LFM_GetChildCategory([0]))))
-                {
-                    $categories[] = $category;
-                }
-            }
-            $subfiles = File::with('user', 'FileMimeType')->where([
+            ])->whereNotIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0])))->get() ;
+            $files  = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
-                ['user_id', $user_id],
                 ['category_id', '!=', -5]
-            ])->get();
-            foreach ($subfiles as $file)
+            ])->whereNotIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0])));
+            if ($true_myme_types)
             {
-                if (!in_array($file->category_id, LFM_CreateArrayId(LFM_GetChildCategory([0]))))
-                {
-                    $files[] = $file;
-                }
+                $files->whereIn('mimeType',$true_myme_types);
             }
+            $files = $files->get();
         }
         $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
         $result['success'] = true;

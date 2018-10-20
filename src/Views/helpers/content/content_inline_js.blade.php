@@ -190,7 +190,7 @@
                     '</div>' +
                     '<div class="tooltip_copy input-group-append">' +
                     '   <button id="copy_path" class="btn btn-default" data-clipboard-target="large" ><i class="fa fa-copy"></i></button>' +
-                    '   <span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')y</span>' +
+                    '   <span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                     '</div>' ;
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
@@ -269,7 +269,7 @@
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="original" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="original" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                     '</div>' ;
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
@@ -295,7 +295,7 @@
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="large" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">Click to Copy</span>' +
+                    '<span id="copy_path" data-clipboard-target="large" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                     '</div>' ;
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
@@ -348,7 +348,7 @@
                     '</div>' +
                     '<div class="input-group-append"> ' +
                     '<div class="tooltip_copy btn btn-outline-secondary">' +
-                    '<span id="copy_path" data-clipboard-target="small" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip"></span>' +
+                    '<span id="copy_path" data-clipboard-target="small" ><i class="fa fa-copy"></i></span><span class="tooltiptext" id="myTooltip">@lang('filemanager.click_to_copy')</span>' +
                     '</div>';
                     @if(in_array(-1,LFM_GetAllParentId((int)$parent_id)))
                         html +=
