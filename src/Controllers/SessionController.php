@@ -134,7 +134,8 @@ class SessionController extends ManagerController
         }
         else
         {
-            $user = $file->user->name;
+            $name_column = config('laravel_file_manager.user_name_column') ;
+            $user = $file->user->$name_column;
         }
         switch ($request->type)
         {

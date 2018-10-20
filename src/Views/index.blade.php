@@ -1,6 +1,7 @@
 @extends('laravel_file_manager::layouts.master')
 @section('page_title','Show Categories')
 @section('content')
+    @php($name_column=config('laravel_file_manager.user_name_column'))
     <div class="col-md-2">
         <div class="show_cat_foolder">
             <div class="top_js_tree_folder link_to_category pointer" id="share_category" data-id="{{LFM_getEncodeId(-2)}}"><i class="fa fa-folder"></i><span class="show_top_folder_name">@lang('filemanager.share_folder')</span></div>

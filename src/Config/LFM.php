@@ -27,6 +27,8 @@ return [
     'driver_disk'                => env('LFM_DRIVER_DISK', 'local'),
     'driver_disk_upload'         => env('LFM_DRIVER_DISK_UPLOAD', 'local'),
     'user_model'                 => env('LFM_USER_MODEL', 'App\User'),
+    'user_name_column'                  => env('LFM_NAME_COLUMN', 'username'),
+    'user_email_column'                  => env('LFM_EMAIL_COLUMN', 'email'),
     //optomise Image
     'Optimise_image'             => env('LFM_OPTIMISE_IMAGE', false),
     'symlink_public_folder_name' => env('LFM_SYMLINK_PUBLIC_FOLDER_NAME', 'public'),

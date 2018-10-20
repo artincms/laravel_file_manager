@@ -69,14 +69,10 @@
                     var fname = value.original_name;
                     out = out + '<div class="alert alert-danger">' + '@lang('filemanager.error_uploaded_file') # ' + (index + 1) + ' - ' + fname ;
                 }
-                if (typeof parent.refresh !== 'undefined') {
-                    parent.refresh();
-                }
-
             });
             @if ($callback)
-            if (typeof parent.{{$callback}} !== 'undefined') {
-                parent.{{$callback}}(data);
+            if (typeof parent.refresh !== 'undefined') {
+                parent.refresh();
             }
             @endif
             swal({

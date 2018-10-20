@@ -1,3 +1,5 @@
+@php($name_column=config('laravel_file_manager.user_name_column'))
+
 <ul class="nav nav-tabs" id="myTab" role="tablist" style="display: none;">
     <li class="nav-item">
         <a class="nav-link active" id="show_grid_tab" data-toggle="tab" href="#show_grid_content" role="tab" aria-controls="home" aria-selected="true"></a>
@@ -117,7 +119,7 @@
                                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                                     <a>
                                         <img id="sweet_image" src="{{LFM_GenerateDownloadLink('ID',$file->id,'small','404.png',100,190,127)}}?{{$file->small_version}}"
-                                             class="img-category-thumbnail" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                                             class="img-category-thumbnail" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif "
                                              data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                              data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
                                              data-humman_size_small="{{$file->humman_size_small}}"
@@ -129,7 +131,7 @@
                                     <a title="{{$file['original_name']}}" href="" id="sweet_image" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}"
                                        data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}"
                                        data-humman_size_small="{{$file->humman_size_small}}"
-                                       data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
+                                       data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                        @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
                                        data-public-original-path = "{{$file->public_original_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
@@ -140,7 +142,7 @@
                                     <a title="{{$file['original_name']}}" href="" id="sweet_image" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}"
                                        data-size="{{$file->size}}" data-size="{{$file->size}}" data-humman_size="{{$file->humman_size}}" data-humman-size_large="{{$file->humman_size_large}}"
                                        data-humman-size_medium="{{$file->humman_size_medium}}" data-humman-size_small="{{$file->humman_size_small}}"
-                                       data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
+                                       data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif"
                                        data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
                                        @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
                                        data-public-original-path = "{{$file->public_original_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
@@ -200,7 +202,7 @@
                         ><i class="fa fa-folder margin-right-1"></i>{{$category['title']}}</a>
 
                     </td>
-                    <td>@if ($category->user) {{$category->user->name}}@else public @endif</td>
+                    <td>@if ($category->user) {{$category->user->$name_column}}@else public @endif</td>
                     <td>
                         <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
                             <i class="fa fa-trash"></i>
@@ -220,7 +222,7 @@
                     </td>
                     <td>
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                            <a id="sweet_image" class="blue" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif "
+                            <a id="sweet_image" class="blue" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif "
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="Image" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
@@ -232,7 +234,7 @@
                         @elseif($file->filemimetype->icon_class)
                             <a title="{{$file['original_name']}}" href="" id="sweet_image" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
-                               data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
+                               data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="FileIcon" data-icon="{{$file->filemimetype->icon_class}}" data-mime="{{$file->mimeType}}"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
                                data-public-original-path = "{{$file->public_original_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
@@ -241,7 +243,7 @@
                         @else
                             <a title="{{$file['original_name']}}" href="" id="sweet_image" title="{{$file['original_name']}}" data-id="{{LFM_getEncodeId($file->id)}}" data-mime="{{$file->mimeType}}" data-size="{{$file->size}}"
                                data-humman_size="{{$file->humman_size}}" data-humman_size_large="{{$file->humman_size_large}}" data_humman_size_medium="{{$file->humman_size_medium}}" data-humman_size_small="{{$file->humman_size_small}}"
-                               data-user-name="@if ($file->user) {{$file->user->name}}@else public @endif"
+                               data-user-name="@if ($file->user) {{$file->user->$name_column}}@else public @endif"
                                data-created-date="{{$file->created_at}}" data-updated-date="{{$file->updated_at}}" data-type="File"
                                @if(in_array(-1,LFM_GetAllParentId((int)$file->category_id)))
                                data-public-original-path = "{{$file->public_original_link}}" data-public-large-path = "{{$file->public_large_link}}" data-public-medium-path = "{{$file->public_medium_link}}" data-public-small-path = "{{$file->public_small_link}}"
@@ -250,7 +252,7 @@
                                 <i class="fa fa-file icon_file_list margin-right-1"></i>{{$file['original_name']}}</a>
                         @endif
                     </td>
-                    <td>@if ($file->user) {{$file->user->name}}@else public @endif</td>
+                    <td>@if ($file->user) {{$file->user->$name_column}}@else public @endif</td>
                     <td>
                         <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}" data-parent-id="{{LFM_getEncodeId($file->category_id)}}">
                             <i class="fa fa-trash"></i>
