@@ -4,7 +4,7 @@
 @endsection
 @section('add_js')
     <script type="text/javascript" src="{{asset('vendor/laravel_file_manager/js/build/fileinput.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('vendor/laravel_file_manager/packages/bootstrap-fileinput-master/js/locales/fa.js')}}"></script>
+    <script type="text/javascript" src="{{asset('vendor/laravel_file_manager/js/locales/fa.js')}}"></script>
 @endsection
 @section('content')
     <div class="container kv-main">

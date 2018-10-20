@@ -705,22 +705,23 @@ class ManagerController extends Controller
         {
             $true_myme_types =false ;
         }
+        $true_cat_id =LFM_CreateArrayId(LFM_GetChildCategory([0])) ;
         if (config('laravel_file_manager.allow_upload_private_file'))
         {
             $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => __('filemanager.search') . ' : ' . $request->search, 'type' => 'DisableLink']];
             $subcategories= Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0]))) ->where('user_id',$this->getUserId())->get();
+            ])->whereIn('id',$true_cat_id) ->where('user_id',$this->getUserId())->get();
             $categories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereNotIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0])))->get() ;
+            ])->whereNotIn('id',$true_cat_id)->get() ;
             $categories = $categories->merge($subcategories);
             $subfiles = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0]))) ->where('user_id',$this->getUserId());
+            ])->whereIn('category_id',$true_cat_id) ->where('user_id',$this->getUserId());
             if ($true_myme_types)
             {
                 $subfiles->whereIn('mimeType',$true_myme_types);
@@ -729,7 +730,7 @@ class ManagerController extends Controller
             $files  = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereNotIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0])));
+            ])->whereNotIn('category_id',$true_cat_id);
             if ($true_myme_types)
             {
                 $files->whereIn('mimeType',$true_myme_types);
@@ -753,11 +754,11 @@ class ManagerController extends Controller
             $categories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereNotIn('id',LFM_CreateArrayId(LFM_GetChildCategory([0])))->get() ;
+            ])->whereNotIn('id',$true_cat_id)->get() ;
             $files  = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereNotIn('category_id',LFM_CreateArrayId(LFM_GetChildCategory([0])));
+            ])->whereNotIn('category_id',$true_cat_id);
             if ($true_myme_types)
             {
                 $files->whereIn('mimeType',$true_myme_types);

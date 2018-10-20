@@ -149,7 +149,7 @@
                                 @endif
                             </div>
                             <div class="text-center text-truncate">
-                                <a class="meida-name " href="#" title="">{{$file['original_name']}}</a>
+                                <a class="meida-name " href="{{LFM_GenerateDownloadLink('ID',$file->id,'small','404.png',100,190,127)}}?{{$file->small_version}}" title="">{{$file['original_name']}}</a>
                             </div>
                         </div>
                     </li>
