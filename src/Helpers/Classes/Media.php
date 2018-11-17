@@ -245,7 +245,19 @@ class Media
             //check if exist in tmp folder
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($relative_tmp_path))
             {
-                $res = response()->download($tmp_path, $file->original_name . '.' . $file_EXT, $headers);
+                if ($inline_content)
+                {
+                    $file_base_path = $base_path . $file_path;
+                    $file_EXT_without_dot = str_replace('.', '', $file_EXT);
+                    $data = file_get_contents($file_base_path);
+                    $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
+                    file_put_contents($tmp_path, $base64);
+                    $res = $base64;
+                }
+                else
+                {
+                    $res = response()->download($tmp_path, $file->original_name . '.' . $file_EXT, $headers);
+                }
             }
             else
             {
