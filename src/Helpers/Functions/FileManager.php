@@ -1035,5 +1035,14 @@ function LFM_Date_JtoG($jDate, $delimiter = '/', $to_string = false, $with_time 
     return ($r);
 }
 
+function LFM_explode_2d_array($strVar)
+{
+    $result = [];
+    $arr = explode(',', $strVar);
+    array_walk($arr, function (&$value, $key) use (&$result) {
+        list($k, $v) = explode(':', $value);
+        $result[ $k ] = $v;
+    });
+}
 
 
