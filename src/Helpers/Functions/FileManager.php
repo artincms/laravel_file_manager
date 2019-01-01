@@ -1043,6 +1043,7 @@ function LFM_explode_2d_array($strVar)
         list($k, $v) = explode(':', $value);
         $result[ $k ] = $v;
     });
+    return $result ;
 }
 
 
