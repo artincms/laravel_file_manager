@@ -97,10 +97,9 @@
             html: out,
             showCloseButton: false,
             focusConfirm: false,
-            confirmButtonText:
-                'More Upload',
+            confirmButtonText:'@lang('filemanager.more_upload')',
             showCancelButton: true,
-            cancelButtonText: 'Close',
+            cancelButtonText: '@lang('filemanager.close')',
             cancelButtonClass: 'close_upload',
             confirmButtonClass: 'clear_upload',
         }).then(function (result) {
@@ -143,6 +142,3 @@
     }
 </script>
 @endsection
-
-
-
