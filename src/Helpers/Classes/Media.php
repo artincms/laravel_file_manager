@@ -31,15 +31,15 @@ class Media
         $mimeType = $FileMimeType->mimeType;
         if (in_array(-2, Category::getAllParentId($CategoryID)))
         {
-            $Path = config('laravel_file_manager.main_storage_folder_name').'/share_folder/';
+            $Path = config('laravel_file_manager.main_storage_folder_name') . '/share_folder/';
         }
         elseif (in_array(-1, Category::getAllParentId($CategoryID)))
         {
-            $Path = config('laravel_file_manager.main_storage_folder_name').'/public_folder/';
+            $Path = config('laravel_file_manager.main_storage_folder_name') . '/public_folder/';
         }
         else
         {
-            $Path = config('laravel_file_manager.main_storage_folder_name').'/media_folder/';
+            $Path = config('laravel_file_manager.main_storage_folder_name') . '/media_folder/';
         }
         $parents = Category::all_parents($CategoryID);
         $is_picture = false;
@@ -110,27 +110,28 @@ class Media
         }
         $result =
             [
-                'id' => $FileSave->id,
-                'UID' => $CustomUID,
-                'Path' => $Path,
-                'Size' => $file->getSize(),
-                'FileName' => $filename,
-                'size' => $FileSave->size,
-                'icon' => 'fa-file-o',
-                'created' => $FileSave->created_at,
-                'updated' => $FileSave->updated_at,
-                'user' => $FileSave->user_id,
+                'id'            => $FileSave->id,
+                'UID'           => $CustomUID,
+                'Path'          => $Path,
+                'Size'          => $file->getSize(),
+                'FileName'      => $filename,
+                'size'          => $FileSave->size,
+                'icon'          => 'fa-file-o',
+                'created'       => $FileSave->created_at,
+                'updated'       => $FileSave->updated_at,
+                'user'          => $FileSave->user_id,
                 'original_name' => $OriginalFileName,
-                'is_picture' => $is_picture
+                'is_picture'    => $is_picture
             ];
+
         return $result;
     }
 
     public static function resizeImageUpload($file, $FileSave, $FullPath, $original_name, $quality = 90)
     {
-        $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/media_folder/');
+        $upload_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name') . '/media_folder/');
         $original_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
-        $tmp_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/');
+        $tmp_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/');
         if (config('laravel_file_manager.Optimise_image'))
         {
             $optimizerChain = OptimizerChainFactory::create();
@@ -148,7 +149,7 @@ class Media
                 //create directory if not exist
                 if (!is_dir($tmp_path))
                 {
-                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder');
+                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder');
                 }
                 switch ($crop)
                 {
@@ -168,12 +169,12 @@ class Media
                     $optimizerChain->optimize($tmp_path . '/' . $filename);
                 }
                 $opt_name = 'fid_' . $FileSave->id . "_v0_" . 'uid_' . $FileSave->user_id . '_' . $crop_type . '_' . md5_file($tmp_path . '/' . $filename) . "_" . time() . '_' . $FileSave->extension;
-                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/' . $filename);
-                $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
+                $opt_size = \Storage::disk(config('laravel_file_manager.driver_disk'))->size(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/' . $filename);
+                $opt_file = \Storage::disk(config('laravel_file_manager.driver_disk'))->move(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/' . $filename, $FileSave->path . '/files/' . $crop_type . '/' . $opt_name);
                 if ($opt_file)
                 {
-                    $name['size_' . $crop_type] = $opt_size;
-                    $name[$crop_type] = $opt_name;
+                    $name[ 'size_' . $crop_type ] = $opt_size;
+                    $name[ $crop_type ] = $opt_name;
                 }
                 else
                 {
@@ -197,15 +198,16 @@ class Media
                 }
             }
         }
+
         return $name;
     }
 
     public static function downloadById($file_id, $size_type = 'original', $not_found_img = '404.png', $inline_content = false, $quality = 90, $width = false, $height = False)
     {
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
-        $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder');
+        $temp_path_directory = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder');
         $file = File::find(LFM_GetDecodeId($file_id));
-        $not_found_img_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name').'/System/'. $not_found_img);
+        $not_found_img_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path(config('laravel_file_manager.main_storage_folder_name') . '/System/' . $not_found_img);
         $not_found_default_img_path = base_path('vendor/artincms/laravel_file_manager/src/Storage/SystemFiles/404.png');
         //check database for check file exist
         if ($file)
@@ -221,26 +223,26 @@ class Media
             {
                 if ($size_type != 'original')
                 {
-                    $filename = $file[$size_type . '_filename'];
+                    $filename = $file[ $size_type . '_filename' ];
                 }
                 $config = config('laravel_file_manager.driver_disk');
                 $file_path = $file->path . '/files/' . $size_type . '/' . $filename;
             }
-            if(\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file_path))
+            if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($file_path))
             {
-                $md5_file =  md5(\Storage::disk(config('laravel_file_manager.driver_disk'))->get($file_path));
+                $md5_file = md5(\Storage::disk(config('laravel_file_manager.driver_disk'))->get($file_path));
             }
             else
             {
-                $md5_file = '' ;
+                $md5_file = '';
             }
 
-            $hash =  $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height.'_'.$md5_file;
+            $hash = $size_type . '_' . $not_found_img . '_' . $inline_content . '_' . $quality . '_' . $width . '_' . $height . '_' . $md5_file;
             $file_name_hash = 'tmp_fid_' . $file->id . '_' . md5($hash);
-            $relative_tmp_path = config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/' . $file_name_hash;
+            $relative_tmp_path = config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/' . $file_name_hash;
             $tmp_path = $base_path . $relative_tmp_path;
             $file_EXT = FileMimeType::where('mimeType', '=', $file->mimeType)->firstOrFail()->ext;
-            $headers = array("Content-Type:{$file->mimeType}");
+            $headers = ["Content-Type:{$file->mimeType}"];
 
             //check if exist in tmp folder
             if (\Storage::disk(config('laravel_file_manager.driver_disk'))->has($relative_tmp_path))
@@ -263,50 +265,46 @@ class Media
             {
                 if (!is_dir($temp_path_directory))
                 {
-                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder');
+                    \Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder');
                 }
                 //check local storage for check file exist
                 if (\Storage::disk($config)->has($file_path))
                 {
                     $file_base_path = $base_path . $file_path;
-                    if ($inline_content)
+
+                    if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
                     {
-                        $file_EXT_without_dot = str_replace('.', '', $file_EXT);
-                        $data = file_get_contents($file_base_path);
-                        $base64 = 'data:image/' . $file_EXT_without_dot . ';base64,' . base64_encode($data);
-                        file_put_contents($tmp_path, $base64);
-                        $res = $base64;
-                    }
-                    else
-                    {
-                        if (in_array($file_EXT, ['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']))
+                        if ($width && $height)
                         {
-                            if ($width && $height)
-                            {
-                                $res = Image::make($file_base_path)->fit((int)$width, (int)$height);
-                                $res->save($tmp_path);
-                                $res = $res->response($file_EXT, (int)$quality);
-                            }
-                            else
-                            {
-                                if ($quality < 100)
-                                {
-                                    $res = Image::make($file_base_path);
-                                    $res->save($tmp_path);
-                                    $res = $res->response('jpg', (int)$quality);
-                                }
-                                else
-                                {
-                                    $res = Image::make($file_base_path);
-                                    $res->save($tmp_path);
-                                    $res = $res->response($file_EXT, (int)$quality);
-                                }
-                            }
+                            $res = Image::make($file_base_path)->fit((int)$width, (int)$height);
+                            $res->save($tmp_path);
+                            $res = $res->response($file_EXT, (int)$quality);
                         }
                         else
                         {
-                            $res = response()->download($file_base_path, $file->filename . '.' . $file_EXT, $headers);
+                            if ($quality < 100)
+                            {
+                                $res = Image::make($file_base_path);
+                                $res->save($tmp_path);
+                                $res = $res->response('jpg', (int)$quality);
+                            }
+                            else
+                            {
+                                $res = Image::make($file_base_path);
+                                $res->save($tmp_path);
+                                $res = $res->response($file_EXT, (int)$quality);
+                            }
                         }
+                        if ($inline_content)
+                        {
+                            $data = $res->getContent();
+                            $base64 = 'data:image/' . 'jpg' . ';base64,' . base64_encode($data);
+                            $res = $base64;
+                        }
+                    }
+                    else
+                    {
+                        $res = response()->download($file_base_path, $file->filename . '.' . $file_EXT, $headers);
                     }
                 }
                 else
@@ -319,8 +317,8 @@ class Media
                     {
                         $res = Image::make($not_found_img_path)->response('jpg', $quality);
                     }
-					
-					if ($inline_content)
+
+                    if ($inline_content)
                     {
                         $data = $res->getContent();
                         $base64 = 'data:image/' . 'jpg' . ';base64,' . base64_encode($data);
@@ -339,7 +337,7 @@ class Media
                 }
                 else
                 {
-                    $res = Image::make($not_found_default_img_path)->fit((int)$width, (int)$height)->response('jpg',$quality);
+                    $res = Image::make($not_found_default_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
                 }
             }
             else
@@ -353,14 +351,15 @@ class Media
                     $res = Image::make($not_found_default_img_path)->response('jpg', $quality);
                 }
             }
-			
-			if ($inline_content)
+
+            if ($inline_content)
             {
                 $data = $res->getContent();
                 $base64 = 'data:image/' . 'jpg' . ';base64,' . base64_encode($data);
                 $res = $base64;
             }
         }
+
         return $res;
     }
 
@@ -376,6 +375,7 @@ class Media
             $id = -1;
         }
         $download = self::downloadById($id, $not_found_img, $size_type, $inline_content, $quality, $width, $height);
+
         return $download;
     }
 
@@ -385,6 +385,7 @@ class Media
         if (\Storage::disk('public')->has($path . '/' . $file_name . '.' . $file_EXT))
         {
             $file_path = $base_path . '/public/' . $path . '/' . $file_name . '.' . $file_EXT;
+
             return response()->download($file_path, $file_name . "." . $file_EXT, $headers);
         }
         else
@@ -426,7 +427,8 @@ class Media
                 break;
         }
         $FileSave->save();
-        $result = array('ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'originalFileName' => $FileSave->OriginalFileName);
+        $result = ['ID' => $FileSave->id, 'UID' => $FileSave->user_id, 'Path' => $FileSave->path, 'Size' => $FileSave->size, 'FileName' => $FileSave->filename, 'originalFileName' => $FileSave->OriginalFileName];
+
         return $result;
     }
 
@@ -483,7 +485,7 @@ class Media
         {
             $username = 'Public';
         }
-        $result = array('id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'original_name' => $OriginalFileName, 'is_picture' => $is_picture);
+        $result = ['id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'original_name' => $OriginalFileName, 'is_picture' => $is_picture];
         if (in_array($FileSave->mimeType, config('laravel_file_manager.allowed_pic')))
         {
             $result['icon'] = 'image';
@@ -500,6 +502,7 @@ class Media
                 $result['icon'] = 'fa-file-o';
             }
         }
+
         return $result;
     }
 }
