@@ -319,6 +319,13 @@ class Media
                     {
                         $res = Image::make($not_found_img_path)->response('jpg', $quality);
                     }
+					
+					if ($inline_content)
+                    {
+                        $data = $res->getContent();
+                        $base64 = 'data:image/' . 'jpg' . ';base64,' . base64_encode($data);
+                        $res = $base64;
+                    }
                 }
             }
         }
