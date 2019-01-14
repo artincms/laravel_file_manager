@@ -513,7 +513,7 @@ function LFM_DestroySection($section)
     }
 }
 
-function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original', $default_img = '404.png', $quality = 100, $width = false, $height = false,$check_version=false)
+function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original', $default_img = '404.png', $quality = 100, $width = false, $height = false, $check_version = false)
 {
     if ($type == 'ID' && isset($id) && !empty($id))
     {
@@ -525,7 +525,7 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original
     }
     if ($check_version)
     {
-        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height,'v'=>$check_version]);
+        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height, 'v' => $check_version]);
     }
     else
     {
@@ -646,7 +646,7 @@ function LFM_GetChildCategory($array_id)
             }
             else
             {
-                $parent_id = '#' ;
+                $parent_id = '#';
             }
         }
         foreach ($array_id as $id)
@@ -661,6 +661,7 @@ function LFM_GetChildCategory($array_id)
     {
         $category[] = \ArtinCMS\LFM\Models\Category::find(0);
     }
+
     return $category;
 }
 
@@ -769,8 +770,7 @@ function LFM_CheckAllowInsert($section_name)
 
     return $result;
 }
-
-function LFM_checkSeed()
+function LFM_checkCatSeed()
 {
     $category_id = [-2, -1, 0, -5];
     foreach ($category_id as $cat_id)
@@ -778,10 +778,34 @@ function LFM_checkSeed()
         $res = \ArtinCMS\LFM\Models\Category::find($cat_id);
         if (!$res)
         {
-            return false;
+            $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
+            if (app()->getLocale() == "fa")
+            {
+                $html .= '<div style="direction: rtl;text-align: right;">';
+            }
+            else
+            {
+                $html .= '<div>';
+            }
+            $html .= '<pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
+                            php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
+                        </pre>
+                    </div>';
+
+            return [
+                'success' => false,
+                'html'    => $html
+            ];
         }
     }
+    return [
+        'success' => true,
+    ];
 
+}
+function LFM_checkSeed()
+{
+    
     return true;
 }
 
@@ -828,7 +852,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     //create html content and button
     $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
     $available = LFM_CheckAllowInsert($section)['available'];
-    if (LFM_checkSeed())
+    $check_seed = LFM_checkSeed();
+    if ($check_seed['success'])
     {
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['button'] = '<button data-href="' . $src . '" type="button" class="btn ' . $button_class . '"  id="' . $button_id . '"><i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
@@ -836,20 +861,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     }
     else
     {
-        $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
-        if (app()->getLocale() == "fa")
-        {
-            $html .= '<div style="direction: rtl;text-align: right;">';
-        }
-        else
-        {
-            $html .= '<div>';
-        }
-        $html .= '
-            <pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
-                php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
-            </pre>
-        </div>';
+
         $result['modal_content'] = $html;
         $result['button'] = '';
     }
@@ -1043,7 +1055,8 @@ function LFM_explode_2d_array($strVar)
         list($k, $v) = explode(':', $value);
         $result[ $k ] = $v;
     });
-    return $result ;
+
+    return $result;
 }
 
 
