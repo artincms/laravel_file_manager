@@ -29,6 +29,7 @@ return [
     'user_model'                 => env('LFM_USER_MODEL', 'App\User'),
     'user_name_column'           => env('LFM_NAME_COLUMN', 'username'),
     'user_email_column'          => env('LFM_EMAIL_COLUMN', 'email'),
+    'count_total_mime_type'          => env('LFM_COUNT_TOTAL_MIME_TYPE', 678),
     //optomise Image
     'Optimise_image'             => env('LFM_OPTIMISE_IMAGE', false),
     'symlink_public_folder_name' => env('LFM_SYMLINK_PUBLIC_FOLDER_NAME', 'public'),

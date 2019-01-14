@@ -788,7 +788,7 @@ function LFM_checkCatSeed()
                 $html .= '<div>';
             }
             $html .= '<pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
-                            php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
+                            php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\LFM_CategoryTableSeeder"
                         </pre>
                     </div>';
 
@@ -803,10 +803,90 @@ function LFM_checkCatSeed()
     ];
 
 }
+
+function LFM_checkMymeTypeSeed() {
+    $mimetypes = \ArtinCMS\LFM\Models\FileMimeType::all();
+    if (count($mimetypes) < 685 )
+    {
+        $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
+        if (app()->getLocale() == "fa")
+        {
+            $html .= '<div style="direction: rtl;text-align: right;">';
+        }
+        else
+        {
+            $html .= '<div>';
+        }
+        $html .= '<pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
+                            php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\LFM_MimeTypeTableSeeder"
+                        </pre>
+                    </div>';
+
+        return [
+            'success' => false,
+            'html'    => $html
+        ];
+    }
+    else
+    {
+        return [
+            'success' => true,
+        ];
+    }
+}
+
 function LFM_checkSeed()
 {
-    
-    return true;
+    $res_cat =LFM_checkCatSeed();
+    $res_mime =LFM_checkMymeTypeSeed();
+    if ($res_cat['success'] && $res_mime['success'])
+    {
+        return [
+            'success' => true,
+        ];
+    }
+    else
+    {
+        if (!$res_cat['success'] && !$res_mime['success'])
+        {
+            $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
+            if (app()->getLocale() == "fa")
+            {
+                $html .= '<div style="direction: rtl;text-align: right;">';
+            }
+            else
+            {
+                $html .= '<div>';
+            }
+            $html .= '<pre style="padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;">  
+                            php artisan db:seed --class="ArtinCMS\LFM\Database\Seeds\FilemanagerTableSeeder"
+                        </pre>
+                    </div>';
+
+            return [
+                'success' => false,
+                'html'    => $html
+            ];
+            return [
+                'success' => false,
+                'html'    => $html
+            ];
+        }
+        elseif (!$res_cat['success'])
+        {
+            return [
+                'success' => false,
+                'html'    => $res_cat['html']
+            ];
+        }
+        else
+        {
+            return [
+                'success' => false,
+                'html'    => $res_mime['html']
+            ];
+        }
+    }
 }
 
 function LFM_CreateModalFileManager($section, $options = false, $insert = 'insert', $callback = false, $modal_id = false, $header = false, $button_id = false, $button_content = false, $button_class = 'btn-default', $font_button_class = false)
@@ -862,7 +942,7 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     else
     {
 
-        $result['modal_content'] = $html;
+        $result['modal_content'] = $check_seed['html'];
         $result['button'] = '';
     }
 
