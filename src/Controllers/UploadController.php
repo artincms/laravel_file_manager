@@ -59,7 +59,7 @@ class UploadController extends ManagerController
                     return $e->getMessage();
                 }
 
-                if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
+                if (in_array($mimeType, config('laravel_file_manager.allowed')) && $FileMimeType)
                 {
                     $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $original_name) {
                         $res = Media::upload($file,false, $CategoryID, $FileMimeType, $original_name,$file->getSize());
