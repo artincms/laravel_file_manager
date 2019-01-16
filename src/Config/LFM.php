@@ -17,7 +17,7 @@ return [
     'allow_upload_private_file'  => env('LFM_ALLOW_UPLOAD_PRIVATE_FILE', true),
     // set true if you want log to the database
     'db-log'                     => env('LFM_DB_LOG', true),
-    'allowed'                    => explode(',', env('LFM_ALLOWED', 'application/zip,application/pdf,image/jpeg,image/x-icon,application/x-rar,application/vnd.ms-word.document.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,audio/mpeg,video/mp4,video/webm,video/ogg,audio/ogg,audio/x-wav,image/svg+xml')),
+    'allowed'                    => explode(',', env('LFM_ALLOWED', 'image/png,application/zip,application/pdf,image/jpeg,image/x-icon,application/x-rar,application/vnd.ms-word.document.macroenabled.12,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel,application/vnd.ms-excel.sheet.binary.macroenabled.12,application/vnd.ms-excel.sheet.macroenabled.12,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,audio/mpeg,video/mp4,video/webm,video/ogg,audio/ogg,audio/x-wav,image/svg+xml')),
     'allowed_pic'                => explode(',', env('LFM_ALLOWED_PIC', 'image/jpeg,image/png')),
     'crop_type'                  => explode(',', env('LFM_CROP_TYPE', 'large,medium,small,original')),
     'size_large'                 => LFM_explode_2d_array(env('LFM_SIZE_LARGE', 'height:1024,width:768')),
