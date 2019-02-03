@@ -954,6 +954,7 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
     $session = LFM_SetSessionOption($section, $options, config('laravel_file_manager.upload_route_prefix'));
     $available = LFM_CheckAllowInsert($section)['available'];
     $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
+    $category_id = -5 ;
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '"  data-toggle="modal">' . $button_content . '</button>';
 

@@ -12,6 +12,7 @@ class DirectUploadController extends Controller
     public function directUpload($section = false, $callback)
     {
         $result = LFM_GetSection($section)['options'];
+        $category_id = -5 ;
         if ($result)
         {
             $options = $result;
