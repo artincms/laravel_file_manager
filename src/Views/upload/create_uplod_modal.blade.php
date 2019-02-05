@@ -13,7 +13,7 @@
                 </button>
             </div>
             <div class="modal-body" id="{{$section}}_body_upload_form" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
-                <iframe class="modal_iframe" src="{{$src}}" id="{{LFM_CheckFalseString($section)}}_iframe_upload" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
+                <iframe class="modal_iframe" id="{{LFM_CheckFalseString($section)}}_iframe_upload" style="width: 100%;max-height:  calc(100vh - 187px) ;border: none;height:  calc(100vh - 187px) ;"></iframe>
             </div>
         </div>
     </div>
@@ -37,15 +37,19 @@
 
 <script type="text/javascript">
     var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
-    var insert_button_id = 'modal_insert_{{$section.'_'.LFM_CheckFalseString($modal_id)}}';
-    var FrameID = "#create_upload_{{$section}}_{{$modal_id}}" ;
-    var button_modal_id = '{{$button_id}}';
-    $(document).off("click", '#'+button_modal_id);
-    $(document).on('click', '#'+button_modal_id, function (e) {
+    var insert_button_id_{{$section}} = 'modal_insert_{{$section.'_'.LFM_CheckFalseString($modal_id)}}';
+    var FrameID_{{$section}} = "#create_upload_{{$section}}_{{$modal_id}}" ;
+    $(document).off("click", '#{{$button_id}}');
+    $(document).on('click', '#{{$button_id}}', function (e) {
+        var src_{{$section}} = $(this).attr('data-href');
+        var iframe_{{$section}} = $('#{{LFM_CheckFalseString($section)}}_iframe_upload');
+        iframe_{{$section}}.contents().find("body").html('');
+        iframe_{{$section}}.contents().find("body").html(lfm_generate_loader_html('@lang('filemanager.please_wait')'));
+        iframe_{{$section}}.attr("src",src_{{$section}});
         if ({{LFM_CheckFalseString($section)}}_available > 0)
         {
-            $(FrameID).modal();
-            $( '#{{LFM_CheckFalseString($section)}}_iframe_upload' ).attr( 'src', function ( i, val ) { return val; });
+            $(FrameID_{{$section}}).modal('show');
+            iframe_{{LFM_CheckFalseString($section)}}.attr( 'src', function ( i, val ) { return val; });
         }
         else
         {
@@ -53,10 +57,10 @@
         }
     });
     //---------------------------------------------------------------------------------------------------------//
-    $(document).off("click", '#'+insert_button_id);
-    $(document).on('click', '#'+insert_button_id, function (e) {
-        var iframe = $('#{{LFM_CheckFalseString($section)}}_iframe_upload');
-        iframe.contents().find("#insert_file").click();
+    $(document).off("click", '#'+insert_button_id_{{$section}});
+    $(document).on('click', '#'+insert_button_id_{{$section}}, function (e) {
+        var iframe_{{$section}} = $('#{{LFM_CheckFalseString($section)}}_iframe_upload');
+        iframe_{{$section}}.contents().find("#insert_file").click();
         $('#create_{{$modal_id}}').modal('hide');
     });
     //------------------------------------------------------------------------------------//
