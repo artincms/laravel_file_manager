@@ -20,11 +20,11 @@
 </div>
 <div class="modal fade " id="create_erro_modal_upload" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="height: calc(100vh - 220px);">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{$header}}</h5>
             </div>
-            <div class="modal-body" style="overflow-y: auto;max-height:  calc(100vh - 145px) ;height:  calc(100vh - 145px) ;">
+            <div class="modal-body" style="text-align: center ;min-height: 275px">
                 <h2>@lang('filemanager.reach_maximum_file_upload')</h2>
                 <h5>@lang('filemanager.for_upload_remove_previus_uploadded_file')</h5>
             </div>
@@ -36,7 +36,7 @@
 </div>
 
 <script type="text/javascript">
-    var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
+    window.{{LFM_CheckFalseString($section)}}_available = {{$available}} ;
     var insert_button_id_{{$section}} = 'modal_insert_{{$section.'_'.LFM_CheckFalseString($modal_id)}}';
     var FrameID_{{$section}} = "#create_upload_{{$section}}_{{$modal_id}}" ;
     $(document).off("click", '#{{$button_id}}');
