@@ -446,16 +446,17 @@
                     res = result ;
                     parent.{{LFM_CheckFalseString($section)}}_available = result.{{LFM_CheckFalseString($section)}}.available ;
                     clear_page() ;
+                    if(typeof parent.hidemodal_{{$section}} !== 'undefined')
+                    {
+                        parent.hidemodal_{{$section}}();
+                    }
                     @if($callback)
                     if (typeof parent.{{LFM_CheckFalseString($callback)}} !== 'undefined')
                     {
                         parent.{{LFM_CheckFalseString($callback)}}(result) ;
                     }
                     @endif
-                    if(typeof parent.hidemodal_{{$section}} !== 'undefined')
-                    {
-                        parent.hidemodal_{{$section}}();
-                    }
+
 
                 }
                 else
