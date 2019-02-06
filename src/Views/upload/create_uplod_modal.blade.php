@@ -39,7 +39,6 @@
         var src_{{$section}} = $(this).attr('data-href');
         var iframe_{{$section}} = $('#{{LFM_CheckFalseString($section)}}_iframe_upload');
         iframe_{{$section}}.contents().find("body").html('');
-        iframe_{{$section}}.contents().find("body").html(lfm_generate_loader_html('@lang('filemanager.please_wait')'));
         iframe_{{$section}}.attr("src",src_{{$section}});
         if ({{LFM_CheckFalseString($section,false,true)}}available > 0)
         {
