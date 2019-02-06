@@ -444,7 +444,7 @@
                 if (result.{{LFM_CheckFalseString($section)}}.success)
                 {
                     res = result ;
-                    parent.{{LFM_CheckFalseString($section)}}_available = result.{{LFM_CheckFalseString($section)}}.available ;
+                    parent.{{LFM_CheckFalseString($section)}}available = result.{{LFM_CheckFalseString($section)}}.available ;
                     clear_page() ;
                     if(typeof parent.hidemodal_{{$section}} !== 'undefined')
                     {

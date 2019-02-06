@@ -25,7 +25,7 @@
     </div>
     <script type="text/javascript">
         //-----------------------------------------------------------------------------------------------------//
-    if (parent.{{LFM_CheckFalseString($section)}}_available > 0)
+    if (parent.{{LFM_CheckFalseString($section,false,true)}}available > 0)
     {
         $("#input-708").fileinput({
             theme: "fa",
@@ -40,7 +40,7 @@
             },
             delete:false,
             @if($section && $section !='false' && $options !=false)
-            maxFileCount: parent.{{LFM_CheckFalseString($section)}}_available,
+            maxFileCount: parent.{{LFM_CheckFalseString($section,false,true)}}available,
             allowedFileExtensions: [{!! $true_ext !!}],
             @else
             allowedFileExtensions:[{!!$ext !!}],
@@ -60,22 +60,17 @@
             $('#kv-error-2').html('<h4>@lang('filemanager.error_status')</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
             complete(data);
-            parent.{{LFM_CheckFalseString($section)}}_available = data.response.{{LFM_CheckFalseString($section)}}.available ;
+            parent.{{LFM_CheckFalseString($section,false,true)}}available = data.response.{{LFM_CheckFalseString($section)}}.available ;
             if (typeof parent.refresh !== 'undefined') {
                 parent.refresh();
             }
-            @if ($callback)
-            if (typeof parent.{{$callback}} !== 'undefined') {
-                parent.{{$callback}}(data.response);
-            }
-            @endif
-
-
+            parent.call_back_function{{$section}}(data.response);
         });
     }
     else
     {
-       $('#{{$section}}_kv_main').html('<h3>You reach your maximum file upload</h3><br/><h4>for more upload you should remove previous upload file</h4>');
+       $('#{{$section}}_kv_main').html('  <h2>@lang('filemanager.reach_maximum_file_upload')</h2>' +
+           '                <h5>@lang('filemanager.for_upload_remove_previus_uploadded_file')</h5>');
     }
     function complete(data) {
         var out = '';

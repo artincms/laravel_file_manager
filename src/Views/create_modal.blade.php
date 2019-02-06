@@ -43,7 +43,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var {{LFM_CheckFalseString($section)}}_available = {{$available}} ;
+    var {{LFM_CheckFalseString($section)}}available = {{$available}} ;
     $(document).off("click", '#{{$button_id}}');
     $(document).on('click', '#{{$button_id}}', function (e) {
         var src = $(this).attr('data-href');
@@ -51,7 +51,7 @@
         iframe.contents().find("body").html('');
         iframe.contents().find("body").html(lfm_generate_loader_html('@lang('filemanager.please_wait')'));
         iframe.attr("src",src);
-        if ({{LFM_CheckFalseString($section)}}_available > 0)
+        if ({{LFM_CheckFalseString($section)}}available > 0)
         {
             $('#{{$modal_id}}').modal('show');
             $( '#{{LFM_CheckFalseString($section)}}_iframe' ).attr( 'src', function ( i, val ) { return val; });
