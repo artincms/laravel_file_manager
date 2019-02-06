@@ -20,7 +20,6 @@ function LFM_SetSessionOption($section, $option)
     $LFM[ $section ]['options'] = $option;
     $LFM[ $section ]['selected'] = ['data' => [], 'view' => []];
     session()->put('LFM', $LFM);
-
     return $LFM;
 }
 
@@ -1145,3 +1144,5 @@ function LFM_explode_2d_array($strVar)
 
     return $result;
 }
+
+
