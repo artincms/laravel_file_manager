@@ -123,10 +123,14 @@ function LFM_FindSessionSelectedId($selected, $id)
     return false;
 }
 
-function LFM_CheckFalseString($input, $replace_input = "false")
+function LFM_CheckFalseString($input, $replace_input = "false",$remove_underline=false)
 {
     if ($input)
     {
+        if ($remove_underline)
+        {
+            $input = str_replace('_','',$input) ;
+        }
         return $input;
     }
     else
@@ -955,6 +959,7 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
     $available = LFM_CheckAllowInsert($section)['available'];
     $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
     $category_id = -5 ;
+
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['button'] = '<button type="button" class="btn btn-default"  id="' . $button_id . '"  data-toggle="modal" data-href="' . $src . '">' . $button_content . '</button>';
     $result['src'] = $src;
@@ -1140,5 +1145,3 @@ function LFM_explode_2d_array($strVar)
 
     return $result;
 }
-
-
