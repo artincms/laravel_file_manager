@@ -103,8 +103,43 @@ class DirectUploadController extends Controller
             }
             LFM_SetSelectedFileToSession($request, $request->section, $result);
             $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
-            $data[$request->section]['data'] = $result;
-            $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
+            if(!isset($section['options']['response_types']))
+            {
+                $data[$request->section]['data'] = $result;
+                $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
+            }
+            else
+            {
+                $respnse_types = $section['options']['response_types'] ;
+                if ($respnse_types)
+                {
+                    foreach ($respnse_types as $respnse_type)
+                    {
+                        switch ($respnse_type) {
+                            case "json":
+                                $data[$request->section]['data'] = $result;
+                                break;
+                            case "list_html":
+                                $data[$request->section]['view']['list'] = LFM_GetSection($request->section)['selected']['view']['list'];
+                                break;
+                            case "medium_html":
+                                $data[$request->section]['view']['medium'] = LFM_GetSection($request->section)['selected']['view']['medium'];
+                                break;
+                            case "large_html":
+                                $data[$request->section]['view']['large'] = LFM_GetSection($request->section)['selected']['view']['large'];
+                                break;
+                            case "grid_html":
+                                $data[$request->section]['view']['grid'] = LFM_GetSection($request->section)['selected']['view']['grid'];
+                                break;
+                            case "view":
+                                $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
+                                break;
+                            case "green":
+                        }
+                    }
+                }
+            }
+
             return response()->json($data);
         }
     }

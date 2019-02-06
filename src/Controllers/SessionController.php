@@ -253,10 +253,45 @@ class SessionController extends ManagerController
             $session = LFM_GetSection($request->section);
             if ($session)
             {
-                $result[$request->section]['new_inserted_data'] = $data;
                 $result[$request->section]['success'] = true;
-                $result[$request->section]['data'] = $session['selected']['data'];
-                $result[$request->section]['view'] = $session['selected']['view'];
+                if(!isset($options['options']['response_types']))
+                {
+                    $result[$request->section]['data'] = $session['selected']['data'];
+                    $result[$request->section]['view'] = $session['selected']['view'];
+                    $result[$request->section]['new_inserted_data'] = $data;
+                }
+                else
+                {
+                    $respnse_types = $options['options']['response_types'] ;
+                    if ($respnse_types)
+                    {
+                        foreach ($respnse_types as $respnse_type)
+                        {
+                            switch ($respnse_type) {
+                                case "json":
+                                    $result[$request->section]['new_inserted_data'] = $data;
+                                    $result[$request->section]['data'] = $session['selected']['data'];
+                                    break;
+                                case "list_html":
+                                    $result[$request->section]['view']['list'] = $session['selected']['view']['list'];
+                                    break;
+                                case "medium_html":
+                                    $result[$request->section]['view']['medium'] = $session['selected']['view']['medium'];
+                                    break;
+                                case "large_html":
+                                    $result[$request->section]['view']['large'] = $session['selected']['view']['large'];
+                                    break;
+                                case "grid_html":
+                                    $result[$request->section]['view']['grid'] = $session['selected']['view']['grid'];
+                                    break;
+                                case "view":
+                                    $result[$request->section]['view'] = $session['selected']['view'];
+                                    break;
+                                case "green":
+                            }
+                        }
+                    }
+                }
                 $result[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
             }
         }
