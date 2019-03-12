@@ -939,6 +939,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     if ($check_seed['success'])
     {
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
+        $result['modal_content_html'] = view("laravel_file_manager::create_modal_html", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
+        $result['script'] = view("laravel_file_manager::create_modal_script", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['button'] = '<button data-href="' . $src . '" type="button" class="btn ' . $button_class . '"  id="' . $button_id . '"><i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
         $result['src'] = $src;
     }
