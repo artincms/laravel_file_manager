@@ -36,10 +36,9 @@
     }
     //-------------------------------------------------------------------------------------//
 
-    function call_back_function{{$section}}(data) {
+    window['call_back_function{{$section}}'] = function(data) {
         @if($callback)
-            console.log(data);
-            {{$callback}}(data);
+            window['{{$callback}}'](data);
         @endif
     }
 </script>
