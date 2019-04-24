@@ -35,6 +35,7 @@
             elCaptionText : '',
             uploadExtraData: {
                 category_id: '{{$category_id}}' ,
+                section: '{{LFM_CheckFalseString($section)}}' ,
                 _token: $('#token').val()
             },
             delete:false,
@@ -55,7 +56,14 @@
             $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
             $('#kv-error-2').html('<h4>Error Status</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
-           complete(data);
+            if(data.response.pre_required_erro)
+            {
+                show_pre_required_error(data.response.errors) ;
+            }
+            else
+            {
+                complete(data);
+            }
         });
 
         function complete(data) {
@@ -75,6 +83,22 @@
                 parent.refresh();
             }
             @endif
+            swall_message(out);
+
+        }
+
+        function show_pre_required_error(errors)
+        {
+            var out = '';
+            $.each(errors, function (index, value) {
+                out = out + '<div class="alert alert-danger">' + (index + 1) + ' - ' + value ;
+            });
+            swall_message(out);
+        }
+
+
+        function swall_message(out)
+        {
             swal({
                 title: '<h4>@lang('filemanager.upload_status')</h4>',
                 html: out,
@@ -94,6 +118,7 @@
                 }
             });
         }
+
 
         //-----------------------------------------------------------------------------------------------------------//
         $('#cancel_btn').off('click');

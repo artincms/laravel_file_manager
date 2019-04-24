@@ -32,9 +32,8 @@ class UploadController extends ManagerController
         return view('laravel_file_manager::upload.upload', compact('category_id', 'callback', 'options', 'section'));
     }
 
-    public function storeUploads(Request $request)
+    public function storeUploads(\ArtinCMS\LFM\Requests\UploadFile $request)
     {
-        if ($request->file)
         {
             $CategoryID = LFM_GetDecodeId($request->category_id);
             $result = [];
@@ -58,7 +57,6 @@ class UploadController extends ManagerController
                 {
                     return $e->getMessage();
                 }
-
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) && $FileMimeType)
                 {
                     $result[] = \DB::transaction(function () use ($file, $CategoryID, $FileMimeType, $original_name) {
