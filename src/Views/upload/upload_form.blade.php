@@ -59,7 +59,15 @@
             $('#kv-success-2').html('<h4>@lang('filemanager.upload_status')</h4><ul></ul>').hide();
             $('#kv-error-2').html('<h4>@lang('filemanager.error_status')</h4><ul></ul>').hide();
         }).on('filebatchuploadsuccess', function(event, data) {
-            complete(data);
+            console.log(data);
+            if(data.response.pre_required_erro)
+            {
+                show_pre_required_error(data.response.errors) ;
+            }
+            else
+            {
+                complete(data);
+            }
             parent.{{LFM_CheckFalseString($section,false,true)}}available = data.response.{{LFM_CheckFalseString($section)}}.available ;
             if (typeof parent.refresh !== 'undefined') {
                 parent.refresh();
@@ -85,8 +93,10 @@
                 out += '<p>' + value.error + '</p></div>';
             }
         });
+    }
 
-
+    function swall_message(out)
+    {
         swal({
             title: '<h4>@lang('filemanager.upload_status')</h4>',
             html: out,
@@ -106,6 +116,15 @@
             }
 
         });
+    }
+
+    function show_pre_required_error(errors)
+    {
+        var out = '';
+        $.each(errors, function (index, value) {
+            out = out + '<div class="alert alert-danger">' + (index + 1) + ' - ' + value ;
+        });
+        swall_message(out);
     }
 
     //-----------------------------------------------------------------------------------------------------------//

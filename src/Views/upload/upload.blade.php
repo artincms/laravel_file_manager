@@ -64,6 +64,11 @@
             {
                 complete(data);
             }
+            @if ($callback)
+            if (typeof parent.refresh !== 'undefined') {
+                parent.refresh();
+            }
+            @endif
         });
 
         function complete(data) {
@@ -78,11 +83,6 @@
                     out = out + '<div class="alert alert-danger">' + '@lang('filemanager.error_uploaded_file') # ' + (index + 1) + ' - ' + fname ;
                 }
             });
-            @if ($callback)
-            if (typeof parent.refresh !== 'undefined') {
-                parent.refresh();
-            }
-            @endif
             swall_message(out);
 
         }

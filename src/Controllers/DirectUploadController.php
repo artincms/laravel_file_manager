@@ -36,7 +36,7 @@ class DirectUploadController extends Controller
         }
     }
 
-    public function storeDirectUploads(Request $request)
+    public function storeDirectUploads(\ArtinCMS\LFM\Requests\DirectUploadFile $request)
     {
         if ($request->file)
         {
