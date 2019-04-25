@@ -93,7 +93,7 @@ class UploadFile extends FormRequest
         $messages = [
             'file.required'=> 'آپلود فایل ضروری است .',
             'file.lfm_check_size'=> 'خطا در سایز فایل .',
-            'file.check_true_mime_type'=> 'خطا در نوع فایل آپلود شده .',
+            'file.lfm_check_true_mime_type'=> 'خطا در نوع فایل آپلود شده .',
         ];
         return $messages;
     }
