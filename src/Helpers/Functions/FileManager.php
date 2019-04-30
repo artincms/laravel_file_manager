@@ -938,11 +938,14 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     $check_seed = LFM_checkSeed();
     if ($check_seed['success'])
     {
+        $json = array_merge($options,['section'=>$section,'callback'=>$callback,'upload_route'=>route('LFM.StoreUploads'),'delete_session_route'=>route('LFM.DeleteSessionInsertItem')]);
+
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['modal_content_html'] = view("laravel_file_manager::create_modal_html", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['script'] = view("laravel_file_manager::create_modal_script", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['button'] = '<button data-href="' . $src . '" type="button" class="btn ' . $button_class . '"  id="' . $button_id . '"><i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
         $result['src'] = $src;
+        $result['json'] = json_encode($json);
     }
     else
     {
@@ -960,13 +963,14 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
     $available = LFM_CheckAllowInsert($section)['available'];
     $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
     $category_id = -5 ;
+    $json = array_merge($options,['section'=>$section,'callback'=>$callback,'upload_route'=>route('LFM.StoreDirectUploads'),'delete_session_route'=>route('LFM.DeleteSessionInsertItem')]);
 
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['modal_content_html'] = view("laravel_file_manager::upload.create_uplod_modal_html", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['script'] = view("laravel_file_manager::upload.create_uplod_modal_script", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['button'] = '<button type="button" class="btn ' . $button_class . '"  id="' . $button_id . '" data-toggle="modal" data-href="' . $src . '"> <i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
     $result['src'] = $src;
-
+    $result['json'] = json_encode($json);
     return $result;
 }
 
