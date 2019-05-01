@@ -473,7 +473,7 @@ class Media
 
         //upload every files in path folder
         $file_content = \File::get($file);
-        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path . '/' . $filename, $file_content);
+        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path  . $filename, $file_content);
         $FileSave->file_md5 = md5_file($file);
         $FileSave->filename = $filename;
         $FileSave->save();
