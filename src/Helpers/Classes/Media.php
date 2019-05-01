@@ -217,7 +217,7 @@ class Media
             {
                 $config = config('laravel_file_manager.driver_disk_upload');
                 $base_path = \Storage::disk($config)->path('');
-                $file_path = $file->path . '/' . $filename;
+                $file_path = $file->path . $filename;
             }
             else
             {
