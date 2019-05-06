@@ -12,7 +12,7 @@ class DirectUploadController extends Controller
     public function directUpload($section = false, $callback)
     {
         $result = LFM_GetSection($section)['options'];
-        $category_id = -5 ;
+        $category_id = -5;
         if ($result)
         {
             $options = $result;
@@ -21,6 +21,7 @@ class DirectUploadController extends Controller
         {
             $options = [];
         }
+
         return view('laravel_file_manager::upload.upload_form', compact('category_id', 'callback', 'section', 'options'));
     }
 
@@ -40,9 +41,9 @@ class DirectUploadController extends Controller
     {
         if ($request->file)
         {
-            $CategoryID = $request->category_id;
             $result = [];
             $data = [];
+
             foreach ($request->file as $file)
             {
                 try
@@ -54,6 +55,7 @@ class DirectUploadController extends Controller
                 {
                     return $e->getMessage();
                 }
+
                 if (in_array($mimeType, config('laravel_file_manager.allowed')) === true && $FileMimeType)
                 {
                     $section = LFM_GetSection($request->section);
@@ -71,6 +73,7 @@ class DirectUploadController extends Controller
                                     $result['full_url'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original');
                                     $result['full_url_medium'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original', '404.png', 100, 170, 120);
                                     $result['full_url_large'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original');
+
                                     return $result;
                                 });
                             }
@@ -81,57 +84,62 @@ class DirectUploadController extends Controller
                         }
                         else
                         {
-                            $data[$request->section]['data'][] = ['successs' => false, 'original_name' => $original_name, 'error' => 'Your Upload Path not define'];
-                            $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
-                            $data[$request->section]['view'] = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
+                            $data[ $request->section ]['data'][] = ['successs' => false, 'original_name' => $original_name, 'error' => 'Your Upload Path not define'];
+                            $data[ $request->section ]['available'] = LFM_CheckAllowInsert($request->section)['available'];
+                            $data[ $request->section ]['view'] = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
+
                             return response()->json($data);
                         }
                     }
                     else
                     {
-                        $data[$request->section]['data'][] = ['successs' => false, 'original_name' => $original_name, 'error' => 'Your Section Not Define'];
-                        $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
-                        $data[$request->section]['view'] = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
+                        $data[ $request->section ]['data'][] = ['successs' => false, 'original_name' => $original_name, 'error' => 'Your Section Not Define'];
+                        $data[ $request->section ]['available'] = LFM_CheckAllowInsert($request->section)['available'];
+                        $data[ $request->section ]['view'] = ['list' => '', 'grid' => '', 'large' => '', 'medium' => '', 'small' => ''];
+
                         return response()->json($data);
                     }
                 }
                 else
                 {
                     $result[] = ['successs' => false, 'original_name' => $original_name, 'error' => 'Your Myme Type Is Not Allowed'];
-
                 }
             }
+
             LFM_SetSelectedFileToSession($request, $request->section, $result);
-            $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
-            if(!isset($section['options']['response_types']))
+
+            $data[ $request->section ]['available'] = LFM_CheckAllowInsert($request->section)['available'];
+
+            if (!isset($section['options']['response_types']))
             {
-                $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
+                $data[ $request->section ]['view'] = LFM_GetSection($request->section)['selected']['view'];
             }
             else
             {
-                $respnse_types = $section['options']['response_types'] ;
+                $respnse_types = $section['options']['response_types'];
                 if ($respnse_types)
                 {
                     foreach ($respnse_types as $respnse_type)
                     {
-                        switch ($respnse_type) {
+                        switch ($respnse_type)
+                        {
                             case "json":
-                                $data[$request->section]['data'] = $result;
+                                $data[ $request->section ]['data'] = $result;
                                 break;
                             case "list_html":
-                                $data[$request->section]['view']['list'] = LFM_GetSection($request->section)['selected']['view']['list'];
+                                $data[ $request->section ]['view']['list'] = LFM_GetSection($request->section)['selected']['view']['list'];
                                 break;
                             case "medium_html":
-                                $data[$request->section]['view']['medium'] = LFM_GetSection($request->section)['selected']['view']['medium'];
+                                $data[ $request->section ]['view']['medium'] = LFM_GetSection($request->section)['selected']['view']['medium'];
                                 break;
                             case "large_html":
-                                $data[$request->section]['view']['large'] = LFM_GetSection($request->section)['selected']['view']['large'];
+                                $data[ $request->section ]['view']['large'] = LFM_GetSection($request->section)['selected']['view']['large'];
                                 break;
                             case "grid_html":
-                                $data[$request->section]['view']['grid'] = LFM_GetSection($request->section)['selected']['view']['grid'];
+                                $data[ $request->section ]['view']['grid'] = LFM_GetSection($request->section)['selected']['view']['grid'];
                                 break;
                             case "view":
-                                $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
+                                $data[ $request->section ]['view'] = LFM_GetSection($request->section)['selected']['view'];
                                 break;
                         }
                     }

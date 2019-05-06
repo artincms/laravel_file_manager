@@ -63,26 +63,34 @@ class UploadFile extends FormRequest
         $options = $LFM['options'] ;
         $validator = parent::getValidatorInstance();
         $validator->addImplicitExtension('lfm_check_size', function ($attribute, $values, $parameters) use($options){
-           foreach ($values as $file)
+           if ($options['size_file'])
            {
-                $size = $file->getSize() ;
-                if ($size > $options['size_file'])
-                {
-                    return false ;
-                }
+               foreach ($values as $file)
+               {
+                   $size = $file->getSize() ;
+                   if ($size > $options['size_file'])
+                   {
+                       return false ;
+                   }
+               }
            }
+
            return true ;
         });
 
         $validator->addImplicitExtension('lfm_check_true_mime_type', function ($attribute, $values, $parameters) use($options){
-           foreach ($values as $file)
-           {
-                $mime_type = $file->getMimeType() ;
-                if (!in_array($mime_type,$options['true_mime_type']))
-                {
-                    return false ;
-                }
-           }
+          if ($options['true_mime_type'])
+          {
+              foreach ($values as $file)
+              {
+                  $mime_type = $file->getMimeType() ;
+                  if (!in_array($mime_type,$options['true_mime_type']))
+                  {
+                      return false ;
+                  }
+              }
+          }
+
            return true ;
         });
         return $validator;
