@@ -287,7 +287,6 @@ class SessionController extends ManagerController
                                 case "view":
                                     $result[$request->section]['view'] = $session['selected']['view'];
                                     break;
-                                case "green":
                             }
                         }
                     }

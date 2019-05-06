@@ -105,7 +105,6 @@ class DirectUploadController extends Controller
             $data[$request->section]['available'] = LFM_CheckAllowInsert($request->section)['available'];
             if(!isset($section['options']['response_types']))
             {
-                $data[$request->section]['data'] = $result;
                 $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
             }
             else
@@ -134,12 +133,12 @@ class DirectUploadController extends Controller
                             case "view":
                                 $data[$request->section]['view'] = LFM_GetSection($request->section)['selected']['view'];
                                 break;
-                            case "green":
                         }
                     }
                 }
             }
-
+            $data[$request->section]['data'] = LFM_GetSection($request->section)['selected']['data'];
+            $data[$request->section]['new_inserted_data'] = $result;
             return response()->json($data);
         }
     }
