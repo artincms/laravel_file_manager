@@ -4,6 +4,7 @@ namespace ArtinCMS\LFM\Controllers;
 
 use ArtinCMS\LFM\Helpers\Classes\Media;
 use ArtinCMS\LFM\Models\FileMimeType;
+use ArtinCMS\LFM\Requests\DirectUploadFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -37,7 +38,7 @@ class DirectUploadController extends Controller
         }
     }
 
-    public function storeDirectUploads(\ArtinCMS\LFM\Requests\DirectUploadFile $request)
+    public function storeDirectUploads(DirectUploadFile $request)
     {
         if ($request->file)
         {
