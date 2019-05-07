@@ -255,6 +255,7 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                 {
                     $res['file'] = [
                         'id'            => LFM_getEncodeId($file->id),
+                        'main_id'            => $file->id,
                         'original_name' => $file->original_name,
                         'type'          => 'original',
                         'size'          => $file->size,
@@ -385,6 +386,7 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                     {
                         $res['file'] = [
                             'id'            => LFM_getEncodeId($file->id),
+                            'main_id'            => $file->id,
                             'original_name' => $file->original_name,
                             'type'          => 'original',
                             'size'          => $file->size,
