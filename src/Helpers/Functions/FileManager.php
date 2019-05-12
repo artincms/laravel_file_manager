@@ -286,6 +286,7 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                     {
                         $res['file']['user'] = 'Public';
                     }
+                    $res['success'] = true;
                     $res['full_url'] = LFM_GenerateDownloadLink('ID', $file->id, 'original');
                     $res['full_url_medium'] = LFM_GenerateDownloadLink('ID', $file->id, 'medium');
                     $res['full_url_large'] = LFM_GenerateDownloadLink('ID', $file->id, 'large');
