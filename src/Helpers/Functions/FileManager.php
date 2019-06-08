@@ -386,7 +386,7 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                     foreach ($files as $file)
                     {
                         $res['file'] = [
-                            'id'            => LFM_getEncodeId($file->id),
+                            'id'            => $file->id,
                             'main_id'            => $file->id,
                             'original_name' => $file->original_name,
                             'type'          => 'original',
