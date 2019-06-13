@@ -25,11 +25,11 @@ class ManagerController extends Controller
         if ($section)
         {
             $LFM = session()->get('LFM');
-            if (isset($LFM[$section]))
+            if (isset($LFM[ $section ]))
             {
-                if (isset($LFM[$section]['options']))
+                if (isset($LFM[ $section ]['options']))
                 {
-                    $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+                    $trueMimeType = $LFM[ $section ]['options']['true_mime_type'];
                 }
                 else
                 {
@@ -57,15 +57,15 @@ class ManagerController extends Controller
             $files = File::get_uncategory_files($trueMimeType);
             $categories = Category::get_root_categories();
             $category = false;
-            if(count($files) ==0 && count($categories) ==0)
+            if (count($files) == 0 && count($categories) == 0)
             {
-                $show_icon_folder = true ;
+                $show_icon_folder = true;
             }
             else
             {
-                $show_icon_folder = false ;
+                $show_icon_folder = false;
             }
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id', 'callback', 'available','show_icon_folder'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id', 'callback', 'available', 'show_icon_folder'))->render();
             $result['message'] = '';
             $result['button_upload_link'] = route('LFM.FileUpload', ['category_id' => LFM_getEncodeId($id), 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section), 'callback' => LFM_CheckFalseString($callback)]);
             $result['parent_category_id'] = LFM_getEncodeId($id);
@@ -114,18 +114,19 @@ class ManagerController extends Controller
                 $category = false;
             }
             $result['parent_category_id'] = LFM_getEncodeId($id);
-            if(count($files) ==0 && count($categories) ==0)
+            if (count($files) == 0 && count($categories) == 0)
             {
-                $show_icon_folder = true ;
+                $show_icon_folder = true;
             }
             else
             {
-                $show_icon_folder = false ;
+                $show_icon_folder = false;
             }
-            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id', 'callback', 'available','show_icon_folder'))->render();
+            $result['html'] = view('laravel_file_manager::content', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'allCategories', 'parent_id', 'callback', 'available', 'show_icon_folder'))->render();
             $result['message'] = '';
             $result['button_category_create_link'] = route('LFM.ShowCategories.Create', ['category_id' => LFM_getEncodeId($id), 'callback' => LFM_CheckFalseString($callback), 'section' => LFM_CheckFalseString($section)]);
         }
+
         return $result;
     }
 
@@ -160,11 +161,11 @@ class ManagerController extends Controller
         if ($section)
         {
             $LFM = session()->get('LFM');
-            if ($LFM[$section])
+            if ($LFM[ $section ])
             {
-                if ($LFM[$section]['options']['true_mime_type'])
+                if ($LFM[ $section ]['options']['true_mime_type'])
                 {
-                    $trueMimeType = $LFM[$section]['options']['true_mime_type'];
+                    $trueMimeType = $LFM[ $section ]['options']['true_mime_type'];
                 }
                 else
                 {
@@ -201,23 +202,24 @@ class ManagerController extends Controller
             $result['parent_category_name'] = __('filemanager.root_folder');
         }
         $id = Cookie::get('current_category_id', 0);
-        $button_upload_link = route('LFM.FileUpload', ['category_id' => LFM_getEncodeId($id), 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section)]) ;
-        if($id == 0)
+        $button_upload_link = route('LFM.FileUpload', ['category_id' => LFM_getEncodeId($id), 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section)]);
+        if ($id == 0)
         {
             $allCategories['share'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, false, -2);
             $allCategories['public'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, false, -1);
             $allCategories['root'] = LFM_BuildMenuTree(Category::where('user_id', '=', $this->getUserId())->get(), 'parent_category_id', false, false, 0);
             $category = false;
             $allCategories = json_encode($allCategories);
-            if(count($files) ==0 && count($categories) ==0)
+            if (count($files) == 0 && count($categories) == 0)
             {
-                $show_icon_folder = true ;
+                $show_icon_folder = true;
             }
             else
             {
-                $show_icon_folder = false ;
+                $show_icon_folder = false;
             }
-            return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id', 'available','show_icon_folder','button_upload_link'));
+
+            return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id', 'available', 'show_icon_folder', 'button_upload_link'));
         }
         else
         {
@@ -262,22 +264,23 @@ class ManagerController extends Controller
             {
                 $files = $category->UserFiles($trueMimeType);
                 $categories = $category->user_child_categories;
-                $parent_category_name= $category->title;
+                $parent_category_name = $category->title;
             }
             if (in_array($id, [-1, -2]))
             {
                 $category = false;
             }
             $parent_category_id = LFM_getEncodeId($id);
-            if(count($files) ==0 && count($categories) ==0)
+            if (count($files) == 0 && count($categories) == 0)
             {
-                $show_icon_folder = true ;
+                $show_icon_folder = true;
             }
             else
             {
-                $show_icon_folder = false ;
+                $show_icon_folder = false;
             }
-            return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id', 'available','show_icon_folder','button_upload_link'));
+
+            return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id', 'available', 'show_icon_folder', 'button_upload_link'));
         }
 
     }
@@ -304,6 +307,7 @@ class ManagerController extends Controller
             }
         }
         $messages = [];
+
         return view('laravel_file_manager::category', compact('categories', 'category_id', 'messages', 'callback', 'section'));
     }
 
@@ -331,6 +335,7 @@ class ManagerController extends Controller
             }
         }
         $parent_category_id = $category->parent_category_id;
+
         return view('laravel_file_manager::edit_category', compact('categories', 'category', 'category_id', 'parent_category_id'));
     }
 
@@ -406,13 +411,15 @@ class ManagerController extends Controller
                 $path .= $cat->title_disc;
                 foreach ($subcats as $subcat)
                 {
-                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name').'/'.$path . '/files/' . $subcat);
+                    Storage::disk(config('laravel_file_manager.driver_disk'))->makeDirectory(config('laravel_file_manager.main_storage_folder_name') . '/' . $path . '/files/' . $subcat);
                 }
                 $category_id = $request->parent_category_id;
                 $categories = Category::where('user_id', '=', (auth()->check()) ? auth()->id() : 0)->get();
                 $result['success'] = true;
+
                 return $result;
             });
+
             return response()->json($result);
         }
     }
@@ -420,7 +427,7 @@ class ManagerController extends Controller
     public function updateCategory(Request $request)
     {
         $validator = $this->validate($request, [
-            'title' => 'required|max:255',
+            'title'       => 'required|max:255',
             'description' => 'required'
         ]);
         if (!config('laravel_file_manager.allow_upload_private_file'))
@@ -438,6 +445,7 @@ class ManagerController extends Controller
         $cat->description = $request->description;
         $cat->save();
         $result['success'] = true;
+
         return response()->json($result);
     }
 
@@ -451,6 +459,7 @@ class ManagerController extends Controller
         $file->save();
         $result['success'] = true;
         $messages[] = "Your Category is created";
+
         return response()->json($result);
     }
 
@@ -459,7 +468,7 @@ class ManagerController extends Controller
         if ($request->section != null && $request->section != false && $request->section != 'false')
         {
             $LFM = session()->get('LFM');
-            $trueMimeType = $LFM[$request->section]['options']['true_mime_type'];
+            $trueMimeType = $LFM[ $request->section ]['options']['true_mime_type'];
         }
         else
         {
@@ -514,18 +523,21 @@ class ManagerController extends Controller
             $f['type'] = 'file';
             $file[] = $f;
         }
+
         return datatables()->of(array_merge($cat, $file))->toJson();
     }
 
     public function showCategory(Request $request)
     {
         $result = $this->show($request->category_id, $request->insert, $request->callback, $request->section);
+
         return response()->json($result);
     }
 
     public function editFile($file_id)
     {
         $file = File::find(LFM_GetDecodeId($file_id));
+
         return view('laravel_file_manager::edit_file_name', compact('file'));
     }
 
@@ -544,6 +556,7 @@ class ManagerController extends Controller
             $this->delete_category(LFM_GetDecodeId($request->id));
         }
         $result = $this->show($request->parent_id, $request->insert, $request->callback, $request->section);
+
         return response()->json($result);
     }
 
@@ -562,6 +575,7 @@ class ManagerController extends Controller
             }
         }
         $result = $this->show($item['parent_id'], $request->insert, $request->callback, $request->section);
+
         return response()->json($result);
     }
 
@@ -580,12 +594,14 @@ class ManagerController extends Controller
             $message['success'] = false;
         }
         $message['result'] = $res;
+
         return response()->json($message);
     }
 
     public function editPicture($file_id)
     {
         $file = File::find(LFM_GetDecodeId($file_id));
+
         return view('laravel_file_manager::edit_picture', compact('file'));
     }
 
@@ -600,6 +616,7 @@ class ManagerController extends Controller
         $result['success'] = true;
         $result['name'] = $request->name;
         $result['message'] = "pictrue renamed";
+
         return response()->json($result);
     }
 
@@ -632,6 +649,7 @@ class ManagerController extends Controller
         {
             $breadcrumbs[] = ['id' => $category->id, 'title' => $category->title, 'type' => 'DisableLink'];
         }
+
         return $breadcrumbs;
     }
 
@@ -645,6 +663,7 @@ class ManagerController extends Controller
         {
             $user_id = 0;
         }
+
         return $user_id;
     }
 
@@ -653,18 +672,20 @@ class ManagerController extends Controller
         if (session()->has('LFM'))
         {
             $LFM = session()->get('LFM');
-            if (isset($LFM[$section]))
+            if (isset($LFM[ $section ]))
             {
                 //check options
-                if ($LFM[$section]['options'])
+                if ($LFM[ $section ]['options'])
                 {
-                    $result['options'] = $LFM[$section]['options'];
+                    $result['options'] = $LFM[ $section ]['options'];
                     $result['success'] = true;
+
                     return $result;
                 }
                 else
                 {
                     $result['success'] = false;
+
                     return $result;
                 }
             }
@@ -672,6 +693,7 @@ class ManagerController extends Controller
             {
                 $result['success'] = false;
                 $result['error'] = '';
+
                 return $result;
             }
         }
@@ -679,6 +701,7 @@ class ManagerController extends Controller
         {
             $result['success'] = false;
             $result['error'] = '';
+
             return $result;
         }
     }
@@ -695,45 +718,45 @@ class ManagerController extends Controller
         {
             $user_id = 0;
         }
-        $LFM = Session::get('LFM') ;
-        $section = $request->section ;
-        if (isset($LFM[$section]['options']['true_mime_type']))
+        $LFM = Session::get('LFM');
+        $section = $request->section;
+        if (isset($LFM[ $section ]['options']['true_mime_type']))
         {
-            $true_myme_types =$LFM[$section]['options']['true_mime_type'] ;
+            $true_myme_types = $LFM[ $section ]['options']['true_mime_type'];
         }
         else
         {
-            $true_myme_types =false ;
+            $true_myme_types = false;
         }
-        $true_cat_id =LFM_CreateArrayId(LFM_GetChildCategory([0])) ;
+        $true_cat_id = LFM_CreateArrayId(LFM_GetChildCategory([0]));
         if (config('laravel_file_manager.allow_upload_private_file'))
         {
             $breadcrumbs = [['id' => 0, 'title' => __('filemanager.root_folder'), 'type' => 'Enable'], ['id' => 0, 'title' => __('filemanager.search') . ' : ' . $request->search, 'type' => 'DisableLink']];
-            $subcategories= Category::with('user')->where([
+            $subcategories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereIn('id',$true_cat_id) ->where('user_id',$this->getUserId())->get();
+            ])->whereIn('id', $true_cat_id)->where('user_id', $this->getUserId())->get();
             $categories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereNotIn('id',$true_cat_id)->get() ;
+            ])->whereNotIn('id', $true_cat_id)->get();
             $categories = $categories->merge($subcategories);
             $subfiles = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereIn('category_id',$true_cat_id) ->where('user_id',$this->getUserId());
+            ])->whereIn('category_id', $true_cat_id)->where('user_id', $this->getUserId());
             if ($true_myme_types)
             {
-                $subfiles->whereIn('mimeType',$true_myme_types);
+                $subfiles->whereIn('mimeType', $true_myme_types);
             }
             $subfiles = $subfiles->get();
-            $files  = File::with('user', 'FileMimeType')->where([
+            $files = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereNotIn('category_id',$true_cat_id);
+            ])->whereNotIn('category_id', $true_cat_id);
             if ($true_myme_types)
             {
-                $files->whereIn('mimeType',$true_myme_types);
+                $files->whereIn('mimeType', $true_myme_types);
             }
             $files = $files->get();
             $files = $files->merge($subfiles);
@@ -741,56 +764,57 @@ class ManagerController extends Controller
         else
         {
             $breadcrumbs = [['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'], ['id' => -2, 'title' => 'search : ' . $request->search, 'type' => 'DisableLink']];
-            $LFM = Session::get('LFM') ;
-            $section = $request->section ;
-            if (isset($LFM[$section]['options']['true_mime_type']))
+            $LFM = Session::get('LFM');
+            $section = $request->section;
+            if (isset($LFM[ $section ]['options']['true_mime_type']))
             {
-                $true_myme_types =$LFM[$section]['options']['true_mime_type'] ;
+                $true_myme_types = $LFM[ $section ]['options']['true_mime_type'];
             }
             else
             {
-                $true_myme_types =false ;
+                $true_myme_types = false;
             }
             $categories = Category::with('user')->where([
                 ['title', 'like', '%' . $request->search . '%'],
                 ['id', '!=', -5]
-            ])->whereNotIn('id',$true_cat_id)->get() ;
-            $files  = File::with('user', 'FileMimeType')->where([
+            ])->whereNotIn('id', $true_cat_id)->get();
+            $files = File::with('user', 'FileMimeType')->where([
                 ['original_name', 'like', '%' . $request->search . '%'],
                 ['category_id', '!=', -5]
-            ])->whereNotIn('category_id',$true_cat_id);
+            ])->whereNotIn('category_id', $true_cat_id);
             if ($true_myme_types)
             {
-                $files->whereIn('mimeType',$true_myme_types);
+                $files->whereIn('mimeType', $true_myme_types);
             }
             $files = $files->get();
         }
         $result['html'] = view('laravel_file_manager::search', compact('categories', 'files', 'breadcrumbs'))->render();
         $result['success'] = true;
+
         return response()->json($result);
     }
 
     public function trashTempFolder(Request $request)
     {
         $tmp = \Storage::disk(config('laravel_file_manager.driver_disk'));
-        if($tmp->has(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/'))
+        if ($tmp->has(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/'))
         {
-            $tmp->deleteDirectory(config('laravel_file_manager.main_storage_folder_name').'/media_tmp_folder/');
-            $message= __('filemanager.deleted_temp_folder_success');
-            $success= true ;
-            $type= 'success' ;
+            $tmp->deleteDirectory(config('laravel_file_manager.main_storage_folder_name') . '/media_tmp_folder/');
+            $message = __('filemanager.deleted_temp_folder_success');
+            $success = true;
+            $type = 'success';
         }
         else
         {
-            $success= false ;
-            $message= __('filemanager.deleted_temp_folder_error');
-            $type= 'error' ;
+            $success = false;
+            $message = __('filemanager.deleted_temp_folder_error');
+            $type = 'error';
         }
 
         return [
-            'success' =>$success,
-            'message' =>$message,
-            'type' =>$type,
+            'success' => $success,
+            'message' => $message,
+            'type'    => $type,
         ];
     }
 }

@@ -71,9 +71,9 @@ class DirectUploadController extends Controller
                                     $res = Media::directUpload($file, $path, $FileMimeType);
                                     $result['success'] = true;
                                     $result['file'] = $res;
-                                    $result['full_url'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original');
-                                    $result['full_url_medium'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original', '404.png', 100, 170, 120);
-                                    $result['full_url_large'] = LFM_GenerateDownloadLink('ID', $res['id'], 'original');
+                                    $result['full_url'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original');
+                                    $result['full_url_medium'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original', '404.png', 100, 170, 120);
+                                    $result['full_url_large'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original');
 
                                     return $result;
                                 });

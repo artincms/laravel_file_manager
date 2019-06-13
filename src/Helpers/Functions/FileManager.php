@@ -20,6 +20,7 @@ function LFM_SetSessionOption($section, $option)
     $LFM[ $section ]['options'] = $option;
     $LFM[ $section ]['selected'] = ['data' => [], 'view' => []];
     session()->put('LFM', $LFM);
+
     return $LFM;
 }
 
@@ -122,14 +123,15 @@ function LFM_FindSessionSelectedId($selected, $id)
     return false;
 }
 
-function LFM_CheckFalseString($input, $replace_input = "false",$remove_underline=false)
+function LFM_CheckFalseString($input, $replace_input = "false", $remove_underline = false)
 {
     if ($input)
     {
         if ($remove_underline)
         {
-            $input = str_replace('_','',$input) ;
+            $input = str_replace('_', '', $input);
         }
+
         return $input;
     }
     else
@@ -255,7 +257,6 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                 {
                     $res['file'] = [
                         'id'            => LFM_getEncodeId($file->id),
-                        'main_id'            => $file->id,
                         'original_name' => $file->original_name,
                         'type'          => 'original',
                         'size'          => $file->size,
@@ -386,8 +387,7 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                     foreach ($files as $file)
                     {
                         $res['file'] = [
-                            'id'            => $file->id,
-                            'main_id'            => $file->id,
+                            'id'            => LFM_getEncodeId($file->id),
                             'original_name' => $file->original_name,
                             'type'          => 'original',
                             'size'          => $file->size,
@@ -776,6 +776,7 @@ function LFM_CheckAllowInsert($section_name)
 
     return $result;
 }
+
 function LFM_checkCatSeed()
 {
     $category_id = [-2, -1, 0, -5];
@@ -804,15 +805,17 @@ function LFM_checkCatSeed()
             ];
         }
     }
+
     return [
         'success' => true,
     ];
 
 }
 
-function LFM_checkMymeTypeSeed() {
+function LFM_checkMymeTypeSeed()
+{
     $mimetypes = \ArtinCMS\LFM\Models\FileMimeType::all();
-    if (count($mimetypes) < 685 )
+    if (count($mimetypes) < 685)
     {
         $html = '<h4>' . __('filemanager.please_run_seed_at_first') . '</h4><br/> ';
         if (app()->getLocale() == "fa")
@@ -843,8 +846,8 @@ function LFM_checkMymeTypeSeed() {
 
 function LFM_checkSeed()
 {
-    $res_cat =LFM_checkCatSeed();
-    $res_mime =LFM_checkMymeTypeSeed();
+    $res_cat = LFM_checkCatSeed();
+    $res_mime = LFM_checkMymeTypeSeed();
     if ($res_cat['success'] && $res_mime['success'])
     {
         return [
@@ -873,6 +876,7 @@ function LFM_checkSeed()
                 'success' => false,
                 'html'    => $html
             ];
+
             return [
                 'success' => false,
                 'html'    => $html
@@ -941,8 +945,8 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     $check_seed = LFM_checkSeed();
     if ($check_seed['success'])
     {
-        $options = isset(LFM_GetSection($section)['options'])?LFM_GetSection($section)['options']:[];
-        $json = array_merge($options,['section'=>$section,'callback'=>$callback,'upload_route'=>route('LFM.StoreUploads'),'delete_session_route'=>route('LFM.DeleteSessionInsertItem')]);
+        $options = isset(LFM_GetSection($section)['options']) ? LFM_GetSection($section)['options'] : [];
+        $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => route('LFM.StoreUploads'), 'delete_session_route' => route('LFM.DeleteSessionInsertItem')]);
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['modal_content_html'] = view("laravel_file_manager::create_modal_html", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['script'] = view("laravel_file_manager::create_modal_script", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
@@ -965,15 +969,16 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
     $session = LFM_SetSessionOption($section, $options, config('laravel_file_manager.upload_route_prefix'));
     $available = LFM_CheckAllowInsert($section)['available'];
     $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
-    $category_id = -5 ;
-    $options = isset(LFM_GetSection($section)['options'])?LFM_GetSection($section)['options']:[];
-    $json = array_merge($options,['section'=>$section,'callback'=>$callback,'upload_route'=>route('LFM.StoreDirectUploads'),'delete_session_route'=>route('LFM.DeleteSessionInsertItem')]);
+    $category_id = -5;
+    $options = isset(LFM_GetSection($section)['options']) ? LFM_GetSection($section)['options'] : [];
+    $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => route('LFM.StoreDirectUploads'), 'delete_session_route' => route('LFM.DeleteSessionInsertItem')]);
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['modal_content_html'] = view("laravel_file_manager::upload.create_uplod_modal_html", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['script'] = view("laravel_file_manager::upload.create_uplod_modal_script", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['button'] = '<button type="button" class="btn ' . $button_class . '"  id="' . $button_id . '" data-toggle="modal" data-href="' . $src . '"> <i class="' . $font_button_class . '"></i>' . $button_content . '</button>';
     $result['src'] = $src;
     $result['json'] = json_encode($json);
+
     return $result;
 }
 
@@ -1155,5 +1160,3 @@ function LFM_explode_2d_array($strVar)
 
     return $result;
 }
-
-

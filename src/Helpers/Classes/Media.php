@@ -110,7 +110,7 @@ class Media
         }
         $result =
             [
-                'id'            => $FileSave->id,
+                'id'            => LFM_getEncodeId($FileSave->id),
                 'UID'           => $CustomUID,
                 'Path'          => $Path,
                 'Size'          => $file->getSize(),
@@ -473,7 +473,7 @@ class Media
 
         //upload every files in path folder
         $file_content = \File::get($file);
-        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path  . $filename, $file_content);
+        \Storage::disk(config('laravel_file_manager.driver_disk_upload'))->put($path . $filename, $file_content);
         $FileSave->file_md5 = md5_file($file);
         $FileSave->filename = $filename;
         $FileSave->save();
@@ -485,7 +485,7 @@ class Media
         {
             $username = 'Public';
         }
-        $result = ['id' => $FileSave->id, 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'original_name' => $OriginalFileName, 'is_picture' => $is_picture];
+        $result = ['id' => LFM_getEncodeId($FileSave->id), 'UID' => $user_id, 'Path' => $path, 'size' => $size, 'FileName' => $filename, 'created' => $FileSave->created_at, 'updated' => $FileSave->updated_at, 'user' => $username, 'original_name' => $OriginalFileName, 'is_picture' => $is_picture];
         if (in_array($FileSave->mimeType, config('laravel_file_manager.allowed_pic')))
         {
             $result['icon'] = 'image';
