@@ -13,6 +13,100 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class Media
 {
+    static function get_file_content($not_found_default_img_path, $type = 'png', $text = '404', $bg = 'CC0099', $color = 'FFFFFF', $width = '640', $height = '480')
+    {
+        $size = $width . 'x' . $height;
+        list($imgWidth, $imgHeight) = explode('x', $size . 'x');
+        if ($imgHeight === '')
+        {
+            $imgHeight = $imgWidth;
+        }
+        $filterOptions = [
+            'options' => [
+                'min_range' => 0,
+                'max_range' => 9999
+            ]
+        ];
+        if (filter_var($imgWidth, FILTER_VALIDATE_INT, $filterOptions) === false)
+        {
+            $imgWidth = '640';
+        }
+        if (filter_var($imgHeight, FILTER_VALIDATE_INT, $filterOptions) === false)
+        {
+            $imgHeight = '480';
+        }
+        $encoding = mb_detect_encoding($text, 'UTF-8, ISO-8859-1');
+        if ($encoding !== 'UTF-8')
+        {
+            $text = mb_convert_encoding($text, 'UTF-8', $encoding);
+        }
+        $text = mb_encode_numericentity($text,
+            [0x0, 0xffff, 0, 0xffff],
+            'UTF-8');
+        /**
+         * Handle the “bg” parameter.
+         */
+        list($bgRed, $bgGreen, $bgBlue) = sscanf($bg, "%02x%02x%02x");
+
+        list($colorRed, $colorGreen, $colorBlue) = sscanf($color, "%02x%02x%02x");
+        /**
+         * Define the typeface settings.
+         */
+        $fontFile = realpath(__DIR__) . DIRECTORY_SEPARATOR . '/../../assets/fonts/IranSans/ttf/IRANSansWeb.ttf';
+        if (!is_readable($fontFile))
+        {
+            $fontFile = 'arial';
+        }
+        $fontSize = round(($imgWidth - 50) / 8);
+        if ($fontSize <= 9)
+        {
+            $fontSize = 9;
+        }
+        /**
+         * Generate the image.
+         */
+        $image = imagecreatetruecolor($imgWidth, $imgHeight);
+        $colorFill = imagecolorallocate($image, $colorRed, $colorGreen, $colorBlue);
+        $bgFill = imagecolorallocate($image, $bgRed, $bgGreen, $bgBlue);
+        imagefill($image, 0, 0, $bgFill);
+        $textBox = imagettfbbox($fontSize, 0, $fontFile, $text);
+        while ($textBox[4] >= $imgWidth)
+        {
+            $fontSize -= round($fontSize / 2);
+            $textBox = imagettfbbox($fontSize, 0, $fontFile, $text);
+            if ($fontSize <= 9)
+            {
+                $fontSize = 9;
+                break;
+            }
+        }
+        $textWidth = abs($textBox[4] - $textBox[0]);
+        $textHeight = abs($textBox[5] - $textBox[1]);
+        $textX = ($imgWidth - $textWidth) / 2;
+        $textY = ($imgHeight + $textHeight) / 2;
+        imagettftext($image, $fontSize, 0, $textX, $textY, $colorFill, $fontFile, $text);
+        /**
+         * Return the image and destroy it afterwards.
+         */
+
+
+        switch ($type) {
+            case 'png':
+                $img = Image::make($image);
+                return $img->response('png');
+                break;
+            case 'gif':
+                $img = Image::make($image);
+                return $img->response('gif');
+                break;
+            case 'jpg':
+            case 'jpeg':
+            $img = Image::make($image);
+            return $img->response('jpg');
+            break;
+        }
+    }
+
     public static function upload($file, $CustomUID = false, $CategoryID, $FileMimeType, $original_name = 'undefined', $size, $quality = 90, $crop_type = false, $height = False, $width = false)
     {
         $time = time();
@@ -333,22 +427,26 @@ class Media
             {
                 if (file_exists($not_found_img_path))
                 {
-                    $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                    $not_found_ext = pathinfo($not_found_img_path, PATHINFO_EXTENSION);
+                    $ext = ($not_found_ext != '') ? $not_found_ext : 'jpg';
+                    $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response($ext, $quality);
                 }
                 else
                 {
-                    $res = Image::make($not_found_default_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                    $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF',$width,$height);
                 }
             }
             else
             {
                 if (file_exists($not_found_img_path))
                 {
-                    $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                    $not_found_ext = pathinfo($not_found_img_path, PATHINFO_EXTENSION);
+                    $ext = ($not_found_ext != '') ? $not_found_ext : 'jpg';
+                    $res = Image::make($not_found_img_path)->response($ext, $quality);
                 }
                 else
                 {
-                    $res = Image::make($not_found_default_img_path)->response('jpg', $quality);
+                    $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF');
                 }
             }
 
