@@ -403,13 +403,17 @@ class Media
                 }
                 else
                 {
-                    if ($width or $height)
+                    $width = $width ? $width :'640';
+                    $height = $height ? $height :'400';
+                    if (file_exists($not_found_img_path))
                     {
-                        $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response('jpg', $quality);
+                        $not_found_ext = pathinfo($not_found_img_path, PATHINFO_EXTENSION);
+                        $ext = ($not_found_ext != '') ? $not_found_ext : 'jpg';
+                        $res = Image::make($not_found_img_path)->fit((int)$width, (int)$height)->response($ext, $quality);
                     }
                     else
                     {
-                        $res = Image::make($not_found_img_path)->response('jpg', $quality);
+                        $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF',$width,$height);
                     }
 
                     if ($inline_content)
