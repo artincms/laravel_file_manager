@@ -301,6 +301,14 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
                 $result['data'] = $data;
                 $result['view'] = $view;
             }
+            else
+            {
+                return false ;
+            }
+        }
+        else
+        {
+            return false ;
         }
     }
     else
@@ -430,6 +438,14 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                     session()->put('LFM', $LFM);
 
                 }
+                else
+                {
+                    return false ;
+                }
+            }
+            else
+            {
+                return false ;
             }
         }
     }
