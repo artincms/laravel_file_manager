@@ -4,6 +4,7 @@ return [
 
     /* Important Settings */
     'private_middlewares'  => explode(',', env('LFM_PRIVATE_MIDDLEWARES', 'web')),
+	'session_middlewares'  => explode(',', env('LFM_PRIVATE_MIDDLEWARES', 'web')),
     'upload_middlewares'   => explode(',', env('LFM_UPLOAD_MIDDLEWARES', 'web')),
     'public_middlewares'   => explode(',', env('LFM_PUBLIC_MIDDLEWARES', 'web')),
     // you can change default route from sms-admin to anything you want
