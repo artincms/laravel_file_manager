@@ -285,7 +285,7 @@
     function save(FormData) {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.StoreEditPictureName')}}",
+            url: "{{lfm_secure_route('LFM.StoreEditPictureName')}}",
             data: FormData,
             dataType: "json",
             processData: false,
@@ -326,7 +326,7 @@
         var res = false ;
         $.ajax({
         type: "POST",
-        url: "{{route('LFM.StoreCropedImage')}}",
+        url: "{{lfm_secure_route('LFM.StoreCropedImage')}}",
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         dataType: "json",
         async: false,

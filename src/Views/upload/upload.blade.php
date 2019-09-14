@@ -29,7 +29,7 @@
         $("#input-708").fileinput({
             theme: "fa",
             language: "{{app()->getLocale()}}",
-            uploadUrl: "{{route('LFM.StoreUploads')}}",
+            uploadUrl: "{{lfm_secure_route('LFM.StoreUploads')}}",
             uploadAsync: false,
             browseLabel : '@lang('filemanager.browse_label')',
             elCaptionText : '',

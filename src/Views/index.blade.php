@@ -53,7 +53,7 @@
                         </label>
                         <div class="btn-group float-left margin-left-1" data-toggle="buttons">
                             <label class="btn btn-sm btn-success create_category line_height_20" title="create new category"
-                                   href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
+                                   href="{{lfm_secure_route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                                    data-target="#create_category_modal">
                                 <i class="fa fa-folder"></i>&nbsp;&nbsp;@lang('filemanager.cat')
                             </label>

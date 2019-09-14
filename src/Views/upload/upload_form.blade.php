@@ -31,7 +31,7 @@
             theme: "fa",
             language: "{{app()->getLocale()}}",
             browseLabel : '@lang('filemanager.browse_label')',
-            uploadUrl: "{{route('LFM.StoreDirectUploads')}}",
+            uploadUrl: "{{lfm_secure_route('LFM.StoreDirectUploads')}}",
             uploadAsync: false,
             uploadExtraData: {
                 section : '{{LFM_CheckFalseString($section)}}',

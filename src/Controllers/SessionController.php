@@ -80,7 +80,7 @@ class SessionController extends ManagerController
 
     private function createData($request, $item)
     {
-        $full_url = route(
+        $full_url = lfm_secure_route(
             'LFM.DownloadFile',
             [
                 'type'        => 'ID',
@@ -93,7 +93,7 @@ class SessionController extends ManagerController
             ]
         );
 
-        $full_url_large = route(
+        $full_url_large = lfm_secure_route(
             'LFM.DownloadFile',
             [
                 'type'        => 'ID',
@@ -106,7 +106,7 @@ class SessionController extends ManagerController
             ]
         );
 
-        $full_url_medium = route(
+        $full_url_medium = lfm_secure_route(
             'LFM.DownloadFile',
             [
                 'type'        => 'ID',

@@ -39,7 +39,7 @@
         function edit_file_name(FormData,close) {
             $.ajax({
                 type: "POST",
-                url: "{{route('LFM.EditFileName')}}",
+                url: "{{lfm_secure_route('LFM.EditFileName')}}",
                 data:FormData,
                 dataType: "json",
                 processData: false,

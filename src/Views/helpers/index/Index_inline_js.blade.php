@@ -331,7 +331,7 @@
     {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.SearchMedia')}}",
+            url: "{{lfm_secure_route('LFM.SearchMedia')}}",
             dataType: "json",
             data :{
                 section:'{{LFM_CheckFalseString($section)}}',
@@ -432,7 +432,7 @@
         var res ='';
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.CreateInsertData')}}",
+            url: "{{lfm_secure_route('LFM.CreateInsertData')}}",
             dataType: "json",
             async: false,
             data :{
@@ -517,7 +517,7 @@
     {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.trashTempFolder')}}",
+            url: "{{lfm_secure_route('LFM.trashTempFolder')}}",
             dataType: "json",
             success: function (res) {
                 swal({

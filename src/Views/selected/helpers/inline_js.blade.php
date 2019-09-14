@@ -13,7 +13,7 @@
     function delete_inserted_item_from_session_{{$section}}(section, file_id) {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.DeleteSessionInsertItem')}}",
+            url: "{{lfm_secure_route('LFM.DeleteSessionInsertItem')}}",
             data: {
                 section: section,
                 file_id: file_id,

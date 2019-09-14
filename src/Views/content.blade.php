@@ -30,7 +30,7 @@
             <div style="opacity: 0.5;-webkit-transition: opacity 0.5s ease-in-out;text-align: center;">
                 <h4 style="color:#a7a9ab">@lang('filemanager.no_have_new_file')</h4>
                 <div class="float-left uploadfile col-md-3 offset-md-3 text-center pointer" style="padding: 10px;border: 1px solid #efefef;"
-                     href="{{route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}"
+                     href="{{lfm_secure_route('LFM.FileUpload' , ['category_id' =>LFM_getEncodeId($parent_id) , 'callback'=> LFM_CheckFalseString($callback),'section'=>LFM_CheckFalseString($section)])}}"
                      data-toggle="modal"
                      data-target="#create_upload_modal">
                     <i class="fa fa-file-archive-o" aria-hidden="true" style="font-size: 80px;color: #a5a5a5;width: 100%;"></i>
@@ -38,7 +38,7 @@
 
                 </div>
                 <div class="float-left create_category_first col-md-3 text-center pointer create_category" style="padding: 10px;border: 1px solid #efefef" title="create new category"
-                     href="{{route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
+                     href="{{lfm_secure_route('LFM.ShowCategories.Create',['category_id' => LFM_getEncodeId($parent_id), 'callback' => LFM_CheckFalseString($callback) , 'section' => LFM_CheckFalseString($section)])}}" data-toggle="modal"
                      data-target="#create_category_modal">
                     <i class="fa fa-folder-open-o" aria-hidden="true" style="font-size: 80px;width: 100%;color: #a5a5a5;"></i>
                     <div style="margin-top: 5%;">@lang('filemanager.create_folder')</div>
@@ -64,7 +64,7 @@
                                 <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                                <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
                                    data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-category-name="{{$category['title']}}">
                                     <i class="fa fa-edit"></i>
                                 </a>
@@ -91,12 +91,12 @@
                                     <i class="fa fa-trash"></i>
                                 </a>
                                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                                    <a href="{{route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
+                                    <a href="{{lfm_secure_route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
                                        data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 @else
-                                    <a href="{{route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
+                                    <a href="{{lfm_secure_route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
                                        data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
                                         <i class="fa fa-edit"></i>
                                     </a>
@@ -207,7 +207,7 @@
                         <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
                             <i class="fa fa-trash"></i>
                         </a>
-                        <a href="{{route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                        <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
                            data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-category-name="{{$category['title']}}">
                             <i class="fa fa-edit"></i>
                         </a>
@@ -258,12 +258,12 @@
                             <i class="fa fa-trash"></i>
                         </a>
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
-                            <a href="{{route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
+                            <a href="{{lfm_secure_route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
                                data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
                                 <i class="fa fa-edit"></i>
                             </a>
                         @else
-                            <a href="{{route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
+                            <a href="{{lfm_secure_route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
                                data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
                                 <i class="fa fa-edit"></i>
                             </a>

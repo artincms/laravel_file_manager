@@ -547,11 +547,11 @@ function LFM_GenerateDownloadLink($type = "ID", $id = -1, $size_type = 'original
     }
     if ($check_version)
     {
-        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height, 'v' => $check_version]);
+        return lfm_secure_route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height, 'v' => $check_version]);
     }
     else
     {
-        return route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
+        return lfm_secure_route('LFM.DownloadFile', ['type' => $type, 'id' => $id, 'size_type' => $size_type, 'default_img' => $default_img, 'quality' => $quality, 'width' => $width, 'height' => $height]);
     }
 }
 
@@ -956,13 +956,13 @@ function LFM_CreateModalFileManager($section, $options = false, $insert = 'inser
     $true_myme_type = $options['true_file_extension'];
     $header = $header . '( <span style="font-size:80%"> پسوند های قابل استفاده : ' . implode(' , ', $true_myme_type) . '</span> )';
     //create html content and button
-    $src = route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
+    $src = lfm_secure_route('LFM.ShowCategories', ['section' => $section, 'insert' => $insert, 'callback' => LFM_CheckFalseString($callback)]);
     $available = LFM_CheckAllowInsert($section)['available'];
     $check_seed = LFM_checkSeed();
     if ($check_seed['success'])
     {
         $options = isset(LFM_GetSection($section)['options']) ? LFM_GetSection($section)['options'] : [];
-        $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => route('LFM.StoreUploads'), 'delete_session_route' => route('LFM.DeleteSessionInsertItem')]);
+        $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => lfm_secure_route('LFM.StoreUploads'), 'delete_session_route' => lfm_secure_route('LFM.DeleteSessionInsertItem')]);
         $result['modal_content'] = view("laravel_file_manager::create_modal", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['modal_content_html'] = view("laravel_file_manager::create_modal_html", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
         $result['script'] = view("laravel_file_manager::create_modal_script", compact("src", "modal_id", 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'true_myme_type'))->render();
@@ -984,10 +984,10 @@ function LFM_CreateModalUpload($section, $callback = 'show_upload_file', $option
 {
     $session = LFM_SetSessionOption($section, $options, config('laravel_file_manager.upload_route_prefix'));
     $available = LFM_CheckAllowInsert($section)['available'];
-    $src = route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
+    $src = lfm_secure_route('LFM.DirectUpload', ['section' => $section, 'callback' => $callback]);
     $category_id = -5;
     $options = isset(LFM_GetSection($section)['options']) ? LFM_GetSection($section)['options'] : [];
-    $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => route('LFM.StoreDirectUploads'), 'delete_session_route' => route('LFM.DeleteSessionInsertItem')]);
+    $json = array_merge($options, ['section' => $section, 'callback' => $callback, 'upload_route' => lfm_secure_route('LFM.StoreDirectUploads'), 'delete_session_route' => lfm_secure_route('LFM.DeleteSessionInsertItem')]);
     $result['modal_content'] = view("laravel_file_manager::upload.create_uplod_modal", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['modal_content_html'] = view("laravel_file_manager::upload.create_uplod_modal_html", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
     $result['script'] = view("laravel_file_manager::upload.create_uplod_modal_script", compact("src", "modal_id", 'category_id', 'header', 'button_content', 'section', 'callback', 'button_id', 'available', 'result_area_id', 'options'))->render();
@@ -1175,4 +1175,27 @@ function LFM_explode_2d_array($strVar)
     });
 
     return $result;
+}
+
+if (!function_exists('lfm_secure_route'))
+
+{
+    function lfm_secure_route($route_name, $params = [], $relative = true, $secure = false)
+    {
+        if (config('laravel_file_manager.is_use_secure_route'))
+        {
+            if ($relative)
+            {
+                return route($route_name, $params, false);
+            }
+            else
+            {
+                return secure_url(route($route_name, $params, $secure));
+            }
+        }
+        else
+        {
+            return route($route_name, $params);
+        }
+    }
 }

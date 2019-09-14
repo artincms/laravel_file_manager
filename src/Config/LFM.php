@@ -38,6 +38,7 @@ return [
     'lfm_default_true_extension' => explode(',', env('LFM_ALLOWED_PIC', 'jpg,jpeg,png')),
     'insertde_view_theme'        => env('LFM_INSERTED_VIEW_THEME', 'inline'),
     'lang_rtl'                   => explode(',', env('LFM_ALLOWED_PIC', 'ae,ar,arc,bcc,bqi,ckb,dv,fa,glk,he,ku,mzn,nqo,pnb,ps,sd,ug,ur,yi')),
+	'is_use_secure_route'        => env('LFM_IS_USE_SECURE_ROUTE', false),
     /*  'lang_rtl'                   => env('LFM_LANG_RTL', [
           'ae',    Avestan
           'ar',    'العربية', Arabic

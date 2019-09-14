@@ -474,7 +474,7 @@
     function trash(info) {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.Trash')}}",
+            url: "{{lfm_secure_route('LFM.Trash')}}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType: "json",
             data :{
@@ -606,7 +606,7 @@
     function bulk_delete(items) {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.BulkDelete')}}",
+            url: "{{lfm_secure_route('LFM.BulkDelete')}}",
             dataType: "json",
             data :{
                 items:items ,
@@ -666,7 +666,7 @@
     function show_category(id) {
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.ShowCategory')}}",
+            url: "{{lfm_secure_route('LFM.ShowCategory')}}",
             data: {
                 category_id: id ,
                 section:'{{LFM_CheckFalseString($section)}}',

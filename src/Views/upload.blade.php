@@ -31,7 +31,7 @@
         //-----------------------------------------------------------------------------------------------------//
         $("#input-708").fileinput({
             theme: "fa",
-            uploadUrl: "{{route('LFM.StoreUploads')}}",
+            uploadUrl: "{{lfm_secure_route('LFM.StoreUploads')}}",
             uploadAsync: false,
             uploadExtraData: {
                 category_id: {{$category_id}} ,

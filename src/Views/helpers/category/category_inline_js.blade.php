@@ -31,7 +31,7 @@
         close = close || false ;
         $.ajax({
             type: "POST",
-            url: "{{route('LFM.StoreCategory')}}",
+            url: "{{lfm_secure_route('LFM.StoreCategory')}}",
             data: FormData,
             dataType: "json",
             processData: false,
