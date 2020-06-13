@@ -201,8 +201,10 @@ class ManagerController extends Controller
             $breadcrumbs[] = ['id' => -2, 'title' => __('filemanager.share_folder'), 'type' => 'Enable'];
             $result['parent_category_name'] = __('filemanager.root_folder');
         }
+
         $id = Cookie::get('current_category_id', 0);
         $button_upload_link = lfm_secure_route('LFM.FileUpload', ['category_id' => LFM_getEncodeId($id), 'callback' => 'refresh', 'section' => LFM_CheckFalseString($section)]);
+
         if ($id == 0)
         {
             $allCategories['share'] = LFM_BuildMenuTree(Category::all(), 'parent_category_id', false, false, -2);
@@ -218,7 +220,6 @@ class ManagerController extends Controller
             {
                 $show_icon_folder = false;
             }
-
             return view('laravel_file_manager::index', compact('categories', 'files', 'category', 'breadcrumbs', 'insert', 'section', 'callback', 'allCategories', 'parent_id', 'available', 'show_icon_folder', 'button_upload_link'));
         }
         else
