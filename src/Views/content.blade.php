@@ -57,28 +57,28 @@
                         </div>
                     </li>
                 @endif
-                @foreach($categories as $category)
+                @foreach($categories as $category_a)
                     <li>
                         <div class="media-attachment-info">
                             <div class="action margin-right-1">
-                                <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
+                                <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category_a['id'])}}" data-parent-id="{{LFM_getEncodeId($category_a['parent_category_id'])}}">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
-                                   data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-category-name="{{$category['title']}}">
+                                <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category_a['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                                   data-id="{{LFM_getEncodeId($category_a['id'])}}" data-parent-id="{{LFM_getEncodeId($category_a['parent_category_id'])}}" data-category-name="{{$category_a['title']}}">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </div>
                             <a href="#" class="media-attachment-chexbox">
-                                <input type="checkbox" class="grid-row-checkbox check" data-view="grid" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}"/>
+                                <input type="checkbox" class="grid-row-checkbox check" data-view="grid" data-type="category" data-id="{{LFM_getEncodeId($category_a['id'])}}" data-parent-id="{{LFM_getEncodeId($category_a['parent_category_id'])}}"/>
                             </a>
                             <div class="clearfix center" data-object="">
-                                <a title="{{$category['title']}}" href="" data-id="{{LFM_getEncodeId($category['id'])}}" class="link_to_category"
-                                   data-description="{{$category['description']}}"
+                                <a title="{{$category_a['title']}}" href="" data-id="{{LFM_getEncodeId($category_a['id'])}}" class="link_to_category"
+                                   data-description="{{$category_a['description']}}"
                                 ><i class="fa fa-folder img img-category-thumbnail"></i></a>
                             </div>
                             <div class="text-center text-truncate">
-                                <a class="meida-name" href="" title="{{$category['title']}}">{{$category['title']}}</a>
+                                <a class="meida-name" href="" title="{{$category_a['title']}}">{{$category_a['title']}}</a>
                             </div>
                         </div>
                     </li>
@@ -92,12 +92,12 @@
                                 </a>
                                 @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                                     <a href="{{lfm_secure_route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                                       data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
+                                       data-parent-id="{{LFM_getEncodeId(@$category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 @else
                                     <a href="{{lfm_secure_route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                                       data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
+                                       data-parent-id="{{LFM_getEncodeId(@$category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 @endif
@@ -189,26 +189,26 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($categories as $category)
+            @foreach($categories as $category_c)
                 <tr>
                     <td><a href="#" class="media-attachment-chexbox">
-                            <input type="checkbox" class="grid-row-checkbox check" data-view="list" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['category_id'])}}" data-name="{{$category['title']}}"/>
+                            <input type="checkbox" class="grid-row-checkbox check" data-view="list" data-type="category" data-id="{{LFM_getEncodeId($category_c['id'])}}" data-parent-id="{{LFM_getEncodeId($category_c['category_id'])}}" data-name="{{$category_c['title']}}"/>
                         </a>
                     </td>
                     </td>
                     <td>
 
-                        <a title="{{$category['title']}}" href="" data-id="{{LFM_getEncodeId($category['id'])}}" class="link_to_category" data-description="{{$category['description']}}"
-                        ><i class="fa fa-folder margin-right-1"></i>{{$category['title']}}</a>
+                        <a title="{{$category_c['title']}}" href="" data-id="{{LFM_getEncodeId($category_c['id'])}}" class="link_to_category" data-description="{{$category_c['description']}}"
+                        ><i class="fa fa-folder margin-right-1"></i>{{$category_c['title']}}</a>
 
                     </td>
-                    <td>@if ($category->user) {{$category->user->$name_column}}@else public @endif</td>
+                    <td>@if ($category_c->user) {{$category_c->user->$name_column}}@else public @endif</td>
                     <td>
-                        <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}">
+                        <a href="" class="grid-row-delete float-right myicon" id="trashfile" data-type="category" data-id="{{LFM_getEncodeId($category_c['id'])}}" data-parent-id="{{LFM_getEncodeId($category_c['parent_category_id'])}}">
                             <i class="fa fa-trash"></i>
                         </a>
-                        <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
-                           data-id="{{LFM_getEncodeId($category['id'])}}" data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-category-name="{{$category['title']}}">
+                        <a href="{{lfm_secure_route('LFM.ShowCategories.Edit',['category_id'=>LFM_getEncodeId($category_c['id'])])}}" class="grid-row-edit float-right myicon" data-toggle="modal" data-target="#create_edit_category_modal" id="EditCategory" data-type="category"
+                           data-id="{{LFM_getEncodeId($category_c['id'])}}" data-parent-id="{{LFM_getEncodeId($category_c['parent_category_id'])}}" data-category-name="{{$category_c['title']}}">
                             <i class="fa fa-edit"></i>
                         </a>
                     </td>
@@ -259,12 +259,12 @@
                         </a>
                         @if(in_array($file->mimeType  , config('laravel_file_manager.allowed_pic')))
                             <a href="{{lfm_secure_route('LFM.EditPicture',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFile" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                               data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
+                               data-parent-id="{{LFM_getEncodeId(@$category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_picture_modal">
                                 <i class="fa fa-edit"></i>
                             </a>
                         @else
                             <a href="{{lfm_secure_route('LFM.EditFile',['file_id'=>LFM_getEncodeId($file['id'])])}}" class="grid-row-edit float-right myicon" id="EditFileName" data-type="file" data-id="{{LFM_getEncodeId($file['id'])}}"
-                               data-parent-id="{{LFM_getEncodeId($category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
+                               data-parent-id="{{LFM_getEncodeId(@$category['parent_category_id'])}}" data-toggle="modal" data-target="#create_edit_file_name_modal" data-file-name="{{$file['original_name']}}">
                                 <i class="fa fa-edit"></i>
                             </a>
                         @endif
