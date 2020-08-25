@@ -90,20 +90,24 @@ class Media
          */
 
 
-        switch ($type) {
+        switch ($type)
+        {
             case 'png':
                 $img = Image::make($image);
+
                 return $img->response('png');
                 break;
             case 'gif':
                 $img = Image::make($image);
+
                 return $img->response('gif');
                 break;
             case 'jpg':
             case 'jpeg':
-            $img = Image::make($image);
-            return $img->response('jpg');
-            break;
+                $img = Image::make($image);
+
+                return $img->response('jpg');
+                break;
         }
     }
 
@@ -403,8 +407,8 @@ class Media
                 }
                 else
                 {
-                    $width = $width ? $width :'640';
-                    $height = $height ? $height :'400';
+                    $width = $width ? $width : '640';
+                    $height = $height ? $height : '400';
                     if (file_exists($not_found_img_path))
                     {
                         $not_found_ext = pathinfo($not_found_img_path, PATHINFO_EXTENSION);
@@ -413,7 +417,7 @@ class Media
                     }
                     else
                     {
-                        $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF',$width,$height);
+                        $res = self::get_file_content($not_found_default_img_path, 'png', '404', 'cecece', 'FFFFFF', $width, $height);
                     }
 
                     if ($inline_content)
@@ -437,7 +441,7 @@ class Media
                 }
                 else
                 {
-                    $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF',$width,$height);
+                    $res = self::get_file_content($not_found_default_img_path, 'png', '404', 'cecece', 'FFFFFF', $width, $height);
                 }
             }
             else
@@ -450,7 +454,7 @@ class Media
                 }
                 else
                 {
-                    $res = self::get_file_content($not_found_default_img_path,'png','404','cecece','FFFFFF');
+                    $res = self::get_file_content($not_found_default_img_path, 'png', '404', 'cecece', 'FFFFFF');
                 }
             }
 
@@ -496,7 +500,7 @@ class Media
         }
     }
 
-    public static function saveCropedImageBase64($data, $FileSave, $crop_type)
+    public static function saveCropedImageBase64($data, $FileSave, $crop_type, $is_cropped = false)
     {
         $time = time();
         $base_path = \Storage::disk(config('laravel_file_manager.driver_disk'))->path('');
@@ -505,7 +509,9 @@ class Media
             case "original":
                 $FileSave->version++;
                 $filename = 'fid_' . $FileSave->id . '_v' . $FileSave->version . '_uid_' . $FileSave->user_id . '_' . md5(base64_decode($data)) . "_" . $time . '_' . $FileSave->extension;
-                \File::put($base_path . '/' . $FileSave->path . '/files/original/' . $filename, base64_decode($data));
+                $orginal_path = $is_cropped ? $base_path . '/' . $FileSave->path . '/' . $filename : $base_path . '/' . $FileSave->path . '/files/original/' . $filename;
+                $orginal_path = str_replace('//', '/', $orginal_path);
+                \File::put($orginal_path, base64_decode($data));
                 $FileSave->filename = $filename;
                 $FileSave->file_md5 = md5(base64_decode($data));
                 break;
