@@ -184,7 +184,7 @@ function LFM_SaveSingleFile($obj_model, $column_name, $section, $column_option_n
                 LFM_DestroySection($section);
             }
 
-            return $res;
+            return $obj_model;
         }
         else
         {
@@ -303,12 +303,12 @@ function LFM_LoadMultiFile($obj_model, $section, $type = null, $relation_name = 
             }
             else
             {
-                return false ;
+                return false;
             }
         }
         else
         {
-            return false ;
+            return false;
         }
     }
     else
@@ -440,12 +440,12 @@ function LFM_loadSingleFile($obj_model, $column_name, $section, $column_option_n
                 }
                 else
                 {
-                    return false ;
+                    return false;
                 }
             }
             else
             {
-                return false ;
+                return false;
             }
         }
     }
