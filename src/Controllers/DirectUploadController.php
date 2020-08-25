@@ -46,7 +46,7 @@ class DirectUploadController extends Controller
             $result = [];
             $data = [];
 
-            foreach ($request->file as $file)
+            foreach ($request->file as $key=>$file)
             {
                 try
                 {
@@ -70,16 +70,15 @@ class DirectUploadController extends Controller
                             $path = $section['options']['path'];
                             if (LFM_CheckAllowInsert($request->section)['available'] > 0)
                             {
-                                $result[] = \DB::transaction(function () use ($file, $path, $FileMimeType,$request) {
+                                $result[] = \DB::transaction(function () use ($file, $path, $FileMimeType,$request,$key) {
                                     $res = Media::directUpload($file, $path, $FileMimeType);
                                     if ($request->is_cropped)
                                     {
-                                        $croped_data = str_replace('data:image/png;base64,', '', $request->src);
+                                        $croped_data = str_replace('data:image/png;base64,', '', $request->src[$key]);
                                         $croped_data = str_replace(' ', '+', $croped_data);
                                         $file = File::find(LFM_GetDecodeId($res['id']));
                                         $res_croped = Media::saveCropedImageBase64($croped_data, $file, $request->crop_type ? $request->crop_type : 'original',true);
                                     }
-
                                     $result['success'] = true;
                                     $result['file'] = $res;
                                     $result['full_url'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original');
