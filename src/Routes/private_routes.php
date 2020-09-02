@@ -52,5 +52,5 @@ Route::group(['prefix' => config('laravel_file_manager.private_route_prefix'), '
 
 Route::group(['prefix' => config('laravel_file_manager.upload_route_prefix'), 'namespace' => 'ArtinCMS\LFM\Controllers', 'middleware' => config('laravel_file_manager.upload_middlewares')], function () {
     Route::get('DirectUpload/{section?}/{callback?}', ['as' => 'LFM.DirectUpload', 'uses' => 'DirectUploadController@directUpload']);
-    Route::post('StoreDirectUploads', ['as' => 'LFM.StoreDirectUploads', 'uses' => 'DirectUploadController@storeDirectUploads']);
+    Route::post('StoreDirectUploads', ['as' => 'LFM.StoreDirectUploads', 'uses' => 'DirectUploadController@storeDirectUploads'])->middleware('throttle:10,1');
 });
