@@ -84,7 +84,8 @@ class DirectUploadController extends Controller
                                     $result['full_url'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original');
                                     $result['full_url_medium'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original', '404.png', 100, 170, 120);
                                     $result['full_url_large'] = LFM_GenerateDownloadLink('ID', LFM_GetDecodeId($res['id']), 'original');
-
+									$result['ext'] = $FileMimeType->ext;
+                                    $result['FileMimeType'] = $FileMimeType->toArray();
                                     return $result;
                                 });
                             }
